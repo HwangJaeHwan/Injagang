@@ -23,6 +23,10 @@ const Tr = styled.tr`
   &:nth-child(even) {
     background-color: #f2f2f2;
   }
+  h2::selection {
+    background-color: black;
+    color: yellow;
+  }
 `;
 
 interface Member {
