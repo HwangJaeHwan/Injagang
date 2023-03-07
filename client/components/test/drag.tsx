@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BiMessageAltAdd } from "react-icons/bi";
 
 const Drag = () => {
   const [selection, setSelection] = useState<string[]>([]);
@@ -8,28 +9,28 @@ const Drag = () => {
     const selectedText = window.getSelection()?.toString() || " ";
     if (selectedText && !added) {
       const range = window.getSelection()?.getRangeAt(0);
-      console.log(range);
       const newNode = document.createElement("span");
       const btn = document.createElement("button");
       btn.textContent = "+";
       btn.style.width = "50px";
       btn.style.height = "50px";
-      btn.style.zIndex = "100"
-      newNode.append(btn)
-      btn.onclick = () => {
+      btn.style.zIndex = "100";
+      newNode.append(btn);
+      range?.insertNode(newNode);
+      setAdded(true);
+      btn.onclick = event => {
+        event.stopPropagation();
         newNode.style.backgroundColor = "yellow";
         range?.surroundContents(newNode);
         setSelection(cur => [...cur, selectedText]);
         setAdded(false);
-        console.log("추가")
       };
-      range?.insertNode(newNode);
-      setAdded(true);
     }
   };
 
   return (
     <div>
+      <BiMessageAltAdd/>
       <p onMouseUp={handleSelect}>
         어려서 부터 우리집은 가난했었고 남들 다하는 외식 몇 번 한 적이 없었고
         일터에 나가신 어머니 집에 없으면 언제나 혼자서 끓여 먹었던 라면 그러다
