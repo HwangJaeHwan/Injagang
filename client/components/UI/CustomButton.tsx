@@ -6,7 +6,7 @@ interface ButtonProps {
     text: string;
 }
 
-const DarkButton = ({onClick,text}: ButtonProps) => {
+const CustomButton = ({onClick,text}: ButtonProps) => {
   return <BeautyButton onClick={onClick}>{text}</BeautyButton>;
 };
 const BeautyButton = styled.button`
@@ -29,4 +29,4 @@ const BeautyButton = styled.button`
     background-color: red;
   }
 `;
-export default DarkButton;
+export default CustomButton;

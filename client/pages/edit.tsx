@@ -8,7 +8,7 @@ const EditStyle = styled.div`
   ${ColBox}
 `;
 
-const questionList = [
+export const questionList = [
   {
     title: "카카오 자소서",
     content: ["1.자신의장점", "2.자신의장단점", "3.프로젝트경험담"],
