@@ -20,7 +20,6 @@ const Sidebar = styled.div`
 
 const Content = styled.div`
   width: 80%;
-  padding: 40px 10px;
 `;
 
 interface LayoutProps {

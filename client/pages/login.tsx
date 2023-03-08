@@ -2,12 +2,14 @@ import { FlexBox } from "@/styles/GlobalStyle";
 import { useState } from "react";
 import styled from "styled-components";
 
+const BASE_URL = "http://localhost:8123/login";
+
 const LoginStyle = styled.div`
   ${FlexBox};
   height: 100vh;
   width: 100vw;
-  background-color:#31404E;
-  color:${({theme}) => theme.colors.text};
+  background-color: #31404e;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const Form = styled.form`
@@ -16,7 +18,7 @@ const Form = styled.form`
   width: 300px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #15202B;
+  background-color: #15202b;
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
 `;
 
@@ -65,6 +67,31 @@ const LoginPage = () => {
     }));
   };
 
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(BASE_URL, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: loginInfo.email,
+          password: loginInfo.password,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        throw new Error(`HTTP error, status = ${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   return (
     <LoginStyle>
       <Form onSubmit={handleSubmit}>
@@ -82,7 +109,9 @@ const LoginPage = () => {
           value={loginInfo.password}
           onChange={handleChange}
         />
-        <Button type="submit">로그인</Button>
+        <Button type="submit" onClick={handleLogin}>
+          로그인
+        </Button>
       </Form>
     </LoginStyle>
   );

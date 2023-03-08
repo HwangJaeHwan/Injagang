@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
 import { questionList } from "@/pages/edit";
@@ -17,9 +17,21 @@ const Card = styled.div`
   margin: 15px 15px;
 `;
 
+interface QuestionListItem {
+  title: string;
+  content: string[];
+}
+
+
 const Template = () => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
+  const [templateList, setTemplateList] = useState<QuestionListItem[]>(questionList);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  },[templateQuestion.length])
 
   const addQuestion = () => {
     if(templateQuestion.length >= 7){
@@ -35,7 +47,11 @@ const Template = () => {
   };
 
   const handleQuestionList = () => {
-    console.log({ title: templateTitle, content: templateQuestion });
+    const newList = {title:templateTitle,content:templateQuestion}
+    setTemplateList([...templateList, newList])
+    setTemplateTitle("");
+    setTemplateQuestion([])
+
   };
 
   const removeLastQuestion = () => {
@@ -48,7 +64,7 @@ const Template = () => {
   return (
     <>
       <Card>
-        {questionList.map((list, index) => (
+        {templateList.map((list, index) => (
           <div key={index}>{list.title}</div>
         ))}
       </Card>
@@ -66,6 +82,7 @@ const Template = () => {
         <div key={index}>
             {index + 1}.
           <input
+          ref={inputRef}
             type="text"
             value={question}
             onChange={e => handleQuestionChange(index, e.target.value)}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { BiMessageAltAdd } from "react-icons/bi";
 
 const Drag = () => {
@@ -10,11 +11,11 @@ const Drag = () => {
     if (selectedText && !added) {
       const range = window.getSelection()?.getRangeAt(0);
       const newNode = document.createElement("span");
-      const btn = document.createElement("button");
-      btn.textContent = "+";
-      btn.style.width = "50px";
-      btn.style.height = "50px";
-      btn.style.zIndex = "100";
+      const btn = document.createElement("span");
+      const icon = <BiMessageAltAdd style={{ fontSize: "20px",opacity: 0.5 }} />;
+      ReactDOM.render(icon, btn);
+      newNode.appendChild(btn);
+      btn.className = "btnbtn";
       newNode.append(btn);
       range?.insertNode(newNode);
       setAdded(true);
@@ -27,11 +28,17 @@ const Drag = () => {
       };
     }
   };
+  const handleRemove = () => {
+    if (added) {
+      const btn = document.querySelector(".btnbtn");
+      btn?.remove();
+      setAdded(false);
+    }
+  };
 
   return (
     <div>
-      <BiMessageAltAdd/>
-      <p onMouseUp={handleSelect}>
+      <p onMouseUp={handleSelect} onDoubleClick={handleRemove}>
         어려서 부터 우리집은 가난했었고 남들 다하는 외식 몇 번 한 적이 없었고
         일터에 나가신 어머니 집에 없으면 언제나 혼자서 끓여 먹었던 라면 그러다
         라면이 너무 지겨워서 맛있는 것 좀 먹자고 대들었었어 그러자 어머님이 마지
