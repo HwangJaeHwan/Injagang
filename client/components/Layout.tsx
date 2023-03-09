@@ -66,7 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
     },
     {
       title: "면접연습",
-      path: "/about",
+      path: "/interview",
       icon: <BiUserVoice />,
     },
     {

@@ -1,7 +1,10 @@
 import React from "react";
+import InterviewRecord from "@/components/test/interviewRecord";
 
 const interview = () => {
-  return <div>인터뷰</div>;
+  return <div>
+    <InterviewRecord/>
+  </div>;
 };
 
 export default interview;

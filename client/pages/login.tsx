@@ -49,9 +49,7 @@ const Button = styled.button`
 const LoginPage = () => {
   const [loginInfo, setLoginInfo] = useState({
     email: "",
-    nickName: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

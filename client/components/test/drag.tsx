@@ -10,19 +10,26 @@ const Drag = () => {
     const selectedText = window.getSelection()?.toString() || " ";
     if (selectedText && !added) {
       const range = window.getSelection()?.getRangeAt(0);
+      console.log(range)
       const newNode = document.createElement("span");
       const btn = document.createElement("span");
+      btn.className = "btnbtn";
       const icon = <BiMessageAltAdd style={{ fontSize: "20px",opacity: 0.5 }} />;
       ReactDOM.render(icon, btn);
-      newNode.appendChild(btn);
-      btn.className = "btnbtn";
       newNode.append(btn);
       range?.insertNode(newNode);
       setAdded(true);
       btn.onclick = event => {
         event.stopPropagation();
         newNode.style.backgroundColor = "yellow";
-        range?.surroundContents(newNode);
+        try {
+          range?.surroundContents(newNode);
+        } catch (error) {
+          alert("겹치지마세요")
+          btn.remove()
+          setAdded(false)
+          return
+        }
         setSelection(cur => [...cur, selectedText]);
         setAdded(false);
       };
