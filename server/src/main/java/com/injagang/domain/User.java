@@ -25,10 +25,13 @@ public class User {
 
     private String nickname;
 
+    private String email;
+
     @Builder
-    public User(String loginId, String password, String nickname) {
+    public User(String loginId, String password, String nickname, String email) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
+        this.email = email;
     }
 }

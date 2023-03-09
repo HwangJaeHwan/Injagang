@@ -7,9 +7,11 @@ import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.SignUp;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -19,6 +21,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public Long login(Login login) {
+
+        log.info("하이요");
 
         User user = userRepository.findUserByLoginId(login.getLoginId()).orElseThrow(InvalidLoginInfoException::new);
 
@@ -42,6 +46,7 @@ public class AuthService {
                 .loginId(signUp.getLoginId())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .nickname(signUp.getNickname())
+                .email(signUp.getEmail())
                 .build();
 
         userRepository.save(user);

@@ -1,11 +1,11 @@
 package com.injagang.response;
 
-import com.injagang.domain.Template;
 import com.injagang.domain.Essay;
 import lombok.Getter;
 
 @Getter
 public class EssayList {
+
 
     private Long essayId;
 
@@ -14,6 +14,6 @@ public class EssayList {
     public EssayList(Essay essay) {
         this.essayId = essay.getId();
         this.title = essay.getTitle();
-    }
 
+    }
 }

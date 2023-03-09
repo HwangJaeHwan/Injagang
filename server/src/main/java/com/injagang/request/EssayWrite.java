@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class EssayWrite {
     private String title;
 
     @Valid
+    @Size(min = 1,message = "QnA는 최소 1개 이상 작성해주세요")
     private List<QnA> qnaList = new ArrayList<>();
 
     @Builder

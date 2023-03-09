@@ -10,7 +10,16 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+  jpa:
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
 
 
-injagang:
-  jwt-key: 46272b8312e7a4893ca8067a35d774eabe7a3d6fdca7b62ed6723dc289de3ad03102b5d338f6fc3f43d53b9a1f16b1c2b38a0794e0a029339f6823e88e6b7d5b
+
+jwt:
+  jwt-key: "c7L0+z1bI67OpGIeYN9NcKgXBsHKiR2RlYX1Vzj4ULA="
+
+
+
