@@ -40,6 +40,22 @@ public class EssayController {
     public List<EssayList> myEssays(@PathVariable String loginId) {
 
         return essayService.essays(loginId);
+    }
+
+
+    @PatchMapping("/revise/{essayId}")
+    public void reviseEssay(UserSession userSession,@PathVariable Long essayId,@RequestBody EssayWrite essayWrite) {
+
+        essayService.reviseEssay(userSession.getUserId(),essayId, essayWrite);
+
+
+    }
+
+    @DeleteMapping("/delete/{essayId}")
+    public void deleteEssay(UserSession userSession, @PathVariable Long essayId) {
+
+        essayService.deleteEssay(userSession.getUserId(), essayId);
+
 
     }
 

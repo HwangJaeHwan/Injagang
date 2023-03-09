@@ -41,6 +41,10 @@ public class Essay {
 
     }
 
+    public void reviseTitle(String title) {
+        this.title = title;
+    }
+
 
 
 

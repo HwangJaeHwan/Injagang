@@ -10,7 +10,6 @@ import com.injagang.request.EssayWrite;
 import com.injagang.request.QnA;
 import com.injagang.response.EssayList;
 import com.injagang.response.EssayRead;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ class EssayServiceTest {
     EssayService essayService;
 
     @BeforeEach
-    void clean(){
+    void clean() {
         essayRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -91,7 +90,6 @@ class EssayServiceTest {
         assertThat(essay.getTitle()).isEqualTo("test essay");
         assertEquals(3, qnARepository.count());
         assertEquals(3, qnARepository.findAllByEssay(essay).size());
-
 
 
     }
@@ -209,6 +207,115 @@ class EssayServiceTest {
 
     }
 
+    @Test
+    @DisplayName("자소서 수정")
+    void test4() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .build();
+
+        userRepository.save(user);
+
+        Essay essay = Essay.builder()
+                .user(user)
+                .title("before")
+                .build();
+
+        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+                .question("questionBefore1")
+                .answer("answerBefore1")
+                .build();
+
+        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+                .question("questionBefore2")
+                .answer("answerBefore2")
+                .build();
+
+        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+                .question("questionBefore3")
+                .answer("answerBefore3")
+                .build();
+
+        essay.addQuestionAndAnswer(qna1);
+        essay.addQuestionAndAnswer(qna2);
+        essay.addQuestionAndAnswer(qna3);
+
+        essayRepository.save(essay);
 
 
+        EssayWrite revise = EssayWrite.builder()
+                .title("after")
+                .build();
+
+        QnA reviseQna1 = QnA.builder()
+                .question("questionAfter1")
+                .answer("answerAfter1")
+                .build();
+
+        QnA reviseQna2 = QnA.builder()
+                .question("questionAfter2")
+                .answer("answerAfter2")
+                .build();
+
+        QnA reviseQna3 = QnA.builder()
+                .question("questionAfter3")
+                .answer("answerAfter3")
+                .build();
+
+        revise.addQna(reviseQna1);
+        revise.addQna(reviseQna2);
+        revise.addQna(reviseQna3);
+
+        essayService.reviseEssay(user.getId(),essay.getId(), revise);
+
+        Essay change = essayRepository.findById(essay.getId()).get();
+        List<QuestionAndAnswer> qnaList = qnARepository.findAllByEssay(change);
+        assertEquals(3, qnARepository.count());
+        assertEquals("after", change.getTitle());
+        assertEquals("questionAfter1", qnaList.get(0).getQuestion());
+        assertEquals("answerAfter1", qnaList.get(0).getAnswer());
+        assertEquals("questionAfter2", qnaList.get(1).getQuestion());
+        assertEquals("answerAfter2", qnaList.get(1).getAnswer());
+        assertEquals("questionAfter3", qnaList.get(2).getQuestion());
+        assertEquals("answerAfter3", qnaList.get(2).getAnswer());
+
+
+    }
+
+    @Test
+    @DisplayName("자소서 삭제")
+    void test5() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .build();
+
+        userRepository.save(user);
+
+        Essay essay = Essay.builder()
+                .title("test title1")
+                .user(user)
+                .build();
+
+
+        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        essay.addQuestionAndAnswer(qna1);
+        essayRepository.save(essay);
+
+        essayService.deleteEssay(user.getId(),essay.getId());
+
+
+        assertEquals(0, essayRepository.count());
+        assertEquals(0, qnARepository.count());
+
+    }
 }

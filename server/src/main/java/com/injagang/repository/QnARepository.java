@@ -12,4 +12,6 @@ public interface QnARepository extends JpaRepository<QuestionAndAnswer, Long> {
 
     List<QuestionAndAnswer> findAllByEssay(Essay essay);
 
+    Long deleteAllByEssay(Essay essay);
+
 }

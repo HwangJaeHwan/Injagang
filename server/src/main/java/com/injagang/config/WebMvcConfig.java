@@ -3,6 +3,7 @@ package com.injagang.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -23,6 +24,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new SCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 }
