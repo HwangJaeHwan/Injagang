@@ -140,7 +140,7 @@ class EssayServiceTest {
 
         assertEquals(essay.getId(), read.getEssayId());
         assertThat(essay.getTitle()).isEqualTo(read.getTitle());
-        assertEquals(3, read.getQna().size());
+        assertEquals(3, read.getQnaList().size());
 
 
     }
@@ -200,7 +200,7 @@ class EssayServiceTest {
         essayRepository.save(essay3);
 
 
-        List<EssayList> essays = essayService.essays(user.getLoginId());
+        List<EssayList> essays = essayService.essays(user.getId());
 
         assertEquals(3, essays.size());
 

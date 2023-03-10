@@ -29,17 +29,17 @@ public class EssayController {
     }
 
     @GetMapping("/read/{essayId}")
-    public EssayRead readEssay(@PathVariable Long essayId) {
+    public EssayRead readEssay(UserSession userSession,@PathVariable Long essayId) {
 
         return essayService.readEssay(essayId);
 
 
     }
 
-    @GetMapping("/{loginId}")
-    public List<EssayList> myEssays(@PathVariable String loginId) {
+    @GetMapping("/{userId}")
+    public List<EssayList> myEssays(@PathVariable Long userId) {
 
-        return essayService.essays(loginId);
+        return essayService.essays(userId);
     }
 
 

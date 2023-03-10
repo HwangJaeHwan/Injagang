@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.User;
 import com.injagang.exception.DuplicateLoginIdException;
 import com.injagang.exception.InvalidLoginInfoException;
+import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.SignUp;
@@ -32,10 +33,14 @@ class AuthServiceTest {
     UserRepository userRepository;
 
     @Autowired
+    EssayRepository essayRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void clean() {
+        essayRepository.deleteAll();
         userRepository.deleteAll();
     }
 
