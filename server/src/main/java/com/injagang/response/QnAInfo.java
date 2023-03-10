@@ -7,7 +7,7 @@ import lombok.Getter;
 public class QnAInfo {
 
 
-    private Long QnAId;
+    private Long QnaId;
 
     private String question;
 
@@ -15,8 +15,8 @@ public class QnAInfo {
 
 
     @Builder
-    public QnAInfo(Long qnAId, String question, String answer) {
-        QnAId = qnAId;
+    public QnAInfo(Long qnaId, String question, String answer) {
+        QnaId = qnaId;
         this.question = question;
         this.answer = answer;
     }

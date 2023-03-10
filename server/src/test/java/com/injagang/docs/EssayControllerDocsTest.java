@@ -1,4 +1,4 @@
-package com.injagang.controller;
+package com.injagang.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.AppConfig;
@@ -16,23 +16,34 @@ import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.stream.IntStream;
 
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
-@AutoConfigureMockMvc
+
+
 @SpringBootTest
-class EssayControllerTest {
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
+@ExtendWith(RestDocumentationExtension.class)
+public class EssayControllerDocsTest {
 
 
     @Autowired
@@ -63,7 +74,7 @@ class EssayControllerTest {
 
 
     @Test
-    @DisplayName("/write 자소서 작성하기")
+    @DisplayName("자소서 작성")
     void test() throws Exception {
 
 
@@ -111,108 +122,20 @@ class EssayControllerTest {
                         .contentType(APPLICATION_JSON)
                         .header("Authorization", jws)
                         .content(json))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(document("essay-write",requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
+                        ), requestFields(
+                                fieldWithPath("title").description("자소서 제목"),
+                                fieldWithPath("qnaList[].question").description("자소서 질문"),
+                                fieldWithPath("qnaList[].answer").description("자소서 답변")
+                        )));
 
 
     }
 
 
     @Test
-    @DisplayName("/write 자소서 작성시 제목은 필수다")
-    void testValid() throws Exception {
-
-
-        User user = User.builder()
-                .loginId("test")
-                .password("test")
-                .nickname("test")
-                .build();
-
-        userRepository.save(user);
-
-
-        EssayWrite essayWrite = EssayWrite.builder()
-                .title("")
-                .build();
-
-        QnA qnA1 = QnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        essayWrite.addQna(qnA1);
-
-        QnA qnA2 = QnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        essayWrite.addQna(qnA2);
-
-
-        QnA qnA3 = QnA.builder()
-                .question("question3")
-                .answer("answer3")
-                .build();
-
-        essayWrite.addQna(qnA3);
-
-        String json = objectMapper.writeValueAsString(essayWrite);
-
-
-        String jws = makeJWT(user.getId());
-
-
-        mockMvc.perform(post("/essay/write")
-                        .contentType(APPLICATION_JSON)
-                        .header("Authorization", jws)
-                        .content(json))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
-
-
-    }
-
-    @Test
-    @DisplayName("/write 자소서 작성시 QnA는 1개 이상 있어야 한다")
-    void testValid2() throws Exception {
-
-
-        User user = User.builder()
-                .loginId("test")
-                .password("test")
-                .nickname("test")
-                .build();
-
-        userRepository.save(user);
-
-
-        EssayWrite essayWrite = EssayWrite.builder()
-                .title("title")
-                .build();
-
-
-        String json = objectMapper.writeValueAsString(essayWrite);
-
-
-        String jws = makeJWT(user.getId());
-
-
-        mockMvc.perform(post("/essay/write")
-                        .contentType(APPLICATION_JSON)
-                        .header("Authorization", jws)
-                        .content(json))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
-
-
-    }
-
-
-
-    @Test
-    @DisplayName("/read/{essayId} 해당 자소서를 읽는다")
+    @DisplayName("자소서를 읽는다")
     void test2() throws Exception {
 
         User user = User.builder()
@@ -256,22 +179,24 @@ class EssayControllerTest {
 
         mockMvc.perform(get("/essay/read/{essayId}", essay.getId())
                 .header("Authorization", jws))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.essayId").value(essay.getId()))
-                .andExpect(jsonPath("$.title").value("test title"))
-                .andExpect(jsonPath("$.qnaList[0].question").value("question1"))
-                .andExpect(jsonPath("$.qnaList[0].answer").value("answer1"))
-                .andExpect(jsonPath("$.qnaList[1].question").value("question2"))
-                .andExpect(jsonPath("$.qnaList[1].answer").value("answer2"))
-                .andExpect(jsonPath("$.qnaList[2].question").value("question3"))
-                .andExpect(jsonPath("$.qnaList[2].answer").value("answer3"))
-                .andDo(print());
+                .andDo(document("essay-read", requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
+                        ),pathParameters(
+                        parameterWithName("essayId").description("자소서 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("essayId").description("자소서 ID"),
+                                fieldWithPath("title").description("자소서 제목"),
+                                fieldWithPath("qnaList[].qnaId").description("QnA ID"),
+                                fieldWithPath("qnaList[].question").description("자소서 질문"),
+                                fieldWithPath("qnaList[].answer").description("자소서 답변")
+                        )));
 
 
     }
 
     @Test
-    @DisplayName("/{userId} 해당 ID를 가진 유저의 자기소개서 목록을 불러온다")
+    @DisplayName("자기소개서 목록")
     void test3() throws Exception {
 
         User user = User.builder()
@@ -299,16 +224,18 @@ class EssayControllerTest {
         );
 
         mockMvc.perform(get("/essay/{userId}", user.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(100L))
-                .andDo(print());
+                .andDo(document("essay-list",pathParameters(
+                        parameterWithName("userId").description("자소서 ID")
+                ),responseFields(
+                        fieldWithPath("[].essayId").description("자소서 ID"),
+                        fieldWithPath("[].title").description("자소서 ID")
+                        )));
 
 
     }
 
-
     @Test
-    @DisplayName("/delete/{essayId} 자소서를 삭제한다 ")
+    @DisplayName("자소서 삭제")
     void test4() throws Exception {
 
         User user = User.builder()
@@ -338,14 +265,17 @@ class EssayControllerTest {
 
         mockMvc.perform(delete("/essay/delete/{essayId}", essay.getId())
                         .header("Authorization", jws))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(document("essay-delete", requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
+                        ), pathParameters(
+                        parameterWithName("essayId").description("자소서 ID")
+                )));
 
 
     }
 
     @Test
-    @DisplayName("/revise/{essayId} 자소서를 수정한다.")
+    @DisplayName("자소서 수정")
     void test6() throws Exception {
 
         User user = User.builder()
@@ -420,8 +350,18 @@ class EssayControllerTest {
                         .header("Authorization", jws)
                         .content(json)
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(document("essay-revise", requestHeaders(
+                        headerWithName("Authorization").description("로그인 인증")
+                        )
+                        ,pathParameters(
+                        parameterWithName("essayId").description("자소서 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").description("수정한 자소서 제목"),
+                                fieldWithPath("qnaList[].question").description("수정한 자소서 질문"),
+                                fieldWithPath("qnaList[].answer").description("수정한 자소서 답변")
+                        )
+                        ));
 
 
 

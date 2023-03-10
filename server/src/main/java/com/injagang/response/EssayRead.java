@@ -15,17 +15,17 @@ public class EssayRead {
 
     private String title;
 
-    private List<QnAInfo> qna = new ArrayList<>();
+    private List<QnAInfo> qnaList = new ArrayList<>();
 
-    public EssayRead(Essay essay, List<QuestionAndAnswer> qnaList) {
+    public EssayRead(Essay essay, List<QuestionAndAnswer> qna) {
 
         this.essayId = essay.getId();
         this.title = essay.getTitle();
 
-        for (QuestionAndAnswer questionAndAnswer : qnaList) {
+        for (QuestionAndAnswer questionAndAnswer : qna) {
 
-            qna.add(QnAInfo.builder()
-                    .qnAId(questionAndAnswer.getId())
+            qnaList.add(QnAInfo.builder()
+                    .qnaId(questionAndAnswer.getId())
                     .question(questionAndAnswer.getQuestion())
                     .answer(questionAndAnswer.getAnswer())
                     .build()

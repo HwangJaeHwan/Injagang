@@ -1,0 +1,66 @@
+= 인자강 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 자소서 쓰기
+
+=== 요청
+include::{snippets}/essay-write/http-request.adoc[]
+include::{snippets}/essay-write/request-fields.adoc[]
+include::{snippets}/essay-write/request-headers.adoc[]
+
+
+=== 응답
+include::{snippets}/essay-write/http-response.adoc[]
+
+== 자소서 읽기
+
+=== 요청
+include::{snippets}/essay-read/http-request.adoc[]
+include::{snippets}/essay-read/path-parameters.adoc[]
+include::{snippets}/essay-read/request-headers.adoc[]
+
+=== 응답
+include::{snippets}/essay-read/http-response.adoc[]
+include::{snippets}/essay-read/response-fields.adoc[]
+
+== 자소서 리스트
+
+=== 요청
+include::{snippets}/essay-list/http-request.adoc[]
+include::{snippets}/essay-list/path-parameters.adoc[]
+
+=== 응답
+include::{snippets}/essay-list/http-response.adoc[]
+include::{snippets}/essay-list/response-fields.adoc[]
+
+== 자소서 삭제
+
+=== 요청
+include::{snippets}/essay-delete/http-request.adoc[]
+include::{snippets}/essay-delete/path-parameters.adoc[]
+include::{snippets}/essay-delete/request-headers.adoc[]
+
+=== 응답
+include::{snippets}/essay-delete/http-response.adoc[]
+
+
+== 자소서 수정
+
+=== 요청
+include::{snippets}/essay-revise/http-request.adoc[]
+include::{snippets}/essay-revise/path-parameters.adoc[]
+include::{snippets}/essay-revise/request-fields.adoc[]
+include::{snippets}/essay-revise/request-headers.adoc[]
+
+
+=== 응답
+include::{snippets}/essay-revise/http-response.adoc[]
+
+
+

@@ -68,9 +68,9 @@ public class EssayService {
 
    }
 
-    public List<EssayList> essays(String loginId) {
+    public List<EssayList> essays(Long userId) {
 
-        User user = userRepository.findUserByLoginId(loginId).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return essayRepository.findAllByUser(user).stream().map(EssayList::new).collect(Collectors.toList());
 
