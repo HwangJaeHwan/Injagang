@@ -40,10 +40,13 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   useEffect(() => {
+    console.log('sdf')
     const storageTheme = localStorage.getItem("theme");
     if (storageTheme) {
       const isThemeMode = JSON.parse(storageTheme);
-      setIsDarkMode(isThemeMode);
+      if(isThemeMode !== isDarkMode){
+        setIsDarkMode(isThemeMode);
+      }
     }
   }, []);
 

@@ -60,12 +60,15 @@ const Template = () => {
     }
     setTemplateQuestion(prev => prev.slice(0, -1));
   };
+  const handleList = (content:{}) => {
+    console.log(content)
+  }
 
   return (
     <>
       <Card>
         {templateList.map((list, index) => (
-          <div key={index}>{list.title}</div>
+          <div key={index}><div onClick={() => handleList(list.content)}>{list.title}</div></div>
         ))}
       </Card>
       <h2>제목</h2>
