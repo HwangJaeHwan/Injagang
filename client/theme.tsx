@@ -2,6 +2,7 @@ interface Theme {
   colors: {
     primary: string;
     secondary: string;
+    bodyColor: string;
     logo: string;
     text: string;
     highlight: string;
@@ -13,7 +14,8 @@ interface Theme {
 const lightTheme:Theme = {
   colors: {
     primary: "white",
-    secondary: "#1D9BF0",
+    secondary: "#3399FF",
+    bodyColor: "#fff",
     logo: "#000000",
     text: "#000000",
     highlight: "#fff",
@@ -26,6 +28,7 @@ const darkTheme:Theme = {
   colors: {
     primary: "#202123",
     secondary: "#202123",
+    bodyColor: "#222529",
     logo: "#ffffff",
     text: "#ffffff",
     highlight: "#b32eb3",

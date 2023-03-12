@@ -1,4 +1,13 @@
 import React from "react";
+import styled from "styled-components";
+
+const ControlMenuSelect =  styled.select`
+  width: 250px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: ${({theme})=> theme.colors.primary};
+  color: ${({theme})=> theme.colors.text};
+`
 interface ControlMenuProps {
     value: string;
     onChange: React.Dispatch<React.SetStateAction<string>>;
@@ -7,13 +16,13 @@ interface ControlMenuProps {
 
 const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {
   return (
-    <select value={value} onChange={e => onChange(e.target.value)}>
+    <ControlMenuSelect value={value} onChange={e => onChange(e.target.value)}>
       {optionList.map((option, index) => (
         <option key={index} value={option.title}>
           {option.title}
         </option>
       ))}
-    </select>
+    </ControlMenuSelect>
   );
 };
 

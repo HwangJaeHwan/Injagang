@@ -15,6 +15,8 @@ html {
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans KR', sans-serif;
+    background-color: ${({ theme }) => theme.colors.bodyColor};
+    color: ${({theme}) => theme.colors.text};
   }
 `;
 
