@@ -1,5 +1,6 @@
 package com.injagang.config;
 
+import com.injagang.config.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final AppConfig appConfig;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthResolver(appConfig));
+        resolvers.add(new AuthResolver(jwtProvider));
     }
 
     @Bean

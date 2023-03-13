@@ -27,11 +27,20 @@ public class User {
 
     private String email;
 
+    private String role;
+
+    private String provider;
+
+    private String providerId;
+
     @Builder
-    public User(String loginId, String password, String nickname, String email) {
+    public User(String loginId, String password, String nickname, String email, String role, String provider, String providerId) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 }
