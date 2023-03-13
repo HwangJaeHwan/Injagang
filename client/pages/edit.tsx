@@ -6,6 +6,8 @@ import styled from "styled-components";
 import Modal from "@/components/UI/Modal";
 import AddQustionList from "@/components/Edit/AddQustionList";
 import CustomButton from "@/components/UI/CustomButton";
+import { BiPlus } from "react-icons/bi";
+import MyList from "@/components/MyList";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -19,6 +21,7 @@ const EditStyle = styled.div`
   h2 {
     font-size: 1.5rem;
     margin-bottom: 15px;
+    text-decoration-line: underline;
   }
 
   select {
@@ -27,10 +30,18 @@ const EditStyle = styled.div`
   }
 
   .button_container {
-    margin: 15px auto;
-    display: flex;
-    justify-content: space-between;
-    width: 250px;
+    ${ColBox}
+    margin: 13px auto;
+    width: 50%;
+    .flex-end {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+    svg {
+      font-size: 50px;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -41,23 +52,23 @@ const Container = styled.div`
   width: 70%;
   margin: 20px auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
 `;
 
 export const questionList = [
   {
     title: "카카오 자소서",
-    content: ["1.자신의장점", "2.자신의장단점", "3.프로젝트경험담"],
+    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
   {
     title: "네이버 자소서",
-    content: ["1.자신의장점", "2.자신의장단점", "3.프로젝트경험담"],
+    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
   {
     title: "당근 자소서",
-    content: ["1.자신의장점", "2.자신의장단점", "3.프로젝트경험담"],
+    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
 ];
 
@@ -95,6 +106,7 @@ const edit = () => {
   };
 
   useEffect(() => {
+    /*서버통신을 이용해 템플릿을 불러온다.*/
     setQuestionLists((cur: questionList[]) => [
       ...cur,
       { title: "커스텀 자소서", content: [] },
@@ -108,10 +120,7 @@ const edit = () => {
     setQuestionLists(prevLists => {
       const newLists = [...prevLists];
       const filterIndex = newLists.findIndex(a => a.title === questionTitle);
-      const newContent = [
-        ...newLists[filterIndex].content,
-        `${newLists[filterIndex].content.length + 1}.${addTitle}`,
-      ];
+      const newContent = [...newLists[filterIndex].content, addTitle];
       newLists[filterIndex].content = newContent;
       return newLists;
     });
@@ -178,11 +187,10 @@ const edit = () => {
           <></>
         )}
         <div className="button_container">
-          <CustomButton
-            onClick={() => setIsAddContent(true)}
-            text={"항목추가"}
-          />
-          <CustomButton onClick={handleSubmit} text={"작성완료"} />
+          <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>
+          <div className="flex-end">
+            <CustomButton onClick={handleSubmit} text={"작성완료"} />
+          </div>
         </div>
       </Container>
       {/* 템플릿 불러오기 select */}
@@ -198,6 +206,7 @@ const edit = () => {
           contents={{ title: "fds", content: "sdfs" }}
         />
       )}
+      <MyList />
     </EditStyle>
   );
 };

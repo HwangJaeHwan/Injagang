@@ -10,10 +10,10 @@ const CustomButton = ({onClick,text}: ButtonProps) => {
   return <BeautyButton onClick={onClick}>{text}</BeautyButton>;
 };
 const BeautyButton = styled.button`
-  background-color: ${({theme}) => theme.colors.primary};
+  background-color: ${({theme}) => theme.colors.button};
   color: ${({theme}) => theme.colors.text};
   border: none;
-  padding: 13px 20px;
+  padding: 10px 15px;
   border-radius: 10px;
   font-weight: bold;
   font-size: 16px;

@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Card = styled.div`
   ${ColBox}
   padding: 15px 15px;
-  background-color:#22272E;
+  background-color:${({theme}) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
   width: 85%;
   min-height: 300px;
@@ -20,6 +20,7 @@ const Card = styled.div`
     resize: vertical;
     box-sizing: border-box;
     color: #22272E;
+    background-color: #444654;
     font-weight: bold;
     width: 90%;
     line-height: 1.5;
@@ -60,7 +61,7 @@ const QuestionItem = ({ content, onChange, index }: QuestionItemProps) => {
 
   return (
     <Card>
-      {content}
+      <h3>{index+1}.{" "}{content}</h3>
       <textarea value={text} onChange={handleTextChange} />
       <p>
         글자 수: {text.length}/{500}

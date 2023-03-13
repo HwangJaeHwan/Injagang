@@ -8,12 +8,13 @@ const AddQustionListStyle = styled.div`
   justify-content: center;
   width: 100%;
   button {
+    font-size: 15px;
     margin: auto 2px;
   }
 `;
 const Input = styled.input`
   height: 40px;
-  width: 34%;
+  width: 37.5%;
 `;
 
 interface AddQustionListProps {
@@ -37,8 +38,8 @@ const AddQustionList = ({
         onChange={e => onChange(e.target.value)}
       ></Input>
       <div>
-        <CustomButton onClick={handleAddQuestion} text={"작성완료"} />
-        <CustomButton onClick={handleCancelQuestion} text={"취소하기"} />
+        <CustomButton onClick={handleAddQuestion} text={"확인"} />
+        <CustomButton onClick={handleCancelQuestion} text={"취소"} />
       </div>
     </AddQustionListStyle>
   );

@@ -3,6 +3,7 @@ interface Theme {
     primary: string;
     secondary: string;
     bodyColor: string;
+    button: string;
     logo: string;
     text: string;
     highlight: string;
@@ -16,6 +17,7 @@ const lightTheme:Theme = {
     primary: "white",
     secondary: "#3399FF",
     bodyColor: "#fff",
+    button: "#fff",
     logo: "#000000",
     text: "#000000",
     highlight: "#fff",
@@ -29,6 +31,7 @@ const darkTheme:Theme = {
     primary: "#202123",
     secondary: "#202123",
     bodyColor: "#222529",
+    button: "#f39214f2",
     logo: "#ffffff",
     text: "#ffffff",
     highlight: "#b32eb3",
