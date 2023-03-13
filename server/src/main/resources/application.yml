@@ -17,6 +17,17 @@ spring:
         format_sql: true
 
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 933042190897-ci7q9dkupuq9vapap70qgaca9rafib24.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+            - email
+            - profile
 
 jwt:
   jwt-key: "c7L0+z1bI67OpGIeYN9NcKgXBsHKiR2RlYX1Vzj4ULA="

@@ -1,6 +1,7 @@
 package com.injagang.config;
 
 import com.injagang.config.data.UserSession;
+import com.injagang.config.jwt.JwtProvider;
 import com.injagang.exception.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private final AppConfig appConfig;
+    private final JwtProvider jwtProvider;
 
 
     @Override
@@ -34,16 +35,11 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
         try {
 
-            String userId = Jwts.parserBuilder()
-                    .setSigningKey(appConfig.getJwtKey())
-                    .build()
-                    .parseClaimsJws(jws)
-                    .getBody()
-                    .getSubject();
+            Long userId = jwtProvider.parseToken(jws);
 
             //OK, we can trust this JWT
 
-            return new UserSession(Long.parseLong(userId));
+            return new UserSession(userId);
 
         } catch (JwtException e) {
 
