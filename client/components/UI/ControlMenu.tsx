@@ -11,7 +11,7 @@ const ControlMenuSelect =  styled.select`
 interface ControlMenuProps {
     value: string;
     onChange: React.Dispatch<React.SetStateAction<string>>;
-    optionList: { title: string; content: string[] }[];
+    optionList: { title: string; qnaList: string[] }[];
   }
 
 const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {

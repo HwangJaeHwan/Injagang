@@ -4,9 +4,10 @@ import styled from "styled-components";
 
 const MyListPreViewStyle = styled.div`
   ${ColBox}
-  width: 50%;
-  height: 250px;
+  width: 90%;
+  height: 150px;
   border-radius: 5px;
+  padding: 10px 0px;
   margin: 15px auto;
   background-color: #1d1b1b;
 `;

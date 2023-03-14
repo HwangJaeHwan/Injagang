@@ -1,10 +1,10 @@
-import { ColBox } from "@/styles/GlobalStyle";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
+import React, { useState, useEffect } from "react";
+import styled, { useTheme } from "styled-components";
 const Card = styled.div`
   ${ColBox}
   padding: 15px 15px;
-  background-color:${({theme}) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
   width: 85%;
   min-height: 300px;
@@ -19,7 +19,7 @@ const Card = styled.div`
     align-items: center;
     resize: vertical;
     box-sizing: border-box;
-    color: #22272E;
+    color: #22272e;
     background-color: #444654;
     font-weight: bold;
     width: 90%;
@@ -29,39 +29,62 @@ const Card = styled.div`
     border-radius: 5px;
     overflow-y: auto;
     margin: 15px auto;
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background-color: rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    }
+    ${ScrollBar}
   }
 `;
-
-interface QuestionItemProps {
-  content: string;
-  onChange: (index: number, value: string, title: string) => void;
-  index: number;
+interface questionList {
+  title: string;
+  qnaList: string[];
 }
 
-const QuestionItem = ({ content, onChange, index }: QuestionItemProps) => {
+interface qnaListItem {
+  title: string;
+  qnaList: string;
+}
+
+interface qnaList extends Array<qnaListItem> {}
+
+interface QuestionItemProps {
+  content: string | { question: string; answer: string; quna?: number };
+  onChange: (index: number, value: string, title: string) => void;
+  index: number;
+  questionContent: React.Dispatch<React.SetStateAction<qnaList>>
+  questionTitle: string;    
+}
+
+const QuestionItem = ({
+  content,
+  onChange,
+  index,
+  questionContent,
+  questionTitle,
+}: QuestionItemProps) => {
   const [text, setText] = useState("");
+
+  useEffect(() => {
+    const title = typeof content === "string" ? content : content.question;
+    questionContent(cur => [...cur, {title, qnaList: ""}]);
+    if (typeof content !== "string") {
+      setText(content.answer);
+    }
+  }, []);
+  // useEffect(()=>{
+  //   console.log("동작33")
+  //   questionContent([])
+  // }
+  // ,[questionTitle])
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
-    onChange(index, text, content);
+    const title = typeof content === "string" ? content : content.question;
+    onChange(index, text, title);
   };
 
   return (
     <Card>
-      <h3>{index+1}.{" "}{content}</h3>
+      <h3>
+        {index + 1}. {typeof content === "string" ? content : content.question}
+      </h3>
       <textarea value={text} onChange={handleTextChange} />
       <p>
         글자 수: {text.length}/{500}

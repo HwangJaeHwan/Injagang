@@ -7,7 +7,7 @@ import Modal from "@/components/UI/Modal";
 import AddQustionList from "@/components/Edit/AddQustionList";
 import CustomButton from "@/components/UI/CustomButton";
 import { BiPlus } from "react-icons/bi";
-import MyList from "@/components/MyList";
+import { useRouter } from "next/router";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -57,46 +57,62 @@ const Container = styled.div`
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
 `;
 
+const TitleInput = styled.input`
+  width: 50%;
+  height: 40px;
+  border-radius: 5px;
+  border-color: black;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
+  margin-bottom: 15px;
+`;
+
 export const questionList = [
   {
     title: "카카오 자소서",
-    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
   {
     title: "네이버 자소서",
-    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
   {
     title: "당근 자소서",
-    content: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
   },
 ];
 
 interface questionList {
   title: string;
-  content: string[];
+  qnaList: string[];
 }
 
-interface ContentItem {
+interface qnaListItem {
   title: string;
-  content: string;
+  qnaList: string;
 }
 
-interface Content extends Array<ContentItem> {}
+interface qnaList extends Array<qnaListItem> {}
 
-const edit = () => {
+interface Qna {
+  question: string;
+  answer: string;
+  quna: number;
+}
+
+const Edit = () => {
   const [questionLists, setQuestionLists] =
     useState<questionList[]>(questionList);
   const [questionTitle, setQuestionTitle] = useState<string>("커스텀 자소서");
+  const [questionListTitle, setQuestionListTitle] = useState<string>("");
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [addTitle, setAddTitle] = useState<string>("");
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [questionContent, setQuestionContent] = useState<Content>([
-    {
-      title: "",
-      content: "",
-    },
+  const [questionContent, setQuestionContent] = useState<qnaList>([
   ]);
+  const router = useRouter();
 
   const getQuestionItem = () => {
     const filteItem = questionLists.filter(
@@ -106,12 +122,26 @@ const edit = () => {
   };
 
   useEffect(() => {
+    if (router.query.editData) {
+      const editData = JSON.parse(
+        router.query.editData as string,
+      ) as questionList[];
+      setIsEdit(true);
+      setQuestionLists(editData);
+      setQuestionTitle(editData[0].title);
+      return;
+    }
     /*서버통신을 이용해 템플릿을 불러온다.*/
     setQuestionLists((cur: questionList[]) => [
       ...cur,
-      { title: "커스텀 자소서", content: [] },
+      { title: "커스텀 자소서", qnaList: [] },
     ]);
   }, []);
+
+  useEffect(() => {
+    setQuestionContent([
+    ]);
+  }, [questionTitle]);
 
   const handleAddQuestion = () => {
     if (questionTitle === "") {
@@ -120,8 +150,8 @@ const edit = () => {
     setQuestionLists(prevLists => {
       const newLists = [...prevLists];
       const filterIndex = newLists.findIndex(a => a.title === questionTitle);
-      const newContent = [...newLists[filterIndex].content, addTitle];
-      newLists[filterIndex].content = newContent;
+      const newContent = [...newLists[filterIndex].qnaList, addTitle];
+      newLists[filterIndex].qnaList = newContent;
       return newLists;
     });
     setIsAddContent(false);
@@ -129,7 +159,8 @@ const edit = () => {
   };
 
   const handleSubmit = () => {
-    console.log(questionContent);
+    console.log({ title: questionListTitle, qnaList: [{ questionContent }] });
+    console.log({ questionContent });
   };
 
   const handleCancelQuestion = () => {
@@ -141,23 +172,30 @@ const edit = () => {
   };
 
   const handleTextChange = (index: number, value: string, title: string) => {
-    if (questionContent[0].title === "") {
-      setQuestionContent([{ title, content: "" }]);
-      return;
-    }
-    if (title === questionContent[questionContent.length - 1].title) {
+    console.log({ index });
+    console.log({ value });
+    console.log({ title });
+    console.log(questionContent);
+    const filterTitle = questionContent.filter(a => a.title === title)[0];
+    console.log({ filterTitle });
+    if (filterTitle) {
       const newList = [...questionContent];
-      newList[index].content = value;
+      newList[index].qnaList = value;
       setQuestionContent(newList);
     } else {
-      setQuestionContent(cur => [...cur, { title, content: " " }]);
+      setQuestionContent(cur => [...cur, { title, qnaList: " " }]);
     }
   };
-
+  console.log(questionContent)
   return (
     <EditStyle>
       <h2>자소서 작성하기</h2>
       <Container>
+        <TitleInput
+          value={questionListTitle}
+          onChange={e => setQuestionListTitle(e.target.value)}
+          placeholder="자소서의 제목을 입력해주세요."
+        ></TitleInput>
         <ControlMenu
           value={questionTitle}
           optionList={questionLists}
@@ -166,11 +204,13 @@ const edit = () => {
         {questionLists &&
           getQuestionItem().map((list, index) => (
             <div className="content-container" key={index}>
-              {list.content.map((content, idx) => (
+              {list.qnaList.map((list, idx) => (
                 <QuestionItem
                   key={idx}
-                  content={content}
+                  content={list}
                   onChange={handleTextChange}
+                  questionTitle = {questionTitle}
+                  questionContent = {setQuestionContent}
                   index={idx}
                 ></QuestionItem>
               ))}
@@ -203,12 +243,11 @@ const edit = () => {
         <Modal
           isOpen={isOpenModal}
           onClose={closeModal}
-          contents={{ title: "fds", content: "sdfs" }}
+          contents={{ title: "fds", qnaList: "sdfs" }}
         />
       )}
-      <MyList />
     </EditStyle>
   );
 };
 
-export default edit;
+export default Edit;

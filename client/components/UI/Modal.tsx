@@ -7,7 +7,7 @@ interface ModalProps {
   onClose: () => void;
   contents: {
     title: string;
-    content: string;
+    qnaList: string;
   };
 }
 
@@ -17,7 +17,7 @@ const Modal = ({ isOpen, onClose, contents }: ModalProps) => {
       <ModalBox>
         <div className="modal-Contents">
           <h2>{contents.title}</h2>
-          <p>{contents.content}</p>
+          <p>{contents.qnaList}</p>
         </div>
         <div className="modal-Container">
           <div className="modal-Buttons">

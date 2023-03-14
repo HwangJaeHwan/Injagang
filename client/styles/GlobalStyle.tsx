@@ -26,6 +26,8 @@ export const FlexBox = css`
   justify-content: center;
   align-items: center;
 `;
+
+/**Colume 설정*/
 export const ColBox = css`
   display: flex;
   flex-direction: column;
