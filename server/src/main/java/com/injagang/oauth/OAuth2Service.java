@@ -3,9 +3,7 @@ package com.injagang.oauth;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.domain.User;
 import com.injagang.exception.UnauthorizedException;
-import com.injagang.oauth.user.GoogleUserInfo;
-import com.injagang.oauth.user.OAuthUserInfo;
-import com.injagang.oauth.user.UserInfo;
+import com.injagang.oauth.user.*;
 import com.injagang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +42,9 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
-            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttribute("response"));
+            oAuth2UserInfo = new NaverUserInfo(oAuth2User.getAttribute("response"));
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")) {
-            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
         } else {
             throw new UnauthorizedException();
         }
@@ -57,8 +55,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         String password = encoder.encode(UUID.randomUUID().toString().substring(0, 10));
         String email = oAuth2UserInfo.getEmail();
         String role = "USER";
-        String nickname = provider + "_" + providerId;
-
+        String nickname = oAuth2UserInfo.getName();
         Optional<User> optional = userRepository.findUserByLoginId(loginId);
 
         if (!optional.isPresent()) {
