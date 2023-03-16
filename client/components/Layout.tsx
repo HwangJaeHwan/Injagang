@@ -19,7 +19,9 @@ const Sidebar = styled.div`
 `;
 
 const Content = styled.div`
+  margin: 4rem auto;
   width: 80%;
+  height: 100vh;
 `;
 
 interface LayoutProps {

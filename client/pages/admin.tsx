@@ -4,6 +4,7 @@ import MemberTable from "@/components/Admin/MemberTable";
 import Template from "@/components/Admin/Template";
 import Drage from "@/components/test/drag";
 import { ColBox } from "@/styles/GlobalStyle";
+import TextReader from "@/components/test/TextReder";
 
 const AdminPageStyle = styled.div`
   ${ColBox}
@@ -21,6 +22,7 @@ const AdminPage = () => {
       <MemberTable members={members} />
       <Template />
       <Drage />
+      <TextReader />
     </AdminPageStyle>
   );
 };
