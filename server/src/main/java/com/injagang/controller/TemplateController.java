@@ -1,16 +1,20 @@
 package com.injagang.controller;
 
+import com.injagang.config.data.UserSession;
 import com.injagang.request.TemplateCreate;
 import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
 import com.injagang.service.TemplateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/template")
+@RestController
+@Slf4j
+@RequestMapping("/template")
 @RequiredArgsConstructor
 public class TemplateController {
 
@@ -18,9 +22,9 @@ public class TemplateController {
 
 
     @PostMapping("/add")
-    public void addTemplate(@RequestBody @Valid TemplateCreate templateCreate) {
+    public void addTemplate(UserSession userSession, @RequestBody @Valid TemplateCreate templateCreate) {
 
-        templateService.addTemplate(templateCreate);
+        templateService.addTemplate(userSession.getUserId(), templateCreate);
 
     }
 
@@ -39,9 +43,9 @@ public class TemplateController {
     }
 
     @DeleteMapping("/{templateId}")
-    public void delete(@PathVariable Long templateId) {
+    public void delete(UserSession userSession,@PathVariable Long templateId) {
 
-        templateService.delete(templateId);
+        templateService.delete(userSession.getUserId(), templateId);
 
     }
 

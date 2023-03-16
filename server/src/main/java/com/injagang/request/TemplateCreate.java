@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class TemplateCreate {
 
     @NotBlank(message = "제목을 입력해주세요")

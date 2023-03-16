@@ -449,13 +449,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_회원가입">회원가입</a>
 <ul class="sectlevel2">
 <li><a href="#_요청">요청</a></li>
-<li><a href="#_응답">응답</a></li>
 </ul>
 </li>
 <li><a href="#_로그인">로그인</a>
 <ul class="sectlevel2">
 <li><a href="#_요청_2">요청</a></li>
-<li><a href="#_응답_2">응답</a></li>
+<li><a href="#_응답">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -514,14 +513,6 @@ Host: api.injagang.com
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -567,14 +558,23 @@ Host: api.injagang.com
 </table>
 </div>
 <div class="sect2">
-<h3 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h3>
+<h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 Content-Length: 135
 
-{"jws":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc4NDM3NjQyLCJleHAiOjE2Nzg0NDEyNDJ9.3S89b00HX_4ZfzcluANQArRxkQHUwTGkVsB4lfpXL58"}</code></pre>
+{"jws":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc4OTQ0NzU2LCJleHAiOjE2Nzg5NDgzNTZ9.ma1x1UmGChraY3O6F2e-QI0tGaRzf9jpijHkoWV3aXY"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -605,7 +605,7 @@ Content-Length: 135
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-03-10 17:40:22 +0900
+Last updated 2023-03-16 14:21:51 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

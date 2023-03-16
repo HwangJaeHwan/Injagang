@@ -1,0 +1,50 @@
+= 인자강 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 템플릿 추가
+
+=== 요청
+include::{snippets}/template-add/http-request.adoc[]
+include::{snippets}/template-add/request-headers.adoc[]
+include::{snippets}/template-add/request-fields.adoc[]
+
+
+== 템플릿 읽기
+
+=== 요청
+include::{snippets}/template-read/http-request.adoc[]
+include::{snippets}/template-read/path-parameters.adoc[]
+
+
+=== 응답
+include::{snippets}/template-read/http-response.adoc[]
+include::{snippets}/template-read/response-fields.adoc[]
+
+== 템플릿 리스트
+
+=== 요청
+include::{snippets}/template-list/http-request.adoc[]
+
+
+=== 응답
+include::{snippets}/template-list/http-response.adoc[]
+include::{snippets}/template-list/response-fields.adoc[]
+
+== 템플릿 삭제
+
+=== 요청
+include::{snippets}/template-delete/http-request.adoc[]
+include::{snippets}/template-delete/request-headers.adoc[]
+include::{snippets}/template-delete/path-parameters.adoc[]
+
+
+
+
+
+

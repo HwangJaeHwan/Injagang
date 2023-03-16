@@ -13,9 +13,6 @@
 include::{snippets}/auth-signup/http-request.adoc[]
 include::{snippets}/auth-signup/request-fields.adoc[]
 
-=== 응답
-include::{snippets}/auth-signup/http-response.adoc[]
-
 
 == 로그인
 

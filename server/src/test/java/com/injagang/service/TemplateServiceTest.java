@@ -2,7 +2,9 @@ package com.injagang.service;
 
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
+import com.injagang.domain.User;
 import com.injagang.repository.TemplateRepository;
+import com.injagang.repository.UserRepository;
 import com.injagang.request.TemplateCreate;
 import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
@@ -27,15 +29,30 @@ class TemplateServiceTest {
     @Autowired
     TemplateRepository templateRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @BeforeEach
     void clean(){
         templateRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
     @Test
     @DisplayName("템플릿 추가")
     void test() {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("ADMIN")
+                .build();
+
+        userRepository.save(user);
+
 
         TemplateCreate templateCreate = TemplateCreate.builder()
                 .title("test template")
@@ -45,7 +62,7 @@ class TemplateServiceTest {
         templateCreate.addQuestions("question2");
         templateCreate.addQuestions("question3");
 
-        Long templateId = templateService.addTemplate(templateCreate);
+        Long templateId = templateService.addTemplate(user.getId(), templateCreate);
 
         Template template = templateRepository.findById(templateId).get();
 
@@ -62,6 +79,15 @@ class TemplateServiceTest {
     @DisplayName("템플릿 읽기")
     void test2() {
 
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("ADMIN")
+                .build();
+
+        userRepository.save(user);
+
         TemplateCreate templateCreate = TemplateCreate.builder()
                 .title("test template")
                 .build();
@@ -70,7 +96,7 @@ class TemplateServiceTest {
         templateCreate.addQuestions("question2");
         templateCreate.addQuestions("question3");
 
-        Long templateId = templateService.addTemplate(templateCreate);
+        Long templateId = templateService.addTemplate(user.getId(), templateCreate);
 
 
         TemplateInfo templateInfo = templateService.readTemplate(templateId);
@@ -129,6 +155,17 @@ class TemplateServiceTest {
     @Test
     @DisplayName("템플릿 삭제")
     void test4() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("ADMIN")
+                .build();
+
+        userRepository.save(user);
+
+
         Template template = Template.builder()
                 .title("template1")
                 .build();
@@ -142,7 +179,7 @@ class TemplateServiceTest {
 
         assertEquals(1L, templateRepository.count());
 
-        templateService.delete(template.getId());
+        templateService.delete(user.getId(), template.getId());
 
         assertEquals(0, templateRepository.count());
 
