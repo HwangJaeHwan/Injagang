@@ -1,7 +1,7 @@
 import QuestionItem from "@/components/Edit/QuestionItem";
 import ControlMenu from "@/components/UI/ControlMenu";
 import { ColBox } from "@/styles/GlobalStyle";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Modal from "@/components/UI/Modal";
 import AddQustionList from "@/components/Edit/AddQustionList";
@@ -71,17 +71,19 @@ const TitleInput = styled.input`
 export const questionList = [
   {
     title: "카카오 자소서",
-    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의장단점", "자신의장단점", "자신의장단점"],
   },
   {
     title: "네이버 자소서",
-    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의장점", "자신의장점", "자신의장점"],
   },
   {
     title: "당근 자소서",
-    qnaList: ["자신의장점", "자신의장단점", "프로젝트경험담"],
+    qnaList: ["자신의단점", "자신의단점", "자신의단점"],
   },
 ];
+
+console.log({ questionList });
 
 interface questionList {
   title: string;
@@ -110,16 +112,16 @@ const Edit = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [addTitle, setAddTitle] = useState<string>("");
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [questionContent, setQuestionContent] = useState<qnaList>([
-  ]);
+  const [questionContent, setQuestionContent] = useState<qnaList>([]);
   const router = useRouter();
 
-  const getQuestionItem = () => {
+  const getQuestionItem = useCallback(() => {
     const filteItem = questionLists.filter(
       list => list.title === questionTitle,
     );
+    console.log({ filteItem });
     return filteItem;
-  };
+  }, [questionTitle]);
 
   useEffect(() => {
     if (router.query.editData) {
@@ -137,11 +139,6 @@ const Edit = () => {
       { title: "커스텀 자소서", qnaList: [] },
     ]);
   }, []);
-
-  useEffect(() => {
-    setQuestionContent([
-    ]);
-  }, [questionTitle]);
 
   const handleAddQuestion = () => {
     if (questionTitle === "") {
@@ -172,10 +169,6 @@ const Edit = () => {
   };
 
   const handleTextChange = (index: number, value: string, title: string) => {
-    console.log({ index });
-    console.log({ value });
-    console.log({ title });
-    console.log(questionContent);
     const filterTitle = questionContent.filter(a => a.title === title)[0];
     console.log({ filterTitle });
     if (filterTitle) {
@@ -186,10 +179,11 @@ const Edit = () => {
       setQuestionContent(cur => [...cur, { title, qnaList: " " }]);
     }
   };
-  console.log(questionContent)
+  console.log({ questionContent });
+
   return (
     <EditStyle>
-      <h2>자소서 작성하기</h2>
+      <h2>{isEdit ? "자소서 수정하기" : "자소서 작성하기"}</h2>
       <Container>
         <TitleInput
           value={questionListTitle}
@@ -209,8 +203,8 @@ const Edit = () => {
                   key={idx}
                   content={list}
                   onChange={handleTextChange}
-                  questionTitle = {questionTitle}
-                  questionContent = {setQuestionContent}
+                  questionContent={setQuestionContent}
+                  questionTitle={questionTitle}
                   index={idx}
                 ></QuestionItem>
               ))}
@@ -229,7 +223,10 @@ const Edit = () => {
         <div className="button_container">
           <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>
           <div className="flex-end">
-            <CustomButton onClick={handleSubmit} text={"작성완료"} />
+            <CustomButton
+              onClick={handleSubmit}
+              text={isEdit ? "수정완료" : "작성완료"}
+            />
           </div>
         </div>
       </Container>
