@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { questionList } from "@/pages/edit";
-import { BiPlus, BiEdit } from "react-icons/bi";
+import { BiPlus, BiEdit, BiCheck, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
-import TemplateQuestionEdit from "./TemplateQuestionEdit";
 
 const TemplateStlyed = styled.div`
   ${ColBox}
@@ -70,9 +69,12 @@ const TemplateView = () => {
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [curTitle, setCurTitle] = useState("");
 
-  const handleList = (qnaList: string[] = []) => {
+  const handleList = (qnaList: string[] = [], title: string) => {
     setCurTemplateList([...qnaList]);
+    setCurTitle(title);
+    console.log(curTitle)
   };
 
   useEffect(() => {
@@ -87,7 +89,9 @@ const TemplateView = () => {
           {templateList &&
             templateList.map((list, index) => (
               <div key={index}>
-                <div onClick={() => handleList(list.qnaList)}>{list.title}</div>
+                <div onClick={() => handleList(list.qnaList, list.title)}>
+                  {list.title}
+                </div>
               </div>
             ))}
           {isAddContent ? (
@@ -102,6 +106,7 @@ const TemplateView = () => {
               setIsAddContent={setIsAddContent}
               setTemplateList={setTemplateList}
               templateList={templateList}
+              isEdit={isEdit}
             />
           ) : (
             <div className="endTitle">
@@ -110,11 +115,27 @@ const TemplateView = () => {
               ) : (
                 <>
                   {isEdit ? (
-                    <TemplateQuestionEdit />
+                    <TemplateQuestionAdd
+                      setIsAddContent={setIsAddContent}
+                      setTemplateList={setTemplateList}
+                      templateList={templateList}
+                      isEdit={isEdit}
+                      curTemplateList={curTemplateList}
+                      curTitle={curTitle}
+                    />
                   ) : (
-                    curTemplateList.map((a, i) => <div key={i}> {a}</div>)
+                    curTemplateList.map((question, index) => (
+                      <div key={index}> {question}</div>
+                    ))
                   )}
-                  <BiEdit onClick={() => setIsEdit(true)} />
+                  {isEdit ? (
+                    <div>
+                      <BiCheck />
+                      <BiTrash />
+                    </div>
+                  ) : (
+                    <BiEdit onClick={() => setIsEdit(true)} />
+                  )}
                 </>
               )}
             </div>

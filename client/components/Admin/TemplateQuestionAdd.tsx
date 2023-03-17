@@ -18,7 +18,7 @@ const TemplateAddStyled = styled.div`
 `;
 
 const Input = styled.input`
-    width: 70%;
+  width: 70%;
 `;
 
 interface QuestionListItem {
@@ -30,12 +30,18 @@ interface TemplateQuestionAddProps {
   setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   setTemplateList: React.Dispatch<React.SetStateAction<QuestionListItem[]>>;
   templateList: QuestionListItem[];
+  isEdit: Boolean;
+  curTemplateList?: string[];
+  curTitle?: string;
 }
 
 const TemplateQuestionAdd = ({
   setIsAddContent,
   setTemplateList,
   templateList,
+  isEdit,
+  curTemplateList,
+  curTitle,
 }: TemplateQuestionAddProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
@@ -72,13 +78,25 @@ const TemplateQuestionAdd = ({
     setIsAddContent(false);
   };
 
+  const handleChangeList = () => {
+    //수정 요청
+    console.log("수정을 요청함")
+    console.log()
+  }
+
   useEffect(() => {
     questionRef.current?.focus();
   }, [templateQuestion.length]);
 
   useEffect(() => {
+    if (curTemplateList) {
+      setTemplateQuestion(curTemplateList);
+      curTitle && setTemplateTitle(curTitle);
+    }
     titleRef.current?.focus();
   }, []);
+
+  console.log(templateTitle)
 
   return (
     <TemplateAddStyled>
@@ -104,7 +122,7 @@ const TemplateQuestionAdd = ({
       <Controller>
         <BiPlus onClick={addQuestion}></BiPlus>
         <BiRedo onClick={removeLastQuestion}></BiRedo>
-        <BiCheck onClick={handleQuestionList}></BiCheck>
+        <BiCheck onClick={isEdit?handleChangeList:handleQuestionList}></BiCheck>
       </Controller>
     </TemplateAddStyled>
   );
