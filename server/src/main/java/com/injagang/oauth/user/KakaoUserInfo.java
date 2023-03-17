@@ -7,9 +7,9 @@ import java.util.Map;
 @Getter
 public class KakaoUserInfo implements OAuthUserInfo{
 
-    private Map<String, Object> attributes;
-    private Map<String,Object> account;
-    private Map<String, Object> profile;
+    private final Map<String, Object> attributes;
+    private final Map<String,Object> account;
+    private final Map<String, Object> profile;
 
     public KakaoUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
