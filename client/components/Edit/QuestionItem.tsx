@@ -48,36 +48,36 @@ interface QuestionItemProps {
   content: string | { question: string; answer: string; quna?: number };
   onChange: (index: number, value: string, title: string) => void;
   index: number;
-  questionContent: React.Dispatch<React.SetStateAction<qnaList>>
-  questionTitle: string;    
+  questionTitle: string;
+  questionContent: React.Dispatch<React.SetStateAction<qnaList>> 
 }
 
 const QuestionItem = ({
   content,
   onChange,
   index,
-  questionContent,
   questionTitle,
+  questionContent,
 }: QuestionItemProps) => {
   const [text, setText] = useState("");
 
+  
   useEffect(() => {
+    if(index === 0 ){
+      questionContent([]);
+    }
+    console.log("여기 들어왔다.")
     const title = typeof content === "string" ? content : content.question;
     questionContent(cur => [...cur, {title, qnaList: ""}]);
     if (typeof content !== "string") {
       setText(content.answer);
     }
-  }, []);
-  // useEffect(()=>{
-  //   console.log("동작33")
-  //   questionContent([])
-  // }
-  // ,[questionTitle])
-
+  }, [questionTitle]);
+  
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
     const title = typeof content === "string" ? content : content.question;
-    onChange(index, text, title);
+    onChange(index, event.target.value, title);
   };
 
   return (

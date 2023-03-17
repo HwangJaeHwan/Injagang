@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import react, { useState } from "react";
 import MemberTable from "@/components/Admin/MemberTable";
-import Template from "@/components/Admin/Template";
+import TemplateView from "@/components/Admin/TemplateView";
 import Drage from "@/components/test/drag";
 import { ColBox } from "@/styles/GlobalStyle";
 import TextReader from "@/components/test/TextReder";
@@ -20,7 +20,7 @@ const AdminPage = () => {
   return (
     <AdminPageStyle>
       <MemberTable members={members} />
-      <Template />
+      <TemplateView />
       <Drage />
       <TextReader />
     </AdminPageStyle>
