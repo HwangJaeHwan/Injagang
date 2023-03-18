@@ -30,7 +30,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String token = jwtProvider.createToken(userInfo.getUserId());
 
 
-        response.getWriter().write(objectMapper.writeValueAsString(Map.of("Authorization", token)));
+        response.getWriter().write(objectMapper.writeValueAsString(Map.of("jws", token)));
 
     }
 }

@@ -63,5 +63,9 @@ spring:
 jwt:
   jwt-key: "c7L0+z1bI67OpGIeYN9NcKgXBsHKiR2RlYX1Vzj4ULA="
 
+expiration-time:
+  access: 1800000
+  refresh: 86400000
+
 
 

@@ -43,4 +43,12 @@ public class User {
         this.provider = provider;
         this.providerId = providerId;
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changePassword(String newPassword) {
+        password = newPassword;
+    }
 }
