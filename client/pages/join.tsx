@@ -1,13 +1,15 @@
 import { FlexBox } from "@/styles/GlobalStyle";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+import { joinRequest } from "@/components/test/api";
 
 const JoinStyle = styled.div`
   ${FlexBox};
   height: 100vh;
   width: 100vw;
-  background-color:#31404E;
-  color:${({theme}) => theme.colors.text};
+  background-color: #31404e;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const Form = styled.form`
@@ -16,7 +18,7 @@ const Form = styled.form`
   width: 300px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #15202B;
+  background-color: #15202b;
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
 `;
 
@@ -46,19 +48,31 @@ const Button = styled.button`
 
 const SignupPage = () => {
   const [joinInfo, setJoinInfo] = useState({
-    email: "",
-    nickName: "",
+    loginId: "",
     password: "",
     confirmPassword: "",
+    email: "",
+    nickName: "",
   });
+  const router = useRouter()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (joinInfo.password !== joinInfo.confirmPassword) {
       console.log("비밀번호를 재확인해주세요");
       return;
     }
-    console.log(joinInfo);
+    const joinData = {
+      loginId: joinInfo.loginId,
+      password: joinInfo.password,
+      email: joinInfo.email,
+      nickname: joinInfo.nickName,
+    };
+    const joinResult = await joinRequest(joinData)
+    if(joinResult?.status === 200) {
+      console.log('요청')
+      router.replace('/login')
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +86,27 @@ const SignupPage = () => {
   return (
     <JoinStyle>
       <Form onSubmit={handleSubmit}>
+        <Label>아이디</Label>
+        <Input
+          type="test"
+          name="loginId"
+          value={joinInfo.loginId}
+          onChange={handleChange}
+        />
+        <Label>비밀번호</Label>
+        <Input
+          type="password"
+          name="password"
+          value={joinInfo.password}
+          onChange={handleChange}
+        />
+        <Label>재확인</Label>
+        <Input
+          type="password"
+          name="confirmPassword"
+          value={joinInfo.confirmPassword}
+          onChange={handleChange}
+        />
         <Label>Email</Label>
         <Input
           type="email"
@@ -86,23 +121,6 @@ const SignupPage = () => {
           value={joinInfo.nickName}
           onChange={handleChange}
         />
-
-        <Label>비밀번호</Label>
-        <Input
-          type="password"
-          name="password"
-          value={joinInfo.password}
-          onChange={handleChange}
-        />
-
-        <Label>재확인</Label>
-        <Input
-          type="password"
-          name="confirmPassword"
-          value={joinInfo.confirmPassword}
-          onChange={handleChange}
-        />
-
         <Button type="submit">회원가입</Button>
       </Form>
     </JoinStyle>

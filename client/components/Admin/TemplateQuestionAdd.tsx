@@ -2,6 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
+import { METHOD } from "@/components/test/fecher";
+import fetcher from "@/components/test/fecher";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Controller = styled.div`
   svg {
@@ -30,18 +34,12 @@ interface TemplateQuestionAddProps {
   setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   setTemplateList: React.Dispatch<React.SetStateAction<QuestionListItem[]>>;
   templateList: QuestionListItem[];
-  isEdit: Boolean;
-  curTemplateList?: string[];
-  curTitle?: string;
 }
 
 const TemplateQuestionAdd = ({
   setIsAddContent,
   setTemplateList,
   templateList,
-  isEdit,
-  curTemplateList,
-  curTitle,
 }: TemplateQuestionAddProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
@@ -68,8 +66,36 @@ const TemplateQuestionAdd = ({
     setTemplateQuestion(prev => prev.slice(0, -1));
   };
 
-  const handleQuestionList = () => {
+  const handleQuestionList = async () => {
     const newList = { title: templateTitle, qnaList: templateQuestion };
+    const token = Cookies.get("jwtToken");
+
+    const headers = {
+      Authorization: Cookies.get("jwtToken"),
+    };
+
+    const data = {
+      title: templateTitle,
+      questions: templateQuestion,
+    };
+
+    // axios
+    //   .post("http://localhost:8080/template/add", data, { headers })
+    //   .then(response => {
+    //     console.log(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+
+    try {
+      const response = await fetcher(METHOD.POST, "/template/add", data, { headers });
+      if (response) {
+        console.log("성공")
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
     //API 요청 부분으로 수정 해야함 (추가요청)
     setTemplateList([...templateList, newList]);
@@ -78,25 +104,13 @@ const TemplateQuestionAdd = ({
     setIsAddContent(false);
   };
 
-  const handleChangeList = () => {
-    //수정 요청
-    console.log("수정을 요청함")
-    console.log()
-  }
-
   useEffect(() => {
     questionRef.current?.focus();
   }, [templateQuestion.length]);
 
   useEffect(() => {
-    if (curTemplateList) {
-      setTemplateQuestion(curTemplateList);
-      curTitle && setTemplateTitle(curTitle);
-    }
     titleRef.current?.focus();
   }, []);
-
-  console.log(templateTitle)
 
   return (
     <TemplateAddStyled>
@@ -122,7 +136,7 @@ const TemplateQuestionAdd = ({
       <Controller>
         <BiPlus onClick={addQuestion}></BiPlus>
         <BiRedo onClick={removeLastQuestion}></BiRedo>
-        <BiCheck onClick={isEdit?handleChangeList:handleQuestionList}></BiCheck>
+        <BiCheck onClick={handleQuestionList}></BiCheck>
       </Controller>
     </TemplateAddStyled>
   );

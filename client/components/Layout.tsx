@@ -33,7 +33,6 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const routes = ["/join", "/login"];
   const isShowNav = routes.includes(router.asPath);
-  console.log("렌더링시" + isDarkMode);
 
   const handleToggleTheme = () => {
     const newMode = !isDarkMode;
@@ -42,7 +41,6 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   useEffect(() => {
-    console.log('sdf')
     const storageTheme = localStorage.getItem("theme");
     if (storageTheme) {
       const isThemeMode = JSON.parse(storageTheme);
@@ -100,7 +98,7 @@ const Layout = ({ children }: LayoutProps) => {
             />
           )}
         </Sidebar>
-        <Content>{children}</Content>
+        <Content style={{margin: !isShowNav ?  "4rem auto":"0"}}>{children}</Content>
       </ThemeProvider>
     </LayoutStyle>
   );

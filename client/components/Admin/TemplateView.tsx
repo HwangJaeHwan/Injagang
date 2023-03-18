@@ -4,6 +4,11 @@ import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { questionList } from "@/pages/edit";
 import { BiPlus, BiEdit, BiCheck, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
+import { METHOD } from "@/components/test/fecher";
+import fetcher from "@/components/test/fecher";
+import Cookies from "js-cookie";
+import { getTemplateList } from "../test/api";
+import { title } from "process";
 
 const TemplateStlyed = styled.div`
   ${ColBox}
@@ -68,19 +73,54 @@ const TemplateView = () => {
   const [templateList, setTemplateList] = useState<QuestionListItem[]>([]);
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [curTitle, setCurTitle] = useState("");
 
   const handleList = (qnaList: string[] = [], title: string) => {
     setCurTemplateList([...qnaList]);
     setCurTitle(title);
-    console.log(curTitle)
+    console.log(curTitle);
+  };
+
+  const getTemplateData = async () => {
+    const templateData = await getTemplateList()
+    return templateData
   };
 
   useEffect(() => {
+    console.log(getTemplateData().then((res)=> console.log(res)))
     //API요청후 데이터 저장
     setTemplateList(questionList);
   }, []);
+
+  const handleRemoveList = async () => {
+    const removeItemIndex = templateList.findIndex(a => a.title === curTitle);
+    console.log(removeItemIndex);
+
+    const headers = {
+      Authorization: Cookies.get("jwtToken"),
+    };
+
+    try {
+      const response = await fetcher(
+        METHOD.DELETE,
+        `/template/${removeItemIndex + 1}`,
+        {
+          headers,
+        },
+      );
+      if (response) {
+        console.log("성공");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setTemplateList(cur => {
+      const filterItem = templateList.filter(a => a.title !== curTitle);
+      return filterItem;
+    });
+    setCurTemplateList([]);
+  };
 
   return (
     <TemplateStlyed>
@@ -106,7 +146,6 @@ const TemplateView = () => {
               setIsAddContent={setIsAddContent}
               setTemplateList={setTemplateList}
               templateList={templateList}
-              isEdit={isEdit}
             />
           ) : (
             <div className="endTitle">
@@ -114,28 +153,10 @@ const TemplateView = () => {
                 <div style={{ color: "red" }}>현재의 리스트가 없습니다.</div>
               ) : (
                 <>
-                  {isEdit ? (
-                    <TemplateQuestionAdd
-                      setIsAddContent={setIsAddContent}
-                      setTemplateList={setTemplateList}
-                      templateList={templateList}
-                      isEdit={isEdit}
-                      curTemplateList={curTemplateList}
-                      curTitle={curTitle}
-                    />
-                  ) : (
-                    curTemplateList.map((question, index) => (
-                      <div key={index}> {question}</div>
-                    ))
-                  )}
-                  {isEdit ? (
-                    <div>
-                      <BiCheck />
-                      <BiTrash />
-                    </div>
-                  ) : (
-                    <BiEdit onClick={() => setIsEdit(true)} />
-                  )}
+                  {curTemplateList.map((question, index) => (
+                    <div key={index}> {question}</div>
+                  ))}
+                  <BiTrash onClick={handleRemoveList} />
                 </>
               )}
             </div>
