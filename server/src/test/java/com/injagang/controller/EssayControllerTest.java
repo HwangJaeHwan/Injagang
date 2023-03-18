@@ -53,6 +53,9 @@ class EssayControllerTest {
     @Autowired
     AppConfig appConfig;
 
+    @Autowired
+    JwtConfig jwtConfig;
+
     @BeforeEach
     void clean() {
         essayRepository.deleteAll();
@@ -436,7 +439,7 @@ class EssayControllerTest {
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JwtConfig.EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.access))
                 .compact();
 
         return jws;

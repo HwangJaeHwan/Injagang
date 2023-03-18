@@ -14,17 +14,19 @@ import java.util.Date;
 public class JwtProvider {
 
     private final AppConfig appConfig;
-
+    private final JwtConfig jwtConfig;
 
     public String createToken(Long userId) {
 
         SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
+        long now = new Date().getTime();
+
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JwtConfig.EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.access))
                 .compact();
 
     }
