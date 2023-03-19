@@ -16,6 +16,14 @@ interface signUp {
   nickname: string;
 }
 
+interface writeEssay {
+  title: string;
+  qnaList: {
+    question: string;
+    answer: string;
+  }[];
+}
+
 const headers = {
   Authorization: Cookies.get("jwtToken"),
 };
@@ -39,7 +47,7 @@ export const joinRequest = async (data: signUp) => {
       return response;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -50,6 +58,17 @@ export const getTemplateList = async () => {
       return response.data;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+  }
+};
+
+export const writeEssay = async (data: writeEssay) => {
+  try {
+    const response = await fetcher(METHOD.POST, "/essay/write", { headers });
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
   }
 };

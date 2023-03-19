@@ -46,6 +46,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+
 const SignupPage = () => {
   const [joinInfo, setJoinInfo] = useState({
     loginId: "",

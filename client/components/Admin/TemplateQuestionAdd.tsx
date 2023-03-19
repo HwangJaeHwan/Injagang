@@ -5,7 +5,6 @@ import { ColBox } from "@/styles/GlobalStyle";
 import { METHOD } from "@/components/test/fecher";
 import fetcher from "@/components/test/fecher";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 const Controller = styled.div`
   svg {
@@ -78,15 +77,6 @@ const TemplateQuestionAdd = ({
       title: templateTitle,
       questions: templateQuestion,
     };
-
-    // axios
-    //   .post("http://localhost:8080/template/add", data, { headers })
-    //   .then(response => {
-    //     console.log(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
 
     try {
       const response = await fetcher(METHOD.POST, "/template/add", data, { headers });
