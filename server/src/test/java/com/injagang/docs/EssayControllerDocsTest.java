@@ -210,15 +210,24 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
-        IntStream.rangeClosed(1,100).forEach(
+        IntStream.rangeClosed(1,10).forEach(
 
                 i->{
-                    essayRepository.save(
-                            Essay.builder()
-                                    .title("test title" + i)
-                                    .user(user)
-                                    .build()
-                    );
+
+                    Essay essay = Essay.builder()
+                            .title("test title" + i)
+                            .user(user)
+                            .build();
+
+
+                    QuestionAndAnswer qna = QuestionAndAnswer.builder()
+                            .question("question" + i)
+                            .answer("answer" + i)
+                            .build();
+
+                    essay.addQuestionAndAnswer(qna);
+
+                    essayRepository.save(essay);
 
 
                 }
@@ -231,7 +240,8 @@ public class EssayControllerDocsTest {
                         parameterWithName("userId").description("자소서 ID")
                 ),responseFields(
                         fieldWithPath("[].essayId").description("자소서 ID"),
-                        fieldWithPath("[].title").description("자소서 ID")
+                        fieldWithPath("[].title").description("자소서 제목"),
+                        fieldWithPath("[].questions").description("자소서 질문 목록")
                         )));
 
 

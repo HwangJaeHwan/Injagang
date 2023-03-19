@@ -66,6 +66,7 @@ public class AuthControllerDocTest {
                 .andDo(document("auth-signup",
                         requestFields(fieldWithPath("loginId").description("로그인 아이디"),
                                 fieldWithPath("password").description("비밀번호"),
+                                fieldWithPath("passwordCheck").description("비밀번호 확인"),
                                 fieldWithPath("email").description("이메일"),
                                 fieldWithPath("nickname").description("닉네임")
                         )));

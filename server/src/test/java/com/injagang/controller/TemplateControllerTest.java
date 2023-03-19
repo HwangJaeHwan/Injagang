@@ -137,32 +137,32 @@ class TemplateControllerTest {
 
     }
 
-    @Test
-    @DisplayName("/{templateId} 템플릿 읽기")
-    void test3() throws Exception{
-
-
-        Template template = Template.builder()
-                .title("template")
-                .build();
-
-        template.addQuestion(
-                TemplateQuestion.builder()
-                        .question("question")
-                        .build());
-
-        templateRepository.save(template);
-
-
-
-        mockMvc.perform(get("/template/{templateId}",template.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("template"))
-                .andExpect(jsonPath("$.questions[0]").value("question"))
-                .andDo(print());
-
-
-    }
+//    @Test
+//    @DisplayName("/{templateId} 템플릿 읽기")
+//    void test3() throws Exception{
+//
+//
+//        Template template = Template.builder()
+//                .title("template")
+//                .build();
+//
+//        template.addQuestion(
+//                TemplateQuestion.builder()
+//                        .question("question")
+//                        .build());
+//
+//        templateRepository.save(template);
+//
+//
+//
+//        mockMvc.perform(get("/template/{templateId}",template.getId()))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.title").value("template"))
+//                .andExpect(jsonPath("$.questions[0]").value("question"))
+//                .andDo(print());
+//
+//
+//    }
 
     @Test
     @DisplayName("/{templateId} 템플릿 삭제")

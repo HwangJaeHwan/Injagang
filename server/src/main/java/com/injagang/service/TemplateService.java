@@ -53,23 +53,23 @@ public class TemplateService {
 
     }
 
-    public TemplateInfo readTemplate(Long templateId){
-
-        Template template = templateRepository.findById(templateId).orElseThrow(TemplateNotExistException::new);
-        TemplateInfo templateInfo = TemplateInfo.builder()
-                .title(template.getTitle())
-                .build();
-
-        for (TemplateQuestion question : template.getQuestions()) {
-            templateInfo.addQuestion(question.getQuestion());
-
-        }
-
-        return templateInfo;
-
-
-
-    }
+//    public TemplateInfo readTemplate(Long templateId){
+//
+//        Template template = templateRepository.findById(templateId).orElseThrow(TemplateNotExistException::new);
+//        TemplateInfo templateInfo = TemplateInfo.builder()
+//                .title(template.getTitle())
+//                .build();
+//
+//        for (TemplateQuestion question : template.getQuestions()) {
+//            templateInfo.addQuestion(question.getQuestion());
+//
+//        }
+//
+//        return templateInfo;
+//
+//
+//
+//    }
 
     public List<TemplateList> templates() {
 
