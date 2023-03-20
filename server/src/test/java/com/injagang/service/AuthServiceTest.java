@@ -91,6 +91,7 @@ class AuthServiceTest {
         SignUp signUp = SignUp.builder()
                 .loginId("test")
                 .password("1234")
+                .passwordCheck("1234")
                 .email("test@gmail.com")
                 .nickname("nickname")
                 .build();

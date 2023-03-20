@@ -2,6 +2,7 @@ package com.injagang.controller;
 
 import com.injagang.exception.InJaGangException;
 import com.injagang.response.ErrorResponse;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -44,6 +45,18 @@ public class ExceptionController {
         return ResponseEntity.status(Integer.parseInt(e.getStatusCode())).body(body);
 
 
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ErrorResponse JwtException(JwtException e) {
+
+        ErrorResponse error = ErrorResponse.builder()
+                .message(e.getMessage())
+                .code("401")
+                .build();
+
+        return error;
     }
 
 

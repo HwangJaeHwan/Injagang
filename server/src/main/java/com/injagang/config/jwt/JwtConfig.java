@@ -1,19 +1,23 @@
 package com.injagang.config.jwt;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import javax.annotation.PostConstruct;
 
-@Data
 @Slf4j
+//@Getter
+@Data
 @ConfigurationProperties(prefix = "expiration-time")
 public class JwtConfig {
 
-    public Long access;
+    private Long access;
 
-    public Long refresh;
+    private Long refresh;
 
-
+//    public JwtConfig(Long access, Long refresh) {
+//        this.access = access;
+//        this.refresh = refresh;
+//    }
 }

@@ -234,7 +234,7 @@ public class TemplateControllerDocsTest {
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.access))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
                 .compact();
 
         return jws;

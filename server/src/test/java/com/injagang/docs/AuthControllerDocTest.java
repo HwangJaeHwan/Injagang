@@ -108,7 +108,9 @@ public class AuthControllerDocTest {
                         requestFields(fieldWithPath("loginId").description("로그인 아이디"),
                                 fieldWithPath("password").description("비밀번호")
                                 ),
-                        responseFields(fieldWithPath("jws").description("암호화된 문자열"))
+                        responseFields(fieldWithPath("userId").description("로그인 유저 ID")),
+                        responseFields(fieldWithPath("access").description("ACCESS TOKEN")),
+                        responseFields(fieldWithPath("refresh").description("REFRESH TOKEN"))
                         ));
 
 

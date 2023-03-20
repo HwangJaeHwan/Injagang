@@ -4,6 +4,7 @@ import com.injagang.config.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,8 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final JwtProvider jwtProvider;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -34,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthResolver(jwtProvider));
+        resolvers.add(new AuthResolver(jwtProvider, redisTemplate));
     }
 
     @Bean

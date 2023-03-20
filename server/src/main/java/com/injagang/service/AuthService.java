@@ -1,13 +1,17 @@
 package com.injagang.service;
 
+import com.injagang.config.jwt.JwtProvider;
 import com.injagang.domain.User;
 import com.injagang.exception.*;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
+import com.injagang.request.Tokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +25,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
     public Long login(Login login) {
 
-        log.info("하이요");
 
         User user = userRepository.findUserByLoginId(login.getLoginId()).orElseThrow(InvalidLoginInfoException::new);
 
@@ -57,6 +63,26 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+
+    }
+
+    public void logout(Tokens tokens) {
+
+        if (!jwtProvider.validateToken(tokens.getAccess())) {
+            throw new InjaGangJwtException();
+        }
+
+
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+
+        String check = operations.get(tokens.getRefresh());
+
+
+        if (check != null) {
+            redisTemplate.delete(tokens.getRefresh());
+            operations.set(tokens.getAccess(), "logout", jwtProvider.expirationTime(tokens.getAccess()));
+        }
+
 
     }
 
