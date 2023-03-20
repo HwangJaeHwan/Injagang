@@ -2,7 +2,8 @@ import { FlexBox } from "@/styles/GlobalStyle";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { getToken } from "@/components/test/api";
+// import { getToken } from "@/components/test/api";
+import { getToken } from "@/components/redux/Auth.tsx/actions";
 
 const LoginStyle = styled.div`
   ${FlexBox};

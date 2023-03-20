@@ -25,6 +25,7 @@ const Input = styled.input`
 `;
 
 interface QuestionListItem {
+  templateId: number;
   title: string;
   qnaList: string[];
 }
@@ -66,7 +67,6 @@ const TemplateQuestionAdd = ({
   };
 
   const handleQuestionList = async () => {
-    const newList = { title: templateTitle, qnaList: templateQuestion };
     const token = Cookies.get("jwtToken");
 
     const headers = {
@@ -79,16 +79,17 @@ const TemplateQuestionAdd = ({
     };
 
     try {
-      const response = await fetcher(METHOD.POST, "/template/add", data, { headers });
+      const response = await fetcher(METHOD.POST, "/template/add", data, {
+        headers,
+      });
       if (response) {
-        console.log("성공")
+        console.log("성공");
       }
     } catch (error) {
       console.error(error);
     }
 
     //API 요청 부분으로 수정 해야함 (추가요청)
-    setTemplateList([...templateList, newList]);
     setTemplateTitle("");
     setTemplateQuestion([]);
     setIsAddContent(false);

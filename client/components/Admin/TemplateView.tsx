@@ -65,37 +65,47 @@ const QuestionView = styled.div`
 `;
 
 interface QuestionListItem {
+  templateId: number;
   title: string;
   qnaList: string[];
+}
+
+interface dataItem {
+  templateId: number;
+  title: string;
+  questions: string[];
 }
 
 const TemplateView = () => {
   const [templateList, setTemplateList] = useState<QuestionListItem[]>([]);
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
-  const [curTitle, setCurTitle] = useState("");
+  const [curIndex, setCurIndex] = useState(0);
 
-  const handleList = (qnaList: string[] = [], title: string) => {
+  const handleList = (qnaList: string[] = [], index: number) => {
     setCurTemplateList([...qnaList]);
-    setCurTitle(title);
-    console.log(curTitle);
+    setCurIndex(index)
+    console.log(curIndex);
   };
 
-  const getTemplateData = async () => {
-    const templateData = await getTemplateList()
-    return templateData
+  const templateData = async () => {
+    const data = await getTemplateList();
+    return data;
   };
 
   useEffect(() => {
-    console.log(getTemplateData().then((res)=> console.log(res)))
-    //API요청후 데이터 저장
-    setTemplateList(questionList);
+    templateData().then(data => {
+      setTemplateList(
+        data.map((it: dataItem) => ({
+          templateId: it.templateId,
+          title: it.title,
+          qnaList: it.questions,
+        })),
+      );
+    });
   }, []);
 
   const handleRemoveList = async () => {
-    const removeItemIndex = templateList.findIndex(a => a.title === curTitle);
-    console.log(removeItemIndex);
-
     const headers = {
       Authorization: Cookies.get("jwtToken"),
     };
@@ -103,7 +113,7 @@ const TemplateView = () => {
     try {
       const response = await fetcher(
         METHOD.DELETE,
-        `/template/${removeItemIndex + 1}`,
+        `/template/${curIndex}`,
         {
           headers,
         },
@@ -116,7 +126,7 @@ const TemplateView = () => {
     }
 
     setTemplateList(cur => {
-      const filterItem = templateList.filter(a => a.title !== curTitle);
+      const filterItem = templateList.filter(a => a.templateId !== curIndex);
       return filterItem;
     });
     setCurTemplateList([]);
@@ -129,7 +139,7 @@ const TemplateView = () => {
           {templateList &&
             templateList.map((list, index) => (
               <div key={index}>
-                <div onClick={() => handleList(list.qnaList, list.title)}>
+                <div onClick={() => handleList(list.qnaList, list.templateId)}>
                   {list.title}
                 </div>
               </div>
