@@ -2,6 +2,9 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
+import { METHOD } from "@/components/test/fecher";
+import fetcher from "@/components/test/fecher";
+import Cookies from "js-cookie";
 
 const Controller = styled.div`
   svg {
@@ -18,7 +21,7 @@ const TemplateAddStyled = styled.div`
 `;
 
 const Input = styled.input`
-    width: 70%;
+  width: 70%;
 `;
 
 interface QuestionListItem {
@@ -62,8 +65,27 @@ const TemplateQuestionAdd = ({
     setTemplateQuestion(prev => prev.slice(0, -1));
   };
 
-  const handleQuestionList = () => {
+  const handleQuestionList = async () => {
     const newList = { title: templateTitle, qnaList: templateQuestion };
+    const token = Cookies.get("jwtToken");
+
+    const headers = {
+      Authorization: Cookies.get("jwtToken"),
+    };
+
+    const data = {
+      title: templateTitle,
+      questions: templateQuestion,
+    };
+
+    try {
+      const response = await fetcher(METHOD.POST, "/template/add", data, { headers });
+      if (response) {
+        console.log("성공")
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
     //API 요청 부분으로 수정 해야함 (추가요청)
     setTemplateList([...templateList, newList]);

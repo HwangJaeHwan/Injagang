@@ -29,6 +29,7 @@ const AddQustionList = ({
   handleCancelQuestion,
   onChange,
 }: AddQustionListProps) => {
+  console.log("ADD")
   return (
     <AddQustionListStyle>
       <Input

@@ -2,9 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { questionList } from "@/pages/edit";
-import { BiPlus, BiEdit } from "react-icons/bi";
+import { BiPlus, BiEdit, BiCheck, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
-import TemplateQuestionEdit from "./TemplateQuestionEdit";
+import { METHOD } from "@/components/test/fecher";
+import fetcher from "@/components/test/fecher";
+import Cookies from "js-cookie";
+import { getTemplateList } from "../test/api";
+import { title } from "process";
 
 const TemplateStlyed = styled.div`
   ${ColBox}
@@ -69,16 +73,54 @@ const TemplateView = () => {
   const [templateList, setTemplateList] = useState<QuestionListItem[]>([]);
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [curTitle, setCurTitle] = useState("");
 
-  const handleList = (qnaList: string[] = []) => {
+  const handleList = (qnaList: string[] = [], title: string) => {
     setCurTemplateList([...qnaList]);
+    setCurTitle(title);
+    console.log(curTitle);
+  };
+
+  const getTemplateData = async () => {
+    const templateData = await getTemplateList()
+    return templateData
   };
 
   useEffect(() => {
+    console.log(getTemplateData().then((res)=> console.log(res)))
     //API요청후 데이터 저장
     setTemplateList(questionList);
   }, []);
+
+  const handleRemoveList = async () => {
+    const removeItemIndex = templateList.findIndex(a => a.title === curTitle);
+    console.log(removeItemIndex);
+
+    const headers = {
+      Authorization: Cookies.get("jwtToken"),
+    };
+
+    try {
+      const response = await fetcher(
+        METHOD.DELETE,
+        `/template/${removeItemIndex + 1}`,
+        {
+          headers,
+        },
+      );
+      if (response) {
+        console.log("성공");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setTemplateList(cur => {
+      const filterItem = templateList.filter(a => a.title !== curTitle);
+      return filterItem;
+    });
+    setCurTemplateList([]);
+  };
 
   return (
     <TemplateStlyed>
@@ -87,7 +129,9 @@ const TemplateView = () => {
           {templateList &&
             templateList.map((list, index) => (
               <div key={index}>
-                <div onClick={() => handleList(list.qnaList)}>{list.title}</div>
+                <div onClick={() => handleList(list.qnaList, list.title)}>
+                  {list.title}
+                </div>
               </div>
             ))}
           {isAddContent ? (
@@ -109,12 +153,10 @@ const TemplateView = () => {
                 <div style={{ color: "red" }}>현재의 리스트가 없습니다.</div>
               ) : (
                 <>
-                  {isEdit ? (
-                    <TemplateQuestionEdit />
-                  ) : (
-                    curTemplateList.map((a, i) => <div key={i}> {a}</div>)
-                  )}
-                  <BiEdit onClick={() => setIsEdit(true)} />
+                  {curTemplateList.map((question, index) => (
+                    <div key={index}> {question}</div>
+                  ))}
+                  <BiTrash onClick={handleRemoveList} />
                 </>
               )}
             </div>

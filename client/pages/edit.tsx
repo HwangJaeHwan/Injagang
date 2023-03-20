@@ -8,6 +8,7 @@ import AddQustionList from "@/components/Edit/AddQustionList";
 import CustomButton from "@/components/UI/CustomButton";
 import { BiPlus } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { writeEssay } from "@/components/test/api";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -69,15 +70,18 @@ const TitleInput = styled.input`
 `;
 
 export const questionList = [
-  {
+  { 
+    templateId: 1,
     title: "카카오 자소서",
     qnaList: ["자신의장단점", "자신의장단점", "자신의장단점"],
   },
   {
+    templateId: 2,
     title: "네이버 자소서",
     qnaList: ["자신의장점", "자신의장점", "자신의장점"],
   },
   {
+    templateId: 3,
     title: "당근 자소서",
     qnaList: ["자신의단점", "자신의단점", "자신의단점"],
   },
@@ -86,6 +90,7 @@ export const questionList = [
 console.log({ questionList });
 
 interface questionList {
+  templateId: number;
   title: string;
   qnaList: string[];
 }
@@ -136,7 +141,7 @@ const Edit = () => {
     /*서버통신을 이용해 템플릿을 불러온다.*/
     setQuestionLists((cur: questionList[]) => [
       ...cur,
-      { title: "커스텀 자소서", qnaList: [] },
+      { templateId: 4, title: "커스텀 자소서", qnaList: [] },
     ]);
   }, []);
 
@@ -191,6 +196,7 @@ const Edit = () => {
           placeholder="자소서의 제목을 입력해주세요."
         ></TitleInput>
         <ControlMenu
+          
           value={questionTitle}
           optionList={questionLists}
           onChange={setQuestionTitle}

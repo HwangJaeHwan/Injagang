@@ -1,8 +1,8 @@
 import { FlexBox } from "@/styles/GlobalStyle";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
-
-const BASE_URL = "http://localhost:8123/login";
+import { getToken } from "@/components/test/api";
 
 const LoginStyle = styled.div`
   ${FlexBox};
@@ -48,9 +48,10 @@ const Button = styled.button`
 
 const LoginPage = () => {
   const [loginInfo, setLoginInfo] = useState({
-    email: "",
+    loginId: "",
     password: "",
   });
+  const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,39 +66,22 @@ const LoginPage = () => {
     }));
   };
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch(BASE_URL, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: loginInfo.email,
-          password: loginInfo.password,
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        throw new Error(`HTTP error, status = ${response.status}`);
-      }
-    } catch (error) {
-      console.log(error);
+  const handleLogin = () => {
+    const loginData = {
+      loginId: loginInfo.loginId,
+      password: loginInfo.password,
     }
+    getToken(loginData)
   };
-  
+
   return (
     <LoginStyle>
       <Form onSubmit={handleSubmit}>
-        <Label>이메일</Label>
+        <Label>아이디</Label>
         <Input
-          type="email"
-          name="email"
-          value={loginInfo.email}
+          type="text"
+          name="loginId"
+          value={loginInfo.loginId}
           onChange={handleChange}
         />
         <Label>비밀번호</Label>
