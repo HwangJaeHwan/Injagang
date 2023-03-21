@@ -54,6 +54,7 @@ public class AuthController {
     @PostMapping("/logout")
     public void logout(@RequestBody @Valid Tokens tokens) {
 
+
         authService.logout(tokens);
 
     }
@@ -69,7 +70,6 @@ public class AuthController {
         }
 
         if (!jwtProvider.refreshCheck(access)) {
-            log.info("Refresh 토큰 탈취");
             authService.logout(tokens);
             throw new RefreshTokenExpiredException();
 

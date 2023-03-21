@@ -1,10 +1,12 @@
 package com.injagang.request;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@Builder
 public class PasswordChange {
 
     @NotBlank(message = "현재 비밀번호를 입력해주세요.")

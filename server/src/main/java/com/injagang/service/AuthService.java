@@ -91,7 +91,7 @@ public class AuthService {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        if (passwordEncoder.matches(passwordChange.getNowPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordChange.getNowPassword(), user.getPassword())) {
             throw new PasswordDiffException();
         }
 
