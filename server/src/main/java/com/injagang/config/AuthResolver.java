@@ -2,12 +2,16 @@ package com.injagang.config;
 
 import com.injagang.config.data.UserSession;
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.exception.InjaGangJwtException;
+import com.injagang.exception.JwtExpiredException;
 import com.injagang.exception.UnauthorizedException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -19,6 +23,8 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private final JwtProvider jwtProvider;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -29,7 +35,12 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String jws = webRequest.getHeader("Authorization");
 
-        if (jws == null || jws.equals("")) {
+        if (!StringUtils.hasText(jws)) {
+            throw new UnauthorizedException();
+        }
+
+        if (redisTemplate.opsForValue().get(jws) != null) {
+            log.info("logout 됨");
             throw new UnauthorizedException();
         }
 
@@ -41,9 +52,13 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
             return new UserSession(userId);
 
+        } catch (ExpiredJwtException e) {
+
+            throw new JwtExpiredException();
+
         } catch (JwtException e) {
 
-            throw new UnauthorizedException();
+            throw new InjaGangJwtException();
 
             //don't trust the JWT!
         }

@@ -203,6 +203,12 @@ class EssayServiceTest {
         List<EssayList> essays = essayService.essays(user.getId());
 
         assertEquals(3, essays.size());
+        assertThat(essays.get(0).getTitle()).isEqualTo("test title1");
+        assertThat(essays.get(0).getQuestions().get(0)).isEqualTo("question1");
+        assertThat(essays.get(1).getTitle()).isEqualTo("test title2");
+        assertThat(essays.get(1).getQuestions().get(0)).isEqualTo("question2");
+        assertThat(essays.get(2).getTitle()).isEqualTo("test title3");
+        assertThat(essays.get(2).getQuestions().get(0)).isEqualTo("question3");
 
 
     }

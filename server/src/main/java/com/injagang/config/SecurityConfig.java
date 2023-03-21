@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .formLogin().disable()
+                .logout().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -112,34 +112,34 @@ public class TemplateControllerDocsTest {
     }
 
 
-    @Test
-    @DisplayName("템플릿 읽기")
-    void test2() throws Exception{
-
-
-        Template template = Template.builder()
-                .title("template")
-                .build();
-
-        template.addQuestion(
-                TemplateQuestion.builder()
-                        .question("question")
-                        .build());
-
-        templateRepository.save(template);
-
-
-        mockMvc.perform(get("/template/{templateId}", template.getId()))
-                .andDo(document("template-read", pathParameters(
-                        parameterWithName("templateId").description("템플릿 ID")
-                ), responseFields(
-                        fieldWithPath("title").description("템플릿 제목"),
-                        fieldWithPath("questions[]").description("질문 목록")
-                )));
-
-
-
-    }
+//    @Test
+//    @DisplayName("템플릿 읽기")
+//    void test2() throws Exception{
+//
+//
+//        Template template = Template.builder()
+//                .title("template")
+//                .build();
+//
+//        template.addQuestion(
+//                TemplateQuestion.builder()
+//                        .question("question")
+//                        .build());
+//
+//        templateRepository.save(template);
+//
+//
+//        mockMvc.perform(get("/template/{templateId}", template.getId()))
+//                .andDo(document("template-read", pathParameters(
+//                        parameterWithName("templateId").description("템플릿 ID")
+//                ), responseFields(
+//                        fieldWithPath("title").description("템플릿 제목"),
+//                        fieldWithPath("questions[]").description("질문 목록")
+//                )));
+//
+//
+//
+//    }
 
 
     @Test
@@ -179,7 +179,8 @@ public class TemplateControllerDocsTest {
         mockMvc.perform(get("/template"))
                 .andDo(document("template-list", responseFields(
                         fieldWithPath("[].templateId").description("템플릿 ID"),
-                        fieldWithPath("[].title").description("템플릿 제목")
+                        fieldWithPath("[].title").description("템플릿 제목"),
+                        fieldWithPath("[].questions").description("템플릿 질문 목록")
                 )));
 
 
@@ -233,7 +234,7 @@ public class TemplateControllerDocsTest {
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.access))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
                 .compact();
 
         return jws;

@@ -27,7 +27,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-        String token = jwtProvider.createToken(userInfo.getUserId());
+        String token = jwtProvider.createAccessToken(userInfo.getUserId());
 
 
         response.getWriter().write(objectMapper.writeValueAsString(Map.of("jws", token)));

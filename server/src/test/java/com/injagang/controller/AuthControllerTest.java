@@ -5,6 +5,7 @@ import com.injagang.domain.User;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.SignUp;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,10 +14,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -65,6 +69,10 @@ class AuthControllerTest {
         mockMvc.perform(post("/login")
                         .contentType(APPLICATION_JSON)
                         .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(user.getId()))
+                .andExpect(jsonPath("$.access").isNotEmpty())
+                .andExpect(jsonPath("$.refresh").isNotEmpty())
                 .andDo(print());
 
 
@@ -78,6 +86,7 @@ class AuthControllerTest {
         SignUp signUp = SignUp.builder()
                 .loginId("test")
                 .password("1234")
+                .passwordCheck("1234")
                 .email("test@gmail.com")
                 .nickname("nickname")
                 .build();
@@ -87,6 +96,7 @@ class AuthControllerTest {
         mockMvc.perform(post("/signup")
                         .contentType(APPLICATION_JSON)
                         .content(json))
+                .andExpect(status().isOk())
                 .andDo(print());
 
 

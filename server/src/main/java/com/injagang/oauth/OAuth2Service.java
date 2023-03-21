@@ -28,8 +28,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    private final JwtProvider jwtProvider;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 

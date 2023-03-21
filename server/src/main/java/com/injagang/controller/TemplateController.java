@@ -35,12 +35,12 @@ public class TemplateController {
 
     }
 
-    @GetMapping("/{templateId}")
-    public TemplateInfo readTemplate(@PathVariable Long templateId) {
-
-        return templateService.readTemplate(templateId);
-
-    }
+//    @GetMapping("/{templateId}")
+//    public TemplateInfo readTemplate(@PathVariable Long templateId) {
+//
+//        return templateService.readTemplate(templateId);
+//
+//    }
 
     @DeleteMapping("/{templateId}")
     public void delete(UserSession userSession,@PathVariable Long templateId) {

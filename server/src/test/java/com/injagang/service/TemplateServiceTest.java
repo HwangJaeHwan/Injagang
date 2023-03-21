@@ -75,40 +75,40 @@ class TemplateServiceTest {
 
     }
 
-    @Test
-    @DisplayName("템플릿 읽기")
-    void test2() {
-
-        User user = User.builder()
-                .loginId("test")
-                .password("test")
-                .nickname("test")
-                .role("ADMIN")
-                .build();
-
-        userRepository.save(user);
-
-        TemplateCreate templateCreate = TemplateCreate.builder()
-                .title("test template")
-                .build();
-
-        templateCreate.addQuestions("question1");
-        templateCreate.addQuestions("question2");
-        templateCreate.addQuestions("question3");
-
-        Long templateId = templateService.addTemplate(user.getId(), templateCreate);
-
-
-        TemplateInfo templateInfo = templateService.readTemplate(templateId);
-
-        assertThat(templateInfo.getTitle()).isEqualTo("test template");
-        assertEquals(3, templateInfo.getQuestions().size());
-        assertThat(templateInfo.getQuestions().get(0)).isEqualTo("question1");
-        assertThat(templateInfo.getQuestions().get(1)).isEqualTo("question2");
-        assertThat(templateInfo.getQuestions().get(2)).isEqualTo("question3");
-
-
-    }
+//    @Test
+//    @DisplayName("템플릿 읽기")
+//    void test2() {
+//
+//        User user = User.builder()
+//                .loginId("test")
+//                .password("test")
+//                .nickname("test")
+//                .role("ADMIN")
+//                .build();
+//
+//        userRepository.save(user);
+//
+//        TemplateCreate templateCreate = TemplateCreate.builder()
+//                .title("test template")
+//                .build();
+//
+//        templateCreate.addQuestions("question1");
+//        templateCreate.addQuestions("question2");
+//        templateCreate.addQuestions("question3");
+//
+//        Long templateId = templateService.addTemplate(user.getId(), templateCreate);
+//
+//
+//        TemplateInfo templateInfo = templateService.readTemplate(templateId);
+//
+//        assertThat(templateInfo.getTitle()).isEqualTo("test template");
+//        assertEquals(3, templateInfo.getQuestions().size());
+//        assertThat(templateInfo.getQuestions().get(0)).isEqualTo("question1");
+//        assertThat(templateInfo.getQuestions().get(1)).isEqualTo("question2");
+//        assertThat(templateInfo.getQuestions().get(2)).isEqualTo("question3");
+//
+//
+//    }
 
     @Test
     @DisplayName("템플릿 리스트")
@@ -125,17 +125,17 @@ class TemplateServiceTest {
 
         template1.addQuestion(
                 TemplateQuestion.builder()
-                        .question("question")
+                        .question("question1")
                         .build());
 
         template2.addQuestion(
                 TemplateQuestion.builder()
-                        .question("question")
+                        .question("question2")
                         .build());
 
         template3.addQuestion(
                 TemplateQuestion.builder()
-                        .question("question")
+                        .question("question3")
                         .build());
 
         templateRepository.save(template1);
@@ -146,8 +146,11 @@ class TemplateServiceTest {
 
         assertEquals(3, templates.size());
         assertThat(templates.get(0).getTitle()).isEqualTo("template1");
+        assertThat(templates.get(0).getQuestions().get(0)).isEqualTo("question1");
         assertThat(templates.get(1).getTitle()).isEqualTo("template2");
+        assertThat(templates.get(1).getQuestions().get(0)).isEqualTo("question2");
         assertThat(templates.get(2).getTitle()).isEqualTo("template3");
+        assertThat(templates.get(2).getQuestions().get(0)).isEqualTo("question3");
 
 
     }
