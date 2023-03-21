@@ -1,9 +1,11 @@
 import { FlexBox } from "@/styles/GlobalStyle";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
 // import { getToken } from "@/components/test/api";
-import { getToken } from "@/components/redux/Auth.tsx/actions";
+import { authenTicate } from "@/components/redux/Auth/actions";
 
 const LoginStyle = styled.div`
   ${FlexBox};
@@ -47,7 +49,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const LoginPage = () => {
+const LoginPage = ({ authenTicate }) => {
   const [loginInfo, setLoginInfo] = useState({
     loginId: "",
     password: "",
@@ -71,8 +73,8 @@ const LoginPage = () => {
     const loginData = {
       loginId: loginInfo.loginId,
       password: loginInfo.password,
-    }
-    getToken(loginData)
+    };
+    authenTicate(loginData);
   };
 
   return (
@@ -100,4 +102,6 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+const mapDispatchToProps = { authenTicate };
+
+export default connect(null, mapDispatchToProps)(LoginPage);

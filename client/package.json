@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
+    "@types/next-redux-wrapper": "^3.0.0",
     "@types/redux-logger": "^3.0.9",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",

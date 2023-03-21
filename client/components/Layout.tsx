@@ -8,6 +8,8 @@ import { BiEdit, BiUserVoice, BiCommentDetail,BiSearchAlt2 } from "react-icons/b
 import { ReactNode, useEffect } from "react";
 import { ReactElement, useState } from "react";
 import Head from "next/head";
+import { RootReducerType } from "@/components/redux/store";
+import { useSelector } from "react-redux";
 const LayoutStyle = styled.div`
   display: flex;
   height: 100vh;
@@ -33,6 +35,8 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const routes = ["/join", "/login"];
   const isShowNav = routes.includes(router.asPath);
+  const authReducer = useSelector((state:RootReducerType) => state.auth)
+  
 
   const handleToggleTheme = () => {
     const newMode = !isDarkMode;
@@ -49,6 +53,10 @@ const Layout = ({ children }: LayoutProps) => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    authReducer.rule
+  },[])
 
   type MenuItem = {
     title: string;
