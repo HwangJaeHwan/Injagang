@@ -8,7 +8,7 @@ import { METHOD } from "@/components/test/fecher";
 import fetcher from "@/components/test/fecher";
 import { Dispatch } from "redux";
 
-interface AuthenTicate {
+type AuthenTicate = {
   loginId: string;
   password: string;
 }

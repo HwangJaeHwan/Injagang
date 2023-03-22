@@ -1,11 +1,12 @@
 import { FlexBox } from "@/styles/GlobalStyle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 // import { getToken } from "@/components/test/api";
 import { authenTicate } from "@/components/redux/Auth/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Auth/reducer";
 
 const LoginStyle = styled.div`
   ${FlexBox};
@@ -40,20 +41,26 @@ const Input = styled.input`
 
 const Button = styled.button`
   padding: 8px 16px;
+  width: 100%;
   background-color: #2ecc71;
   color: #fff;
   font-size: 18px;
   font-weight: 600;
   border-radius: 4px;
   border: none;
+  margin: 5px auto;
   cursor: pointer;
 `;
 
-const LoginPage = ({ authenTicate }) => {
+const LoginPage = () => {
   const [loginInfo, setLoginInfo] = useState({
     loginId: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  const authReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.auth,
+  );
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -74,8 +81,14 @@ const LoginPage = ({ authenTicate }) => {
       loginId: loginInfo.loginId,
       password: loginInfo.password,
     };
-    authenTicate(loginData);
+    dispatch(authenTicate(loginData));
   };
+
+  useEffect(() => {
+    if (authReducer.success) {
+      router.replace("/");
+    }
+  }, [authReducer]);
 
   return (
     <LoginStyle>
@@ -97,11 +110,10 @@ const LoginPage = ({ authenTicate }) => {
         <Button type="submit" onClick={handleLogin}>
           로그인
         </Button>
+        <Button onClick={() => router.replace("/join")}>회원가입</Button>
       </Form>
     </LoginStyle>
   );
 };
 
-const mapDispatchToProps = { authenTicate };
-
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default LoginPage;

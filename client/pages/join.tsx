@@ -1,8 +1,11 @@
 import { FlexBox } from "@/styles/GlobalStyle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { joinRequest } from "@/components/test/api";
+import { memberShipRequest } from "@/components/redux/Join/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Join/reducer";
 
 const JoinStyle = styled.div`
   ${FlexBox};
@@ -46,7 +49,6 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-
 const SignupPage = () => {
   const [joinInfo, setJoinInfo] = useState({
     loginId: "",
@@ -55,7 +57,11 @@ const SignupPage = () => {
     email: "",
     nickName: "",
   });
-  const router = useRouter()
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const membershipReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.signup,
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,12 +75,15 @@ const SignupPage = () => {
       email: joinInfo.email,
       nickname: joinInfo.nickName,
     };
-    const joinResult = await joinRequest(joinData)
-    if(joinResult?.status === 200) {
-      console.log('요청')
-      router.replace('/login')
-    }
+    await dispatch(memberShipRequest(joinData));
   };
+
+  useEffect(() => {
+    if (membershipReducer.status === 200) {
+      membershipReducer.status = 0;
+      router.replace("/login");
+    }
+  }, [membershipReducer]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

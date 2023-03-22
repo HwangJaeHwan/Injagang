@@ -10,6 +10,8 @@ import { ReactElement, useState } from "react";
 import Head from "next/head";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
+import { InitiaState } from "./redux/Auth/reducer";
+import Cookies from "js-cookie";
 const LayoutStyle = styled.div`
   display: flex;
   height: 100vh;
@@ -35,7 +37,8 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const routes = ["/join", "/login"];
   const isShowNav = routes.includes(router.asPath);
-  const authReducer = useSelector((state:RootReducerType) => state.auth)
+  const authReducer:InitiaState = useSelector((state:RootReducerType) => state.auth)
+  console.log("Layout",{authReducer})
   
 
   const handleToggleTheme = () => {
@@ -52,11 +55,13 @@ const Layout = ({ children }: LayoutProps) => {
         setIsDarkMode(isThemeMode);
       }
     }
+    const token = Cookies.get('jwtToken');
+    if(!token){
+      router.push('/login')
+    } else if(!authReducer.success){
+      console.log("토큰 자격증명")
+    }
   }, []);
-
-  useEffect(() => {
-    authReducer.rule
-  },[])
 
   type MenuItem = {
     title: string;
@@ -82,7 +87,7 @@ const Layout = ({ children }: LayoutProps) => {
     },
     {
       title: "Community",
-      path: "/contact",
+      path: "/community",
       icon: <BiCommentDetail />,
     },
   ];
@@ -112,4 +117,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default Layout

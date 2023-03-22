@@ -6,6 +6,14 @@ import { METHOD } from "@/components/test/fecher";
 import fetcher from "@/components/test/fecher";
 import Cookies from "js-cookie";
 
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addTemplate,
+  removeTemplate,
+} from "@/components/redux/Template/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Template/reducer";
+
 const Controller = styled.div`
   svg {
     font-size: 40px;
@@ -32,19 +40,20 @@ interface QuestionListItem {
 
 interface TemplateQuestionAddProps {
   setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
-  setTemplateList: React.Dispatch<React.SetStateAction<QuestionListItem[]>>;
-  templateList: QuestionListItem[];
 }
 
 const TemplateQuestionAdd = ({
   setIsAddContent,
-  setTemplateList,
-  templateList,
 }: TemplateQuestionAddProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
   const questionRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
+
+  const dispatch = useDispatch();
+  const templateReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.template,
+  );
 
   const handleQuestionChange = (index: number, value: string) => {
     const newQuestionList = [...templateQuestion];
@@ -67,27 +76,11 @@ const TemplateQuestionAdd = ({
   };
 
   const handleQuestionList = async () => {
-    const token = Cookies.get("jwtToken");
-
-    const headers = {
-      Authorization: Cookies.get("jwtToken"),
-    };
-
     const data = {
       title: templateTitle,
       questions: templateQuestion,
     };
-
-    try {
-      const response = await fetcher(METHOD.POST, "/template/add", data, {
-        headers,
-      });
-      if (response) {
-        console.log("성공");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(addTemplate(data));
 
     //API 요청 부분으로 수정 해야함 (추가요청)
     setTemplateTitle("");

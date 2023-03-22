@@ -4,6 +4,7 @@ import {createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
 import rootReducer from "./rootReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
+import type {} from 'redux-thunk/extend-redux';
 
 const middleware = [logger, thunk];
 

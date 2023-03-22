@@ -3,6 +3,9 @@ import Link from "next/link";
 import { useState, ReactElement } from "react";
 import { BiSun, BiRocket, BiMoon, BiLogOut, BiLogIn } from "react-icons/bi";
 import { GrUserAdmin } from "react-icons/gr";
+import { RootReducerType } from "@/components/redux/store";
+import { useSelector } from "react-redux";
+import { InitiaState } from "../redux/Auth/reducer";
 const NavStyle = styled.nav`
   position: fixed;
   height: 100%;
@@ -111,7 +114,9 @@ interface NavbarProps {
 
 const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const authReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.auth,
+  );
   return (
     <NavStyle>
       <NavTop>
@@ -139,7 +144,11 @@ const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
         </NavMenu>
       </NavTop>
       <NavBottom>
-        <StyledLink href="/admin"><GrUserAdmin /></StyledLink>
+        {authReducer.rule === "admin" && (
+          <StyledLink href="/admin">
+            <GrUserAdmin />
+          </StyledLink>
+        )}
         {mode === true ? <BiLogIn /> : <BiLogOut />}
         {mode === true ? (
           <BiSun onClick={toggleTheme} />

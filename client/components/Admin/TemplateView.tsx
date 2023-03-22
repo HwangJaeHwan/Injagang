@@ -1,14 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
-import { questionList } from "@/pages/edit";
-import { BiPlus, BiEdit, BiCheck, BiTrash } from "react-icons/bi";
+import { BiPlus, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
-import Cookies from "js-cookie";
-import { getTemplateList } from "../test/api";
-import { title } from "process";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  initTemplate,
+  removeTemplate,
+} from "@/components/redux/Template/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Template/reducer";
 
 const TemplateStlyed = styled.div`
   ${ColBox}
@@ -64,86 +66,41 @@ const QuestionView = styled.div`
   }
 `;
 
-interface QuestionListItem {
-  templateId: number;
-  title: string;
-  qnaList: string[];
-}
-
-interface dataItem {
-  templateId: number;
-  title: string;
-  questions: string[];
-}
-
 const TemplateView = () => {
-  const [templateList, setTemplateList] = useState<QuestionListItem[]>([]);
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
   const [curIndex, setCurIndex] = useState(0);
+  const dispatch = useDispatch();
+  const templateReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.template,
+  );
 
   const handleList = (qnaList: string[] = [], index: number) => {
     setCurTemplateList([...qnaList]);
-    setCurIndex(index)
+    setCurIndex(index);
     console.log(curIndex);
   };
 
-  const templateData = async () => {
-    const data = await getTemplateList();
-    return data;
+  const handleRemoveList = async () => {
+    dispatch(removeTemplate(curIndex));
+    setCurTemplateList([]);
   };
 
   useEffect(() => {
-    templateData().then(data => {
-      setTemplateList(
-        data.map((it: dataItem) => ({
-          templateId: it.templateId,
-          title: it.title,
-          qnaList: it.questions,
-        })),
-      );
-    });
+    dispatch(initTemplate());
   }, []);
-
-  const handleRemoveList = async () => {
-    const headers = {
-      Authorization: Cookies.get("jwtToken"),
-    };
-
-    try {
-      const response = await fetcher(
-        METHOD.DELETE,
-        `/template/${curIndex}`,
-        {
-          headers,
-        },
-      );
-      if (response) {
-        console.log("성공");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    setTemplateList(cur => {
-      const filterItem = templateList.filter(a => a.templateId !== curIndex);
-      return filterItem;
-    });
-    setCurTemplateList([]);
-  };
 
   return (
     <TemplateStlyed>
       <Card>
         <TitleView>
-          {templateList &&
-            templateList.map((list, index) => (
-              <div key={index}>
-                <div onClick={() => handleList(list.qnaList, list.templateId)}>
-                  {list.title}
-                </div>
+          {templateReducer.templateList.map((list, index) => (
+            <div key={index}>
+              <div onClick={() => handleList(list.qnaList, list.templateId)}>
+                {list.title}
               </div>
-            ))}
+            </div>
+          ))}
           {isAddContent ? (
             <></>
           ) : (
@@ -152,11 +109,7 @@ const TemplateView = () => {
         </TitleView>
         <QuestionView>
           {isAddContent ? (
-            <TemplateQuestionAdd
-              setIsAddContent={setIsAddContent}
-              setTemplateList={setTemplateList}
-              templateList={templateList}
-            />
+            <TemplateQuestionAdd setIsAddContent={setIsAddContent} />
           ) : (
             <div className="endTitle">
               {curTemplateList.length < 1 ? (
