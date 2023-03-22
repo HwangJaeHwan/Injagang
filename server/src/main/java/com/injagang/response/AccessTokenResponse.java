@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class AccessTokenResponse {
 
-    private String accessToken;
+    private String access;
 
-    public AccessTokenResponse(String accessToken) {
-        this.accessToken = accessToken;
+    public AccessTokenResponse(String access) {
+        this.access = access;
     }
 }

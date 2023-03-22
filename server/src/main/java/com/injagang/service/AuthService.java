@@ -1,6 +1,7 @@
 package com.injagang.service;
 
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.exception.*;
 import com.injagang.repository.UserRepository;
@@ -8,10 +9,10 @@ import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
 import com.injagang.request.Tokens;
+import com.injagang.response.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,21 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final RedisDao redisDao;
+
+
+    public UserInfo info(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        return UserInfo.builder()
+                .nickname(user.getNickname())
+                .role(user.getRole())
+                .build();
+
+
+    }
 
     public Long login(Login login) {
 
@@ -72,16 +88,33 @@ public class AuthService {
             throw new InjaGangJwtException();
         }
 
-
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
-
-        String check = operations.get(tokens.getRefresh());
+        String check = redisDao.getData(tokens.getRefresh());
 
 
         if (check != null) {
             redisTemplate.delete(tokens.getRefresh());
-            operations.set(tokens.getAccess(), "logout", jwtProvider.expirationTime(tokens.getAccess()));
+            redisDao.setData(tokens.getAccess(), "logout", jwtProvider.expirationTime(tokens.getAccess()));
+
         }
+
+
+
+    }
+
+    public String reissue(Tokens tokens) {
+
+        if (redisDao.getData(tokens.getRefresh()) == null) {
+            throw new RefreshTokenExpiredException();
+        }
+
+        if (!jwtProvider.refreshCheck(tokens.getAccess())) {
+            logout(tokens);
+            throw new RefreshTokenExpiredException();
+        }
+
+        String accessToken = jwtProvider.createAccessToken(jwtProvider.parseToken(tokens.getRefresh()));
+
+        return accessToken;
 
 
     }

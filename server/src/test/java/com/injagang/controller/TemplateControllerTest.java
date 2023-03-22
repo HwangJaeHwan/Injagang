@@ -1,16 +1,13 @@
 package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.injagang.config.AppConfig;
-import com.injagang.config.jwt.JwtConfig;
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
+import com.injagang.helper.TestHelper;
 import com.injagang.repository.TemplateRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.TemplateCreate;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,10 +41,7 @@ class TemplateControllerTest {
     TemplateRepository templateRepository;
 
     @Autowired
-    AppConfig appConfig;
-
-    @Autowired
-    JwtConfig jwtConfig;
+    TestHelper testHelper;
 
 
     @BeforeEach
@@ -72,7 +64,7 @@ class TemplateControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         TemplateCreate templateCreate = TemplateCreate.builder()
                 .title("test template")
@@ -177,7 +169,7 @@ class TemplateControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Template template = Template.builder()
                 .title("template")
@@ -204,18 +196,6 @@ class TemplateControllerTest {
 
 
 
-    private String makeJWT(Long userId) {
-        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
-
-        String jws = Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .signWith(key)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
-                .compact();
-
-        return jws;
-    }
 
 
 }

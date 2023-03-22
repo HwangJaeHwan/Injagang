@@ -3,6 +3,7 @@ package com.injagang.controller;
 import com.injagang.config.data.UserSession;
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.config.redis.RedisDao;
 import com.injagang.exception.RefreshTokenExpiredException;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
@@ -10,6 +11,7 @@ import com.injagang.request.Tokens;
 import com.injagang.request.SignUp;
 import com.injagang.response.AccessTokenResponse;
 import com.injagang.response.LoginResponse;
+import com.injagang.response.UserInfo;
 import com.injagang.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,15 @@ public class AuthController {
 
     private final JwtConfig jwtConfig;
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisDao redisDao;
+
+
+    @GetMapping("/info")
+    public UserInfo info(UserSession userSession) {
+
+        return authService.info(userSession.getUserId());
+
+    }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Valid Login login) {
@@ -40,7 +50,7 @@ public class AuthController {
         String accessToken = jwtProvider.createAccessToken(userId);
         String refreshToken = jwtProvider.createRefreshToken(userId);
 
-        redisTemplate.opsForValue().set(refreshToken, accessToken, jwtConfig.getRefresh(), TimeUnit.MILLISECONDS);
+        redisDao.setData(refreshToken, "login", jwtConfig.getRefresh());
 
         return LoginResponse.builder()
                 .userId(userId)
@@ -62,22 +72,8 @@ public class AuthController {
     @PostMapping("/reissue")
     public AccessTokenResponse refresh(@RequestBody @Valid Tokens tokens) {
 
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
-        String access = operations.get(tokens.getRefresh());
+        return new AccessTokenResponse(authService.reissue(tokens));
 
-        if (access == null) {
-            throw new RefreshTokenExpiredException();
-        }
-
-        if (!jwtProvider.refreshCheck(access)) {
-            authService.logout(tokens);
-            throw new RefreshTokenExpiredException();
-
-        }
-
-        String accessToken = jwtProvider.createAccessToken(jwtProvider.parseToken(tokens.getRefresh()));
-
-        return new AccessTokenResponse(accessToken);
     }
 
     @PostMapping("/signup")

@@ -6,6 +6,17 @@
 :toclevels: 2
 :sectlinks:
 
+== 회원정보
+
+=== 요청
+include::{snippets}/auth-info/http-request.adoc[]
+include::{snippets}/auth-info/request-headers.adoc[]
+
+=== 응답
+include::{snippets}/auth-info/response-body.adoc[]
+include::{snippets}/auth-info/response-fields.adoc[]
+
+
 
 == 회원가입
 
@@ -21,7 +32,47 @@ include::{snippets}/auth-login/http-request.adoc[]
 include::{snippets}/auth-login/request-fields.adoc[]
 
 === 응답
-include::{snippets}/auth-login/http-response.adoc[]
+include::{snippets}/auth-login/response-body.adoc[]
 include::{snippets}/auth-login/response-fields.adoc[]
+
+== 로그아웃
+
+=== 요청
+
+include::{snippets}/auth-logout/http-request.adoc[]
+include::{snippets}/auth-logout/request-fields.adoc[]
+
+
+== 토큰 재발급
+
+
+=== 요청
+
+include::{snippets}/auth-reissue/http-request.adoc[]
+include::{snippets}/auth-reissue/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/auth-reissue/response-body.adoc[]
+include::{snippets}/auth-reissue/response-fields.adoc[]
+
+
+
+
+== 닉네임 변경
+
+=== 요청
+
+include::{snippets}/auth-nicknameChange/http-request.adoc[]
+include::{snippets}/auth-nicknameChange/request-headers.adoc[]
+include::{snippets}/auth-nicknameChange/request-fields.adoc[]
+
+
+== 비밀번호 변경
+
+include::{snippets}/auth-passwordChange/http-request.adoc[]
+include::{snippets}/auth-passwordChange/request-headers.adoc[]
+include::{snippets}/auth-passwordChange/request-fields.adoc[]
+
+
 
 

@@ -1,28 +1,24 @@
 package com.injagang.service;
 
+import com.injagang.config.jwt.JwtProvider;
+import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.exception.*;
+import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.assertj.core.api.Assertions;
+import com.injagang.request.Tokens;
+import com.injagang.response.UserInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.security.Key;
-import java.util.Base64;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,11 +37,24 @@ class AuthServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JwtProvider jwtProvider;
+
+    @Autowired
+    TestHelper testHelper;
+
+    @Autowired
+    RedisDao redisDao;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
+
 
     @BeforeEach
     void clean() {
         essayRepository.deleteAll();
         userRepository.deleteAll();
+        redisDao.clear();
     }
 
     @Test
@@ -75,12 +84,6 @@ class AuthServiceTest {
     @DisplayName("회원가입 아이디 중복")
     void testValid() {
 
-
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-        String tmp = Base64.getEncoder().encodeToString(key.getEncoded());
-
-        System.out.println(tmp);
 
         User user = User.builder()
                 .loginId("test")
@@ -276,5 +279,115 @@ class AuthServiceTest {
         assertThrows(PasswordCheckException.class, () -> authService.changePassword(user.getId(), passwordChange));
 
 
+    }
+
+    @Test
+    @DisplayName("로그아웃")
+    void test6() {
+
+        String accessToken = testHelper.makeAccessToken(1L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+
+        authService.logout(tokens);
+
+
+        assertNull(redisDao.getData(refreshToken));
+        assertEquals("logout", redisDao.getData(accessToken));
+
+
+    }
+
+    @Test
+    @DisplayName("토큰 재발급")
+    void test7() {
+
+
+        String accessToken = testHelper.makeToken(1L, 0L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+        String reissue = authService.reissue(tokens);
+
+        assertEquals(1L, jwtProvider.parseToken(reissue));
+
+
+    }
+
+
+    @Test
+    @DisplayName("토큰 재발급시 Refresh 토큰 만료")
+    void testValid5() {
+
+
+        String accessToken = testHelper.makeToken(1L, 0L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+//        redisDao.setData(refreshToken, "login", 6000L);
+
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+
+    }
+
+    @Test
+    @DisplayName("Access 토큰이 만료되지 않았는데 재발급을 요청한 경우")
+    void testValid6() {
+
+
+        String accessToken = testHelper.makeAccessToken(1L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+        assertEquals("logout", redisDao.getData(accessToken));
+
+    }
+
+    @Test
+    @DisplayName("유저 정보")
+    void test8() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        UserInfo info = authService.info(user.getId());
+
+        assertEquals("nickname", info.getNickname());
+        assertEquals("USER", info.getRole());
     }
 }

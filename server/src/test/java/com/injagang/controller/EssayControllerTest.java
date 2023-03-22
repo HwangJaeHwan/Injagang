@@ -1,18 +1,15 @@
 package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.injagang.config.AppConfig;
-import com.injagang.config.jwt.JwtConfig;
 import com.injagang.domain.Essay;
 import com.injagang.domain.QuestionAndAnswer;
 import com.injagang.domain.User;
+import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnA;
 import com.injagang.service.EssayService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 import java.util.stream.IntStream;
 
 import static org.springframework.http.MediaType.*;
@@ -51,10 +46,7 @@ class EssayControllerTest {
     UserRepository userRepository;
 
     @Autowired
-    AppConfig appConfig;
-
-    @Autowired
-    JwtConfig jwtConfig;
+    TestHelper testHelper;
 
     @BeforeEach
     void clean() {
@@ -78,7 +70,7 @@ class EssayControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
 
         EssayWrite essayWrite = EssayWrite.builder()
@@ -164,7 +156,7 @@ class EssayControllerTest {
         String json = objectMapper.writeValueAsString(essayWrite);
 
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
 
         mockMvc.perform(post("/essay/write")
@@ -199,7 +191,7 @@ class EssayControllerTest {
         String json = objectMapper.writeValueAsString(essayWrite);
 
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
 
         mockMvc.perform(post("/essay/write")
@@ -226,7 +218,7 @@ class EssayControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("test title")
@@ -322,7 +314,7 @@ class EssayControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("delete")
@@ -359,7 +351,7 @@ class EssayControllerTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("delete")
@@ -432,18 +424,6 @@ class EssayControllerTest {
 
 
 
-    private String makeJWT(Long userId) {
-        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
-
-        String jws = Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .signWith(key)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
-                .compact();
-
-        return jws;
-    }
 
 
 
