@@ -1,18 +1,15 @@
 package com.injagang.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.injagang.config.AppConfig;
-import com.injagang.config.jwt.JwtConfig;
 import com.injagang.domain.Essay;
 import com.injagang.domain.QuestionAndAnswer;
 import com.injagang.domain.User;
+import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnA;
 import com.injagang.service.EssayService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +19,9 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 import java.util.stream.IntStream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -61,11 +55,9 @@ public class EssayControllerDocsTest {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    AppConfig appConfig;
 
     @Autowired
-    JwtConfig jwtConfig;
+    TestHelper testHelper;
 
     @BeforeEach
     void clean() {
@@ -89,7 +81,7 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
 
         EssayWrite essayWrite = EssayWrite.builder()
@@ -149,7 +141,7 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("test title")
@@ -259,7 +251,7 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("delete")
@@ -299,7 +291,7 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
-        String jws = makeJWT(user.getId());
+        String jws = testHelper.makeAccessToken(user.getId());
 
         Essay essay = Essay.builder()
                 .title("delete")
@@ -382,18 +374,6 @@ public class EssayControllerDocsTest {
 
 
 
-    private String makeJWT(Long userId) {
-        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
-
-        String jws = Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .signWith(key)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
-                .compact();
-
-        return jws;
-    }
 
 
 

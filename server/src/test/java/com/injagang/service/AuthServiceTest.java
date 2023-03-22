@@ -1,25 +1,24 @@
 package com.injagang.service;
 
+import com.injagang.config.jwt.JwtProvider;
+import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
-import com.injagang.exception.DuplicateLoginIdException;
-import com.injagang.exception.InvalidLoginInfoException;
+import com.injagang.exception.*;
+import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
+import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.assertj.core.api.Assertions;
+import com.injagang.request.Tokens;
+import com.injagang.response.UserInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.security.Key;
-import java.util.Base64;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,10 +37,24 @@ class AuthServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JwtProvider jwtProvider;
+
+    @Autowired
+    TestHelper testHelper;
+
+    @Autowired
+    RedisDao redisDao;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
+
+
     @BeforeEach
     void clean() {
         essayRepository.deleteAll();
         userRepository.deleteAll();
+        redisDao.clear();
     }
 
     @Test
@@ -72,12 +85,6 @@ class AuthServiceTest {
     void testValid() {
 
 
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-        String tmp = Base64.getEncoder().encodeToString(key.getEncoded());
-
-        System.out.println(tmp);
-
         User user = User.builder()
                 .loginId("test")
                 .password("1234")
@@ -99,9 +106,7 @@ class AuthServiceTest {
         assertThrows(DuplicateLoginIdException.class, () -> authService.signUp(signUp));
 
 
-
     }
-
 
 
     @Test
@@ -154,4 +159,235 @@ class AuthServiceTest {
 
     }
 
+    @Test
+    @DisplayName("닉네임 변경")
+    void test4() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        authService.nicknameChange(user.getId(), "changeNickname");
+        User findUser = userRepository.findById(user.getId()).get();
+
+        assertEquals("changeNickname", findUser.getNickname());
+
+
+    }
+
+    @Test
+    @DisplayName("닉네임 중복")
+    void testValid2() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        User user2 = User.builder()
+                .loginId("test1")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("test")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+
+        assertThrows(DuplicateNicknameException.class, () -> authService.nicknameChange(user.getId(), "test"));
+
+
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경")
+    void test5() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        PasswordChange passwordChange = PasswordChange.builder()
+                .nowPassword("12345")
+                .changePassword("change")
+                .changePasswordCheck("change")
+                .build();
+
+        authService.changePassword(user.getId(), passwordChange);
+        User findUser = userRepository.findById(user.getId()).get();
+
+        assertTrue(passwordEncoder.matches("change", findUser.getPassword()));
+
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 시 현 비밀번호 틀림")
+    void testValid3() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        PasswordChange passwordChange = PasswordChange.builder()
+                .nowPassword("test")
+                .changePassword("change")
+                .changePasswordCheck("change")
+                .build();
+
+        assertThrows(PasswordDiffException.class, () -> authService.changePassword(user.getId(), passwordChange));
+
+
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 시 바꾼 비밀번호와 비밀번호 확인이 다름")
+    void testValid4() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        PasswordChange passwordChange = PasswordChange.builder()
+                .nowPassword("12345")
+                .changePassword("change")
+                .changePasswordCheck("diff")
+                .build();
+
+        assertThrows(PasswordCheckException.class, () -> authService.changePassword(user.getId(), passwordChange));
+
+
+    }
+
+    @Test
+    @DisplayName("로그아웃")
+    void test6() {
+
+        String accessToken = testHelper.makeAccessToken(1L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+
+        authService.logout(tokens);
+
+
+        assertNull(redisDao.getData(refreshToken));
+        assertEquals("logout", redisDao.getData(accessToken));
+
+
+    }
+
+    @Test
+    @DisplayName("토큰 재발급")
+    void test7() {
+
+
+        String accessToken = testHelper.makeToken(1L, 0L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+        String reissue = authService.reissue(tokens);
+
+        assertEquals(1L, jwtProvider.parseToken(reissue));
+
+
+    }
+
+
+    @Test
+    @DisplayName("토큰 재발급시 Refresh 토큰 만료")
+    void testValid5() {
+
+
+        String accessToken = testHelper.makeToken(1L, 0L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+//        redisDao.setData(refreshToken, "login", 6000L);
+
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+
+    }
+
+    @Test
+    @DisplayName("Access 토큰이 만료되지 않았는데 재발급을 요청한 경우")
+    void testValid6() {
+
+
+        String accessToken = testHelper.makeAccessToken(1L);
+        String refreshToken = testHelper.makeRefreshToken(1L);
+
+
+        Tokens tokens = Tokens.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+        assertEquals("logout", redisDao.getData(accessToken));
+
+    }
+
+    @Test
+    @DisplayName("유저 정보")
+    void test8() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        UserInfo info = authService.info(user.getId());
+
+        assertEquals("nickname", info.getNickname());
+        assertEquals("USER", info.getRole());
+    }
 }
