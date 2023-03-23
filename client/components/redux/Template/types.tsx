@@ -27,6 +27,7 @@ export interface templateSuccessDispatch {
   };
 }
 
+
 export type templateDispatchType =
   | templateRequest
   | templateFailDispatch

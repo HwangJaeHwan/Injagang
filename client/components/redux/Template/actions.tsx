@@ -7,15 +7,18 @@ import {
 import { METHOD } from "@/components/test/fecher";
 import fetcher from "@/components/test/fecher";
 import { Dispatch } from "redux";
-import { headers } from "../rootReducer";
-import { authDispatchType } from "../Auth/types";
-import { METHODS } from "http";
+import Cookies from "js-cookie";
 
 type TemplateAdd = {
   title: string;
   questions: string[];
 };
 
+const headers = {
+  Authorization: Cookies.get("jwtToken"),
+};
+
+/**템플릿을 삭제 요청후 삭제가 반영된 템플릿 요청*/
 export const removeTemplate =
   (templateId: number) =>
   async (dispatch: Dispatch<templateDispatchType>): Promise<void> => {
@@ -49,6 +52,7 @@ export const removeTemplate =
     }
   };
 
+/**템플릿 추가요청후 추가된 템플릿 리스트 반환 */
 export const addTemplate =
   (listData: TemplateAdd) =>
   async (dispatch: Dispatch<templateDispatchType>): Promise<void> => {
@@ -83,6 +87,7 @@ export const addTemplate =
     }
   };
 
+/**최초 로딩시 템플릿리스트 반환 */
 export const initTemplate =
   () =>
   async (dispatch: Dispatch): Promise<void> => {

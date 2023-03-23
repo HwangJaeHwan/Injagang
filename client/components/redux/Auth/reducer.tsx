@@ -2,6 +2,7 @@ import {
   AUTHENTICATE_REQUEST,
   AUTHENTICATE_SUCCESS,
   AUTHENTICATE_FAILURE,
+  CLEAR_ERROR,
   authDispatchType,
 } from "./types";
 import Cookies from "js-cookie";
@@ -9,13 +10,13 @@ import Cookies from "js-cookie";
 export interface InitiaState {
   loading: boolean;
   error: null;
-  rule: string;
+  role: string;
   success: boolean;
 }
 
 const initialState: InitiaState = {
   loading: false,
-  rule: "",
+  role: "",
   error: null,
   success: false,
 };
@@ -29,13 +30,13 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         success: false,
       };
     case AUTHENTICATE_SUCCESS:
-      const { token, rule } = action.payload;
+      const { token, role } = action.payload;
+      Cookies.set("jwtToken", token, { expires: 1 });
       return {
         ...state,
         loading: false,
         success: true,
-        token: Cookies.set("jwtToken", token, {expires: 1}),
-        rule: rule,
+        role: role,
       };
     case AUTHENTICATE_FAILURE:
       return {
@@ -43,6 +44,11 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         loading: false,
         success: false,
         error: action.payload,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;

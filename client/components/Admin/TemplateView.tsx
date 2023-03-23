@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { BiPlus, BiTrash } from "react-icons/bi";
@@ -65,9 +66,10 @@ const QuestionView = styled.div`
     color: red;
   }
 `;
-
+/**템플릿 현재의 상태를 보여주기*/
 const TemplateView = () => {
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
+  // 뷰모드&추가모드를구분짓는 역할
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
   const [curIndex, setCurIndex] = useState(0);
   const dispatch = useDispatch();
@@ -75,12 +77,13 @@ const TemplateView = () => {
     (state: RootReducerType) => state.template,
   );
 
+  /**현재선택된 템플릿리스트정보를 저장하기위한 함수 */
   const handleList = (qnaList: string[] = [], index: number) => {
     setCurTemplateList([...qnaList]);
     setCurIndex(index);
-    console.log(curIndex);
   };
 
+  /**현재선택된 템플릿리스트 삭제요청을 위한 함수 */
   const handleRemoveList = async () => {
     dispatch(removeTemplate(curIndex));
     setCurTemplateList([]);

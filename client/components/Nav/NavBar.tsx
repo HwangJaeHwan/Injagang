@@ -144,7 +144,7 @@ const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
         </NavMenu>
       </NavTop>
       <NavBottom>
-        {authReducer.rule === "admin" && (
+        {authReducer.role === "admin" && (
           <StyledLink href="/admin">
             <GrUserAdmin />
           </StyledLink>

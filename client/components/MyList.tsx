@@ -4,6 +4,10 @@ import { BiPlus, BiEdit } from "react-icons/bi";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import MyListPreView from "./MyListPreView";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Essay/reducer";
+import { addEssay, getEsay, getEssayList } from "./redux/Essay/actions";
 
 interface QnaList {
   question: string;
@@ -97,11 +101,25 @@ const MyList = () => {
   const [editList, setEditList] = useState<EssayList[]>([]);
 
   const router = useRouter();
+  const dispatch = useDispatch();
+  const essayReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.essay,
+  );
 
   useEffect(() => {
-    console.log(assayListData);
-    assayListData.length > 1 && setAssayList(assayListData);
-    getMyListTitle();
+    const data = {
+      title: "dfsgsdfgffdsg",
+      qnaList: [
+        {
+          question: "sdfas",
+          answer: "sdfasf",
+        },
+      ],
+    };
+    dispatch(addEssay(data, 1));
+    dispatch(getEssayList(1));
+    // assayListData.length > 1 && setAssayList(assayListData);
+    // getMyListTitle();
   }, [assayListData]);
 
   const getMyListTitle = () => {
@@ -129,27 +147,26 @@ const MyList = () => {
       )}
       <ListHeader>나의 자소서 목록</ListHeader>
       <ListContainer>
-        {myListTitle.length > 1 &&
-          myListTitle.map((list, idx) => (
-            <div key={idx} className="list-items">
-              <div
-                className={curList?.index === idx ? "active-item" : ""}
-                onClick={() => getMyListView(idx, list)}
-              >
-                {list}
-              </div>
-              {curList.index === idx && (
-                <BiEdit
-                  onClick={() =>
-                    router.push({
-                      pathname: "/edit",
-                      query: { editData: JSON.stringify(editList) }
-                    })
-                  }
-                />
-              )}
+        {essayReducer.essayList.map((list, idx) => (
+          <div key={idx} className="list-items">
+            <div
+              className={curList?.index === idx ? "active-item" : ""}
+              onClick={() => getMyListView(idx, list.title)}
+            >
+              {list.title}
             </div>
-          ))}
+            {curList.index === idx && (
+              <BiEdit
+                onClick={() =>
+                  router.push({
+                    pathname: "/edit",
+                    query: { editData: JSON.stringify(editList) },
+                  })
+                }
+              />
+            )}
+          </div>
+        ))}
       </ListContainer>
       <div className="footer-Icon">
         <BiPlus onClick={() => router.push("/edit")} />

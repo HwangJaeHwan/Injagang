@@ -1,16 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
+
 import styled from "styled-components";
 import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
-import Cookies from "js-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addTemplate,
-  removeTemplate,
-} from "@/components/redux/Template/actions";
+import { addTemplate } from "@/components/redux/Template/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Template/reducer";
 
@@ -32,19 +27,11 @@ const Input = styled.input`
   width: 70%;
 `;
 
-interface QuestionListItem {
-  templateId: number;
-  title: string;
-  qnaList: string[];
-}
-
 interface TemplateQuestionAddProps {
   setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TemplateQuestionAdd = ({
-  setIsAddContent,
-}: TemplateQuestionAddProps) => {
+const TemplateQuestionAdd = ({ setIsAddContent }: TemplateQuestionAddProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
   const questionRef = useRef<HTMLInputElement | null>(null);
@@ -55,19 +42,22 @@ const TemplateQuestionAdd = ({
     (state: RootReducerType) => state.template,
   );
 
+  /**현재 INPUT의 위치를 판단하기위한 함수*/
   const handleQuestionChange = (index: number, value: string) => {
     const newQuestionList = [...templateQuestion];
     newQuestionList[index] = value;
     setTemplateQuestion(newQuestionList);
   };
 
+  /**새로운 INPUT추가를 위한 함수 */
   const addQuestion = () => {
     if (templateQuestion.length >= 7) {
       return;
     }
     setTemplateQuestion([...templateQuestion, ""]);
   };
-
+  
+  /**INPUT 추가를 취소하기 위한 함수 */
   const removeLastQuestion = () => {
     if (templateQuestion.length <= 1) {
       return;
@@ -75,6 +65,7 @@ const TemplateQuestionAdd = ({
     setTemplateQuestion(prev => prev.slice(0, -1));
   };
 
+  /**리스트추가 요청을 위한 함수 */
   const handleQuestionList = async () => {
     const data = {
       title: templateTitle,
@@ -87,7 +78,7 @@ const TemplateQuestionAdd = ({
     setTemplateQuestion([]);
     setIsAddContent(false);
   };
-
+  
   useEffect(() => {
     questionRef.current?.focus();
   }, [templateQuestion.length]);
