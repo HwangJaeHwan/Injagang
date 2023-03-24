@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
+
 import styled from "styled-components";
 import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
-import Cookies from "js-cookie";
+
+import { useSelector, useDispatch } from "react-redux";
+import { addTemplate } from "@/components/redux/Template/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Template/reducer";
 
 const Controller = styled.div`
   svg {
@@ -24,40 +27,37 @@ const Input = styled.input`
   width: 70%;
 `;
 
-interface QuestionListItem {
-  title: string;
-  qnaList: string[];
-}
-
 interface TemplateQuestionAddProps {
   setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
-  setTemplateList: React.Dispatch<React.SetStateAction<QuestionListItem[]>>;
-  templateList: QuestionListItem[];
 }
 
-const TemplateQuestionAdd = ({
-  setIsAddContent,
-  setTemplateList,
-  templateList,
-}: TemplateQuestionAddProps) => {
+const TemplateQuestionAdd = ({ setIsAddContent }: TemplateQuestionAddProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
   const questionRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
 
+  const dispatch = useDispatch();
+  const templateReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.template,
+  );
+
+  /**현재 INPUT의 위치를 판단하기위한 함수*/
   const handleQuestionChange = (index: number, value: string) => {
     const newQuestionList = [...templateQuestion];
     newQuestionList[index] = value;
     setTemplateQuestion(newQuestionList);
   };
 
+  /**새로운 INPUT추가를 위한 함수 */
   const addQuestion = () => {
     if (templateQuestion.length >= 7) {
       return;
     }
     setTemplateQuestion([...templateQuestion, ""]);
   };
-
+  
+  /**INPUT 추가를 취소하기 위한 함수 */
   const removeLastQuestion = () => {
     if (templateQuestion.length <= 1) {
       return;
@@ -65,35 +65,20 @@ const TemplateQuestionAdd = ({
     setTemplateQuestion(prev => prev.slice(0, -1));
   };
 
+  /**리스트추가 요청을 위한 함수 */
   const handleQuestionList = async () => {
-    const newList = { title: templateTitle, qnaList: templateQuestion };
-    const token = Cookies.get("jwtToken");
-
-    const headers = {
-      Authorization: Cookies.get("jwtToken"),
-    };
-
     const data = {
       title: templateTitle,
       questions: templateQuestion,
     };
-
-    try {
-      const response = await fetcher(METHOD.POST, "/template/add", data, { headers });
-      if (response) {
-        console.log("성공")
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(addTemplate(data));
 
     //API 요청 부분으로 수정 해야함 (추가요청)
-    setTemplateList([...templateList, newList]);
     setTemplateTitle("");
     setTemplateQuestion([]);
     setIsAddContent(false);
   };
-
+  
   useEffect(() => {
     questionRef.current?.focus();
   }, [templateQuestion.length]);

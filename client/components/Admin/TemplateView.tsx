@@ -1,14 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
-import { questionList } from "@/pages/edit";
-import { BiPlus, BiEdit, BiCheck, BiTrash } from "react-icons/bi";
+import { BiPlus, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
-import Cookies from "js-cookie";
-import { getTemplateList } from "../test/api";
-import { title } from "process";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  initTemplate,
+  removeTemplate,
+} from "@/components/redux/Template/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Template/reducer";
 
 const TemplateStlyed = styled.div`
   ${ColBox}
@@ -63,77 +66,44 @@ const QuestionView = styled.div`
     color: red;
   }
 `;
-
-interface QuestionListItem {
-  title: string;
-  qnaList: string[];
-}
-
+/**템플릿 현재의 상태를 보여주기*/
 const TemplateView = () => {
-  const [templateList, setTemplateList] = useState<QuestionListItem[]>([]);
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
+  // 뷰모드&추가모드를구분짓는 역할
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
-  const [curTitle, setCurTitle] = useState("");
+  const [curIndex, setCurIndex] = useState(0);
+  const dispatch = useDispatch();
+  const templateReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.template,
+  );
 
-  const handleList = (qnaList: string[] = [], title: string) => {
+  /**현재선택된 템플릿리스트정보를 저장하기위한 함수 */
+  const handleList = (qnaList: string[] = [], index: number) => {
     setCurTemplateList([...qnaList]);
-    setCurTitle(title);
-    console.log(curTitle);
+    setCurIndex(index);
   };
 
-  const getTemplateData = async () => {
-    const templateData = await getTemplateList()
-    return templateData
+  /**현재선택된 템플릿리스트 삭제요청을 위한 함수 */
+  const handleRemoveList = async () => {
+    dispatch(removeTemplate(curIndex));
+    setCurTemplateList([]);
   };
 
   useEffect(() => {
-    console.log(getTemplateData().then((res)=> console.log(res)))
-    //API요청후 데이터 저장
-    setTemplateList(questionList);
+    dispatch(initTemplate());
   }, []);
-
-  const handleRemoveList = async () => {
-    const removeItemIndex = templateList.findIndex(a => a.title === curTitle);
-    console.log(removeItemIndex);
-
-    const headers = {
-      Authorization: Cookies.get("jwtToken"),
-    };
-
-    try {
-      const response = await fetcher(
-        METHOD.DELETE,
-        `/template/${removeItemIndex + 1}`,
-        {
-          headers,
-        },
-      );
-      if (response) {
-        console.log("성공");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    setTemplateList(cur => {
-      const filterItem = templateList.filter(a => a.title !== curTitle);
-      return filterItem;
-    });
-    setCurTemplateList([]);
-  };
 
   return (
     <TemplateStlyed>
       <Card>
         <TitleView>
-          {templateList &&
-            templateList.map((list, index) => (
-              <div key={index}>
-                <div onClick={() => handleList(list.qnaList, list.title)}>
-                  {list.title}
-                </div>
+          {templateReducer.templateList.map((list, index) => (
+            <div key={index}>
+              <div onClick={() => handleList(list.qnaList, list.templateId)}>
+                {list.title}
               </div>
-            ))}
+            </div>
+          ))}
           {isAddContent ? (
             <></>
           ) : (
@@ -142,11 +112,7 @@ const TemplateView = () => {
         </TitleView>
         <QuestionView>
           {isAddContent ? (
-            <TemplateQuestionAdd
-              setIsAddContent={setIsAddContent}
-              setTemplateList={setTemplateList}
-              templateList={templateList}
-            />
+            <TemplateQuestionAdd setIsAddContent={setIsAddContent} />
           ) : (
             <div className="endTitle">
               {curTemplateList.length < 1 ? (

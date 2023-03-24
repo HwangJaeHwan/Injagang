@@ -1,8 +1,12 @@
 import { FlexBox } from "@/styles/GlobalStyle";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { getToken } from "@/components/test/api";
+// import { getToken } from "@/components/test/api";
+import { authenTicate, clearAuthError } from "@/components/redux/Auth/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Auth/reducer";
 
 const LoginStyle = styled.div`
   ${FlexBox};
@@ -37,13 +41,19 @@ const Input = styled.input`
 
 const Button = styled.button`
   padding: 8px 16px;
+  width: 100%;
   background-color: #2ecc71;
   color: #fff;
   font-size: 18px;
   font-weight: 600;
   border-radius: 4px;
   border: none;
+  margin: 5px auto;
   cursor: pointer;
+`;
+
+const ERROR = styled.div`
+  color: red;
 `;
 
 const LoginPage = () => {
@@ -51,6 +61,13 @@ const LoginPage = () => {
     loginId: "",
     password: "",
   });
+  const [errorMsg, setErrorMsg] = useState("")
+  const dispatch = useDispatch();
+  const loginRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const authReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.auth,
+  );
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -67,18 +84,39 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
+    if(loginInfo.loginId.trim() === ""){
+      setErrorMsg("아이디를 입력해주세요")
+      loginRef.current?.focus()
+      return
+    }
+    if(loginInfo.password.trim() === ""){
+      setErrorMsg("비밀번호를 입력해주세요")
+      passwordRef.current?.focus()
+      return
+    }
     const loginData = {
       loginId: loginInfo.loginId,
       password: loginInfo.password,
-    }
-    getToken(loginData)
+    };
+    dispatch(authenTicate(loginData));
   };
+
+  useEffect(() => {
+    if (authReducer.success) {
+      dispatch(clearAuthError());
+      router.replace("/");
+    }
+    if (authReducer.error) { 
+      setErrorMsg("아이디나 비밀번호가 일치하지않습니다.")
+    }
+  }, [authReducer.error,authReducer.success]);
 
   return (
     <LoginStyle>
       <Form onSubmit={handleSubmit}>
         <Label>아이디</Label>
         <Input
+          ref= {loginRef}
           type="text"
           name="loginId"
           value={loginInfo.loginId}
@@ -86,14 +124,17 @@ const LoginPage = () => {
         />
         <Label>비밀번호</Label>
         <Input
+          ref= {passwordRef}
           type="password"
           name="password"
           value={loginInfo.password}
           onChange={handleChange}
         />
+        {authReducer.error && <ERROR> {errorMsg} </ERROR>}
         <Button type="submit" onClick={handleLogin}>
           로그인
         </Button>
+        <Button onClick={() => router.replace("/join")}>회원가입</Button>
       </Form>
     </LoginStyle>
   );

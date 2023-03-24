@@ -2,7 +2,6 @@ import { METHOD } from "@/components/test/fecher";
 import { useRouter } from "next/router";
 import fetcher from "@/components/test/fecher";
 import Cookies from "js-cookie";
-import { METHODS } from "http";
 
 interface getToken {
   loginId: string;
