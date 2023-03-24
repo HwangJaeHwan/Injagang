@@ -280,12 +280,25 @@ class EssayControllerTest {
         IntStream.rangeClosed(1,100).forEach(
 
                 i->{
-                    essayRepository.save(
-                            Essay.builder()
-                                    .title("test title" + i)
-                                    .user(user)
-                                    .build()
-                    );
+                    QuestionAndAnswer qna = QuestionAndAnswer.builder()
+                            .question("test question" + i)
+                            .answer("test answer" + i)
+                            .build();
+
+                    QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+                            .question("test question" + i + 1)
+                            .answer("test answer" + i + 1)
+                            .build();
+
+
+                    Essay essay = Essay.builder()
+                            .title("test title" + i)
+                            .user(user)
+                            .build();
+                    essay.addQuestionAndAnswer(qna);
+                    essay.addQuestionAndAnswer(qna1);
+
+                    essayRepository.save(essay);
 
 
                 }

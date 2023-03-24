@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface EssayRepository extends JpaRepository<Essay, Long> {
 
-    @Query("select e from Essay e left join fetch e.qnaList")
+    @Query("select distinct e from Essay e join fetch e.qnaList")
     List<Essay> findAllByUser(User user);
 }

@@ -3,11 +3,13 @@ package com.injagang.response;
 import com.injagang.domain.Essay;
 import com.injagang.domain.QuestionAndAnswer;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@ToString
 public class EssayList {
 
 

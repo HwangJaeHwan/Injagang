@@ -446,34 +446,124 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_회원가입">회원가입</a>
+<li><a href="#_회원정보">회원정보</a>
 <ul class="sectlevel2">
 <li><a href="#_요청">요청</a></li>
+<li><a href="#_응답">응답</a></li>
+</ul>
+</li>
+<li><a href="#_회원가입">회원가입</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_2">요청</a></li>
 </ul>
 </li>
 <li><a href="#_로그인">로그인</a>
 <ul class="sectlevel2">
-<li><a href="#_요청_2">요청</a></li>
-<li><a href="#_응답">응답</a></li>
+<li><a href="#_요청_3">요청</a></li>
+<li><a href="#_응답_2">응답</a></li>
 </ul>
 </li>
+<li><a href="#_로그아웃">로그아웃</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_4">요청</a></li>
+</ul>
+</li>
+<li><a href="#_토큰_재발급">토큰 재발급</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_5">요청</a></li>
+<li><a href="#_응답_3">응답</a></li>
+</ul>
+</li>
+<li><a href="#_닉네임_변경">닉네임 변경</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_6">요청</a></li>
+</ul>
+</li>
+<li><a href="#_비밀번호_변경">비밀번호 변경</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_회원가입"><a class="link" href="#_회원가입">회원가입</a></h2>
+<h2 id="_회원정보"><a class="link" href="#_회원정보">회원정보</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /info HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.Cundjh13pB86FxK-drkvUmK2IEN4D7j7xbHSQPMv6CM
+Host: api.injagang.com</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인 인증</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"nickname":"nickname","role":"USER"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_회원가입"><a class="link" href="#_회원가입">회원가입</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
+<div class="listingblock">
+<div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /signup HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 104
+Content-Length: 106
 Host: api.injagang.com
 
-{"loginId":"test","password":"1234","passwordCheck":null,"nickname":"nickname","email":"test@gmail.com"}</code></pre>
+{"loginId":"test","password":"1234","passwordCheck":"1234","nickname":"nickname","email":"test@gmail.com"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -502,7 +592,7 @@ Host: api.injagang.com
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>passwordCheck</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호 확인</p></td>
 </tr>
 <tr>
@@ -524,7 +614,7 @@ Host: api.injagang.com
 <h2 id="_로그인"><a class="link" href="#_로그인">로그인</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
+<h3 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /login HTTP/1.1
@@ -563,23 +653,10 @@ Host: api.injagang.com
 </table>
 </div>
 <div class="sect2">
-<h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
+<h3 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Strict-Transport-Security: max-age=31536000 ; includeSubDomains
-Content-Length: 135
-
-{"jws":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc5MjI0MzY0LCJleHAiOjE2NzkyMjYxNjR9.ZSNE4h3wnvNz56BT89YXwMQY8aoeT3dxz1ZF-gr8wlw"}</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"userId":2,"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.9z1RpZoKNopl09Z7J8PIvapSj1Vkh27NIuCKSZhvFbE","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk3MzYyNjF9.BaRdjiL9qVaDwZ5P3OSwL27qYmxiFH2o1WCs5XnJLOI"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -597,20 +674,270 @@ Content-Length: 135
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jws</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인 유저 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">암호화된 문자열</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access 토큰</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_로그아웃"><a class="link" href="#_로그아웃">로그아웃</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /logout HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 276
+Host: api.injagang.com
+
+{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.VhGCu8yl1r7S7S6v49_L_OoKiVMImOuE4hQit84NPkA","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk3MzYyNjF9.ZxQhgC7KiEIsDkh-vv5pvCdC7WcAmSTqyeHOjWpCRqg"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access 토큰</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_토큰_재발급"><a class="link" href="#_토큰_재발급">토큰 재발급</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /reissue HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 276
+Host: api.injagang.com
+
+{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NDk4NjF9.SJNayC3Q_n5Ulgfw9G9aA6jpD24qBt8IfCCkAPbekQg","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk3MzYyNjF9.ZxQhgC7KiEIsDkh-vv5pvCdC7WcAmSTqyeHOjWpCRqg"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">만료된 Access 토큰</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_응답_3"><a class="link" href="#_응답_3">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.VhGCu8yl1r7S7S6v49_L_OoKiVMImOuE4hQit84NPkA"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">재발급된 Access 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_닉네임_변경"><a class="link" href="#_닉네임_변경">닉네임 변경</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_6"><a class="link" href="#_요청_6">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /nicknameChange HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.-RAy80l2Yq0iyHm2vK_DbXZHR59HWCRA82CYz5leaxg
+Content-Length: 27
+Host: api.injagang.com
+
+{"changeNickname":"change"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인 인증</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>changeNickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 닉네임</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_비밀번호_변경"><a class="link" href="#_비밀번호_변경">비밀번호 변경</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /passwordChange HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjc5NjQ5ODYxLCJleHAiOjE2Nzk2NTE2NjF9.s8_5lU1uB4R8y4Ay26ekOEkV8CW_4xTK_VA_LPWPTHM
+Content-Length: 80
+Host: api.injagang.com
+
+{"nowPassword":"12345","changePassword":"change","changePasswordCheck":"change"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인 인증</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nowPassword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 비밀번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>changePassword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 비밀번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>changePasswordCheck</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호 확인</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-03-16 14:21:51 +0900
+Last updated 2023-03-22 20:37:10 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
