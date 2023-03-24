@@ -21,7 +21,8 @@ export interface authFailDispatch {
 export interface authSuccessDispatch {
   type: typeof AUTHENTICATE_SUCCESS;
   payload: {
-    token: string;
+    access: string;
+    refresh: string;
     role: string;
   };
 }

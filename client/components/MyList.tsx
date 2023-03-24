@@ -7,12 +7,13 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Essay/reducer";
-import { addEssay, getEsay, getEssayList } from "./redux/Essay/actions";
+import { addEssay, getEssayList } from "./redux/Essay/actions";
+import fetcher, { METHOD } from "./test/fecher";
+import Cookies from "js-cookie";
 
 interface QnaList {
   question: string;
   answer: string;
-  quna: number;
 }
 
 interface EssayList {
@@ -23,7 +24,7 @@ interface EssayList {
 
 interface CurList {
   index: number;
-  title: string;
+  essayId: number;
 }
 
 const assayListData: EssayList[] = Array(10)
@@ -96,7 +97,7 @@ const ListContainer = styled.div`
 const MyList = () => {
   const [assayList, setAssayList] = useState<EssayList[]>(assayListData);
   const [myListTitle, setMyListTitle] = useState<string[]>([]);
-  const [curList, setCurList] = useState<CurList>({ index: -1, title: "" });
+  const [curList, setCurList] = useState<CurList>({ index: -1, essayId: -1 });
   const [preViewList, setPreViewList] = useState<string[]>([]);
   const [editList, setEditList] = useState<EssayList[]>([]);
 
@@ -107,6 +108,9 @@ const MyList = () => {
   );
 
   useEffect(() => {
+    const headers = {
+      Authorization: Cookies.get("jwtToken"),
+    };
     const data = {
       title: "dfsgsdfgffdsg",
       qnaList: [
@@ -114,25 +118,29 @@ const MyList = () => {
           question: "sdfas",
           answer: "sdfasf",
         },
+        {
+          question: "sdfaf",
+          answer: "sdfasg",
+        },
       ],
     };
     dispatch(addEssay(data, 1));
-    dispatch(getEssayList(1));
+    dispatch(getEssayList(1))
     // assayListData.length > 1 && setAssayList(assayListData);
     // getMyListTitle();
-  }, [assayListData]);
+  }, []);
 
-  const getMyListTitle = () => {
-    assayList.length > 1 && setMyListTitle(assayList.map(a => a.title));
-  };
 
-  const getMyListView = (index: number, title: string) => {
-    setCurList({ index, title });
-    const filterList = assayList.filter(a => a.title === curList.title);
+  const getMyListView = (index: number, essayId: number) => {
+    setCurList({ index, essayId });
+    const filterList = essayReducer.essayList.filter(list => list.essayId === curList.essayId);
     setEditList(filterList);
-    setPreViewList(
+    console.log(essayReducer.essayList)
+    console.log(filterList)
+    setPreViewList( 
       cur => filterList.map(a => a.qnaList.map(a => a.question))[0],
     );
+
     console.log(editList);
   };
 
@@ -140,7 +148,7 @@ const MyList = () => {
 
   return (
     <MyListStyle>
-      {curList.title !== "" ? (
+      {curList.essayId !== -1 ? (
         <MyListPreView preViewData={preViewList} />
       ) : (
         <></>
@@ -151,7 +159,7 @@ const MyList = () => {
           <div key={idx} className="list-items">
             <div
               className={curList?.index === idx ? "active-item" : ""}
-              onClick={() => getMyListView(idx, list.title)}
+              onClick={() => getMyListView(idx, list.essayId)}
             >
               {list.title}
             </div>

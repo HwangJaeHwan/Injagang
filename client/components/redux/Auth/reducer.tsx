@@ -30,8 +30,9 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         success: false,
       };
     case AUTHENTICATE_SUCCESS:
-      const { token, role } = action.payload;
-      Cookies.set("jwtToken", token, { expires: 1 });
+      const { access,refresh, role } = action.payload;
+      Cookies.set("accessToken", access, { expires: 1 });
+      Cookies.set("refreshToken", refresh, { expires: 1 });
       return {
         ...state,
         loading: false,

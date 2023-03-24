@@ -12,7 +12,7 @@ import { Dispatch } from "redux";
 type AuthenTicate = {
   loginId: string;
   password: string;
-}
+};
 
 export const authenTicate =
   (loginData: AuthenTicate) =>
@@ -22,18 +22,22 @@ export const authenTicate =
       const response = await fetcher(METHOD.POST, "/login", loginData);
       if (response) {
         const token = response.data.jws;
+        const {access, refresh} = response.data
         dispatch({
           type: AUTHENTICATE_SUCCESS,
-          payload: { token, role: loginData.loginId },
+          payload: {
+            access,
+            refresh,
+            role: loginData.loginId,
+          },
         });
       }
     } catch (error: any) {
-      console.log("sdafsaasfasas",error.response.data.message)
+      console.log("sdafsaasfasas", error.response.data.message);
       dispatch({ type: AUTHENTICATE_FAILURE, payload: error });
     }
   };
 
-  export const clearAuthError = () => ({
-    type: CLEAR_ERROR
-  });
-  
+export const clearAuthError = () => ({
+  type: CLEAR_ERROR,
+});

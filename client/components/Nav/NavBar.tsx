@@ -65,6 +65,7 @@ const NavLink = styled.div`
     align-items: center;
     gap: 15px;
     font-size: 28px;
+    color: RGB(255, 0, 0);
   }
 
   .brand-logo svg {

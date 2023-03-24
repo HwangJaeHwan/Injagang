@@ -11,6 +11,7 @@ import { Dispatch } from "redux";
 type MembershipRequest = {
   loginId: string;
   password: string;
+  passwordCheck: string;
   email: string;
   nickname: string;
 };

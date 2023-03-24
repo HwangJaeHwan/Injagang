@@ -55,7 +55,7 @@ const Layout = ({ children }: LayoutProps) => {
         setIsDarkMode(isThemeMode);
       }
     }
-    const token = Cookies.get('jwtToken');
+    const token = Cookies.get('accessToken');
     if(!token){
       router.push('/login')
     } else if(!authReducer.success){

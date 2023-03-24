@@ -5,8 +5,9 @@ import rootReducer from "./rootReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import type {} from 'redux-thunk/extend-redux';
+import myLogger from "./testMiddleWare";
 
-const middleware = [logger, thunk];
+const middleware = [logger, thunk, myLogger];
 
 const makeStore =(context: Context) => createStore  (
   rootReducer,
