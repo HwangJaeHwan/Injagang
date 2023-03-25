@@ -17,7 +17,7 @@ interface EssayList {
 }
 
 const headers = {
-  Authorization: Cookies.get("jwtToken"),
+  Authorization: Cookies.get("accessToken"),
 };
 
 /**자소서 추가 요청후 반영된 자소서 요청  */
@@ -29,17 +29,17 @@ export const addEssay =
       const request = await fetcher(METHOD.POST, "/essay/write", essayData, {
         headers,
       });
-      const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
-        headers,
-      });
-      if (response) {
-        dispatch({
-          type: ESSAY_SUCCESS,
-          payload: {
-            essayState: response.data,
-          },
-        });
-      }
+      // const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
+      //   headers,
+      // });
+      // if (response) {
+      //   dispatch({
+      //     type: ESSAY_SUCCESS,
+      //     payload: {
+      //       list: response.data,
+      //     },
+      //   });
+      // }
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -60,10 +60,11 @@ export const getEssayList =
         headers,
       });
       if (response) {
-        dispatch({
+        dispatch(
+          {
           type: ESSAY_SUCCESS,
           payload: {
-            essayState: response.data,
+            list: response.data,
           },
         });
       }

@@ -108,9 +108,6 @@ const MyList = () => {
   );
 
   useEffect(() => {
-    const headers = {
-      Authorization: Cookies.get("jwtToken"),
-    };
     const data = {
       title: "dfsgsdfgffdsg",
       qnaList: [
@@ -124,20 +121,21 @@ const MyList = () => {
         },
       ],
     };
-    dispatch(addEssay(data, 1));
-    dispatch(getEssayList(1))
+    dispatch(addEssay(data, 1)).then(data => console.log("dfasasfas",data));
+    // dispatch(getEssayList(1))
     // assayListData.length > 1 && setAssayList(assayListData);
     // getMyListTitle();
   }, []);
 
-
   const getMyListView = (index: number, essayId: number) => {
     setCurList({ index, essayId });
-    const filterList = essayReducer.essayList.filter(list => list.essayId === curList.essayId);
+    const filterList = essayReducer.essayList.filter(
+      list => list.essayId === curList.essayId,
+    );
     setEditList(filterList);
-    console.log(essayReducer.essayList)
-    console.log(filterList)
-    setPreViewList( 
+    console.log(essayReducer.essayList);
+    console.log(filterList);
+    setPreViewList(
       cur => filterList.map(a => a.qnaList.map(a => a.question))[0],
     );
 

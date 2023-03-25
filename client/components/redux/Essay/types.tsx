@@ -28,7 +28,7 @@ export interface essayFailDispatch {
 export interface essaySuccessDispatch {
   type: typeof ESSAY_SUCCESS;
   payload: {
-    essayState: essayState[];
+    list: essayState[];
   };
 }
 

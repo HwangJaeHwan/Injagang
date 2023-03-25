@@ -22,7 +22,7 @@ export const authenTicate =
       const response = await fetcher(METHOD.POST, "/login", loginData);
       if (response) {
         const token = response.data.jws;
-        const {access, refresh} = response.data
+        const { access, refresh } = response.data;
         dispatch({
           type: AUTHENTICATE_SUCCESS,
           payload: {
@@ -34,7 +34,7 @@ export const authenTicate =
       }
     } catch (error: any) {
       console.log("sdafsaasfasas", error.response.data.message);
-      dispatch({ type: AUTHENTICATE_FAILURE, payload: error });
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }
   };
 

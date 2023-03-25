@@ -26,11 +26,11 @@ export const memberShipRequest =
         dispatch({
           type: SIGNUP_SUCCESS,
           payload: {
-            status: response.status
+            status: response.status,
           },
         });
       }
     } catch (error: any) {
-      dispatch({ type: SIGNUP_FAILURE, payload: error });
+      dispatch({ type: SIGNUP_FAILURE, payload: { error } });
     }
   };

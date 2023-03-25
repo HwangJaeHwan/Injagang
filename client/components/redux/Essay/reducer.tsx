@@ -34,7 +34,7 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
     case ESSAY_SUCCESS:
       return {
         ...state,
-        essayList: action.payload.essayState,
+        essayList: action.payload.list,
       };
     case ESSAY_FAILURE:
       return {

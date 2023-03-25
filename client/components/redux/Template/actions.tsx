@@ -15,7 +15,7 @@ type TemplateAdd = {
 };
 
 const headers = {
-  Authorization: Cookies.get("accessToken"),
+  Authorization: Cookies.get("jwtToken"),
 };
 
 /**템플릿을 삭제 요청후 삭제가 반영된 템플릿 요청*/
