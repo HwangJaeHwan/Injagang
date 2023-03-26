@@ -5,9 +5,10 @@ import rootReducer from "./rootReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import type {} from 'redux-thunk/extend-redux';
-import myLogger from "./testMiddleWare";
+import refreshTokenMiddleWare from "./refreshTokenMiddleWare";
 
-const middleware = [logger, thunk, myLogger];
+
+const middleware = [logger, thunk, refreshTokenMiddleWare];
 
 const makeStore =(context: Context) => createStore  (
   rootReducer,

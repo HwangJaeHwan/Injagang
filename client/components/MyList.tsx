@@ -121,11 +121,17 @@ const MyList = () => {
         },
       ],
     };
-    dispatch(addEssay(data, 1)).then(data => console.log("dfasasfas",data));
+    dispatch(addEssay(data, 1));
     // dispatch(getEssayList(1))
     // assayListData.length > 1 && setAssayList(assayListData);
     // getMyListTitle();
   }, []);
+
+  useEffect(()=> {
+    setTimeout(() => {
+      dispatch(getEssayList(1))
+    },100)
+  },[dispatch])
 
   const getMyListView = (index: number, essayId: number) => {
     setCurList({ index, essayId });
@@ -133,10 +139,10 @@ const MyList = () => {
       list => list.essayId === curList.essayId,
     );
     setEditList(filterList);
-    console.log(essayReducer.essayList);
-    console.log(filterList);
+    console.log("Reducer",essayReducer.essayList);
+    console.log("FilterList",filterList);
     setPreViewList(
-      cur => filterList.map(a => a.qnaList.map(a => a.question))[0],
+      cur => filterList.map(a => a.questions.map(a => a))[0],
     );
 
     console.log(editList);
