@@ -1,7 +1,7 @@
 package com.injagang.service;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.QuestionAndAnswer;
+import com.injagang.domain.qna.QuestionAndAnswer;
 import com.injagang.domain.User;
 import com.injagang.exception.EssayNotFoundException;
 import com.injagang.exception.UnauthorizedException;
@@ -10,7 +10,7 @@ import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
-import com.injagang.request.QnA;
+import com.injagang.request.QnaRequest;
 import com.injagang.response.EssayList;
 import com.injagang.response.EssayRead;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class EssayService {
                 .title(essayWrite.getTitle())
                 .build();
 
-        for (QnA qna : essayWrite.getQnaList()) {
+        for (QnaRequest qna : essayWrite.getQnaList()) {
 
             essay.addQuestionAndAnswer(QuestionAndAnswer.builder()
                     .question(qna.getQuestion())
@@ -89,7 +89,7 @@ public class EssayService {
 
         qnARepository.deleteAllByEssay(essay);
 
-        for (QnA qna : essayWrite.getQnaList()) {
+        for (QnaRequest qna : essayWrite.getQnaList()) {
 
             essay.addQuestionAndAnswer(QuestionAndAnswer.builder()
                     .question(qna.getQuestion())

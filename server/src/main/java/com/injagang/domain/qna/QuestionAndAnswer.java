@@ -1,5 +1,6 @@
-package com.injagang.domain;
+package com.injagang.domain.qna;
 
+import com.injagang.domain.Essay;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = PROTECTED)
 public class QuestionAndAnswer {
 
@@ -19,7 +21,7 @@ public class QuestionAndAnswer {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "myessay_id")
+    @JoinColumn(name = "essay_id")
     private Essay essay;
 
     private String question;

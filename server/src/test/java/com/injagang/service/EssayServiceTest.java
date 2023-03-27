@@ -1,13 +1,13 @@
 package com.injagang.service;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.QuestionAndAnswer;
+import com.injagang.domain.qna.QuestionAndAnswer;
 import com.injagang.domain.User;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
-import com.injagang.request.QnA;
+import com.injagang.request.QnaRequest;
 import com.injagang.response.EssayList;
 import com.injagang.response.EssayRead;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,27 +60,27 @@ class EssayServiceTest {
                 .title("test essay")
                 .build();
 
-        QnA qnA1 = QnA.builder()
+        QnaRequest qnaRequest1 = QnaRequest.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essayWrite.addQna(qnA1);
+        essayWrite.addQna(qnaRequest1);
 
-        QnA qnA2 = QnA.builder()
+        QnaRequest qnaRequest2 = QnaRequest.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essayWrite.addQna(qnA2);
+        essayWrite.addQna(qnaRequest2);
 
 
-        QnA qnA3 = QnA.builder()
+        QnaRequest qnaRequest3 = QnaRequest.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essayWrite.addQna(qnA3);
+        essayWrite.addQna(qnaRequest3);
 
 
         Long essayId = essayService.writeMyEssay(user.getId(), essayWrite);
@@ -256,17 +256,17 @@ class EssayServiceTest {
                 .title("after")
                 .build();
 
-        QnA reviseQna1 = QnA.builder()
+        QnaRequest reviseQna1 = QnaRequest.builder()
                 .question("questionAfter1")
                 .answer("answerAfter1")
                 .build();
 
-        QnA reviseQna2 = QnA.builder()
+        QnaRequest reviseQna2 = QnaRequest.builder()
                 .question("questionAfter2")
                 .answer("answerAfter2")
                 .build();
 
-        QnA reviseQna3 = QnA.builder()
+        QnaRequest reviseQna3 = QnaRequest.builder()
                 .question("questionAfter3")
                 .answer("answerAfter3")
                 .build();
