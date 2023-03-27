@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class QnA {
+public class QnaRequest {
 
     @NotBlank(message = "질문을 입력해 주세요")
     private String question;
@@ -15,7 +15,7 @@ public class QnA {
     private String answer;
 
     @Builder
-    public QnA(String question, String answer) {
+    public QnaRequest(String question, String answer) {
         this.question = question;
         this.answer = answer;
     }

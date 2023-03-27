@@ -1,7 +1,7 @@
 package com.injagang.response;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.QuestionAndAnswer;
+import com.injagang.domain.qna.QuestionAndAnswer;
 import lombok.Getter;
 
 import java.util.ArrayList;

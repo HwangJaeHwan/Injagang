@@ -1,5 +1,6 @@
 package com.injagang.domain;
 
+import com.injagang.domain.qna.QuestionAndAnswer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

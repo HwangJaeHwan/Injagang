@@ -1,7 +1,7 @@
 package com.injagang.repository;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.QuestionAndAnswer;
+import com.injagang.domain.qna.QuestionAndAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

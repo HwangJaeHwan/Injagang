@@ -2,13 +2,13 @@ package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Essay;
-import com.injagang.domain.QuestionAndAnswer;
+import com.injagang.domain.qna.QuestionAndAnswer;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
-import com.injagang.request.QnA;
+import com.injagang.request.QnaRequest;
 import com.injagang.service.EssayService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,27 +77,27 @@ class EssayControllerTest {
                 .title("test essay")
                 .build();
 
-        QnA qnA1 = QnA.builder()
+        QnaRequest qnaRequest1 = QnaRequest.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essayWrite.addQna(qnA1);
+        essayWrite.addQna(qnaRequest1);
 
-        QnA qnA2 = QnA.builder()
+        QnaRequest qnaRequest2 = QnaRequest.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essayWrite.addQna(qnA2);
+        essayWrite.addQna(qnaRequest2);
 
 
-        QnA qnA3 = QnA.builder()
+        QnaRequest qnaRequest3 = QnaRequest.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essayWrite.addQna(qnA3);
+        essayWrite.addQna(qnaRequest3);
 
         String json = objectMapper.writeValueAsString(essayWrite);
 
@@ -131,27 +131,27 @@ class EssayControllerTest {
                 .title("")
                 .build();
 
-        QnA qnA1 = QnA.builder()
+        QnaRequest qnaRequest1 = QnaRequest.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essayWrite.addQna(qnA1);
+        essayWrite.addQna(qnaRequest1);
 
-        QnA qnA2 = QnA.builder()
+        QnaRequest qnaRequest2 = QnaRequest.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essayWrite.addQna(qnA2);
+        essayWrite.addQna(qnaRequest2);
 
 
-        QnA qnA3 = QnA.builder()
+        QnaRequest qnaRequest3 = QnaRequest.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essayWrite.addQna(qnA3);
+        essayWrite.addQna(qnaRequest3);
 
         String json = objectMapper.writeValueAsString(essayWrite);
 
@@ -397,22 +397,22 @@ class EssayControllerTest {
                 .title("change")
                 .build();
 
-        QnA changeQna1 = QnA.builder()
+        QnaRequest changeQna1 = QnaRequest.builder()
                 .question("questionChange1")
                 .answer("answerChange1")
                 .build();
 
-        QnA changeQna2 = QnA.builder()
+        QnaRequest changeQna2 = QnaRequest.builder()
                 .question("questionChange2")
                 .answer("answerChange2")
                 .build();
 
-        QnA changeQna3 = QnA.builder()
+        QnaRequest changeQna3 = QnaRequest.builder()
                 .question("questionChange3")
                 .answer("answerChange3")
                 .build();
 
-        QnA changeQna4 = QnA.builder()
+        QnaRequest changeQna4 = QnaRequest.builder()
                 .question("questionChange4")
                 .answer("answerChange4")
                 .build();

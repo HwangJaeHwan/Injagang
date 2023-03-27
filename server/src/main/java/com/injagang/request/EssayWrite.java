@@ -19,14 +19,14 @@ public class EssayWrite {
 
     @Valid
     @Size(min = 1,message = "QnA는 최소 1개 이상 작성해주세요")
-    private List<QnA> qnaList = new ArrayList<>();
+    private List<QnaRequest> qnaList = new ArrayList<>();
 
     @Builder
     public EssayWrite(String title) {
         this.title = title;
     }
 
-    public void addQna(QnA qna){
+    public void addQna(QnaRequest qna){
 
         qnaList.add(qna);
 
