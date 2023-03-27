@@ -15,7 +15,7 @@ export type qnaList = {
 export type essayState = {
   essayId: number;
   title: string;
-  qnaList: qnaList[];
+  questions: string[];
 };
 
 export interface essayFailDispatch {

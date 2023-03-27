@@ -19,7 +19,7 @@ const initialState: InitiaState = {
     {
       essayId: 0,
       title: "",
-      qnaList: [],
+      questions: [],
     },
   ],
 };

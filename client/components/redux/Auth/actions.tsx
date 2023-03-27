@@ -33,7 +33,6 @@ export const authenTicate =
         });
       }
     } catch (error: any) {
-      console.log("sdafsaasfasas", error.response.data.message);
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }
   };

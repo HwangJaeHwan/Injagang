@@ -17,10 +17,11 @@ const initialState: InitiaState = {
   error: null,
   templateList: [
     {
-        templateId: 0,
-        title: '',
-        questions: [],
-    }
+      templateId: 0,
+      title: "",
+      questions: [],
+      qnaList: [],
+    },
   ],
 };
 
@@ -35,6 +36,7 @@ const templateReducer = (
         loading: true,
       };
     case TEMPLATE_SUCCESS:
+      console.log(action.payload.templateState)
       return {
         ...state,
         loading: false,

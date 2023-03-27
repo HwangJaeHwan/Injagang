@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BiPlus, BiEdit } from "react-icons/bi";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import MyListPreView from "./MyListPreView";
+
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
@@ -27,19 +28,6 @@ interface CurList {
   essayId: number;
 }
 
-const assayListData: EssayList[] = Array(10)
-  .fill(0)
-  .map((_, i) => ({
-    essayId: i + 1,
-    title: `자기소개서 양식${i}`,
-    qnaList: Array(5)
-      .fill(0)
-      .map((_, j) => ({
-        question: `test${j + 1}`,
-        answer: `answer${j + 1}`,
-        quna: j + 1,
-      })),
-  }));
 
 const MyListStyle = styled.div`
   width: 45rem;
@@ -95,8 +83,6 @@ const ListContainer = styled.div`
 `;
 
 const MyList = () => {
-  const [assayList, setAssayList] = useState<EssayList[]>(assayListData);
-  const [myListTitle, setMyListTitle] = useState<string[]>([]);
   const [curList, setCurList] = useState<CurList>({ index: -1, essayId: -1 });
   const [preViewList, setPreViewList] = useState<string[]>([]);
   const [editList, setEditList] = useState<EssayList[]>([]);
@@ -122,9 +108,6 @@ const MyList = () => {
       ],
     };
     dispatch(addEssay(data, 1));
-    // dispatch(getEssayList(1))
-    // assayListData.length > 1 && setAssayList(assayListData);
-    // getMyListTitle();
   }, []);
 
   useEffect(()=> {
@@ -138,14 +121,11 @@ const MyList = () => {
     const filterList = essayReducer.essayList.filter(
       list => list.essayId === curList.essayId,
     );
-    setEditList(filterList);
     console.log("Reducer",essayReducer.essayList);
     console.log("FilterList",filterList);
     setPreViewList(
       cur => filterList.map(a => a.questions.map(a => a))[0],
     );
-
-    console.log(editList);
   };
 
   const handleAddList = () => {};
@@ -172,7 +152,7 @@ const MyList = () => {
                 onClick={() =>
                   router.push({
                     pathname: "/edit",
-                    query: { editData: JSON.stringify(editList) },
+                    query: { editData: JSON.stringify(curList.essayId) },
                   })
                 }
               />

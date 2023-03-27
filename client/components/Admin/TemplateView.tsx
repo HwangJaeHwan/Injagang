@@ -7,7 +7,7 @@ import TemplateQuestionAdd from "./TemplateQuestionAdd";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
-  initTemplate,
+  getTemplate,
   removeTemplate,
 } from "@/components/redux/Template/actions";
 import { RootReducerType } from "@/components/redux/store";
@@ -90,7 +90,7 @@ const TemplateView = () => {
   };
 
   useEffect(() => {
-    dispatch(initTemplate());
+    dispatch(getTemplate());
   }, []);
 
   return (

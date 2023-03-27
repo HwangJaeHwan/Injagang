@@ -8,7 +8,14 @@ import AddQustionList from "@/components/Edit/AddQustionList";
 import CustomButton from "@/components/UI/CustomButton";
 import { BiPlus } from "react-icons/bi";
 import { useRouter } from "next/router";
-import { writeEssay } from "@/components/test/api";
+
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getTemplate,
+} from "@/components/redux/Template/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Template/reducer";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -69,25 +76,6 @@ const TitleInput = styled.input`
   margin-bottom: 15px;
 `;
 
-export const questionList = [
-  { 
-    templateId: 1,
-    title: "카카오 자소서",
-    qnaList: ["자신의장단점", "자신의장단점", "자신의장단점"],
-  },
-  {
-    templateId: 2,
-    title: "네이버 자소서",
-    qnaList: ["자신의장점", "자신의장점", "자신의장점"],
-  },
-  {
-    templateId: 3,
-    title: "당근 자소서",
-    qnaList: ["자신의단점", "자신의단점", "자신의단점"],
-  },
-];
-
-console.log({ questionList });
 
 interface questionList {
   templateId: number;
@@ -109,8 +97,12 @@ interface Qna {
 }
 
 const Edit = () => {
+  const dispatch = useDispatch();
+  const templateReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.template,
+  );
   const [questionLists, setQuestionLists] =
-    useState<questionList[]>(questionList);
+    useState<questionList[]>([]);
   const [questionTitle, setQuestionTitle] = useState<string>("커스텀 자소서");
   const [questionListTitle, setQuestionListTitle] = useState<string>("");
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
@@ -119,6 +111,7 @@ const Edit = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [questionContent, setQuestionContent] = useState<qnaList>([]);
   const router = useRouter();
+
 
   const getQuestionItem = useCallback(() => {
     const filteItem = questionLists.filter(
@@ -138,12 +131,15 @@ const Edit = () => {
       setQuestionTitle(editData[0].title);
       return;
     }
+    dispatch(getTemplate())
     /*서버통신을 이용해 템플릿을 불러온다.*/
-    setQuestionLists((cur: questionList[]) => [
-      ...cur,
-      { templateId: 4, title: "커스텀 자소서", qnaList: [] },
-    ]);
   }, []);
+
+  useEffect(() => {
+    if(!templateReducer.loading){
+      setQuestionLists(templateReducer.templateList)
+    }
+  },[templateReducer.loading])
 
   const handleAddQuestion = () => {
     if (questionTitle === "") {
@@ -195,8 +191,7 @@ const Edit = () => {
           onChange={e => setQuestionListTitle(e.target.value)}
           placeholder="자소서의 제목을 입력해주세요."
         ></TitleInput>
-        <ControlMenu
-          
+        <ControlMenu          
           value={questionTitle}
           optionList={questionLists}
           onChange={setQuestionTitle}

@@ -50,6 +50,7 @@ const authReducer = (state = initialState, action: authDispatchType) => {
       return {
         ...state,
         error: null,
+        success: false,
       };
     default:
       return state;
