@@ -94,20 +94,7 @@ const MyList = () => {
   );
 
   useEffect(() => {
-    const data = {
-      title: "dfsgsdfgffdsg",
-      qnaList: [
-        {
-          question: "sdfas",
-          answer: "sdfasf",
-        },
-        {
-          question: "sdfaf",
-          answer: "sdfasg",
-        },
-      ],
-    };
-    dispatch(addEssay(data, 1));
+    dispatch(getEssayList(1))
   }, []);
 
   useEffect(()=> {
@@ -152,7 +139,7 @@ const MyList = () => {
                 onClick={() =>
                   router.push({
                     pathname: "/edit",
-                    query: { editData: JSON.stringify(curList.essayId) },
+                    query: {essayId: JSON.stringify(curList.essayId) },
                   })
                 }
               />

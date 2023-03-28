@@ -8,10 +8,15 @@ const ControlMenuSelect =  styled.select`
   background-color: ${({theme})=> theme.colors.primary};
   color: ${({theme})=> theme.colors.text};
 `
+type qna = {
+  question: string;
+  answer: string;
+};
+
 interface ControlMenuProps {
     value: string;
     onChange: React.Dispatch<React.SetStateAction<string>>;
-    optionList: { title: string; qnaList: string[] }[];
+    optionList: { title: string; qnaList:  Array<string|qna>}[];
   }
 
 const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {

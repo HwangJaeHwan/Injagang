@@ -8,10 +8,8 @@ import { BiEdit, BiUserVoice, BiCommentDetail,BiSearchAlt2 } from "react-icons/b
 import { ReactNode, useEffect } from "react";
 import { ReactElement, useState } from "react";
 import Head from "next/head";
-import { RootReducerType } from "@/components/redux/store";
-import { useSelector } from "react-redux";
-import { InitiaState } from "./redux/Auth/reducer";
-import Cookies from "js-cookie";
+import WithAuth from "./WithAuth";
+
 const LayoutStyle = styled.div`
   display: flex;
   height: 100vh;
@@ -37,9 +35,6 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const routes = ["/join", "/login"];
   const isShowNav = routes.includes(router.asPath);
-  const authReducer:InitiaState = useSelector((state:RootReducerType) => state.auth)
-  console.log("Layout",{authReducer})
-  
 
   const handleToggleTheme = () => {
     const newMode = !isDarkMode;
@@ -55,12 +50,6 @@ const Layout = ({ children }: LayoutProps) => {
         setIsDarkMode(isThemeMode);
       }
     }
-    const token = Cookies.get('accessToken');
-    if(!token){
-      router.push('/login')
-    } else if(!authReducer.success){
-      console.log("토큰 자격증명")
-    }
   }, []);
 
   type MenuItem = {
@@ -72,7 +61,7 @@ const Layout = ({ children }: LayoutProps) => {
   const items: MenuItem[] = [
     {
       title: "자소서작성",
-      path: "/edit",
+      path: "/myEssay",
       icon: <BiEdit />,
     },
     {
@@ -117,4 +106,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout
+export default WithAuth(Layout)

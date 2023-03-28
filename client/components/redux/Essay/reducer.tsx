@@ -4,12 +4,15 @@ import {
   ESSAY_FAILURE,
   essayDispatchType,
   essayState,
+  readEssayState,
+  ESSAY_READ_SUCCESS,
 } from "./types";
 
 export interface InitiaState {
   loading: boolean;
   error: null;
   essayList: essayState[];
+  readEssayList: readEssayState[];
 }
 
 const initialState: InitiaState = {
@@ -22,6 +25,13 @@ const initialState: InitiaState = {
       questions: [],
     },
   ],
+  readEssayList : [
+    {
+      essayId: 0,
+      title: "",
+      qnaList: [],
+    }
+  ]
 };
 
 const essayReducer = (state = initialState, action: essayDispatchType) => {
@@ -40,6 +50,12 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
       return {
         ...state,
         error: action.payload.error,
+      };
+    case ESSAY_READ_SUCCESS:
+      return {
+        ...state,
+        readEssayList: action.payload.readList,
+        loading: false,
       };
     default:
       return state;

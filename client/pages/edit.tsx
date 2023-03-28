@@ -16,6 +16,8 @@ import {
 } from "@/components/redux/Template/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Template/reducer";
+import { addEssay, readEssayList, updateEssay } from "@/components/redux/Essay/actions";
+import essayReducer from "@/components/redux/Essay/reducer";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -44,7 +46,7 @@ const EditStyle = styled.div`
     .flex-end {
       width: 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
     }
     svg {
       font-size: 50px;
@@ -76,31 +78,34 @@ const TitleInput = styled.input`
   margin-bottom: 15px;
 `;
 
+type qna = {
+  question: string;
+  answer: string;
+};
 
 interface questionList {
-  templateId: number;
+  templateId?: number;
   title: string;
-  qnaList: string[];
+  qnaList: Array<string|qna>;
 }
 
 interface qnaListItem {
-  title: string;
-  qnaList: string;
+  question: string;
+  answer: string;
 }
 
 interface qnaList extends Array<qnaListItem> {}
-
-interface Qna {
-  question: string;
-  answer: string;
-  quna: number;
-}
 
 const Edit = () => {
   const dispatch = useDispatch();
   const templateReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.template,
   );
+
+  const essayReducer = useSelector(
+    (state:RootReducerType) => state.essay,
+  )
+
   const [questionLists, setQuestionLists] =
     useState<questionList[]>([]);
   const [questionTitle, setQuestionTitle] = useState<string>("커스텀 자소서");
@@ -113,34 +118,48 @@ const Edit = () => {
   const router = useRouter();
 
 
+    /** 최초 렌더링시 MyList 수정모드인지 생성모드인지 구분역할 */
+    useEffect(() => {
+      if (router.query.essayId) {
+        const essayId = JSON.parse(
+          router.query.essayId as string,
+        ) as number;
+        setIsEdit(true);
+        dispatch(readEssayList(essayId))
+        return;
+      }
+      dispatch(getTemplate())
+    }, []);
+  
+    /** 템플릿의 로딩이 완료가되면 useState에 반영한다. */
+    useEffect(() => {
+      if(!templateReducer.loading){
+        setQuestionLists(templateReducer.templateList)
+      }
+    },[templateReducer.loading])
+  
+    /** ESSAY의 로딩이 완료가되면 useState에 반영한다. */
+    useEffect(() => {
+      if(!essayReducer.loading){
+        setQuestionLists(essayReducer.readEssayList)
+        setQuestionTitle(essayReducer.readEssayList[0]?.title)
+      }
+    },[essayReducer.loading])
+
+  /** 수정모드에서는 기존의 리스트를 반환, 작성모드에서는 선택된 템플릿 리스트를 반환 */
   const getQuestionItem = useCallback(() => {
+    console.log(isEdit)
+    if(isEdit){
+      return questionLists
+    }
     const filteItem = questionLists.filter(
       list => list.title === questionTitle,
     );
-    console.log({ filteItem });
     return filteItem;
   }, [questionTitle]);
 
-  useEffect(() => {
-    if (router.query.editData) {
-      const editData = JSON.parse(
-        router.query.editData as string,
-      ) as questionList[];
-      setIsEdit(true);
-      setQuestionLists(editData);
-      setQuestionTitle(editData[0].title);
-      return;
-    }
-    dispatch(getTemplate())
-    /*서버통신을 이용해 템플릿을 불러온다.*/
-  }, []);
 
-  useEffect(() => {
-    if(!templateReducer.loading){
-      setQuestionLists(templateReducer.templateList)
-    }
-  },[templateReducer.loading])
-
+  /**질문FORM 추가 함수 */
   const handleAddQuestion = () => {
     if (questionTitle === "") {
       return;
@@ -148,39 +167,57 @@ const Edit = () => {
     setQuestionLists(prevLists => {
       const newLists = [...prevLists];
       const filterIndex = newLists.findIndex(a => a.title === questionTitle);
+      console.log(filterIndex)
       const newContent = [...newLists[filterIndex].qnaList, addTitle];
+      console.log(newContent)
       newLists[filterIndex].qnaList = newContent;
       return newLists;
     });
+    //추가 폼을 닫아주고 초기화
     setIsAddContent(false);
     setAddTitle("");
   };
 
+  /**서버에 새로운 질문리스트를 전송 */
   const handleSubmit = () => {
-    console.log({ title: questionListTitle, qnaList: [{ questionContent }] });
+    const data = {
+      title: questionListTitle,
+      qnaList: questionContent,
+    }
+    if(isEdit){
+      console.log(questionLists)
+      dispatch(updateEssay(data,57))
+      router.replace('/myEssay')
+      return 
+    }
+    dispatch(addEssay(data,1))
+    console.log({ title: questionListTitle, qnaList: [questionContent] });
     console.log({ questionContent });
+    router.replace('/myEssay')
   };
 
+  /** 질문추가 취소*/
   const handleCancelQuestion = () => {
     setIsAddContent(false);
   };
-
+ 
+  /** 경고창 제어 */
   const closeModal = () => {
     setIsOpenModal(false);
   };
 
   const handleTextChange = (index: number, value: string, title: string) => {
-    const filterTitle = questionContent.filter(a => a.title === title)[0];
-    console.log({ filterTitle });
+    const filterTitle = questionContent.filter(a => a.question === title)[0];
+    // console.log({ filterTitle });
     if (filterTitle) {
       const newList = [...questionContent];
-      newList[index].qnaList = value;
+      newList[index].answer = value;
       setQuestionContent(newList);
     } else {
-      setQuestionContent(cur => [...cur, { title, qnaList: " " }]);
+      setQuestionContent(cur => [...cur, { question: title, answer: " " }]);
     }
   };
-  console.log({ questionContent });
+  // console.log({ questionContent });
 
   return (
     <EditStyle>
@@ -224,6 +261,10 @@ const Edit = () => {
         <div className="button_container">
           <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>
           <div className="flex-end">
+          <CustomButton
+              onClick={()=> router.push('/myEssay')}
+              text="뒤로가기"
+            />
             <CustomButton
               onClick={handleSubmit}
               text={isEdit ? "수정완료" : "작성완료"}

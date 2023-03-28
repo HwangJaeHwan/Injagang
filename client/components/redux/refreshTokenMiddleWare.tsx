@@ -23,7 +23,7 @@ const refreshTokenMiddleWare: Middleware =
         Router.replace('/login')
         return result
       }
-      if (message.trim() === "JWT가 만료되었습니다.") {
+      if (message === "JWT가 만료되었습니다.") {
         console.log("동작");
         try {
           const data = {
@@ -41,7 +41,7 @@ const refreshTokenMiddleWare: Middleware =
         } catch (error: any) {
           const message = error.response?.data?.message
           console.log("Refresh토큰 만료")
-          if(message.trim() === 'Refresh 토큰이 만료되었습니다.'){
+          if(message === 'Refresh 토큰이 만료되었습니다.'){
             //리프레시 토큰 로그인 페이지로 보내기
             //로그인 페이지로 보내기
             console.log('토큰이 만료되었다.')
