@@ -1,6 +1,6 @@
 package com.injagang.domain;
 
-import com.injagang.domain.qna.QuestionAndAnswer;
+import com.injagang.domain.qna.EssayQnA;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +27,8 @@ public class Essay {
 
     private String title;
 
-    @OneToMany(mappedBy = "essay",cascade = CascadeType.ALL)
-    private List<QuestionAndAnswer> qnaList = new ArrayList<>();
+    @OneToMany(mappedBy = "essay",cascade = CascadeType.PERSIST)
+    private List<EssayQnA> qnaList = new ArrayList<>();
 
     @Builder
     public Essay(User user, String title) {
@@ -36,7 +36,7 @@ public class Essay {
         this.title = title;
     }
 
-    public void addQuestionAndAnswer(QuestionAndAnswer qna) {
+    public void addQnA(EssayQnA qna) {
         qnaList.add(qna);
         qna.registerEssay(this);
 

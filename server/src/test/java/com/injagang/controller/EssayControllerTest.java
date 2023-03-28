@@ -2,10 +2,11 @@ package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Essay;
-import com.injagang.domain.qna.QuestionAndAnswer;
+import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
+import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnaRequest;
@@ -43,6 +44,9 @@ class EssayControllerTest {
     EssayRepository essayRepository;
 
     @Autowired
+    QnARepository qnARepository;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -50,6 +54,7 @@ class EssayControllerTest {
 
     @BeforeEach
     void clean() {
+        qnARepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -226,26 +231,26 @@ class EssayControllerTest {
                 .build();
 
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essay.addQuestionAndAnswer(qna1);
+        essay.addQnA(qna1);
 
-        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+        EssayQnA qna2 = EssayQnA.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essay.addQuestionAndAnswer(qna2);
+        essay.addQnA(qna2);
 
-        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+        EssayQnA qna3 = EssayQnA.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essay.addQuestionAndAnswer(qna3);
+        essay.addQnA(qna3);
 
         essayRepository.save(essay);
 
@@ -280,12 +285,12 @@ class EssayControllerTest {
         IntStream.rangeClosed(1,100).forEach(
 
                 i->{
-                    QuestionAndAnswer qna = QuestionAndAnswer.builder()
+                    EssayQnA qna = EssayQnA.builder()
                             .question("test question" + i)
                             .answer("test answer" + i)
                             .build();
 
-                    QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+                    EssayQnA qna1 = EssayQnA.builder()
                             .question("test question" + i + 1)
                             .answer("test answer" + i + 1)
                             .build();
@@ -295,8 +300,8 @@ class EssayControllerTest {
                             .title("test title" + i)
                             .user(user)
                             .build();
-                    essay.addQuestionAndAnswer(qna);
-                    essay.addQuestionAndAnswer(qna1);
+                    essay.addQnA(qna);
+                    essay.addQnA(qna1);
 
                     essayRepository.save(essay);
 
@@ -334,12 +339,12 @@ class EssayControllerTest {
                 .user(user)
                 .build();
 
-        QuestionAndAnswer qna = QuestionAndAnswer.builder()
+        EssayQnA qna = EssayQnA.builder()
                 .question("question")
                 .answer("answer")
                 .build();
 
-        essay.addQuestionAndAnswer(qna);
+        essay.addQnA(qna);
 
         essayRepository.save(essay);
 
@@ -371,24 +376,24 @@ class EssayControllerTest {
                 .user(user)
                 .build();
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+        EssayQnA qna2 = EssayQnA.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+        EssayQnA qna3 = EssayQnA.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essay.addQuestionAndAnswer(qna1);
-        essay.addQuestionAndAnswer(qna2);
-        essay.addQuestionAndAnswer(qna3);
+        essay.addQnA(qna1);
+        essay.addQnA(qna2);
+        essay.addQnA(qna3);
 
         essayRepository.save(essay);
 

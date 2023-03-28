@@ -13,30 +13,23 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = PROTECTED)
-public class QuestionAndAnswer {
+public abstract class QnA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "essay_id")
-    private Essay essay;
 
     private String question;
 
     private String answer;
 
 
-    @Builder
-    public QuestionAndAnswer(String question, String answer) {
+    public QnA(String question, String answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public void registerEssay(Essay essay) {
-        this.essay = essay;
-    }
 
 }

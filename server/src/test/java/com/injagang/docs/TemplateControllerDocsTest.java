@@ -6,6 +6,7 @@ import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.EssayRepository;
+import com.injagang.repository.QnARepository;
 import com.injagang.repository.TemplateRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.TemplateCreate;
@@ -48,6 +49,9 @@ public class TemplateControllerDocsTest {
     TemplateRepository templateRepository;
 
     @Autowired
+    QnARepository qnARepository;
+
+    @Autowired
     EssayRepository essayRepository;
 
     @Autowired
@@ -56,6 +60,7 @@ public class TemplateControllerDocsTest {
 
     @BeforeEach
     void clean() {
+        qnARepository.deleteAll();
         essayRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
