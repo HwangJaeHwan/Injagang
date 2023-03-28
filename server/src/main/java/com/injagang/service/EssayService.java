@@ -1,7 +1,7 @@
 package com.injagang.service;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.qna.QuestionAndAnswer;
+import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.exception.EssayNotFoundException;
 import com.injagang.exception.UnauthorizedException;
@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class EssayService {
 
         for (QnaRequest qna : essayWrite.getQnaList()) {
 
-            essay.addQuestionAndAnswer(QuestionAndAnswer.builder()
+            essay.addQnA(EssayQnA.builder()
                     .question(qna.getQuestion())
                     .answer(qna.getAnswer())
                     .build());
@@ -61,7 +62,7 @@ public class EssayService {
 
        Essay essay = essayRepository.findById(essayId).orElseThrow(EssayNotFoundException::new);
 
-       List<QuestionAndAnswer> qnaList = qnARepository.findAllByEssay(essay);
+       List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);
 
        return new EssayRead(essay, qnaList);
 
@@ -84,19 +85,27 @@ public class EssayService {
             throw new UnauthorizedException();
         }
 
-        essay.getQnaList().clear();
         essay.reviseTitle(essayWrite.getTitle());
 
-        qnARepository.deleteAllByEssay(essay);
+        List<EssayQnA> deleteQna = qnARepository.findAllByEssay(essay);
+
+        qnARepository.deleteByEssayQnAsIn(deleteQna);
+
+        List<EssayQnA> newQnAs = new ArrayList<>();
 
         for (QnaRequest qna : essayWrite.getQnaList()) {
 
-            essay.addQuestionAndAnswer(QuestionAndAnswer.builder()
+            EssayQnA essayQnA = EssayQnA.builder()
                     .question(qna.getQuestion())
                     .answer(qna.getAnswer())
-                    .build());
+                    .build();
+
+            essayQnA.registerEssay(essay);
+            newQnAs.add(essayQnA);
 
         }
+
+        qnARepository.saveAll(newQnAs);
 
 
     }
@@ -111,6 +120,9 @@ public class EssayService {
             throw new UnauthorizedException();
         }
 
+        List<EssayQnA> deleteQna = qnARepository.findAllByEssay(essay);
+
+        qnARepository.deleteByEssayQnAsIn(deleteQna);
         essayRepository.delete(essay);
 
     }

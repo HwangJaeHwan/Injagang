@@ -1,7 +1,7 @@
 package com.injagang.service;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.qna.QuestionAndAnswer;
+import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
@@ -39,6 +39,7 @@ class EssayServiceTest {
 
     @BeforeEach
     void clean() {
+        qnARepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -113,26 +114,26 @@ class EssayServiceTest {
                 .build();
 
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essay.addQuestionAndAnswer(qna1);
+        essay.addQnA(qna1);
 
-        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+        EssayQnA qna2 = EssayQnA.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essay.addQuestionAndAnswer(qna2);
+        essay.addQnA(qna2);
 
-        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+        EssayQnA qna3 = EssayQnA.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essay.addQuestionAndAnswer(qna3);
+        essay.addQnA(qna3);
 
         essayRepository.save(essay);
 
@@ -163,12 +164,12 @@ class EssayServiceTest {
                 .build();
 
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essay1.addQuestionAndAnswer(qna1);
+        essay1.addQnA(qna1);
         essayRepository.save(essay1);
 
         Essay essay2 = Essay.builder()
@@ -177,12 +178,12 @@ class EssayServiceTest {
                 .build();
 
 
-        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+        EssayQnA qna2 = EssayQnA.builder()
                 .question("question2")
                 .answer("answer2")
                 .build();
 
-        essay2.addQuestionAndAnswer(qna2);
+        essay2.addQnA(qna2);
         essayRepository.save(essay2);
 
         Essay essay3 = Essay.builder()
@@ -191,12 +192,12 @@ class EssayServiceTest {
                 .build();
 
 
-        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+        EssayQnA qna3 = EssayQnA.builder()
                 .question("question3")
                 .answer("answer3")
                 .build();
 
-        essay3.addQuestionAndAnswer(qna3);
+        essay3.addQnA(qna3);
         essayRepository.save(essay3);
 
 
@@ -230,24 +231,24 @@ class EssayServiceTest {
                 .title("before")
                 .build();
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("questionBefore1")
                 .answer("answerBefore1")
                 .build();
 
-        QuestionAndAnswer qna2 = QuestionAndAnswer.builder()
+        EssayQnA qna2 = EssayQnA.builder()
                 .question("questionBefore2")
                 .answer("answerBefore2")
                 .build();
 
-        QuestionAndAnswer qna3 = QuestionAndAnswer.builder()
+        EssayQnA qna3 = EssayQnA.builder()
                 .question("questionBefore3")
                 .answer("answerBefore3")
                 .build();
 
-        essay.addQuestionAndAnswer(qna1);
-        essay.addQuestionAndAnswer(qna2);
-        essay.addQuestionAndAnswer(qna3);
+        essay.addQnA(qna1);
+        essay.addQnA(qna2);
+        essay.addQnA(qna3);
 
         essayRepository.save(essay);
 
@@ -278,7 +279,7 @@ class EssayServiceTest {
         essayService.reviseEssay(user.getId(),essay.getId(), revise);
 
         Essay change = essayRepository.findById(essay.getId()).get();
-        List<QuestionAndAnswer> qnaList = qnARepository.findAllByEssay(change);
+        List<EssayQnA> qnaList = qnARepository.findAllByEssay(change);
         assertEquals(3, qnARepository.count());
         assertEquals("after", change.getTitle());
         assertEquals("questionAfter1", qnaList.get(0).getQuestion());
@@ -309,12 +310,18 @@ class EssayServiceTest {
                 .build();
 
 
-        QuestionAndAnswer qna1 = QuestionAndAnswer.builder()
+        EssayQnA qna1 = EssayQnA.builder()
                 .question("question1")
                 .answer("answer1")
                 .build();
 
-        essay.addQuestionAndAnswer(qna1);
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        essay.addQnA(qna1);
+        essay.addQnA(qna2);
         essayRepository.save(essay);
 
         essayService.deleteEssay(user.getId(),essay.getId());

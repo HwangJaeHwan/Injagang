@@ -3,6 +3,7 @@ package com.injagang.oauth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.oauth.user.UserInfo;
+import com.injagang.request.Tokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -27,10 +28,16 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-        String token = jwtProvider.createAccessToken(userInfo.getUserId());
+
+        Tokens tokens = Tokens.builder()
+                .access(jwtProvider.createAccessToken(userInfo.getUserId()))
+                .refresh(jwtProvider.createRefreshToken(userInfo.getUserId()))
+                .build();
+
+        String json = objectMapper.writeValueAsString(tokens);
 
 
-        response.getWriter().write(objectMapper.writeValueAsString(Map.of("jws", token)));
+        response.getWriter().write(json);
 
     }
 }

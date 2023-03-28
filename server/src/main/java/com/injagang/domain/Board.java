@@ -1,7 +1,9 @@
 package com.injagang.domain;
 
 
-import com.injagang.domain.qna.QuestionAndAnswer;
+import com.injagang.domain.qna.BoardQnA;
+import com.injagang.domain.qna.QnA;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +36,22 @@ public class Board {
 
     private String essayTitle;
 
-    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
-    private List<QuestionAndAnswer> qnaList = new ArrayList<>();
+    @OneToMany(mappedBy = "board",cascade = CascadeType.PERSIST)
+    private List<BoardQnA> qnaList = new ArrayList<>();
 
+
+
+    @Builder
+    public Board(String title, String content, User user, String essayTitle) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.essayTitle = essayTitle;
+    }
+
+
+    public void addQnA(BoardQnA qnA) {
+        qnaList.add(qnA);
+        qnA.registerBoard(this);
+    }
 }
