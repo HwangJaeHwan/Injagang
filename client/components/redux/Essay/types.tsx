@@ -1,6 +1,7 @@
 export const ESSAY_REQUEST = "ESSAY_REQUEST";
 export const ESSAY_SUCCESS = "ESSAY_SUCCESS";
 export const ESSAY_FAILURE = "ESSAY_FAILURE";
+export const ESSAY_READ_SUCCESS = "ESSAY_READ_SUCCESS";
 export const ERROR_CLEAR = "ERROR_CLEAR";
 
 export interface essayRequest {
@@ -13,6 +14,12 @@ export type qnaList = {
 };
 
 export type essayState = {
+  essayId: number;
+  title: string;
+  questions: string[];
+};
+
+export type readEssayState = {
   essayId: number;
   title: string;
   qnaList: qnaList[];
@@ -28,7 +35,14 @@ export interface essayFailDispatch {
 export interface essaySuccessDispatch {
   type: typeof ESSAY_SUCCESS;
   payload: {
-    essayState: essayState[];
+    list: essayState[];
+  };
+}
+
+export interface essayReadSuccessDispatch {
+  type: typeof ESSAY_READ_SUCCESS;
+  payload: {
+    readList: readEssayState[];
   };
 }
 
@@ -39,4 +53,5 @@ export interface errorClear {
 export type essayDispatchType =
   | essayRequest
   | essayFailDispatch
-  | essaySuccessDispatch;
+  | essaySuccessDispatch
+  | essayReadSuccessDispatch;

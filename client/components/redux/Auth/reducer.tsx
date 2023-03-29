@@ -4,6 +4,7 @@ import {
   AUTHENTICATE_FAILURE,
   CLEAR_ERROR,
   authDispatchType,
+  PROFILE_SUCCESS,
 } from "./types";
 import Cookies from "js-cookie";
 
@@ -30,14 +31,22 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         success: false,
       };
     case AUTHENTICATE_SUCCESS:
-      const { token, role } = action.payload;
-      Cookies.set("jwtToken", token, { expires: 1 });
+      const { access,refresh} = action.payload;
+      Cookies.set("accessToken", access, { expires: 1 });
+      Cookies.set("refreshToken", refresh, { expires: 1 });
       return {
         ...state,
         loading: false,
         success: true,
-        role: role,
       };
+    case PROFILE_SUCCESS: 
+      return {
+        ...state,
+        loading: false,
+        nickName: action.payload.nickname,
+        role: action.payload.role,
+        success: true,
+      }
     case AUTHENTICATE_FAILURE:
       return {
         ...state,
@@ -49,6 +58,7 @@ const authReducer = (state = initialState, action: authDispatchType) => {
       return {
         ...state,
         error: null,
+        success: false,
       };
     default:
       return state;

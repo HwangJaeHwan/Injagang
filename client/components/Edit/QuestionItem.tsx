@@ -32,14 +32,11 @@ const Card = styled.div`
     ${ScrollBar}
   }
 `;
-interface questionList {
-  title: string;
-  qnaList: string[];
-}
+
 
 interface qnaListItem {
-  title: string;
-  qnaList: string;
+  question: string;
+  answer: string;
 }
 
 interface qnaList extends Array<qnaListItem> {}
@@ -68,7 +65,7 @@ const QuestionItem = ({
     }
     console.log("여기 들어왔다.")
     const title = typeof content === "string" ? content : content.question;
-    questionContent(cur => [...cur, {title, qnaList: ""}]);
+    questionContent(cur => [...cur, {question:title, answer: ""}]);
     if (typeof content !== "string") {
       setText(content.answer);
     }

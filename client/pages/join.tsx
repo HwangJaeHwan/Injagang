@@ -72,6 +72,7 @@ const SignupPage = () => {
     const joinData = {
       loginId: joinInfo.loginId,
       password: joinInfo.password,
+      passwordCheck: joinInfo.confirmPassword,
       email: joinInfo.email,
       nickname: joinInfo.nickName,
     };

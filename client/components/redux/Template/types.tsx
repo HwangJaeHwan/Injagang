@@ -10,7 +10,7 @@ export type TemplateState = {
   templateId: number;
   title: string;
   questions?: string[];
-  qnaList?: string[];
+  qnaList: string[];
 };
 
 export interface templateFailDispatch {

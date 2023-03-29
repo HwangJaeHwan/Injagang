@@ -1,0 +1,56 @@
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  authenTicate,
+  clearAuthError,
+  getProfile,
+} from "@/components/redux/Auth/actions";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Auth/reducer";
+import { access } from "fs";
+
+type WithAuthProps = {
+  [key: string]: any;
+};
+
+const WithAuth = <P extends WithAuthProps>(
+  WrappedComponent: React.ComponentType<P>,
+) => {
+  return (props: P) => {
+    const [verified, setVerified] = useState(false);
+    const router = useRouter();
+    const routes = ["/join", "/login"];
+    const whiteList = routes.includes(router.asPath);
+    const authReducer: InitiaState = useSelector(
+      (state: RootReducerType) => state.auth,
+    );
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      const accessToken = Cookies.get("accessToken");
+      if (!accessToken) {
+        router.replace("/login");
+        return
+      } else {
+        dispatch(getProfile());
+      }
+    }, []);
+
+    useEffect(() => {
+        if(authReducer.success){
+            setVerified(true)
+        }
+    },[authReducer.success])
+
+    if (verified || whiteList) {
+      return <WrappedComponent {...props} />;
+    } else {
+      return null;
+    }
+  };
+};
+
+export default WithAuth;

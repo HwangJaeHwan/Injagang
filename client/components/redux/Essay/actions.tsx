@@ -9,6 +9,7 @@ import {
   essayDispatchType,
   errorClear,
   qnaList,
+  ESSAY_READ_SUCCESS,
 } from "./types";
 
 interface EssayList {
@@ -17,10 +18,10 @@ interface EssayList {
 }
 
 const headers = {
-  Authorization: Cookies.get("jwtToken"),
+  Authorization: Cookies.get("accessToken"),
 };
 
-/**자소서 추가 요청후 반영된 자소서 요청  */
+/**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =
   (essayData: EssayList, userId: number) =>
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
@@ -29,6 +30,44 @@ export const addEssay =
       const request = await fetcher(METHOD.POST, "/essay/write", essayData, {
         headers,
       });
+    } catch (error: any) {
+      dispatch({
+        type: ESSAY_FAILURE,
+        payload: {
+          error,
+        },
+      });
+    }
+  };
+
+export const updateEssay =
+  (modifiedEssayData: EssayList, essayId: number) =>
+  async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
+    try {
+      const request = await fetcher(
+        METHOD.PATCH,
+        `essay/revise/${essayId}`,
+        modifiedEssayData,
+        {
+          headers,
+        },
+      );
+    } catch (error: any) {
+      dispatch({
+        type: ESSAY_FAILURE,
+        payload: {
+          error,
+        },
+      });
+    }
+  };
+
+/**자소서리스트 요청API*/
+export const getEssayList =
+  (userId: number) =>
+  async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
+    try {
+      dispatch({ type: ESSAY_REQUEST });
       const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
         headers,
       });
@@ -36,7 +75,7 @@ export const addEssay =
         dispatch({
           type: ESSAY_SUCCESS,
           payload: {
-            essayState: response.data,
+            list: response.data,
           },
         });
       }
@@ -50,20 +89,20 @@ export const addEssay =
     }
   };
 
-/**자소서리스트 요청*/
-export const getEssayList =
-  (userId: number) =>
+/**자소서 세부내용 읽기요청 API */
+export const readEssayList =
+  (essayId: number) =>
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       dispatch({ type: ESSAY_REQUEST });
-      const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
+      const response = await fetcher(METHOD.GET, `/essay/read/${essayId}`, {
         headers,
       });
       if (response) {
         dispatch({
-          type: ESSAY_SUCCESS,
+          type: ESSAY_READ_SUCCESS,
           payload: {
-            essayState: response.data,
+            readList: [response.data],
           },
         });
       }
