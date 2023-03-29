@@ -2,6 +2,7 @@ export const AUTHENTICATE_REQUEST = "AUTHENTICATE_REQUEST";
 export const AUTHENTICATE_SUCCESS = "AUTHENTICATE_SUCCESS";
 export const AUTHENTICATE_FAILURE = "AUTHENTICATE_FAILURE";
 export const PROFILE_SUCCESS = "PROFILE_SUCCESS"
+export const AUTH_INIT = "AUTH_INIT"
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export interface authRequest {
@@ -10,6 +11,10 @@ export interface authRequest {
 
 export interface CLEAR_ERROR {
   type: typeof CLEAR_ERROR;
+}
+
+export interface AUTH_INIT {
+  type: typeof AUTH_INIT;
 }
 
 export interface authFailDispatch {
@@ -40,4 +45,5 @@ export type authDispatchType =
   | authFailDispatch
   | authSuccessDispatch
   | profileSuccessDispatch
+  | AUTH_INIT
   | CLEAR_ERROR;

@@ -6,6 +6,10 @@ import Drage from "@/components/test/drag";
 import { ColBox } from "@/styles/GlobalStyle";
 import TextReader from "@/components/test/TextReder";
 
+import { useSelector } from "react-redux";
+import { RootReducerType } from "@/components/redux/store";
+import { InitiaState } from "@/components/redux/Auth/reducer";
+
 const AdminPageStyle = styled.div`
   ${ColBox}
 `;
@@ -17,13 +21,18 @@ const members = [
 ];
 
 const AdminPage = () => {
-  return (
+  const authReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.auth,
+  );
+  return authReducer.role === "ADMIN" ? (
     <AdminPageStyle>
       <MemberTable members={members} />
       <TemplateView />
       <Drage />
       <TextReader />
     </AdminPageStyle>
+  ) : (
+    <div>당신은 관리자가 아닙니다.</div>
   );
 };
 

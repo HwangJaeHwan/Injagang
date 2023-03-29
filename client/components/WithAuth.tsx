@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
-  authenTicate,
-  clearAuthError,
   getProfile,
 } from "@/components/redux/Auth/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
-import { access } from "fs";
 
 type WithAuthProps = {
   [key: string]: any;
@@ -22,7 +19,7 @@ const WithAuth = <P extends WithAuthProps>(
   return (props: P) => {
     const [verified, setVerified] = useState(false);
     const router = useRouter();
-    const routes = ["/join", "/login"];
+    const routes = ["/join", "/login","/"];
     const whiteList = routes.includes(router.asPath);
     const authReducer: InitiaState = useSelector(
       (state: RootReducerType) => state.auth,
@@ -31,13 +28,16 @@ const WithAuth = <P extends WithAuthProps>(
 
     useEffect(() => {
       const accessToken = Cookies.get("accessToken");
+      if (whiteList){
+        return
+      }
       if (!accessToken) {
         router.replace("/login");
         return
       } else {
         dispatch(getProfile());
       }
-    }, []);
+    }, [router.asPath]);
 
     useEffect(() => {
         if(authReducer.success){
@@ -45,7 +45,7 @@ const WithAuth = <P extends WithAuthProps>(
         }
     },[authReducer.success])
 
-    if (verified || whiteList) {
+    if (verified || whiteList ) {
       return <WrappedComponent {...props} />;
     } else {
       return null;

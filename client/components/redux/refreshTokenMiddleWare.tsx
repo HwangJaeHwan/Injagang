@@ -3,10 +3,6 @@ import Cookies from "js-cookie";
 import { Middleware } from "redux";
 import fetcher, { METHOD } from "../test/fecher";
 import Router from "next/router";
-import {
-  clearAuthError
-} from "@/components/redux/Auth/actions";
-import { CLEAR_ERROR } from "./Auth/types";
 
 
 
@@ -35,8 +31,10 @@ const refreshTokenMiddleWare: Middleware =
             const { access } = response.data;
             Cookies.set("accessToken", access);
             action.payload.error.config.headers.Authorization =
-            Cookies.get("accessToken");
+            access
             const request = await axios.request(config)
+            console.log({access})
+            console.log(Cookies.get("accessToken"))
           }
         } catch (error: any) {
           const message = error.response?.data?.message

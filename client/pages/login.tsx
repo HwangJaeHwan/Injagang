@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
 // import { getToken } from "@/components/test/api";
-import { authenTicate, clearAuthError } from "@/components/redux/Auth/actions";
+import { authenTicate, clearAuthError, getProfile } from "@/components/redux/Auth/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
 
@@ -150,8 +150,10 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (authReducer.success) {
+      dispatch(getProfile());
       dispatch(clearAuthError());
       router.replace("/");
+      return
     }
     if (authReducer.error) {
       setErrorMsg("아이디나 비밀번호가 일치하지않습니다.");

@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState, ReactElement } from "react";
+import { useState, ReactElement, useEffect } from "react";
 import { BiSun, BiRocket, BiMoon, BiLogOut, BiLogIn } from "react-icons/bi";
 import { GrUserAdmin } from "react-icons/gr";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import { InitiaState } from "../redux/Auth/reducer";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { checkOut } from "../redux/Auth/actions";
+import Cookies from "js-cookie";
 const NavStyle = styled.nav`
   position: fixed;
   height: 100%;
@@ -115,9 +119,18 @@ interface NavbarProps {
 
 const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
   const authReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.auth,
   );
+
+
+  const handleCheckOut = () => {
+    dispatch(checkOut());
+    return;
+  };
+
   return (
     <NavStyle>
       <NavTop>
@@ -145,12 +158,16 @@ const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
         </NavMenu>
       </NavTop>
       <NavBottom>
-        {authReducer.role === "admin" && (
+        {authReducer.role === "ADMIN" && (
           <StyledLink href="/admin">
             <GrUserAdmin />
           </StyledLink>
         )}
-        {mode === true ? <BiLogIn /> : <BiLogOut />}
+        {authReducer.role === "" ? (
+          <BiLogIn onClick={() => router.push("/login")} />
+        ) : (
+          <BiLogOut onClick={handleCheckOut} />
+        )}
         {mode === true ? (
           <BiSun onClick={toggleTheme} />
         ) : (

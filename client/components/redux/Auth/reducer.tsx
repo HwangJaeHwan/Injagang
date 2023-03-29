@@ -5,6 +5,7 @@ import {
   CLEAR_ERROR,
   authDispatchType,
   PROFILE_SUCCESS,
+  AUTH_INIT,
 } from "./types";
 import Cookies from "js-cookie";
 
@@ -24,14 +25,16 @@ const initialState: InitiaState = {
 
 const authReducer = (state = initialState, action: authDispatchType) => {
   switch (action.type) {
+
     case AUTHENTICATE_REQUEST:
       return {
         ...state,
         loading: true,
         success: false,
       };
+
     case AUTHENTICATE_SUCCESS:
-      const { access,refresh} = action.payload;
+      const { access, refresh } = action.payload;
       Cookies.set("accessToken", access, { expires: 1 });
       Cookies.set("refreshToken", refresh, { expires: 1 });
       return {
@@ -39,14 +42,18 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         loading: false,
         success: true,
       };
-    case PROFILE_SUCCESS: 
+
+    case PROFILE_SUCCESS:
+      const { role, nickname } = action.payload;
+      sessionStorage.setItem("info", JSON.stringify({ role, nickname }));
       return {
         ...state,
         loading: false,
-        nickName: action.payload.nickname,
-        role: action.payload.role,
+        nickname,
+        role,
         success: true,
-      }
+      };
+
     case AUTHENTICATE_FAILURE:
       return {
         ...state,
@@ -54,12 +61,24 @@ const authReducer = (state = initialState, action: authDispatchType) => {
         success: false,
         error: action.payload,
       };
+
     case CLEAR_ERROR:
       return {
         ...state,
         error: null,
         success: false,
       };
+
+    case AUTH_INIT: 
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+      return {
+        loading: false,
+        role: "",
+        error: null,
+        success: false,
+      }
+
     default:
       return state;
   }
