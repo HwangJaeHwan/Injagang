@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
+import com.injagang.repository.BoardRepository;
+import com.injagang.repository.EssayRepository;
+import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
@@ -45,10 +48,22 @@ class AuthControllerTest {
     TestHelper testHelper;
 
     @Autowired
+    QnARepository qnARepository;
+
+    @Autowired
+    BoardRepository boardRepository;
+
+    @Autowired
+    EssayRepository essayRepository;
+
+    @Autowired
     RedisDao redisDao;
 
     @BeforeEach
     void clean() {
+        qnARepository.deleteAll();
+        boardRepository.deleteAll();
+        essayRepository.deleteAll();
         userRepository.deleteAll();
         redisDao.clear();
     }

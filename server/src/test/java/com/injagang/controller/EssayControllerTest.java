@@ -5,6 +5,7 @@ import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
+import com.injagang.repository.BoardRepository;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
@@ -52,9 +53,14 @@ class EssayControllerTest {
     @Autowired
     TestHelper testHelper;
 
+    @Autowired
+    BoardRepository boardRepository;
+
+
     @BeforeEach
     void clean() {
         qnARepository.deleteAll();
+        boardRepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
 

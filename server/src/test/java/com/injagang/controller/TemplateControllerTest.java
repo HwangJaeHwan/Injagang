@@ -5,8 +5,7 @@ import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.TemplateRepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.TemplateCreate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,9 +42,21 @@ class TemplateControllerTest {
     @Autowired
     TestHelper testHelper;
 
+    @Autowired
+    QnARepository qnARepository;
+
+    @Autowired
+    BoardRepository boardRepository;
+
+    @Autowired
+    EssayRepository essayRepository;
+
 
     @BeforeEach
     void clean() {
+        qnARepository.deleteAll();
+        essayRepository.deleteAll();
+        boardRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
     }
