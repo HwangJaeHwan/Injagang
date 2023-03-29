@@ -8,6 +8,8 @@ import { authenTicate, clearAuthError, getProfile } from "@/components/redux/Aut
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
 
+
+// 오류가 발생했을시 흔드는 효과 
 const shakeAnimation = keyframes`
   0% {
     transform: translateX(0);

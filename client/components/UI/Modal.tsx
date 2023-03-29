@@ -11,6 +11,8 @@ interface ModalProps {
   };
 }
 
+
+/**경고메시지를 출력하기 위한 역할 */
 const Modal = ({ isOpen, onClose, contents }: ModalProps) => {
   return (
     <ModalStyle isOpen={isOpen}>

@@ -28,7 +28,6 @@ interface CurList {
   essayId: number;
 }
 
-
 const MyListStyle = styled.div`
   width: 45rem;
   height: 550px;
@@ -85,7 +84,7 @@ const ListContainer = styled.div`
 const MyList = () => {
   const [curList, setCurList] = useState<CurList>({ index: -1, essayId: -1 });
   const [preViewList, setPreViewList] = useState<string[]>([]);
-  const [editList, setEditList] = useState<EssayList[]>([]);
+  const [firstCall, setFirstCall] = useState<boolean>(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -93,25 +92,26 @@ const MyList = () => {
     (state: RootReducerType) => state.essay,
   );
 
-  useEffect(() => {
-    dispatch(getEssayList(1))
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getEssayList(1))
+  // }, []);  기존에는 최초 로딩시 리스트를 가져왔는데 그렇게 최신화를 반영하기 위한 의존성 배열이 dispatch인 useEffect이 동작하여 두번의 리스트 요청이 이루어졌다. firstCall을 생성하여 최초에 firstCall State가 변경되는 상황으로 두번의리스트요청 문제를 해결 
 
-  useEffect(()=> {
+
+  //EssayList의 최신화가 이루어질때마다 바로 반영하기위한 
+  useEffect(() => {
     setTimeout(() => {
-      dispatch(getEssayList(1))
-    },100)
-  },[dispatch])
+      dispatch(getEssayList(1));
+    }, 100);
+  }, [dispatch, firstCall]);
 
   useEffect(() => {
     const filterList = essayReducer.essayList.filter(
       list => list.essayId === curList.essayId,
     );
-    setPreViewList(
-      cur => filterList.map(a => a.questions.map(a => a))[0],
-    );
-  },[curList])
+    setPreViewList(cur => filterList.map(a => a.questions.map(a => a))[0]);
+  }, [curList]);
 
+  /** 현재의 선택된 리스트에 정보를 획득하고 useEffect을 동작 */
   const getMyListView = (index: number, essayId: number) => {
     setCurList({ index, essayId });
   };
@@ -138,7 +138,7 @@ const MyList = () => {
                 onClick={() =>
                   router.push({
                     pathname: "/edit",
-                    query: {essayId: JSON.stringify(curList.essayId) },
+                    query: { essayId: JSON.stringify(curList.essayId) },
                   })
                 }
               />

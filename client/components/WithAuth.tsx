@@ -28,6 +28,7 @@ const WithAuth = <P extends WithAuthProps>(
 
     useEffect(() => {
       const accessToken = Cookies.get("accessToken");
+      //인증이 필요없는 페이지 통과
       if (whiteList){
         return
       }

@@ -30,6 +30,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
+/**컴포넌트와 navbar의 영역을 분할하고, 전체 컴포넌트의 렌더링을 통제하기 위한 역할*/
 const Layout = ({ children }: LayoutProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const router = useRouter();
@@ -42,6 +43,7 @@ const Layout = ({ children }: LayoutProps) => {
     localStorage.setItem("theme", JSON.stringify(newMode));
   };
 
+  //유저의 브라우저에 저장된 테마를 반영하기위한 역할 
   useEffect(() => {
     const storageTheme = localStorage.getItem("theme");
     if (storageTheme) {
@@ -57,7 +59,8 @@ const Layout = ({ children }: LayoutProps) => {
     path: string;
     icon: ReactElement;
   };
-
+  
+  /**Navbar에 생성할 리스트를 통제하기 위한 역할*/
   const items: MenuItem[] = [
     {
       title: "자소서작성",
