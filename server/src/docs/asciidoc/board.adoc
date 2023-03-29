@@ -1,0 +1,29 @@
+= 인자강 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 게시글 쓰기
+
+=== 요청
+include::{snippets}/board-write/http-request.adoc[]
+include::{snippets}/board-write/request-headers.adoc[]
+include::{snippets}/board-write/request-fields.adoc[]
+
+
+== 게시글 읽기
+
+=== 요청
+include::{snippets}/board-read/http-request.adoc[]
+include::{snippets}/board-read/request-headers.adoc[]
+include::{snippets}/board-read/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/board-read/http-response.adoc[]
+include::{snippets}/board-read/response-fields.adoc[]
+

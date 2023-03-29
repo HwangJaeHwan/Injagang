@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
+import com.injagang.repository.BoardRepository;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
@@ -35,11 +36,15 @@ class EssayServiceTest {
     QnARepository qnARepository;
 
     @Autowired
+    BoardRepository boardRepository;
+
+    @Autowired
     EssayService essayService;
 
     @BeforeEach
     void clean() {
         qnARepository.deleteAll();
+        boardRepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
     }

@@ -3,8 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
-import com.injagang.repository.TemplateRepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.TemplateCreate;
 import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
@@ -32,8 +31,20 @@ class TemplateServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    QnARepository qnARepository;
+
+    @Autowired
+    BoardRepository boardRepository;
+
+    @Autowired
+    EssayRepository essayRepository;
+
     @BeforeEach
-    void clean(){
+    void clean() {
+        qnARepository.deleteAll();
+        boardRepository.deleteAll();
+        essayRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -144,6 +155,12 @@ class TemplateServiceTest {
 
         List<TemplateList> templates = templateService.templates();
 
+        for (TemplateList template : templates) {
+            System.out.println(template.getTitle());
+
+        }
+
+
         assertEquals(3, templates.size());
         assertThat(templates.get(0).getTitle()).isEqualTo("template1");
         assertThat(templates.get(0).getQuestions().get(0)).isEqualTo("question1");
@@ -178,6 +195,12 @@ class TemplateServiceTest {
                         .build());
 
         templateRepository.save(template);
+
+        List<Template> all = templateRepository.findAll();
+
+        for (Template template1 : all) {
+            System.out.println(template1.getTitle());
+        }
 
 
         assertEquals(1L, templateRepository.count());
