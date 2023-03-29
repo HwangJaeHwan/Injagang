@@ -89,6 +89,7 @@ const TemplateView = () => {
     setCurTemplateList([]);
   };
 
+  /**최신화된 템플릿 리스트를 요청한다. */
   useEffect(() => {
     dispatch(getTemplate());
   }, []);
@@ -116,7 +117,7 @@ const TemplateView = () => {
           ) : (
             <div className="endTitle">
               {curTemplateList.length < 1 ? (
-                <div style={{ color: "red" }}>현재의 리스트가 없습니다.</div>
+                <div style={{ color: "red" }}>현재 선택된 리스트가 없습니다.</div>
               ) : (
                 <>
                   {curTemplateList.map((question, index) => (

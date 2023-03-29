@@ -103,19 +103,18 @@ const MyList = () => {
     },100)
   },[dispatch])
 
-  const getMyListView = (index: number, essayId: number) => {
-    setCurList({ index, essayId });
+  useEffect(() => {
     const filterList = essayReducer.essayList.filter(
       list => list.essayId === curList.essayId,
     );
-    console.log("Reducer",essayReducer.essayList);
-    console.log("FilterList",filterList);
     setPreViewList(
       cur => filterList.map(a => a.questions.map(a => a))[0],
     );
-  };
+  },[curList])
 
-  const handleAddList = () => {};
+  const getMyListView = (index: number, essayId: number) => {
+    setCurList({ index, essayId });
+  };
 
   return (
     <MyListStyle>
