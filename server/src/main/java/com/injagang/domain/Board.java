@@ -54,4 +54,14 @@ public class Board {
         qnaList.add(qnA);
         qnA.registerBoard(this);
     }
+
+    public void reviseTitle(String changeTitle) {
+
+        this.title = changeTitle;
+    }
+
+    public void reviseContent(String changeContent) {
+
+        this.content = changeContent;
+    }
 }

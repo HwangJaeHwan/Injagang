@@ -5,10 +5,7 @@ import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.exception.*;
 import com.injagang.repository.UserRepository;
-import com.injagang.request.Login;
-import com.injagang.request.PasswordChange;
-import com.injagang.request.SignUp;
-import com.injagang.request.Tokens;
+import com.injagang.request.*;
 import com.injagang.response.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -137,15 +134,15 @@ public class AuthService {
 
     }
 
-    public void nicknameChange(Long userId, String changeNickname) {
+    public void nicknameChange(Long userId, NicknameChange nicknameChange) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        if (userRepository.findUserByNickname(changeNickname).isPresent()) {
+        if (userRepository.findUserByNickname(nicknameChange.getChangeNickname()).isPresent()) {
             throw new DuplicateNicknameException();
         }
 
-        user.changeNickname(changeNickname);
+        user.changeNickname(nicknameChange.getChangeNickname());
 
 
     }

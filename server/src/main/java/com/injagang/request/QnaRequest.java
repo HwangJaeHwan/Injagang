@@ -2,10 +2,12 @@ package com.injagang.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@NoArgsConstructor
 public class QnaRequest {
 
     @NotBlank(message = "질문을 입력해 주세요")

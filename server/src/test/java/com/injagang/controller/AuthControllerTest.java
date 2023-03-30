@@ -8,10 +8,7 @@ import com.injagang.repository.BoardRepository;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
-import com.injagang.request.Login;
-import com.injagang.request.PasswordChange;
-import com.injagang.request.SignUp;
-import com.injagang.request.Tokens;
+import com.injagang.request.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -142,9 +139,11 @@ class AuthControllerTest {
 
         String jws = testHelper.makeAccessToken(user.getId());
 
-        Map<String, String> map = Map.of("changeNickname", "change");
+        NicknameChange changeNickname = NicknameChange.builder()
+                .changeNickname("changeNickname")
+                .build();
 
-        String json = objectMapper.writeValueAsString(map);
+        String json = objectMapper.writeValueAsString(changeNickname);
 
 
         mockMvc.perform(patch("/nicknameChange")

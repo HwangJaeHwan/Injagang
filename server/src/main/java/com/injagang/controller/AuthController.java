@@ -5,10 +5,7 @@ import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.exception.RefreshTokenExpiredException;
-import com.injagang.request.Login;
-import com.injagang.request.PasswordChange;
-import com.injagang.request.Tokens;
-import com.injagang.request.SignUp;
+import com.injagang.request.*;
 import com.injagang.response.AccessTokenResponse;
 import com.injagang.response.LoginResponse;
 import com.injagang.response.UserInfo;
@@ -91,9 +88,9 @@ public class AuthController {
     }
 
     @PatchMapping("/nicknameChange")
-    public void nicknameChange(UserSession userSession, @RequestBody @Valid String changeNickname) {
+    public void nicknameChange(UserSession userSession, @RequestBody @Valid NicknameChange nicknameChange) {
 
-        authService.nicknameChange(userSession.getUserId(), changeNickname);
+        authService.nicknameChange(userSession.getUserId(), nicknameChange);
     }
 
 }

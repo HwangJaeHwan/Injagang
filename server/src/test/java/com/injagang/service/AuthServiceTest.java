@@ -9,10 +9,7 @@ import com.injagang.repository.BoardRepository;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
-import com.injagang.request.Login;
-import com.injagang.request.PasswordChange;
-import com.injagang.request.SignUp;
-import com.injagang.request.Tokens;
+import com.injagang.request.*;
 import com.injagang.response.UserInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -182,7 +179,13 @@ class AuthServiceTest {
 
         userRepository.save(user);
 
-        authService.nicknameChange(user.getId(), "changeNickname");
+        NicknameChange changeNickname = NicknameChange.builder()
+                .changeNickname("changeNickname")
+                .build();
+
+
+
+        authService.nicknameChange(user.getId(), changeNickname);
         User findUser = userRepository.findById(user.getId()).get();
 
         assertEquals("changeNickname", findUser.getNickname());
@@ -213,8 +216,12 @@ class AuthServiceTest {
         userRepository.save(user);
         userRepository.save(user2);
 
+        NicknameChange changeNickname = NicknameChange.builder()
+                .changeNickname("test")
+                .build();
 
-        assertThrows(DuplicateNicknameException.class, () -> authService.nicknameChange(user.getId(), "test"));
+
+        assertThrows(DuplicateNicknameException.class, () -> authService.nicknameChange(user.getId(), changeNickname));
 
 
     }
