@@ -5,6 +5,7 @@ import {
   CLEAR_ERROR,
   authDispatchType,
   PROFILE_SUCCESS,
+  AUTH_INIT,
 } from "./types";
 import { METHOD } from "@/components/test/fecher";
 import fetcher from "@/components/test/fecher";
@@ -16,9 +17,15 @@ type AuthenTicate = {
   password: string;
 };
 
-const headers = {
-  Authorization: Cookies.get("accessToken"),
+type PassWordChange = {
+  nowPassword: string;
+  changePassword: string;
+  changePasswordCheck: string;
 };
+
+// const headers = {
+//   Authorization: Cookies.get("accessToken"),
+// }; // 최악의 오류의 늪에 빠지게한 원인
 
 export const authenTicate =
   (loginData: AuthenTicate) =>
@@ -42,11 +49,29 @@ export const authenTicate =
     }
   };
 
+export const checkOut =
+  () =>
+  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+    try {
+      const data = {
+        access: Cookies.get("accessToken"),
+        refresh: Cookies.get("refreshToken"),
+      };
+      const request = await fetcher(METHOD.POST, "/logout", data);
+      dispatch({ type: AUTH_INIT });
+    } catch (error: any) {
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+    }
+  };
+
 export const getProfile =
   () =>
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     try {
-      const response = await fetcher(METHOD.GET, "/info", { headers });
+      // console.log({ headers });
+      const response = await fetcher(METHOD.GET, "/info", {
+        headers: { Authorization: Cookies.get("accessToken") },
+      });
       if (response) {
         dispatch({
           type: PROFILE_SUCCESS,
@@ -56,6 +81,40 @@ export const getProfile =
           },
         });
       }
+    } catch (error: any) {
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+    }
+  };
+
+export const nicknameChange =
+  (nickName: string) =>
+  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+    dispatch({ type: AUTHENTICATE_REQUEST });
+    const data = {
+      changeNickname: nickName,
+    };
+    try {
+      const response = await fetcher(METHOD.PATCH, "/nicknameChange", data, {
+        headers: { Authorization: Cookies.get("accessToken") },
+      });
+    } catch (error: any) {
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+    }
+  };
+
+export const passWordChange =
+  (changePassWordData: PassWordChange) =>
+  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+    dispatch({ type: AUTHENTICATE_REQUEST });
+    try {
+      const response = await fetcher(
+        METHOD.PATCH,
+        "/passwordChange",
+        changePassWordData,
+        {
+          headers: { Authorization: Cookies.get("accessToken") },
+        },
+      );
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }

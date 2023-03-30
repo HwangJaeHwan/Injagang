@@ -1,11 +1,22 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState, ReactElement } from "react";
-import { BiSun, BiRocket, BiMoon, BiLogOut, BiLogIn } from "react-icons/bi";
+import { useState, ReactElement, useEffect } from "react";
+import {
+  BiSun,
+  BiRocket,
+  BiMoon,
+  BiLogOut,
+  BiLogIn,
+  BiUser,
+} from "react-icons/bi";
 import { GrUserAdmin } from "react-icons/gr";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import { InitiaState } from "../redux/Auth/reducer";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { checkOut } from "../redux/Auth/actions";
+import Cookies from "js-cookie";
 const NavStyle = styled.nav`
   position: fixed;
   height: 100%;
@@ -99,6 +110,20 @@ const NavBottom = styled.div`
   flex-direction: column;
   gap: 15px;
   cursor: pointer;
+  .profile {
+    /* position: relative;
+    height: 150px;
+    width: 150px;
+    background-color: red;
+    color: red; */
+  }
+`;
+
+const ProfileBar = styled.div`
+  position: relative;
+  height: 100px;
+  width: 100px;
+  background-color: red;
 `;
 
 interface MenuItem {
@@ -108,16 +133,25 @@ interface MenuItem {
 }
 
 interface NavbarProps {
-  items: MenuItem[];
+  navitems: MenuItem[];
   toggleTheme: () => void;
   mode: boolean;
 }
 
-const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
+const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfile, setIsProfile] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
   const authReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.auth,
   );
+
+  const handleCheckOut = () => {
+    dispatch(checkOut());
+    return;
+  };
+
   return (
     <NavStyle>
       <NavTop>
@@ -130,7 +164,7 @@ const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
           </NavLink>
         </StyledLink>
         <NavMenu>
-          {items.map(({ title, path, icon }) => (
+          {navitems.map(({ title, path, icon }) => (
             <NavItem key={title}>
               <StyledLink href={path} style={{ textDecoration: "none" }}>
                 <NavLink>
@@ -145,17 +179,22 @@ const Navbar = ({ items, toggleTheme, mode }: NavbarProps) => {
         </NavMenu>
       </NavTop>
       <NavBottom>
-        {authReducer.role === "admin" && (
+        {authReducer.role === "ADMIN" && (
           <StyledLink href="/admin">
             <GrUserAdmin />
           </StyledLink>
         )}
-        {mode === true ? <BiLogIn /> : <BiLogOut />}
+        {authReducer.role === "" ? (
+          <BiLogIn onClick={() => router.push("/login")} />
+        ) : (
+          <BiLogOut onClick={handleCheckOut} />
+        )}
         {mode === true ? (
           <BiSun onClick={toggleTheme} />
         ) : (
           <BiMoon onClick={toggleTheme} />
         )}
+          <BiUser onClick={() => router.push("/myPage")}></BiUser>
       </NavBottom>
     </NavStyle>
   );

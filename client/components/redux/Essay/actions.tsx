@@ -17,10 +17,6 @@ interface EssayList {
   qnaList: qnaList[];
 }
 
-const headers = {
-  Authorization: Cookies.get("accessToken"),
-};
-
 /**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =
   (essayData: EssayList, userId: number) =>
@@ -28,7 +24,7 @@ export const addEssay =
     try {
       dispatch({ type: ESSAY_REQUEST });
       const request = await fetcher(METHOD.POST, "/essay/write", essayData, {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
     } catch (error: any) {
       dispatch({
@@ -49,7 +45,7 @@ export const updateEssay =
         `essay/revise/${essayId}`,
         modifiedEssayData,
         {
-          headers,
+          headers: { Authorization: Cookies.get("accessToken") },
         },
       );
     } catch (error: any) {
@@ -69,7 +65,7 @@ export const getEssayList =
     try {
       dispatch({ type: ESSAY_REQUEST });
       const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
       if (response) {
         dispatch({
@@ -96,7 +92,7 @@ export const readEssayList =
     try {
       dispatch({ type: ESSAY_REQUEST });
       const response = await fetcher(METHOD.GET, `/essay/read/${essayId}`, {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
       if (response) {
         dispatch({

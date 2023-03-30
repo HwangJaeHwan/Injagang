@@ -14,9 +14,6 @@ type TemplateAdd = {
   questions: string[];
 };
 
-const headers = {
-  Authorization: Cookies.get("accessToken"),
-};
 
 /**템플릿을 삭제 요청후 삭제가 반영된 템플릿 요청*/
 export const removeTemplate =
@@ -28,11 +25,11 @@ export const removeTemplate =
         METHOD.DELETE,
         `/template/${templateId}`,
         {
-          headers,
+          headers: { Authorization: Cookies.get("accessToken") },
         },
       );
       const response = await fetcher(METHOD.GET, "/template", {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
       if (response) {
         dispatch({
@@ -63,11 +60,11 @@ export const addTemplate =
         "/template/add",
         listData,
         {
-          headers,
+          headers: { Authorization: Cookies.get("accessToken") },
         },
       );
       const response = await fetcher(METHOD.GET, "/template", {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
       if (response) {
         dispatch({
@@ -94,7 +91,7 @@ export const getTemplate =
     try {
       dispatch({ type: TEMPLATE_REQUEST });
       const response = await fetcher(METHOD.GET, "/template", {
-        headers,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
       if (response) {
         dispatch({

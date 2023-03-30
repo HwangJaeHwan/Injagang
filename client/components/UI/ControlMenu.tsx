@@ -16,7 +16,7 @@ type qna = {
 interface ControlMenuProps {
     value: string;
     onChange: React.Dispatch<React.SetStateAction<string>>;
-    optionList: { title: string; qnaList:  Array<string|qna>}[];
+    optionList: { title: string; qnaList?:  Array<string|qna>}[];
   }
 
 const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {
