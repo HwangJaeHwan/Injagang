@@ -79,7 +79,7 @@ const myPage = () => {
 
   return (
     <MyPageStyle>
-      <Card size={{ width: "40%", height: "600px" }}>
+      <Card size={{ width: "40%", height: "600px", flex: "Col" }}>
         <h2>나의 정보 수정</h2>
         <h3>닉네임변경</h3>
         <Input

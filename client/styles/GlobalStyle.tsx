@@ -52,12 +52,14 @@ export const ScrollBar = css`
 
 interface CardProps {
   size: {
-    width?: string;
-    height?: string;
-  }
+    width: string;
+    height: string;
+    flex: string;
+  };
 }
 
 export const Card = styled.div<CardProps>`
+  ${({ size }) => (size.flex === "row" ? FlexBox : ColBox)};
   padding: 15px 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
