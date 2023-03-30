@@ -97,7 +97,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Sidebar style={{ width: !isShowNav ? "20%" : "0%" }}>
           {!isShowNav && (
             <NavBar
-              items={items}
+              navitems={items}
               toggleTheme={handleToggleTheme}
               mode={isDarkMode}
             />

@@ -17,6 +17,12 @@ type AuthenTicate = {
   password: string;
 };
 
+type PassWordChange = {
+  nowPassword: string;
+  changePassword: string;
+  changePasswordCheck: string;
+};
+
 // const headers = {
 //   Authorization: Cookies.get("accessToken"),
 // }; // 최악의 오류의 늪에 빠지게한 원인
@@ -75,6 +81,40 @@ export const getProfile =
           },
         });
       }
+    } catch (error: any) {
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+    }
+  };
+
+export const nicknameChange =
+  (nickName: string) =>
+  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+    dispatch({ type: AUTHENTICATE_REQUEST });
+    const data = {
+      changeNickname: nickName,
+    };
+    try {
+      const response = await fetcher(METHOD.PATCH, "/nicknameChange", data, {
+        headers: { Authorization: Cookies.get("accessToken") },
+      });
+    } catch (error: any) {
+      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+    }
+  };
+
+export const passWordChange =
+  (changePassWordData: PassWordChange) =>
+  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+    dispatch({ type: AUTHENTICATE_REQUEST });
+    try {
+      const response = await fetcher(
+        METHOD.PATCH,
+        "/passwordChange",
+        changePassWordData,
+        {
+          headers: { Authorization: Cookies.get("accessToken") },
+        },
+      );
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }
