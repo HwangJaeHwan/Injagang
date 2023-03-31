@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,15 @@ public class BoardWrite {
     @NotBlank(message = "내용을 입력해 주세요")
     private String content;
 
-    @NotBlank(message = "자소서 제목을 입력해 주세요")
-    private String essayTitle;
-    @Valid
-    @Size(min = 1,message = "QnA는 최소 1개 이상 작성해주세요")
-    private List<QnaRequest> qnaList = new ArrayList<>();
+    @NotNull(message = "자소서의 ID가 없습니다.")
+    private Long essayId;
+
 
     @Builder
-    public BoardWrite(String title, String content, String essayTitle) {
+    public BoardWrite(String title, String content, Long essayId) {
         this.title = title;
         this.content = content;
-        this.essayTitle = essayTitle;
+        this.essayId = essayId;
     }
 
-    public void addQna(QnaRequest qna){
-
-        qnaList.add(qna);
-
-    }
 }
