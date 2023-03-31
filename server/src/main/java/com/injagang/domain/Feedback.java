@@ -29,11 +29,16 @@ public class Feedback {
     @JoinColumn(name = "qna_id")
     private BoardQnA boardQnA;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     @Builder
-    public Feedback(String feedbackTarget, String feedbackContent, BoardQnA boardQnA) {
+    public Feedback(String feedbackTarget, String feedbackContent, BoardQnA boardQnA,User user) {
         this.feedbackTarget = feedbackTarget;
         this.feedbackContent = feedbackContent;
         this.boardQnA = boardQnA;
+        this.user = user;
     }
 }

@@ -6,14 +6,8 @@ import com.injagang.domain.Feedback;
 import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
-import com.injagang.exception.BoardNotFoundException;
-import com.injagang.exception.QnaNotFoundException;
-import com.injagang.exception.UnauthorizedException;
-import com.injagang.exception.UserNotFoundException;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.FeedbackRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.exception.*;
+import com.injagang.repository.*;
 import com.injagang.request.BoardWrite;
 import com.injagang.request.FeedbackWrite;
 import com.injagang.request.QnaRequest;
@@ -22,17 +16,21 @@ import com.injagang.response.BoardRevise;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BoardService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final QnARepository qnARepository;
+
+    private final EssayRepository essayRepository;
 
     private final FeedbackRepository feedbackRepository;
 
@@ -50,22 +48,29 @@ public class BoardService {
     public Long writeBoard(Long userId, BoardWrite boardWrite) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Essay essay = essayRepository.findById(boardWrite.getEssayId()).orElseThrow(EssayNotFoundException::new);
+
+
 
         Board board = Board.builder()
                 .user(user)
                 .title(boardWrite.getTitle())
                 .content(boardWrite.getContent())
-                .essayTitle(boardWrite.getEssayTitle())
+                .essayTitle(essay.getTitle())
                 .build();
 
-        for (QnaRequest qna : boardWrite.getQnaList()) {
+
+        List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);
+
+        for (EssayQnA essayQnA : qnaList) {
 
             board.addQnA(BoardQnA.builder()
-                    .question(qna.getQuestion())
-                    .answer(qna.getAnswer())
+                    .question(essayQnA.getQuestion())
+                    .answer(essayQnA.getAnswer())
                     .build());
 
         }
+
 
         Board save = boardRepository.save(board);
 
@@ -88,14 +93,16 @@ public class BoardService {
 
     }
 
-    public void writeFeedback(Long boardQnaId, FeedbackWrite feedbackWrite) {
+    public void writeFeedback(Long boardQnaId, Long userId, FeedbackWrite feedbackWrite) {
 
         BoardQnA boardQnA = qnARepository.findBoardQnaById(boardQnaId).orElseThrow(QnaNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         Feedback feedback = Feedback.builder()
                 .feedbackTarget(feedbackWrite.getFeedbackTarget())
                 .feedbackContent(feedbackWrite.getFeedbackContent())
                 .boardQnA(boardQnA)
+                .user(user)
                 .build();
 
         feedbackRepository.save(feedback);

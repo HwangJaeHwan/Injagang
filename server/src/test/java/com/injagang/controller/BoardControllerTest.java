@@ -2,8 +2,10 @@ package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Board;
+import com.injagang.domain.Essay;
 import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
+import com.injagang.domain.qna.EssayQnA;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.BoardRepository;
 import com.injagang.repository.EssayRepository;
@@ -79,26 +81,46 @@ class BoardControllerTest {
 
         userRepository.save(user);
 
+        Essay essay = Essay.builder()
+                .title("test title")
+                .user(user)
+                .build();
+
+
+        EssayQnA qna1 = EssayQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        essay.addQnA(qna1);
+
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        essay.addQnA(qna2);
+
+        EssayQnA qna3 = EssayQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        essay.addQnA(qna3);
+
+        essayRepository.save(essay);
+
+
+
+
         String jws = testHelper.makeAccessToken(user.getId());
 
         BoardWrite boardWrite = BoardWrite.builder()
                 .title("test board")
                 .content("test board")
-                .essayTitle("test essay")
+                .essayId(essay.getId())
                 .build();
 
-        QnaRequest qnaRequest1 = QnaRequest.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        QnaRequest qnaRequest2 = QnaRequest.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        boardWrite.addQna(qnaRequest1);
-        boardWrite.addQna(qnaRequest2);
 
         String json = objectMapper.writeValueAsString(boardWrite);
 
