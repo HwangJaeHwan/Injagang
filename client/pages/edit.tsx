@@ -235,6 +235,7 @@ const Edit = () => {
           placeholder="자소서의 제목을 입력해주세요."
         ></TitleInput>
         <ControlMenu
+          Size={{ width: "10", height: "10" }}
           value={questionTitle}
           optionList={questionLists}
           onChange={setQuestionTitle}
@@ -268,10 +269,12 @@ const Edit = () => {
           <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>
           <div className="flex-end">
             <CustomButton
+              Size={{ width: "150px", font: "20px" }}
               onClick={() => router.push("/myEssay")}
               text="뒤로가기"
             />
             <CustomButton
+              Size={{ width: "150px", font: "20px" }}
               onClick={handleSubmit}
               text={isEdit ? "수정완료" : "작성완료"}
             />

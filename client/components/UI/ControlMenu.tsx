@@ -1,27 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 
-const ControlMenuSelect =  styled.select`
-  width: 250px;
-  height: 30px;
+interface SelectProps {
+  Size: {
+    width: string;
+    height: string;
+  };
+}
+
+const ControlMenuSelect = styled.select<SelectProps>`
+  width: ${({ Size }) => Size.width || "100%"};
+  height: ${({ Size }) => Size.height || "100%"};
   border-radius: 5px;
-  background-color: ${({theme})=> theme.colors.primary};
-  color: ${({theme})=> theme.colors.text};
-`
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+`;
 type qna = {
   question: string;
   answer: string;
 };
 
 interface ControlMenuProps {
-    value: string;
-    onChange: React.Dispatch<React.SetStateAction<string>>;
-    optionList: { title: string; qnaList?:  Array<string|qna>}[];
-  }
+  value: string;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
+  optionList: { title: string; qnaList?: Array<string | qna> }[];
+  Size: { width: string; height: string };
+}
 
-const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {
+const ControlMenu = ({
+  value,
+  onChange,
+  optionList,
+  Size,
+}: ControlMenuProps) => {
   return (
-    <ControlMenuSelect value={value} onChange={e => onChange(e.target.value)}>
+    <ControlMenuSelect
+      Size={Size}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+    >
       {optionList.map((option, index) => (
         <option key={index} value={option.title}>
           {option.title}
@@ -31,4 +48,4 @@ const ControlMenu = ({ value, onChange, optionList }: ControlMenuProps) => {
   );
 };
 
-export default ControlMenu;
+export default React.memo(ControlMenu);
