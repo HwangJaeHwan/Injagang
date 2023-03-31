@@ -58,6 +58,7 @@ interface CardProps {
   };
 }
 
+
 export const Card = styled.div<CardProps>`
   ${({ size }) => (size.flex === "row" ? FlexBox : ColBox)};
   padding: 15px 15px;

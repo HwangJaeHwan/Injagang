@@ -28,7 +28,7 @@ const boardReducer = (state = initialState, action: boardDispatchType) => {
     case BOARD_SUCCESS:
       return {
         ...state,
-        boardList: action.payload.list,
+        boardList: [action.payload.list],
       };
     case BOARD_FAILURE:
       return {

@@ -3,35 +3,56 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getEssayList, readEssayList } from "./redux/Essay/actions";
 import { RootReducerType } from "./redux/store";
+import styled from "styled-components";
+import { ScrollBar } from "@/styles/GlobalStyle";
+
+const EssayDetailStyle = styled.div`
+  ${ScrollBar}
+  padding: 15px;
+  background-color: #858080e8;
+  height: 100vh;
+  width: 100%;
+  word-break: break-all;
+  overflow-x: hidden;
+`;
+const EssayContainer = styled.div``;
+const EssayContent = styled.div`
+  margin: 15px;
+  aside{
+    margin: 15px;
+  }
+`;
 
 interface EssayProps {
   essayId: number;
 }
 
-const EssayDetailView = ({ essayId }: EssayProps) => {
+const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
   const dispatch = useDispatch();
   const essayReducer = useSelector((state: RootReducerType) => state.essay);
   useEffect(() => {
-    dispatch(readEssayList(essayId));
+    if (essayId > 0){
+      dispatch(readEssayList(essayId));
+    }
   }, [essayId]);
   return (
-    <div>
+    <EssayDetailStyle>
       {essayReducer.readEssayList &&
         essayReducer.readEssayList.map((essayList, i) => (
-          <div key={i}>
+          <EssayContainer key={i}>
             <h2>{essayList.title}</h2>
-            <div>
+            <EssayContent>
               {essayList.qnaList.map((a, i) => (
-                <div>
-                  <h5>{a.question}</h5>
-                  <h5>{a.answer}</h5>
-                </div>
+                <aside key={i}>
+                  <h3>질문: {a.question}</h3>
+                  <h5>답변: {a.answer} sadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsfsadffdsafasfasdfasdfasdfasdfasdfasdfadsf</h5>
+                </aside>
               ))}
-            </div>
-          </div>
+            </EssayContent>
+          </EssayContainer>
         ))}
-    </div>
+    </EssayDetailStyle>
   );
 };
 
-export default EssayDetailView;
+export default React.memo(EssayDetailView);

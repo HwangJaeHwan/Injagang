@@ -4,19 +4,28 @@ import styled from "styled-components";
 interface ButtonProps {
     onClick: () => void;
     text: string;
+    Size: {
+      width: string;
+      font: string;
+    }
 }
 
-const CustomButton = ({onClick,text}: ButtonProps) => {
-  return <BeautyButton onClick={onClick}>{text}</BeautyButton>;
-};
-const BeautyButton = styled.button`
+interface SelectProps {
+  Size: {
+    width: string;
+    font: string;
+  };
+}
+
+const BeautyButton = styled.button<SelectProps>`
+  width: ${({ Size }) => Size.width || "100%"};
   background-color: ${({theme}) => theme.colors.button};
   color: ${({theme}) => theme.colors.text};
+  font-size: ${({Size}) => Size.font || "16px"};
   border: none;
   padding: 10px 15px;
   border-radius: 10px;
   font-weight: bold;
-  font-size: 16px;
   box-shadow: 0 1.5px 2px rgba(0, 0, 0, 09);
   cursor: pointer;
   transition: background-color 0.3s;
@@ -29,4 +38,9 @@ const BeautyButton = styled.button`
     background-color: red;
   }
 `;
+
+const CustomButton = ({onClick,text,Size}: ButtonProps) => {
+  return <BeautyButton Size={Size} onClick={onClick}>{text}</BeautyButton>;
+};
+
 export default CustomButton;

@@ -37,8 +37,7 @@ export const getBoardDetail =
 type Board = {
   title: string;
   content: string;
-  essayTitle: string;
-  qnaList: qnaList[];
+  essayId: number;
 };
 export const writeBoard =
   (boardData: Board) => async (dispatch: Dispatch<boardDispatchType>) => {
