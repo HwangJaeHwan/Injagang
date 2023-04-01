@@ -78,9 +78,9 @@ const question = () => {
     setEssayId(findEssayId);
   }, [essayTitle]);
 
-  const handlTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handlTextChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
-  };
+  },[content])
 
   const handleSubmit = () => {
     const data = {

@@ -6,7 +6,7 @@ import { getBoardDetail } from "@/components/redux/QnA/actions";
 import { InitiaState } from "@/components/redux/QnA/reducer";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { Card, ColBox } from "@/styles/GlobalStyle";
+import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import EssayDetailView from "@/components/EssayDetailView";
 import AnswerDragView from "@/components/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
@@ -19,6 +19,8 @@ const ViewStyle = styled.div`
 
 const LeftContainer = styled.div`
   ${ColBox}
+  ${ScrollBar}
+  overflow-x: hidden;
   margin: 30px auto;
   width: 45%;
   height: 100%;
@@ -48,7 +50,7 @@ const CommentFooter = styled.div`
   justify-content: flex-end;
 `;
 
-const Correction = styled.div`
+const CorrectionContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 98%;
@@ -81,9 +83,9 @@ const answer = () => {
         <LeftContainer>
           {boardReducer.boardList &&
             boardReducer.boardList.map((a, i) => (
-              <div key={i}>
-                <h2>{a.title}</h2>
-                <h4>{a.content}</h4>
+              <div key={a.boardId}>
+                <h2>제목:{" "}{a.title}</h2>
+                <h4>답변:{" "}{a.content}</h4>
               </div>
             ))}
         </LeftContainer>
@@ -92,10 +94,10 @@ const answer = () => {
         </RigthContainer>
       </Card>
       <Card size={{ width: "80%", height: "25vh", flex: "col" }}>
-        <Correction>
-          <h3>현재 선택된 문장:</h3>
+        <CorrectionContainer>
+          <div className="p"><h3>현재 선택된 문장:</h3></div>
           <h4>{correction}</h4>
-        </Correction>
+        </CorrectionContainer>
         <CommentTop>
           <textarea></textarea>
         </CommentTop>

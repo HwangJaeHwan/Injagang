@@ -32,7 +32,6 @@ const PassWordContainer = styled.div`
   width: 100%;
   background-color: #f3f3f318;
   button {
-    width: 100%;
     display: block;
   }
 `;
@@ -87,7 +86,11 @@ const myPage = () => {
           name="changeNickname"
           onChange={e => handleInfoChange(e)}
         ></Input>
-        <CustomButton onClick={handleNickChange} text="변경"></CustomButton>
+        <CustomButton
+          Size={{ width: "100%", font: "15px" }}
+          onClick={handleNickChange}
+          text="변경"
+        ></CustomButton>
 
         <PassWordContainer>
           <h3>현재비밀번호</h3>
@@ -109,6 +112,7 @@ const myPage = () => {
             onChange={e => handleInfoChange(e)}
           ></Input>
           <CustomButton
+            Size={{ width: "100%", font: "15px" }}
             onClick={handlePassWordChange}
             text="변경"
           ></CustomButton>

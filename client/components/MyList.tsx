@@ -11,6 +11,7 @@ import { InitiaState } from "@/components/redux/Essay/reducer";
 import { addEssay, getEssayList } from "./redux/Essay/actions";
 import fetcher, { METHOD } from "./test/fecher";
 import Cookies from "js-cookie";
+import MyListItems from "./MyListItems";
 
 interface QnaList {
   question: string;
@@ -94,10 +95,9 @@ const MyList = () => {
 
   // useEffect(() => {
   //   dispatch(getEssayList(1))
-  // }, []);  기존에는 최초 로딩시 리스트를 가져왔는데 그렇게 최신화를 반영하기 위한 의존성 배열이 dispatch인 useEffect이 동작하여 두번의 리스트 요청이 이루어졌다. firstCall을 생성하여 최초에 firstCall State가 변경되는 상황으로 두번의리스트요청 문제를 해결 
+  // }, []);  기존에는 최초 로딩시 리스트를 가져왔는데 그렇게 최신화를 반영하기 위한 의존성 배열이 dispatch인 useEffect이 동작하여 두번의 리스트 요청이 이루어졌다. firstCall을 생성하여 최초에 firstCall State가 변경되는 상황으로 두번의리스트요청 문제를 해결
 
-
-  //EssayList의 최신화가 이루어질때마다 바로 반영하기위한 
+  //EssayList의 최신화가 이루어질때마다 바로 반영하기위한
   useEffect(() => {
     setTimeout(() => {
       dispatch(getEssayList(1));
@@ -126,24 +126,12 @@ const MyList = () => {
       <ListHeader>나의 자소서 목록</ListHeader>
       <ListContainer>
         {essayReducer.essayList.map((list, idx) => (
-          <div key={idx} className="list-items">
-            <div
-              className={curList?.index === idx ? "active-item" : ""}
-              onClick={() => getMyListView(idx, list.essayId)}
-            >
-              {list.title}
-            </div>
-            {curList.index === idx && (
-              <BiEdit
-                onClick={() =>
-                  router.push({
-                    pathname: "/edit",
-                    query: { essayId: JSON.stringify(curList.essayId) },
-                  })
-                }
-              />
-            )}
-          </div>
+          <MyListItems
+            idx={idx}
+            list={list}
+            getMyListView={getMyListView}
+            curList={curList}
+          />
         ))}
       </ListContainer>
       <div className="footer-Icon">
@@ -153,4 +141,4 @@ const MyList = () => {
   );
 };
 
-export default MyList;
+export default React.memo(MyList);
