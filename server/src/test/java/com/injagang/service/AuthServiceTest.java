@@ -5,23 +5,20 @@ import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.exception.*;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.*;
 import com.injagang.response.UserInfo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 class AuthServiceTest {
 
     @Autowired
@@ -54,12 +51,19 @@ class AuthServiceTest {
     @Autowired
     BoardRepository boardRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
+
+    @AfterAll
+    void after() {
+        userRepository.deleteAll();
+        redisDao.clear();
+    }
+
 
     @BeforeEach
     void clean() {
-        qnARepository.deleteAll();
-        boardRepository.deleteAll();
-        essayRepository.deleteAll();
         userRepository.deleteAll();
         redisDao.clear();
     }

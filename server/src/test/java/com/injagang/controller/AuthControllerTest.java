@@ -4,14 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,12 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
 class AuthControllerTest {
 
@@ -54,13 +51,21 @@ class AuthControllerTest {
     EssayRepository essayRepository;
 
     @Autowired
+    FeedbackRepository feedbackRepository;
+
+    @Autowired
     RedisDao redisDao;
+
+
+    @AfterAll
+    void after() {
+        userRepository.deleteAll();
+        redisDao.clear();
+    }
 
     @BeforeEach
     void clean() {
-        qnARepository.deleteAll();
-        boardRepository.deleteAll();
-        essayRepository.deleteAll();
+
         userRepository.deleteAll();
         redisDao.clear();
     }

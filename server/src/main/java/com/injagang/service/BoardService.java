@@ -6,19 +6,23 @@ import com.injagang.domain.Feedback;
 import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.domain.qna.QnA;
 import com.injagang.exception.*;
 import com.injagang.repository.*;
 import com.injagang.request.BoardWrite;
 import com.injagang.request.FeedbackWrite;
 import com.injagang.request.QnaRequest;
+import com.injagang.request.ReviseFeedback;
 import com.injagang.response.BoardRead;
 import com.injagang.response.BoardRevise;
+import com.injagang.response.FeedbackList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,12 +40,14 @@ public class BoardService {
 
 
 
-    public BoardRead readBoard(Long boardId) {
+    public BoardRead readBoard(Long userId,Long boardId) {
 
-        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        Board board = boardRepository.findByIdWithUser(boardId).orElseThrow(BoardNotFoundException::new);
+
+
         List<BoardQnA> boardQnAList = qnARepository.findAllByBoard(board);
 
-        return new BoardRead(board, boardQnAList);
+        return new BoardRead(userId,board, boardQnAList);
 
     }
 
@@ -106,6 +112,34 @@ public class BoardService {
                 .build();
 
         feedbackRepository.save(feedback);
+
+    }
+
+    public void reviseFeedback(Long userId, ReviseFeedback reviseFeedback) {
+
+        Feedback feedback = feedbackRepository.findById(reviseFeedback.getFeedbackId()).orElseThrow(FeedbackNotFoundException::new);
+
+        if (feedback.getUser().getId() != userId) {
+            throw new UnauthorizedException();
+        }
+
+
+        feedback.reviseContent(reviseFeedback.getReviseContent());
+
+
+    }
+
+
+    public List<FeedbackList> feedbacksByQna(Long qnaId, Long userId) {
+
+        QnA qnA = qnARepository.findById(qnaId).orElseThrow(QnaNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<Feedback> feedbacks = feedbackRepository.findAllByQna(qnA);
+
+        return feedbacks.stream().map(f -> new FeedbackList(f, user)).collect(Collectors.toList());
+
+
 
     }
 

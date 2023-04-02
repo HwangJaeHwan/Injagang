@@ -16,12 +16,19 @@ public class EssayRead {
 
     private String title;
 
+    private boolean owner = false;
+
     private List<QnAInfo> qnaList = new ArrayList<>();
 
-    public EssayRead(Essay essay, List<EssayQnA> qna) {
+    public EssayRead(Essay essay, Long userId, List<EssayQnA> qna) {
 
         this.essayId = essay.getId();
         this.title = essay.getTitle();
+
+        if (essay.getUser().getId() == userId) {
+            owner = true;
+        }
+
 
         for (QnA qnA : qna) {
 

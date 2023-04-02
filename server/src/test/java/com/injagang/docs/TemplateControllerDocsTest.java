@@ -5,14 +5,9 @@ import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.TemplateRepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.TemplateCreate;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -21,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -31,6 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
 public class TemplateControllerDocsTest {
@@ -55,13 +52,22 @@ public class TemplateControllerDocsTest {
     EssayRepository essayRepository;
 
     @Autowired
+    BoardRepository boardRepository;
+
+    @Autowired
+    FeedbackRepository feedbackRepository;
+    @Autowired
     TestHelper testHelper;
+
+    @AfterAll
+    void after() {
+        templateRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
 
     @BeforeEach
     void clean() {
-        qnARepository.deleteAll();
-        essayRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
     }

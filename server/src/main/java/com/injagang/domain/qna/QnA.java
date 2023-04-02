@@ -22,7 +22,7 @@ public abstract class QnA {
 
 
     private String question;
-
+    @Lob
     private String answer;
 
 

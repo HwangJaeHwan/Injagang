@@ -12,17 +12,17 @@ import com.injagang.request.FeedbackWrite;
 import com.injagang.request.QnaRequest;
 import com.injagang.response.BoardRead;
 import com.injagang.response.BoardRevise;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 class BoardServiceTest {
 
 
@@ -44,15 +44,23 @@ class BoardServiceTest {
     @Autowired
     BoardService boardService;
 
-    @BeforeEach
-    void clean() {
-
+    @AfterAll
+    void after() {
         feedbackRepository.deleteAll();
         qnARepository.deleteAll();
         essayRepository.deleteAll();
         boardRepository.deleteAll();
         userRepository.deleteAll();
 
+    }
+
+    @BeforeEach
+    void clean() {
+        feedbackRepository.deleteAll();
+        qnARepository.deleteAll();
+        essayRepository.deleteAll();
+        boardRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
@@ -167,12 +175,13 @@ class BoardServiceTest {
 
         boardRepository.save(board);
 
-        BoardRead read = boardService.readBoard(board.getId());
+        BoardRead read = boardService.readBoard(user.getId(), board.getId());
 
         assertEquals(board.getId(),read.getBoardId());
         assertEquals(board.getTitle(), read.getTitle());
         assertEquals(board.getContent(), read.getContent());
         assertEquals(board.getEssayTitle(),read.getEssayTitle());
+        assertTrue(read.isOwner());
         assertEquals(3, read.getQnaList().size());
 
 

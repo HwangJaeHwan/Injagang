@@ -31,7 +31,7 @@ public class EssayController {
     @GetMapping("/read/{essayId}")
     public EssayRead readEssay(UserSession userSession,@PathVariable Long essayId) {
 
-        return essayService.readEssay(essayId);
+        return essayService.readEssay(userSession.getUserId(), essayId);
 
 
     }
