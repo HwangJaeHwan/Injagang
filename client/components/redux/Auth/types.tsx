@@ -1,8 +1,8 @@
 export const AUTHENTICATE_REQUEST = "AUTHENTICATE_REQUEST";
 export const AUTHENTICATE_SUCCESS = "AUTHENTICATE_SUCCESS";
 export const AUTHENTICATE_FAILURE = "AUTHENTICATE_FAILURE";
-export const PROFILE_SUCCESS = "PROFILE_SUCCESS"
-export const AUTH_INIT = "AUTH_INIT"
+export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
+export const AUTH_INIT = "AUTH_INIT";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export interface authRequest {
@@ -29,7 +29,7 @@ export interface profileSuccessDispatch {
   payload: {
     nickname: string;
     role: string;
-   }
+  };
 }
 
 export interface authSuccessDispatch {
@@ -37,6 +37,7 @@ export interface authSuccessDispatch {
   payload: {
     access: string;
     refresh: string;
+    userId: string;
   };
 }
 

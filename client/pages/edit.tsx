@@ -19,6 +19,7 @@ import {
   updateEssay,
 } from "@/components/redux/Essay/actions";
 import essayReducer from "@/components/redux/Essay/reducer";
+import Cookies from "js-cookie";
 
 const EditStyle = styled.div`
   ${ColBox}
@@ -144,6 +145,9 @@ const Edit = () => {
   /** ESSAY의 로딩이 완료가되면 useState에 반영한다. */
   useEffect(() => {
     if (!essayReducer.loading) {
+      if (essayReducer.readEssayList[0].title === "") {
+        return;
+      }
       setQuestionLists(essayReducer.readEssayList);
       setQuestionTitle(essayReducer.readEssayList[0]?.title);
     }
@@ -168,13 +172,13 @@ const Edit = () => {
     if (questionTitle === "") {
       return;
     }
+    if (questionContent.length >= 10) {
+      return;
+    }
     setQuestionLists(prevLists => {
       const newLists = [...prevLists];
-      console.log(newLists);
       const filterIndex = newLists.findIndex(a => a.title === questionTitle);
-      console.log(filterIndex);
       const newContent = [...newLists[filterIndex].qnaList, addTitle];
-      console.log(newContent);
       newLists[filterIndex].qnaList = newContent;
       return newLists;
     });
@@ -190,12 +194,12 @@ const Edit = () => {
       qnaList: questionContent,
     };
     if (isEdit) {
-      console.log(questionLists);
-      dispatch(updateEssay(data, 57));
+      const essayId = JSON.parse(router.query.essayId as string) as number;
+      dispatch(updateEssay(data, essayId));
       router.replace("/myEssay");
       return;
     }
-    dispatch(addEssay(data, 1));
+    dispatch(addEssay(data, Number(Cookies.get("useId"))));
     console.log({ title: questionListTitle, qnaList: [questionContent] });
     console.log({ questionContent });
     router.replace("/myEssay");
@@ -213,6 +217,7 @@ const Edit = () => {
 
   /**답변작성 리스트 탐색*/
   const handleTextChange = (index: number, value: string, title: string) => {
+    console.log({ questionContent });
     const filterTitle = questionContent.filter(a => a.question === title)[0];
     // console.log({ filterTitle });
     if (filterTitle) {

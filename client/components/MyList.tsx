@@ -100,7 +100,7 @@ const MyList = () => {
   //EssayList의 최신화가 이루어질때마다 바로 반영하기위한
   useEffect(() => {
     setTimeout(() => {
-      dispatch(getEssayList(1));
+      dispatch(getEssayList(Number(Cookies.get("userId"))));
     }, 100);
   }, [dispatch, firstCall]);
 
@@ -127,10 +127,10 @@ const MyList = () => {
       <ListContainer>
         {essayReducer.essayList.map((list, idx) => (
           <MyListItems
-            idx={idx}
+            idx={list.essayId}
             list={list}
-            getMyListView={getMyListView}
             curList={curList}
+            getMyListView={getMyListView}
           />
         ))}
       </ListContainer>
@@ -141,4 +141,4 @@ const MyList = () => {
   );
 };
 
-export default React.memo(MyList);
+export default MyList;

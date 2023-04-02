@@ -24,26 +24,21 @@ const MyListItemsStyle = styled.div`
     border-radius: 5px;
   }
   .active-item {
-    background-color: #f39214f2;
+    background-color: #f33514f1;
   }
 `;
 
 interface MyListItemsProps {
-  idx: number;
-  list: any;
-  getMyListView: any;
-  curList: CurList;
+    idx: number;
+    list: any;
+    getMyListView: any;
+    curList: CurList;
 }
 
-const MyListItems = ({
-  idx,
-  list,
-  getMyListView,
-  curList,
-}: MyListItemsProps) => {
-  const router = useRouter();
+const MyListItems = ({ idx, list, getMyListView, curList }:MyListItemsProps) => {
+    const router = useRouter();
   return (
-    <div className="list-items">
+    <MyListItemsStyle  className="list-items">
       <div
         className={curList?.index === idx ? "active-item" : ""}
         onClick={() => getMyListView(idx, list.essayId)}
@@ -60,8 +55,8 @@ const MyListItems = ({
           }
         />
       )}
-    </div>
+    </MyListItemsStyle>
   );
 };
 
-export default React.memo(MyListItems);
+export default MyListItems;

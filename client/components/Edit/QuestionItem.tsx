@@ -63,7 +63,6 @@ const QuestionItem = ({
     if(index === 0 ){
       questionContent([]);
     }
-    console.log("여기 들어왔다.")
     const title = typeof content === "string" ? content : content.question;
     questionContent(cur => [...cur, {question:title, answer: ""}]);
     if (typeof content !== "string") {

@@ -7,6 +7,7 @@ import { RootReducerType } from "@/components/redux/store";
 import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
+import Cookies from "js-cookie";
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -68,7 +69,7 @@ const question = () => {
   );
 
   useEffect(() => {
-    dispatch(getEssayList(1));
+    dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
 
   useEffect(() => {

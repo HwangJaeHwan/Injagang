@@ -28,13 +28,12 @@ interface AnswerProps {
 }
 
 const AnswerDragView = ({ onChange }: AnswerProps) => {
-  const [selection, setSelection] = useState<string[]>([]);
   const [added, setAdded] = useState<boolean>(false);
   const boardReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.board,
   );
 
-  const handleSelect = (dragTitle: string) => {
+  const handleSelect = (dragTitleNumber: number) => {
     const selectedText = window.getSelection()?.toString();
     if (selectedText === "") {
       console.log("공백입니다.");
@@ -63,7 +62,7 @@ const AnswerDragView = ({ onChange }: AnswerProps) => {
           setAdded(false);
           return;
         }
-        onChange(`질문제목:${dragTitle} ==> ${selectedText}`);
+        onChange(`질문제목번호:${dragTitleNumber}번 ==> ${selectedText}`);
         setAdded(false);
       };
     }
@@ -71,8 +70,6 @@ const AnswerDragView = ({ onChange }: AnswerProps) => {
   const handleSpan: MouseEventHandler<HTMLParagraphElement> = event => {
     const target = event.target as HTMLElement;
     if (target.tagName.toLowerCase() === "span") {
-      console.log("이벤트 발생");
-      console.log(selection);
       const parent = target.parentNode as HTMLElement;
       const targetText = document.createTextNode(target.innerText);
       parent.replaceChild(targetText, target);
@@ -99,7 +96,7 @@ const AnswerDragView = ({ onChange }: AnswerProps) => {
           <div key={i}>
             <h2>{a.question}</h2>
             <p
-              onMouseUp={()=>handleSelect(a.question)}
+              onMouseUp={()=>handleSelect(i+1)}
               onDoubleClick={handleRemove}
               onClick={handleSpan}
             >
