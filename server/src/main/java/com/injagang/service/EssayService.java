@@ -58,22 +58,22 @@ public class EssayService {
 
     }
 
-   public EssayRead readEssay(Long essayId){
+    public EssayRead readEssay(Long userId, Long essayId) {
 
-       Essay essay = essayRepository.findById(essayId).orElseThrow(EssayNotFoundException::new);
+        Essay essay = essayRepository.findById(essayId).orElseThrow(EssayNotFoundException::new);
 
-       List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);
+        List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);
 
-       return new EssayRead(essay, qnaList);
+        return new EssayRead(essay, userId, qnaList);
 
 
-   }
+    }
 
     public List<EssayList> essays(Long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return essayRepository.findAllByUser(user).stream().map(EssayList::new).collect(Collectors.toList());
+        return essayRepository.findAllByUser(user).stream().map(e -> new EssayList(e, userId)).collect(Collectors.toList());
 
 
     }

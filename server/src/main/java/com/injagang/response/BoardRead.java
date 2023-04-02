@@ -19,20 +19,34 @@ public class BoardRead {
 
     private String title;
 
+    private Long userId;
+
+    private String nickname;
+
     private String content;
 
     private String essayTitle;
+
+    private boolean owner = false;
+
 
     private List<QnAInfo> qnaList = new ArrayList<>();
 
 
 
-    public BoardRead(Board board, List<BoardQnA> qna) {
+    public BoardRead(Long userId,Board board, List<BoardQnA> qna) {
 
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.essayTitle = board.getEssayTitle();
+        this.userId = board.getUser().getId();
+        this.nickname = board.getUser().getNickname();
+
+        if (userId == board.getUser().getId()) {
+            owner = true;
+        }
+
 
         for (QnA qnA : qna) {
 

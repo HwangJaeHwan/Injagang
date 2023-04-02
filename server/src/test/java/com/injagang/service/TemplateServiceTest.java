@@ -8,9 +8,7 @@ import com.injagang.request.TemplateCreate;
 import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,8 +16,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 class TemplateServiceTest {
 
     @Autowired
@@ -38,13 +38,20 @@ class TemplateServiceTest {
     BoardRepository boardRepository;
 
     @Autowired
+    FeedbackRepository feedbackRepository;
+
+    @Autowired
     EssayRepository essayRepository;
+
+    @AfterAll
+    void after() {
+        templateRepository.deleteAll();
+        userRepository.deleteAll();
+
+    }
 
     @BeforeEach
     void clean() {
-        qnARepository.deleteAll();
-        boardRepository.deleteAll();
-        essayRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
     }

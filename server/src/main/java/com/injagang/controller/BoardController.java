@@ -24,7 +24,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public BoardRead readBoard(UserSession userSession, @PathVariable Long boardId) {
 
-        return boardService.readBoard(boardId);
+        return boardService.readBoard(userSession.getUserId(), boardId);
 
 
     }

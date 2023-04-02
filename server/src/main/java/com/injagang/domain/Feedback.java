@@ -22,7 +22,7 @@ public class Feedback {
     private Long id;
 
     private String feedbackTarget;
-
+    @Lob
     private String feedbackContent;
 
     @ManyToOne(fetch = LAZY)
@@ -40,5 +40,9 @@ public class Feedback {
         this.feedbackContent = feedbackContent;
         this.boardQnA = boardQnA;
         this.user = user;
+    }
+
+    public void reviseContent(String reviseContent){
+        this.feedbackContent = reviseContent;
     }
 }

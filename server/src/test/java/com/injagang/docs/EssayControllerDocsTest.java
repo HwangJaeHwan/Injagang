@@ -5,16 +5,11 @@ import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnaRequest;
 import com.injagang.service.EssayService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -26,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -37,6 +33,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
 public class EssayControllerDocsTest {
@@ -60,7 +57,8 @@ public class EssayControllerDocsTest {
     @Autowired
     QnARepository qnARepository;
 
-
+    @Autowired
+    FeedbackRepository feedbackRepository;
 
     @Autowired
     BoardRepository boardRepository;
@@ -69,10 +67,18 @@ public class EssayControllerDocsTest {
     @Autowired
     TestHelper testHelper;
 
+    @AfterAll
+    void after() {
+        qnARepository.deleteAll();
+        essayRepository.deleteAll();
+        userRepository.deleteAll();
+
+    }
+
+
     @BeforeEach
     void clean() {
         qnARepository.deleteAll();
-        boardRepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -194,6 +200,7 @@ public class EssayControllerDocsTest {
                         responseFields(
                                 fieldWithPath("essayId").description("자소서 ID"),
                                 fieldWithPath("title").description("자소서 제목"),
+                                fieldWithPath("owner").description("작성자 판별"),
                                 fieldWithPath("qnaList[].qnaId").description("QnA ID"),
                                 fieldWithPath("qnaList[].question").description("자소서 질문"),
                                 fieldWithPath("qnaList[].answer").description("자소서 답변")
@@ -245,6 +252,7 @@ public class EssayControllerDocsTest {
                 ),responseFields(
                         fieldWithPath("[].essayId").description("자소서 ID"),
                         fieldWithPath("[].title").description("자소서 제목"),
+                        fieldWithPath("[].owner").description("작성자 판별"),
                         fieldWithPath("[].questions").description("자소서 질문 목록")
                         )));
 

@@ -7,21 +7,17 @@ import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.helper.TestHelper;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.BoardWrite;
 import com.injagang.request.QnaRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
 class BoardControllerTest {
 
@@ -50,6 +47,9 @@ class BoardControllerTest {
     UserRepository userRepository;
 
     @Autowired
+    FeedbackRepository feedbackRepository;
+
+    @Autowired
     TestHelper testHelper;
 
 
@@ -57,13 +57,22 @@ class BoardControllerTest {
     @Autowired
     EssayRepository essayRepository;
 
-    @BeforeEach
-    void clean() {
+    @AfterAll
+    void after() {
+        feedbackRepository.deleteAll();
         qnARepository.deleteAll();
         essayRepository.deleteAll();
         boardRepository.deleteAll();
         userRepository.deleteAll();
+    }
 
+    @BeforeEach
+    void clean() {
+        feedbackRepository.deleteAll();
+        qnARepository.deleteAll();
+        essayRepository.deleteAll();
+        boardRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 

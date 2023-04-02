@@ -3,17 +3,12 @@ package com.injagang.service;
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
-import com.injagang.repository.BoardRepository;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnaRequest;
 import com.injagang.response.EssayList;
 import com.injagang.response.EssayRead;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,8 +16,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 class EssayServiceTest {
 
 
@@ -39,12 +36,21 @@ class EssayServiceTest {
     BoardRepository boardRepository;
 
     @Autowired
+    FeedbackRepository feedbackRepository;
+
+    @Autowired
     EssayService essayService;
+
+    @AfterAll
+    void after() {
+        qnARepository.deleteAll();
+        essayRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @BeforeEach
     void clean() {
         qnARepository.deleteAll();
-        boardRepository.deleteAll();
         essayRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -142,7 +148,7 @@ class EssayServiceTest {
 
         essayRepository.save(essay);
 
-        EssayRead read = essayService.readEssay(essay.getId());
+        EssayRead read = essayService.readEssay(user.getId(), essay.getId());
 
         assertEquals(essay.getId(), read.getEssayId());
         assertThat(essay.getTitle()).isEqualTo(read.getTitle());

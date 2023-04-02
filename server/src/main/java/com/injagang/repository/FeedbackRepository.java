@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @Query("select f from Feedback f where f.boardQnA = :qnA")
-    List<Feedback> findAllByQna(BoardQnA qnA);
+    List<Feedback> findAllByQna(QnA qnA);
 }

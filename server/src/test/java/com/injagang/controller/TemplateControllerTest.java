@@ -7,15 +7,14 @@ import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.request.TemplateCreate;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
 class TemplateControllerTest {
 
@@ -51,12 +51,19 @@ class TemplateControllerTest {
     @Autowired
     EssayRepository essayRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
+
+    @AfterAll
+    void after() {
+        templateRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
 
     @BeforeEach
     void clean() {
-        qnARepository.deleteAll();
-        essayRepository.deleteAll();
-        boardRepository.deleteAll();
         templateRepository.deleteAll();
         userRepository.deleteAll();
     }
