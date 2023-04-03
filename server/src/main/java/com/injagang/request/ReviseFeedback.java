@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -11,14 +12,14 @@ import javax.validation.constraints.NotNull;
 public class ReviseFeedback {
 
 
-    @NotNull(message = "피드백 ID는 필수입니다.")
+    @NotNull
     private Long feedbackId;
-
-    @NotNull(message = "수정할 내용을 입력해주세요.")
+    @NotBlank(message = "수정할 내용을 입력해주세요.")
     private String reviseContent;
 
-
-
-
-
+    @Builder
+    public ReviseFeedback(Long feedbackId, String reviseContent) {
+        this.feedbackId = feedbackId;
+        this.reviseContent = reviseContent;
+    }
 }

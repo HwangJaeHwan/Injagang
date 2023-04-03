@@ -20,7 +20,7 @@ public abstract class QnA {
     @Column(name = "qna_id")
     private Long id;
 
-
+    @Lob
     private String question;
     @Lob
     private String answer;

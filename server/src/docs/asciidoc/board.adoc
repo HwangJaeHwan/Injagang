@@ -27,3 +27,53 @@ include::{snippets}/board-read/path-parameters.adoc[]
 include::{snippets}/board-read/http-response.adoc[]
 include::{snippets}/board-read/response-fields.adoc[]
 
+== 게시글 수정
+
+=== 요청
+
+include::{snippets}/board-revise/http-request.adoc[]
+include::{snippets}/board-revise/request-headers.adoc[]
+include::{snippets}/board-revise/request-fields.adoc[]
+
+== 피드백 쓰기
+
+=== 요청
+
+include::{snippets}/feedback-write/http-request.adoc[]
+include::{snippets}/feedback-write/request-headers.adoc[]
+include::{snippets}/feedback-write/request-fields.adoc[]
+
+== 피드백 수정
+
+=== 응답
+
+include::{snippets}/feedback-revise/http-request.adoc[]
+include::{snippets}/feedback-revise/request-headers.adoc[]
+include::{snippets}/feedback-revise/request-fields.adoc[]
+
+== 피드백 리스트
+
+=== 요청
+
+include::{snippets}/feedback-list/http-request.adoc[]
+include::{snippets}/feedback-list/request-headers.adoc[]
+include::{snippets}/feedback-list/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/feedback-list/http-response.adoc[]
+include::{snippets}/feedback-list/response-fields.adoc[]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
