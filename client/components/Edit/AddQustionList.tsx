@@ -29,7 +29,7 @@ const AddQustionList = ({
   handleCancelQuestion,
   onChange,
 }: AddQustionListProps) => {
-  console.log("ADD")
+  console.log("ADD");
   return (
     <AddQustionListStyle>
       <Input
@@ -39,8 +39,16 @@ const AddQustionList = ({
         onChange={e => onChange(e.target.value)}
       ></Input>
       <div>
-        <CustomButton onClick={handleAddQuestion} text={"확인"} />
-        <CustomButton onClick={handleCancelQuestion} text={"취소"} />
+        <CustomButton
+          Size={{ width: "63px", font: "15px" }}
+          onClick={handleAddQuestion}
+          text={"확인"}
+        />
+        <CustomButton
+          Size={{ width: "63px", font: "15px" }}
+          onClick={handleCancelQuestion}
+          text={"취소"}
+        />
       </div>
     </AddQustionListStyle>
   );

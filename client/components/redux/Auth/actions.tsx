@@ -35,12 +35,13 @@ export const authenTicate =
       const response = await fetcher(METHOD.POST, "/login", loginData);
       if (response) {
         const token = response.data.jws;
-        const { access, refresh } = response.data;
+        const { access, refresh, userId } = response.data;
         dispatch({
           type: AUTHENTICATE_SUCCESS,
           payload: {
             access,
             refresh,
+            userId,
           },
         });
       }

@@ -8,15 +8,18 @@ const MyListPreViewStyle = styled.div`
   width: 90%;
   height: 150px;
   border-radius: 5px;
-  padding: 10px 0px;
+  padding: 15px 25px;
   margin: 15px auto;
   background-color: #1d1b1b;
-  overflow-x:hidden;
+  overflow-x: hidden;
 `;
 
 const MyListBox = styled.div`
   display: flex;
-  margin-top: 6px;
+  margin-bottom: 30px;
+  span {
+    font-weight: bold;
+  }
 `;
 interface MyListPreViewProps {
   preViewData: string[];
@@ -28,7 +31,7 @@ const MyListPreView = ({ preViewData }: MyListPreViewProps) => {
       {preViewData &&
         preViewData.map((list, idx) => (
           <MyListBox key={idx}>
-            {idx + 1}. {list}
+            <span>{idx + 1}.</span> {list}
           </MyListBox>
         ))}
     </MyListPreViewStyle>

@@ -14,7 +14,6 @@ html {
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Noto Sans KR', sans-serif;
     background-color: ${({ theme }) => theme.colors.bodyColor};
     color: ${({ theme }) => theme.colors.text};
     font-family: 'Roboto', sans-serif;
@@ -68,6 +67,5 @@ export const Card = styled.div<CardProps>`
   height: ${({ size }) => size.height || "100%"};
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
-  text-align: center;
   margin: 15px 15px;
 `;

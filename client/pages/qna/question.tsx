@@ -7,6 +7,7 @@ import { RootReducerType } from "@/components/redux/store";
 import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
+import Cookies from "js-cookie";
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -42,6 +43,7 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   ${FlexBox}
+  ${ScrollBar}
   resize: vertical;
   box-sizing: border-box;
   color: #22272e;
@@ -54,7 +56,6 @@ const TextArea = styled.textarea`
   border-radius: 5px;
   overflow-y: auto;
   margin: 15px auto;
-  ${ScrollBar}
 `;
 
 const question = () => {
@@ -68,7 +69,7 @@ const question = () => {
   );
 
   useEffect(() => {
-    dispatch(getEssayList(1));
+    dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
 
   useEffect(() => {
@@ -78,9 +79,9 @@ const question = () => {
     setEssayId(findEssayId);
   }, [essayTitle]);
 
-  const handlTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handlTextChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
-  };
+  },[content])
 
   const handleSubmit = () => {
     const data = {

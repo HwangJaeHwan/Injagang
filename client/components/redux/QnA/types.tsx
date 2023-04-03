@@ -22,6 +22,9 @@ export interface BOARDLIST {
   boardId: number;
   title: string;
   content: string;
+  userId: number;
+  nickname: string;
+  owner: boolean;
   essayTitle: string;
   qnaList: qnaList[];
 }
