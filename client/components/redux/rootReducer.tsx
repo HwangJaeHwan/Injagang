@@ -4,6 +4,7 @@ import essayReducer from "./Essay/reducer";
 import signupReducer from "./Join/reducer";
 import templateReducer from "./Template/reducer";
 import boardReducer from "./QnA/reducer";
+import feedbackReducer from "./FeedBack/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   template: templateReducer,
   essay: essayReducer,
   board: boardReducer,
+  feedBack: feedbackReducer,
 });
 
 export default rootReducer;
