@@ -84,10 +84,10 @@ public class BoardService {
 
     }
 
-    public void reviseBoard(Long boardId, Long userId,BoardRevise boardRevise) {
+    public void reviseBoard(Long userId, BoardRevise boardRevise) {
 
 
-        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        Board board = boardRepository.findById(boardRevise.getBoardId()).orElseThrow(BoardNotFoundException::new);
 
         if (userId != board.getUser().getId()) {
             throw new UnauthorizedException();
@@ -99,9 +99,9 @@ public class BoardService {
 
     }
 
-    public void writeFeedback(Long boardQnaId, Long userId, FeedbackWrite feedbackWrite) {
+    public void writeFeedback(Long userId, FeedbackWrite feedbackWrite) {
 
-        BoardQnA boardQnA = qnARepository.findBoardQnaById(boardQnaId).orElseThrow(QnaNotFoundException::new);
+        BoardQnA boardQnA = qnARepository.findBoardQnaById(feedbackWrite.getQnaId()).orElseThrow(QnaNotFoundException::new);
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         Feedback feedback = Feedback.builder()
@@ -115,7 +115,7 @@ public class BoardService {
 
     }
 
-    public void reviseFeedback(Long userId, ReviseFeedback reviseFeedback) {
+    public void reviseFeedback(Long userId,ReviseFeedback reviseFeedback) {
 
         Feedback feedback = feedbackRepository.findById(reviseFeedback.getFeedbackId()).orElseThrow(FeedbackNotFoundException::new);
 
@@ -130,7 +130,7 @@ public class BoardService {
     }
 
 
-    public List<FeedbackList> feedbacksByQna(Long qnaId, Long userId) {
+    public List<FeedbackList> feedbacksByQna(Long userId, Long qnaId) {
 
         QnA qnA = qnARepository.findById(qnaId).orElseThrow(QnaNotFoundException::new);
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
