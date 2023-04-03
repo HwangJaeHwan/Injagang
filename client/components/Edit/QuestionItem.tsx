@@ -10,8 +10,11 @@ const Card = styled.div`
   min-height: 300px;
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
-  text-align: center;
   margin: 15px 15px;
+  .essay_title{
+    width: 88%;
+    word-break: break-all;
+  }
 
   textarea {
     display: flex;
@@ -33,7 +36,6 @@ const Card = styled.div`
   }
 `;
 
-
 interface qnaListItem {
   question: string;
   answer: string;
@@ -46,7 +48,7 @@ interface QuestionItemProps {
   onChange: (index: number, value: string, title: string) => void;
   index: number;
   questionTitle: string;
-  questionContent: React.Dispatch<React.SetStateAction<qnaList>> 
+  questionContent: React.Dispatch<React.SetStateAction<qnaList>>;
 }
 
 const QuestionItem = ({
@@ -58,18 +60,17 @@ const QuestionItem = ({
 }: QuestionItemProps) => {
   const [text, setText] = useState("");
 
-  
   useEffect(() => {
-    if(index === 0 ){
+    if (index === 0) {
       questionContent([]);
     }
     const title = typeof content === "string" ? content : content.question;
-    questionContent(cur => [...cur, {question:title, answer: ""}]);
+    questionContent(cur => [...cur, { question: title, answer: "" }]);
     if (typeof content !== "string") {
       setText(content.answer);
     }
   }, [questionTitle]);
-  
+
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
     const title = typeof content === "string" ? content : content.question;
@@ -78,7 +79,7 @@ const QuestionItem = ({
 
   return (
     <Card>
-      <h3>
+      <h3 className="essay_title">
         {index + 1}. {typeof content === "string" ? content : content.question}
       </h3>
       <textarea value={text} onChange={handleTextChange} />
@@ -90,3 +91,4 @@ const QuestionItem = ({
 };
 
 export default QuestionItem;
+

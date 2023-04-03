@@ -10,6 +10,7 @@ import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import EssayDetailView from "@/components/EssayDetailView";
 import AnswerDragView from "@/components/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
+import BoardItem from "@/components/BoardItem";
 
 const ViewStyle = styled.div`
   ${ColBox}
@@ -35,13 +36,17 @@ const RigthContainer = styled.div`
 `;
 
 const CommentTop = styled.div`
-  height: 70%;
+  height: 50%;
   width: 100%;
   margin: 10px auto;
   textarea {
+    ${ScrollBar}
+    padding: 15px;
+    line-height: 1.5;
     height: 100%;
     width: 100%;
     border-radius: 15px;
+    resize: none;
   }
 `;
 const CommentFooter = styled.div`
@@ -51,15 +56,21 @@ const CommentFooter = styled.div`
 `;
 
 const CorrectionContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
+  ${ScrollBar}
   width: 98%;
-  height: 15%;
-  text-align: center;
+  height: 30%;
   color: red;
-  h4 {
+  overflow-x: hidden;
+
+  .correction_title {
+    font-weight: bold;
+  }
+
+  .correction_sentence {
+    font-weight: normal;
+    margin-top: 8px;
     color: white;
-    margin-left: 15px;
+    word-break: break-all;
   }
 `;
 
@@ -73,30 +84,29 @@ const answer = () => {
   );
 
   useEffect(() => {
-    dispatch(getBoardDetail(4));
-  }, []);
+    if (!isNaN(Number(boardId.id))) {
+      dispatch(getBoardDetail(Number(boardId.id)));
+    }
+  }, [router.query]);
 
   console.log(boardId);
   return (
     <ViewStyle>
-      <Card size={{ width: "80%", height: "55vh", flex: "row" }}>
+      <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
         <LeftContainer>
           {boardReducer.boardList &&
             boardReducer.boardList.map((a, i) => (
-              <div key={a.boardId}>
-                <h2>제목:{" "}{a.title}</h2>
-                <h4>답변:{" "}{a.content}</h4>
-              </div>
+              <BoardItem key={a.boardId} {...a} />
             ))}
         </LeftContainer>
         <RigthContainer>
           <AnswerDragView onChange={setCorrection} />
         </RigthContainer>
       </Card>
-      <Card size={{ width: "80%", height: "25vh", flex: "col" }}>
+      <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
         <CorrectionContainer>
-          <div className="p"><h3>현재 선택된 문장:</h3></div>
-          <h4>{correction}</h4>
+          <span className="correction_title">현재 선택된 문장:</span>
+          <h4 className="correction_sentence">{correction}</h4>
         </CorrectionContainer>
         <CommentTop>
           <textarea></textarea>

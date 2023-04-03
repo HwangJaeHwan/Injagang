@@ -43,6 +43,7 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   ${FlexBox}
+  ${ScrollBar}
   resize: vertical;
   box-sizing: border-box;
   color: #22272e;
@@ -55,7 +56,6 @@ const TextArea = styled.textarea`
   border-radius: 5px;
   overflow-y: auto;
   margin: 15px auto;
-  ${ScrollBar}
 `;
 
 const question = () => {
