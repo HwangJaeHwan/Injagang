@@ -14,6 +14,7 @@ export interface boardFailDispatch {
 }
 
 export type qnaList = {
+  qnaId: number;
   question: string;
   answer: string;
 };

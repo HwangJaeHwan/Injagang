@@ -11,6 +11,7 @@ import EssayDetailView from "@/components/EssayDetailView";
 import AnswerDragView from "@/components/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
 import BoardItem from "@/components/BoardItem";
+import { writeFeedback } from "@/components/redux/FeedBack/action";
 
 const ViewStyle = styled.div`
   ${ColBox}
@@ -74,9 +75,20 @@ const CorrectionContainer = styled.div`
   }
 `;
 
+export type CorrectionItem = {
+  targetQuestion: number;
+  targetAnswer: string;
+  targetQuestionIndex: number;
+};
+
 const answer = () => {
   const router = useRouter();
-  const [correction, setCorrection] = useState<string>("");
+  const [correction, setCorrection] = useState<CorrectionItem>({
+    targetQuestion: 0,
+    targetAnswer: "",
+    targetQuestionIndex: 0,
+  });
+  const [correctionText, setCorrectionText] = useState<string>("");
   const dispatch = useDispatch();
   const boardId = router.query;
   const boardReducer: InitiaState = useSelector(
@@ -88,6 +100,21 @@ const answer = () => {
       dispatch(getBoardDetail(Number(boardId.id)));
     }
   }, [router.query]);
+
+  const handleSubmit = () => {
+    const data = {
+      qnaId: correction.targetQuestionIndex,
+      feedbackTarget: correction.targetAnswer,
+      feedbackContent: correctionText,
+    };
+    dispatch(writeFeedback(data));
+    setCorrection({
+      targetAnswer: "",
+      targetQuestion: 0,
+      targetQuestionIndex: 0,
+    });
+    setCorrectionText("");
+  };
 
   console.log(boardId);
   return (
@@ -106,15 +133,18 @@ const answer = () => {
       <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
         <CorrectionContainer>
           <span className="correction_title">현재 선택된 문장:</span>
-          <h4 className="correction_sentence">{correction}</h4>
+          <h4 className="correction_sentence">{correction.targetAnswer}</h4>
         </CorrectionContainer>
         <CommentTop>
-          <textarea></textarea>
+          <textarea
+            value={correctionText}
+            onChange={e => setCorrectionText(e.target.value)}
+          ></textarea>
         </CommentTop>
         <CommentFooter>
           <CustomButton
             text="작성"
-            onClick={() => setCorrection("")}
+            onClick={handleSubmit}
             Size={{ width: "150px", font: "15px" }}
           ></CustomButton>
         </CommentFooter>

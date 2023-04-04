@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import boardReducer, { InitiaState } from "./redux/QnA/reducer";
 import { RootReducerType } from "./redux/store";
+import { CorrectionItem } from "@/pages/qna/answer/[id]";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
@@ -36,7 +37,7 @@ const EssayDragItems = styled.div`
   }
 `;
 interface EssayDragProps {
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange: React.Dispatch<React.SetStateAction<CorrectionItem>>;
 }
 
 /**드래그 첨삭 기능을 가진 자소서 View */
@@ -46,7 +47,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
     (state: RootReducerType) => state.board,
   );
   /**드래그 첨삭 탐색*/
-  const handleSelect = (dragTitleNumber: number) => {
+  const handleSelect = (dragTitleNumber: number, qnaId: number) => {
     const selectedText = window.getSelection()?.toString();
     if (selectedText === "") {
       return;
@@ -76,7 +77,11 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
           setAdded(false);
           return;
         }
-        onChange(`질문제목번호:${dragTitleNumber}번 ==> ${selectedText}`);
+        onChange({
+          targetQuestion: dragTitleNumber,
+          targetAnswer: selectedText,
+          targetQuestionIndex: qnaId,
+        });
         setAdded(false);
       };
     }
@@ -89,7 +94,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
       const parent = target.parentNode as HTMLElement;
       const targetText = document.createTextNode(target.innerText);
       parent.replaceChild(targetText, target);
-      onChange("");
+      onChange({ targetAnswer: "", targetQuestion: 0, targetQuestionIndex: 0 });
       setAdded(false);
     }
   };
@@ -119,7 +124,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
             </h3>
             <p
               className="essay_answer"
-              onMouseUp={() => handleSelect(i + 1)}
+              onMouseUp={() => handleSelect(i + 1, a.qnaId)}
               onDoubleClick={handleRemove}
               onClick={handleSpan}
             >
