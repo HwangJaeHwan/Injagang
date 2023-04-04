@@ -7,15 +7,14 @@ import { InitiaState } from "@/components/redux/QnA/reducer";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import EssayDetailView from "@/components/EssayDetailView";
 import AnswerDragView from "@/components/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
 import BoardItem from "@/components/BoardItem";
 import { writeFeedback } from "@/components/redux/FeedBack/action";
+import FeedBackView from "@/components/QNA/FeedBAckView";
 
 const ViewStyle = styled.div`
   ${ColBox}
-  height: 100vh;
   width: 80vw;
 `;
 
@@ -34,26 +33,6 @@ const RigthContainer = styled.div`
   margin: 30px auto;
   height: 100%;
   width: 45%;
-`;
-
-const CommentTop = styled.div`
-  height: 50%;
-  width: 100%;
-  margin: 10px auto;
-  textarea {
-    ${ScrollBar}
-    padding: 15px;
-    line-height: 1.5;
-    height: 100%;
-    width: 100%;
-    border-radius: 15px;
-    resize: none;
-  }
-`;
-const CommentFooter = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const CorrectionContainer = styled.div`
@@ -75,6 +54,39 @@ const CorrectionContainer = styled.div`
   }
 `;
 
+const CommentTop = styled.div`
+  height: 50%;
+  width: 100%;
+  margin: 10px auto;
+  textarea {
+    ${ScrollBar}
+    padding: 15px;
+    line-height: 1.5;
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    resize: none;
+  }
+`;
+
+const CommentFooter = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ControlLeftButtons = styled.div`
+  button {
+    margin-right: 3px;
+  }
+`;
+
+const ControlRightButtons = styled.div`
+  button:first-child {
+    margin-right: 5px;
+  }
+`;
+
 export type CorrectionItem = {
   targetQuestion: number;
   targetAnswer: string;
@@ -89,6 +101,7 @@ const answer = () => {
     targetQuestionIndex: 0,
   });
   const [correctionText, setCorrectionText] = useState<string>("");
+  const [feedBackIndex, setFeedBackIndex] = useState<number>(0);
   const dispatch = useDispatch();
   const boardId = router.query;
   const boardReducer: InitiaState = useSelector(
@@ -116,14 +129,22 @@ const answer = () => {
     setCorrectionText("");
   };
 
+  const handleClear = () => {
+    setCorrectionText("");
+  };
+
+  const handleFeedBackIndex = (qnaId: number) => {
+    setFeedBackIndex(qnaId);
+  };
+
   console.log(boardId);
   return (
     <ViewStyle>
       <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
         <LeftContainer>
           {boardReducer.boardList &&
-            boardReducer.boardList.map((a, i) => (
-              <BoardItem key={a.boardId} {...a} />
+            boardReducer.boardList.map((list, i) => (
+              <BoardItem key={list.boardId} {...list} />
             ))}
         </LeftContainer>
         <RigthContainer>
@@ -132,7 +153,10 @@ const answer = () => {
       </Card>
       <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
         <CorrectionContainer>
-          <span className="correction_title">현재 선택된 문장:</span>
+          <span className="correction_title">
+            현재 선택된 문장:{" "}
+            {correction.targetQuestion !== 0 ? correction.targetQuestion : ""}
+          </span>
           <h4 className="correction_sentence">{correction.targetAnswer}</h4>
         </CorrectionContainer>
         <CommentTop>
@@ -142,13 +166,32 @@ const answer = () => {
           ></textarea>
         </CommentTop>
         <CommentFooter>
-          <CustomButton
-            text="작성"
-            onClick={handleSubmit}
-            Size={{ width: "150px", font: "15px" }}
-          ></CustomButton>
+          <ControlLeftButtons>
+            {boardReducer.qnaIdList.map((list, i) => (
+              <CustomButton
+                className={list === feedBackIndex ? "active_button": " "}
+                Size={{ width: "40px", font: "15px" }}
+                text={`${i}`}
+                onClick={() => handleFeedBackIndex(list)}
+                key={list}
+              ></CustomButton>
+            ))}
+          </ControlLeftButtons>
+          <ControlRightButtons>
+            <CustomButton
+              text="비우기"
+              onClick={handleClear}
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+            <CustomButton
+              text="작성"
+              onClick={handleSubmit}
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+          </ControlRightButtons>
         </CommentFooter>
       </Card>
+      <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
     </ViewStyle>
   );
 };

@@ -6,7 +6,7 @@ import {
   FEEDBACKLIST,
 } from "./types";
 
-interface InitiaState {
+export interface InitiaState {
   loading: boolean;
   error: null;
   feedbackList: FEEDBACKLIST[];

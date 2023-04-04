@@ -21,6 +21,7 @@ export const getBoardDetail =
           type: BOARD_SUCCESS,
           payload: {
             list: response.data,
+            qnaIdList: response.data.qnaList,
           },
         });
       }

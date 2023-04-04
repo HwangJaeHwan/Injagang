@@ -10,12 +10,14 @@ export interface InitiaState {
   loading: boolean;
   error: null;
   boardList: BOARDLIST[];
+  qnaIdList: number[];
 }
 
 const initialState: InitiaState = {
   loading: false,
   error: null,
   boardList: [],
+  qnaIdList: [],
 };
 
 const boardReducer = (state = initialState, action: boardDispatchType) => {
@@ -29,6 +31,7 @@ const boardReducer = (state = initialState, action: boardDispatchType) => {
       return {
         ...state,
         boardList: [action.payload.list],
+        qnaIdList: action.payload.qnaIdList.map(list => list.qnaId),
       };
     case BOARD_FAILURE:
       return {
