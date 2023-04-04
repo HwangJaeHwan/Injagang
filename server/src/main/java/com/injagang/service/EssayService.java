@@ -87,9 +87,11 @@ public class EssayService {
 
         essay.reviseTitle(essayWrite.getTitle());
 
-        List<EssayQnA> deleteQna = qnARepository.findAllByEssay(essay);
+//        List<EssayQnA> deleteQna = qnARepository.findAllByEssay(essay);
 
-        qnARepository.deleteByEssayQnAsIn(deleteQna);
+//        qnARepository.deleteEssayQnAsIn(deleteQna);
+
+        qnARepository.deleteEssayQnAByEssay(essay);
 
         List<EssayQnA> newQnAs = new ArrayList<>();
 
@@ -122,7 +124,7 @@ public class EssayService {
 
         List<EssayQnA> deleteQna = qnARepository.findAllByEssay(essay);
 
-        qnARepository.deleteByEssayQnAsIn(deleteQna);
+        qnARepository.deleteEssayQnAsIn(deleteQna);
         essayRepository.delete(essay);
 
     }

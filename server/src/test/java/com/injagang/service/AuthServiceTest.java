@@ -6,6 +6,7 @@ import com.injagang.domain.User;
 import com.injagang.exception.*;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
 import com.injagang.response.UserInfo;
 import org.junit.jupiter.api.*;

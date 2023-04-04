@@ -6,6 +6,7 @@ import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.TemplateCreate;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

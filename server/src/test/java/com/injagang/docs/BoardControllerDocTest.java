@@ -10,9 +10,9 @@ import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.BoardWrite;
 import com.injagang.request.FeedbackWrite;
-import com.injagang.request.QnaRequest;
 import com.injagang.request.ReviseFeedback;
 import com.injagang.response.BoardRevise;
 import org.junit.jupiter.api.*;
@@ -21,15 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.headers.HeaderDocumentation;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.PayloadDocumentation;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.*;
@@ -38,6 +35,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -506,6 +505,152 @@ public class BoardControllerDocTest {
                         fieldWithPath("[].owner").description("작성자 판별")
                 )));
 
+
+    }
+
+    @Test
+    @DisplayName("게시물 리스트")
+    void test7() throws Exception {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+
+        mockMvc.perform(get("/board?page=1&type=title&content=test"))
+                .andDo(document("board-list", requestParameters(
+                        parameterWithName("page").description("현재 페이지"),
+                        parameterWithName("type").description("검색 타입(title/writer)"),
+                        parameterWithName("content").description("검색 내용")
+                ), responseFields(
+                        fieldWithPath("totalPage").description("총 페이지 수"),
+                        fieldWithPath("boardInfos[].id").description("게시글 ID"),
+                        fieldWithPath("boardInfos[].title").description("게시글 제목"),
+                        fieldWithPath("boardInfos[].nickname").description("작성자 닉네임"),
+                        fieldWithPath("isFirst").description("첫 페이지 확인"),
+                        fieldWithPath("isLast").description("마지막 페이지 확인")
+                )));
+
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test8() throws Exception {
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        Feedback feedback1 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target1")
+                .feedbackContent("content1")
+                .build();
+
+        Feedback feedback2 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target2")
+                .feedbackContent("content2")
+                .build();
+
+        Feedback feedback3 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna2)
+                .feedbackTarget("target3")
+                .feedbackContent("content3")
+                .build();
+
+        Feedback feedback4 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna3)
+                .feedbackTarget("target4")
+                .feedbackContent("content4")
+                .build();
+
+        feedbackRepository.save(feedback1);
+        feedbackRepository.save(feedback2);
+        feedbackRepository.save(feedback3);
+        feedbackRepository.save(feedback4);
+
+
+        mockMvc.perform(delete("/board/{boardId}", board.getId())
+                        .header("Authorization", jws))
+                .andDo(document("board-delete",requestHeaders(
+                        headerWithName("Authorization").description("로그인 인증")
+                ),pathParameters(
+                        parameterWithName("boardId").description("삭제할 게시글 ID")
+                )));
 
     }
 }

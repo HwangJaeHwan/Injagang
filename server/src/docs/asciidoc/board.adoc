@@ -7,6 +7,19 @@
 :sectlinks:
 
 
+== 게시글 리스트
+
+=== 요청
+
+include::{snippets}/board-list/http-request.adoc[]
+include::{snippets}/board-list/request-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/board-list/http-response.adoc[]
+include::{snippets}/board-list/response-fields.adoc[]
+
+
 == 게시글 쓰기
 
 === 요청
@@ -34,6 +47,14 @@ include::{snippets}/board-read/response-fields.adoc[]
 include::{snippets}/board-revise/http-request.adoc[]
 include::{snippets}/board-revise/request-headers.adoc[]
 include::{snippets}/board-revise/request-fields.adoc[]
+
+== 게시글 삭제
+
+include::{snippets}/board-delete/http-request.adoc[]
+include::{snippets}/board-delete/path-parameters.adoc[]
+include::{snippets}/board-delete/request-headers.adoc[]
+
+
 
 == 피드백 쓰기
 

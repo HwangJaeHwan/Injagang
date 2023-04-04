@@ -7,18 +7,15 @@ import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.repository.*;
-import com.injagang.request.BoardWrite;
-import com.injagang.request.FeedbackWrite;
-import com.injagang.request.QnaRequest;
-import com.injagang.request.ReviseFeedback;
-import com.injagang.response.BoardRead;
-import com.injagang.response.BoardRevise;
-import com.injagang.response.FeedbackList;
+import com.injagang.repository.board.BoardRepository;
+import com.injagang.request.*;
+import com.injagang.response.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.*;
@@ -465,6 +462,255 @@ class BoardServiceTest {
         assertEquals("target4", feedbackList.get(3).getTarget());
         assertEquals("content4", feedbackList.get(3).getContent());
         assertFalse(feedbackList.get(3).isOwner());
+
+    }
+
+    @Test
+    @DisplayName("게시글 리스트 title")
+    void test7() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        IntStream.rangeClosed(1, 100).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+
+        PageDTO pageDTO = PageDTO.builder()
+                .page(1)
+                .build();
+        SearchDTO searchDTO = SearchDTO.builder()
+                .type("title")
+                .content("1")
+                .build();
+
+        BoardList boardList = boardService.boardList(pageDTO, searchDTO);
+
+        assertEquals(2, boardList.getTotalPage());
+        assertEquals(15, boardList.getBoardInfos().size());
+        assertTrue(boardList.getIsFirst());
+        assertFalse(boardList.getIsLast());
+
+
+    }
+
+    @Test
+    @DisplayName("게시글 리스트 writer")
+    void test8() {
+
+        User user1 = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user1);
+
+        User user2 = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("writer")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user2);
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user1)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("writer board " + i)
+                            .content("test content")
+                            .user(user2)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+
+        PageDTO pageDTO = PageDTO.builder()
+                .page(1)
+                .build();
+        SearchDTO searchDTO1 = SearchDTO.builder()
+                .type("writer")
+                .content("test")
+                .build();
+
+        SearchDTO searchDTO2 = SearchDTO.builder()
+                .type("writer")
+                .content("writer")
+                .build();
+
+        BoardList boardList1 = boardService.boardList(pageDTO, searchDTO1);
+        BoardList boardList2 = boardService.boardList(pageDTO, searchDTO2);
+
+        assertEquals(2, boardList1.getTotalPage());
+        assertEquals(15, boardList1.getBoardInfos().size());
+        assertTrue(boardList1.getIsFirst());
+        assertFalse(boardList1.getIsLast());
+        assertEquals("test",boardList1.getBoardInfos().get(0).getNickname());
+
+        assertEquals(2, boardList2.getTotalPage());
+        assertEquals(15, boardList2.getBoardInfos().size());
+        assertTrue(boardList2.getIsFirst());
+        assertFalse(boardList2.getIsLast());
+        assertEquals("writer",boardList2.getBoardInfos().get(0).getNickname());
+
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test9() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        Feedback feedback1 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target1")
+                .feedbackContent("content1")
+                .build();
+
+        Feedback feedback2 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target2")
+                .feedbackContent("content2")
+                .build();
+
+        Feedback feedback3 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna2)
+                .feedbackTarget("target3")
+                .feedbackContent("content3")
+                .build();
+
+        Feedback feedback4 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna3)
+                .feedbackTarget("target4")
+                .feedbackContent("content4")
+                .build();
+
+        feedbackRepository.save(feedback1);
+        feedbackRepository.save(feedback2);
+        feedbackRepository.save(feedback3);
+        feedbackRepository.save(feedback4);
+
+
+        boardService.deleteBoard(user.getId(), board.getId());
+
+        assertEquals(0, feedbackRepository.count());
+        assertEquals(0, qnARepository.count());
+        assertEquals(0, boardRepository.count());
+
 
     }
 
