@@ -9,19 +9,19 @@ import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.BoardWrite;
 import com.injagang.request.FeedbackWrite;
-import com.injagang.request.QnaRequest;
 import com.injagang.request.ReviseFeedback;
 import com.injagang.response.BoardRevise;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.JsonPath;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -314,7 +314,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("/board/feedback/revise/{feedbackId} 피드백 수정")
+    @DisplayName("/board/feedback/revise 피드백 수정")
     void test5() throws Exception {
 
         User user = User.builder()
@@ -466,4 +466,285 @@ class BoardControllerTest {
 
 
     }
+
+    @Test
+    @DisplayName("게시물 리스트")
+    void test7() throws Exception {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        IntStream.rangeClosed(1, 100).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+        mockMvc.perform(get("/board"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(7L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andDo(print());
+
+
+
+
+
+    }
+
+    @Test
+    @DisplayName("게시물 리스트 title")
+    void test8() throws Exception {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        IntStream.rangeClosed(1, 100).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+        mockMvc.perform(get("/board")
+                        .param("type","title")
+                        .param("content","1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(2L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andExpect(jsonPath("$.isFirst").value(true))
+                .andExpect(jsonPath("$.isLast").value(false))
+                .andDo(print());
+
+
+    }
+
+    @Test
+    @DisplayName("게시물 리스트 writer")
+    void test9() throws Exception {
+
+
+        User user1 = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user1);
+
+        User user2 = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("writer")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user2);
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user1)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("writer board " + i)
+                            .content("test content")
+                            .user(user2)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+        mockMvc.perform(get("/board")
+                        .param("type","writer")
+                        .param("content","writer"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(2L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andExpect(jsonPath("$.isFirst").value(true))
+                .andExpect(jsonPath("$.isLast").value(false))
+                .andExpect(jsonPath("$.boardInfos[0].nickname").value("writer"))
+                .andDo(print());
+
+
+    }
+
+    @Test
+    @DisplayName("/{boardId} 게시물 삭제")
+    void test10() throws Exception{
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        Feedback feedback1 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target1")
+                .feedbackContent("content1")
+                .build();
+
+        Feedback feedback2 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target2")
+                .feedbackContent("content2")
+                .build();
+
+        Feedback feedback3 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna2)
+                .feedbackTarget("target3")
+                .feedbackContent("content3")
+                .build();
+
+        Feedback feedback4 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna3)
+                .feedbackTarget("target4")
+                .feedbackContent("content4")
+                .build();
+
+        feedbackRepository.save(feedback1);
+        feedbackRepository.save(feedback2);
+        feedbackRepository.save(feedback3);
+        feedbackRepository.save(feedback4);
+
+
+        mockMvc.perform(delete("/board/{boardId}", board.getId())
+                        .header("Authorization", jws))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+    }
+
 }

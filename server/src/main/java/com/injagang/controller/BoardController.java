@@ -1,9 +1,8 @@
 package com.injagang.controller;
 
 import com.injagang.config.data.UserSession;
-import com.injagang.request.BoardWrite;
-import com.injagang.request.FeedbackWrite;
-import com.injagang.request.ReviseFeedback;
+import com.injagang.request.*;
+import com.injagang.response.BoardList;
 import com.injagang.response.BoardRead;
 import com.injagang.response.BoardRevise;
 import com.injagang.response.FeedbackList;
@@ -22,6 +21,14 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+
+
+    @GetMapping
+    public BoardList boardList(PageDTO pageDTO, SearchDTO searchDTO) {
+
+        return boardService.boardList(pageDTO, searchDTO);
+
+    }
 
 
     @GetMapping("/{boardId}")
@@ -48,7 +55,7 @@ public class BoardController {
     }
 
     @PostMapping("/feedback")
-    public void writeFeedback(UserSession userSession,  @RequestBody FeedbackWrite feedbackWrite) {
+    public void writeFeedback(UserSession userSession,  @RequestBody @Valid FeedbackWrite feedbackWrite) {
 
         boardService.writeFeedback(userSession.getUserId(), feedbackWrite);
     }
@@ -67,4 +74,9 @@ public class BoardController {
 
     }
 
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(UserSession userSession, @PathVariable Long boardId) {
+
+        boardService.deleteBoard(userSession.getUserId(), boardId);
+    }
 }

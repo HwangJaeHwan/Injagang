@@ -9,15 +9,12 @@ import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
 import com.injagang.exception.*;
 import com.injagang.repository.*;
-import com.injagang.request.BoardWrite;
-import com.injagang.request.FeedbackWrite;
-import com.injagang.request.QnaRequest;
-import com.injagang.request.ReviseFeedback;
-import com.injagang.response.BoardRead;
-import com.injagang.response.BoardRevise;
-import com.injagang.response.FeedbackList;
+import com.injagang.repository.board.BoardRepository;
+import com.injagang.request.*;
+import com.injagang.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +34,25 @@ public class BoardService {
     private final EssayRepository essayRepository;
 
     private final FeedbackRepository feedbackRepository;
+
+
+    public BoardList boardList(PageDTO pageDTO, SearchDTO searchDTO) {
+
+        log.info("search type = {}", searchDTO.getType());
+        log.info("search content = {}", searchDTO.getContent());
+
+        Page<Board> boards = boardRepository.boardList(pageDTO, searchDTO);
+        log.info("first = {}",boards.isFirst());
+        log.info("last = {}",boards.isLast());
+
+        return BoardList.builder()
+                .totalPage(boards.getTotalPages())
+                .boardInfos(boards.map(BoardListInfo::new).getContent())
+                .isFirst(boards.isFirst())
+                .isLast(boards.isLast())
+                .build();
+
+    }
 
 
 
@@ -142,6 +158,27 @@ public class BoardService {
 
 
     }
+
+    public void deleteBoard(Long userId, Long boardId){
+
+        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+
+        if (board.getUser().getId() != userId) {
+            throw new UnauthorizedException();
+        }
+
+        List<BoardQnA> qnAList = qnARepository.findAllByBoard(board);
+
+        feedbackRepository.deleteFeedbacksInQnAs(qnAList);
+
+        qnARepository.deleteBoardQnAsIn(qnAList);
+
+        boardRepository.delete(board);
+
+    }
+
+
+
 
 
 

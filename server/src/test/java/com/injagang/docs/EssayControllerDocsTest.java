@@ -6,6 +6,7 @@ import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.EssayWrite;
 import com.injagang.request.QnaRequest;
 import com.injagang.service.EssayService;

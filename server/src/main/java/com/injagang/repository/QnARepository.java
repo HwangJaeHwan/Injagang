@@ -24,6 +24,13 @@ public interface QnARepository extends JpaRepository<QnA, Long> {
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("delete from EssayQnA q where q in :qnas")
-    void deleteByEssayQnAsIn(@Param("qnas") List<EssayQnA> qnAs);
+    void deleteEssayQnAsIn(@Param("qnas") List<EssayQnA> qnaList);
 
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from EssayQnA q where q.essay = :essay")
+    void deleteEssayQnAByEssay(@Param("essay") Essay essay);
+
+    @Modifying
+    @Query("delete from BoardQnA q where q in :qnas")
+    void deleteBoardQnAsIn(@Param("qnas") List<BoardQnA> qnaList);
 }
