@@ -1,15 +1,18 @@
 import {
   boardDispatchType,
   BOARDLIST,
+  BOARDINFOLIST,
   BOARD_FAILURE,
   BOARD_REQUEST,
   BOARD_SUCCESS,
+  BOARDINFO_SUCCESS,
 } from "./types";
 
 export interface InitiaState {
   loading: boolean;
   error: null;
   boardList: BOARDLIST[];
+  boardInFoList: BOARDINFOLIST[];
   qnaIdList: number[];
 }
 
@@ -18,6 +21,7 @@ const initialState: InitiaState = {
   error: null,
   boardList: [],
   qnaIdList: [],
+  boardInFoList: [],
 };
 
 const boardReducer = (state = initialState, action: boardDispatchType) => {
@@ -33,6 +37,12 @@ const boardReducer = (state = initialState, action: boardDispatchType) => {
         boardList: [action.payload.list],
         qnaIdList: action.payload.qnaIdList.map(list => list.qnaId),
       };
+    case BOARDINFO_SUCCESS:
+      return {
+        ...state,
+        boardInFoList: [action.payload.boardInfoList]
+      }
+      ;
     case BOARD_FAILURE:
       return {
         ...state,

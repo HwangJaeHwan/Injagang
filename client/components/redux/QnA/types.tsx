@@ -1,6 +1,7 @@
 export const BOARD_SUCCESS = "BOARD_SUCCESS";
 export const BOARD_REQUEST = "BOARD_REQUEST";
 export const BOARD_FAILURE = "BOARD_FAILURE";
+export const BOARDINFO_SUCCESS = "BOARDINFO_SUCCESS";
 
 export interface boardRequest {
   type: typeof BOARD_REQUEST;
@@ -30,11 +31,31 @@ export interface BOARDLIST {
   qnaList: qnaList[];
 }
 
+export type BOARDITEMINFOLIST = {
+  id: number;
+  title: string;
+  nickname: string;
+};
+
+export interface BOARDINFOLIST {
+  totalPage: number;
+  boardInfos: BOARDITEMINFOLIST[];
+  isFirst: Boolean;
+  isLast: Boolean;
+}
+
 export interface boardSuccessDispatch {
   type: typeof BOARD_SUCCESS;
   payload: {
     list: BOARDLIST[];
     qnaIdList: qnaList[];
+  };
+}
+
+export interface boardInfoSuccessDispatch {
+  type: typeof BOARDINFO_SUCCESS;
+  payload: {
+    boardInfoList: BOARDINFOLIST[];
   };
 }
 
@@ -48,4 +69,5 @@ export interface boardFailDispatch {
 export type boardDispatchType =
   | boardRequest
   | boardFailDispatch
+  | boardInfoSuccessDispatch
   | boardSuccessDispatch;

@@ -1,7 +1,8 @@
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../UI/CustomButton";
+import { Dispatch } from "redux";
 
 const FeedBackItemsStyle = styled.div`
   ${ColBox}
@@ -59,6 +60,7 @@ type FeedBackItemsProps = {
   content: string;
   feedbackId: number;
   owner: boolean;
+  handleUpdateFeedBack: (feedbackId: number, content: string) => void;
 };
 
 const FeedBackItems = ({
@@ -66,7 +68,16 @@ const FeedBackItems = ({
   content,
   feedbackId,
   owner,
+  handleUpdateFeedBack,
 }: FeedBackItemsProps) => {
+  const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
+  const [text, setText] = useState<string>(content);
+  const handleUpdate = () => {
+    if (!isReadOnly && content !== text) {
+      handleUpdateFeedBack(feedbackId, text);
+    }
+    setIsReadOnly(!isReadOnly);
+  };
   return (
     <FeedBackItemsStyle>
       <Card size={{ width: "80%", height: "50vh", flex: "col" }}>
@@ -75,14 +86,18 @@ const FeedBackItems = ({
           <h4 className="correction_sentence">{target}</h4>
         </CorrectionContainer>
         <CommentTop>
-          <textarea value={content} readOnly></textarea>
+          <textarea
+            value={text}
+            onChange={e => setText(e.target.value)}
+            readOnly={isReadOnly}
+          ></textarea>
         </CommentTop>
         <CommentFooter>
           {owner ? (
             <ControlRightButtons>
               <CustomButton
-                text="편집"
-                onClick={() => console.log("e")}
+                text={isReadOnly ? "편집" : "수정완료"}
+                onClick={handleUpdate}
                 Size={{ width: "150px", font: "15px" }}
               ></CustomButton>
               <CustomButton

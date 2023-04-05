@@ -78,8 +78,8 @@ const Layout = ({ children }: LayoutProps) => {
       icon: <BiUserVoice />,
     },
     {
-      title: "Community",
-      path: "/community",
+      title: "Q&A",
+      path: "/qna/list",
       icon: <BiCommentDetail />,
     },
   ];

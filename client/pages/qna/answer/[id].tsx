@@ -171,7 +171,7 @@ const answer = () => {
               <CustomButton
                 className={list === feedBackIndex ? "active_button": " "}
                 Size={{ width: "40px", font: "15px" }}
-                text={`${i}`}
+                text={`${i+1}`}
                 onClick={() => handleFeedBackIndex(list)}
                 key={list}
               ></CustomButton>

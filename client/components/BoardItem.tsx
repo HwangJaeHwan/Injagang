@@ -16,6 +16,7 @@ const BoardItemContainer = styled.div`
     margin-top: 15px;
     width: 100%;
     display: flex;
+    font-weight: normal;
     justify-content: flex-start;
   }
 `;
@@ -31,7 +32,7 @@ const BoardItem = ({ title, nickname, content }: BoardItemProps) => {
     <BoardItemContainer>
       <h2 className="board_title"> 제목: {title}</h2>
       <h4 className="board_nickname"> 작성자:{nickname}</h4>
-      <h3 className="board_content"> 내용: {content}</h3>
+      <h4 className="board_content"> {content}</h4>
     </BoardItemContainer>
   );
 };

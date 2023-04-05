@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { InitiaState } from "../redux/FeedBack/reducer";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
-import { getFeedbackList } from "../redux/FeedBack/action";
+import { getFeedbackList, updateFeedback } from "../redux/FeedBack/action";
 import FeedBackItems from "./FeedBackItems";
 import { ColBox } from "@/styles/GlobalStyle";
 
@@ -25,15 +25,30 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
     (state: RootReducerType) => state.feedBack,
   );
 
-  useEffect(() => {
+  const handleUpdateFeedBack = (feedbackId:number,  reviseContent:string) => {
+    const data = {
+      feedbackId,
+      reviseContent,
+    }
+    dispatch(updateFeedback(data))
     dispatch(getFeedbackList(targetNumber));
+  };
+
+  useEffect(() => {
+    if(targetNumber!==0){
+      dispatch(getFeedbackList(targetNumber));
+    }
   }, [targetNumber]);
 
   return (
     <FeedBackViewStyle>
       {feedbackReducer.feedbackList &&
         feedbackReducer.feedbackList.map((a, i) => (
-          <FeedBackItems key={a.feedbackId} {...a}></FeedBackItems>
+          <FeedBackItems
+            key={a.feedbackId}
+            handleUpdateFeedBack={handleUpdateFeedBack}
+            {...a}
+          ></FeedBackItems>
         ))}
     </FeedBackViewStyle>
   );
