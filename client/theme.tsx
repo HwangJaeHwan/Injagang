@@ -17,7 +17,7 @@ const lightTheme:Theme = {
     primary: "white",
     secondary: "#3399FF",
     bodyColor: "#fff",
-    button: "#fff",
+    button: "#f39214f2",
     logo: "#000000",
     text: "#000000",
     highlight: "#fff",

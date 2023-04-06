@@ -99,7 +99,7 @@ export const updateBoard =
 export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: BOARD_REQUEST });
-    const response = await fetcher(METHOD.GET, `/board?$page=${page}`);
+    const response = await fetcher(METHOD.GET, `/board?page=${page}`);
     if (response) {
       dispatch({
         type: BOARDINFO_SUCCESS,
