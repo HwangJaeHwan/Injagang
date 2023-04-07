@@ -12,7 +12,7 @@ const BoardItemContainer = styled.div`
     justify-content: flex-end;
     text-decoration: underline;
   }
-  .board_content { 
+  .board_content {
     margin-top: 15px;
     width: 100%;
     display: flex;
@@ -21,13 +21,18 @@ const BoardItemContainer = styled.div`
   }
 `;
 
+const BoardControlBox = styled.div `
+  
+`
+
 interface BoardItemProps {
   title: string;
   nickname: string;
   content: string;
+  owner: boolean;
 }
 
-const BoardItem = ({ title, nickname, content }: BoardItemProps) => {
+const BoardItem = ({ title, nickname, content, owner }: BoardItemProps) => {
   return (
     <BoardItemContainer>
       <h2 className="board_title"> 제목: {title}</h2>

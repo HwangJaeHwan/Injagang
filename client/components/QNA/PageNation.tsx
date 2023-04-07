@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getBoardList } from "../redux/QnA/actions";
 import { InitiaState } from "../redux/QnA/reducer";
-import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
 import CustomButton from "../UI/CustomButton";
 

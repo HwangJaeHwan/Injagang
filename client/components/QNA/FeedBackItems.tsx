@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../UI/CustomButton";
 import { Dispatch } from "redux";
+import Modal from "../UI/Modal";
 
 const FeedBackItemsStyle = styled.div`
   ${ColBox}
@@ -72,14 +73,35 @@ const FeedBackItems = ({
 }: FeedBackItemsProps) => {
   const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
   const [text, setText] = useState<string>(content);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const handleUpdate = () => {
-    if (!isReadOnly && content !== text) {
+    if (content !== text) {
       handleUpdateFeedBack(feedbackId, text);
     }
+    setIsReadOnly(true);
+    setIsOpenModal(false)
+  };
+
+  const handleModal = () => {
+    if (!isReadOnly) {
+      setIsReadOnly(true);
+    }
+    setIsOpenModal(!isOpenModal);
+  };
+
+  const handleReadOnly = () => {
     setIsReadOnly(!isReadOnly);
   };
   return (
     <FeedBackItemsStyle>
+      {isOpenModal && (
+        <Modal
+          isOpen={isOpenModal}
+          onClose={handleModal}
+          onAction={handleUpdate}
+          contents={{ title: "경고", content: "내용" }}
+        />
+      )}
       <Card size={{ width: "80%", height: "50vh", flex: "col" }}>
         <CorrectionContainer>
           <span className="correction_title">피드백:</span>
@@ -97,7 +119,7 @@ const FeedBackItems = ({
             <ControlRightButtons>
               <CustomButton
                 text={isReadOnly ? "편집" : "수정완료"}
-                onClick={handleUpdate}
+                onClick={isReadOnly ? handleReadOnly : handleModal}
                 Size={{ width: "150px", font: "15px" }}
               ></CustomButton>
               <CustomButton

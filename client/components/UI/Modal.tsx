@@ -5,26 +5,33 @@ import CustomButton from "./CustomButton";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAction: () => void;
   contents: {
     title: string;
-    qnaList: string;
+    content: string;
   };
 }
 
-
 /**경고메시지를 출력하기 위한 역할 */
-const Modal = ({ isOpen, onClose, contents }: ModalProps) => {
+const Modal = ({ isOpen, onClose, onAction, contents }: ModalProps) => {
   return (
     <ModalStyle isOpen={isOpen}>
       <ModalBox>
-        <div className="modal-Contents">
+        <div className="modal_Contents">
           <h2>{contents.title}</h2>
-          <p>{contents.qnaList}</p>
+          <p>{contents.content}</p>
         </div>
-        <div className="modal-Container">
-          <div className="modal-Buttons">
-            <CustomButton onClick={onClose} text={"닫기"} />
-          </div>
+        <div className="modal_Controller">
+          <CustomButton
+            Size={{ width: "150px", font: "15px" }}
+            onClick={onAction}
+            text={"예"}
+          />
+          <CustomButton
+            Size={{ width: "150px", font: "15px" }}
+            onClick={onClose}
+            text={"아니오"}
+          />
         </div>
       </ModalBox>
     </ModalStyle>
@@ -43,37 +50,30 @@ const ModalStyle = styled.div<{ isOpen: boolean }>`
   background-color: rgba(36, 31, 31, 0.5);
 `;
 const ModalBox = styled.div`
-  z-index: 100;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   height: 250px;
   width: 500px;
-  padding: 10px;
   border-radius: 15px;
   background-color: #0a0a0aee;
-  .modal-Contents {
+  .modal_Contents {
     display: flex;
     flex-direction: column;
+    height: 200px;
   }
-  .modal-Contents h2 {
-    margin-left: 15px;
+  .modal_Contents h2 {
     color: red;
+    margin: 20px;
   }
-  .modal-Contents p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .modal_Contents p {
+    text-align: center;
     color: #e6dfdf;
   }
-  .modal-Container {
-    width: 500px;
-    margin: 15px 10px;
-    position: absolute;
-    bottom: 0;
-  }
-  .modal-Buttons {
+  .modal_Controller {
     display: flex;
     justify-content: space-between;
-    margin-right: 15px;
+    width: 100%;
+    padding: 10px;
   }
 `;
 

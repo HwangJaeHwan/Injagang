@@ -48,4 +48,4 @@ const ControlMenu = ({
   );
 };
 
-export default React.memo(ControlMenu);
+export default ControlMenu;
