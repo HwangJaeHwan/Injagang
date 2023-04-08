@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 
 export interface InitiaState {
   loading: boolean;
-  error: null;
+  error: any;
   role: string;
   success: boolean;
 }

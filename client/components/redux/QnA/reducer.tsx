@@ -10,7 +10,7 @@ import {
 
 export interface InitiaState {
   loading: boolean;
-  error: null;
+  error: any;
   boardList: BOARDLIST[];
   boardInFoList: BOARDINFOLIST[];
   qnaIdList: number[];

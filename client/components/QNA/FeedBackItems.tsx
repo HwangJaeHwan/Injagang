@@ -79,14 +79,17 @@ const FeedBackItems = ({
       handleUpdateFeedBack(feedbackId, text);
     }
     setIsReadOnly(true);
-    setIsOpenModal(false)
+    setIsOpenModal(false);
   };
 
   const handleModal = () => {
-    if (!isReadOnly) {
-      setIsReadOnly(true);
-    }
-    setIsOpenModal(!isOpenModal);
+    setIsReadOnly(true);
+    setIsOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+    setText(content);
   };
 
   const handleReadOnly = () => {
@@ -97,7 +100,7 @@ const FeedBackItems = ({
       {isOpenModal && (
         <Modal
           isOpen={isOpenModal}
-          onClose={handleModal}
+          onClose={handleCloseModal}
           onAction={handleUpdate}
           contents={{ title: "경고", content: "내용" }}
         />

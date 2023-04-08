@@ -11,6 +11,9 @@ export interface authRequest {
 
 export interface CLEAR_ERROR {
   type: typeof CLEAR_ERROR;
+  payload: {
+    error: any;
+  };
 }
 
 export interface AUTH_INIT {

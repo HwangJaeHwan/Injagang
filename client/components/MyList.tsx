@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { BiPlus, BiEdit } from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import MyListPreView from "./MyListPreView";
 
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { InitiaState } from "@/components/redux/Essay/reducer";
-import { addEssay, getEssayList } from "./redux/Essay/actions";
-import fetcher, { METHOD } from "./test/fecher";
+import { getEssayList } from "./redux/Essay/actions";
 import Cookies from "js-cookie";
 import MyListItems from "./MyListItems";
 
@@ -85,12 +83,11 @@ const ListContainer = styled.div`
 const MyList = () => {
   const [curList, setCurList] = useState<CurList>({ index: -1, essayId: -1 });
   const [preViewList, setPreViewList] = useState<string[]>([]);
-  const [firstCall, setFirstCall] = useState<boolean>(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const essayReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.essay,
+  const essayReducer = useSelector(
+    (state: RootReducerType) => state.essay.essayList,
   );
 
   // useEffect(() => {
@@ -102,14 +99,14 @@ const MyList = () => {
     setTimeout(() => {
       dispatch(getEssayList(Number(Cookies.get("userId"))));
     }, 100);
-  }, [dispatch, firstCall]);
+  }, [dispatch]);
 
   useEffect(() => {
-    const filterList = essayReducer.essayList.filter(
+    const filterList = essayReducer.filter(
       list => list.essayId === curList.essayId,
     );
     setPreViewList(cur => filterList.map(a => a.questions.map(a => a))[0]);
-  }, [curList]);
+  }, [curList.essayId]);
 
   /** 현재의 선택된 리스트에 정보를 획득하고 useEffect을 동작 */
   const getMyListView = (index: number, essayId: number) => {
@@ -125,7 +122,7 @@ const MyList = () => {
       )}
       <ListHeader>나의 자소서 목록</ListHeader>
       <ListContainer>
-        {essayReducer.essayList.map((list, idx) => (
+        {essayReducer.map((list, idx) => (
           <MyListItems
             idx={list.essayId}
             list={list}
@@ -141,4 +138,4 @@ const MyList = () => {
   );
 };
 
-export default MyList;
+export default React.memo(MyList);
