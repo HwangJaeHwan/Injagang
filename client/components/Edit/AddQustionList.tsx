@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../UI/CustomButton";
 
@@ -8,7 +8,6 @@ const AddQustionListStyle = styled.div`
   justify-content: center;
   width: 100%;
   button {
-    font-size: 15px;
     margin: auto 2px;
   }
 `;
@@ -18,30 +17,26 @@ const Input = styled.input`
 `;
 
 interface AddQustionListProps {
-  title: string;
-  handleAddQuestion: () => void;
+  handleAddQuestion: (title:string) => void;
   handleCancelQuestion: () => void;
-  onChange: (value: string) => void;
 }
 const AddQustionList = ({
-  title,
   handleAddQuestion,
   handleCancelQuestion,
-  onChange,
 }: AddQustionListProps) => {
-  console.log("ADD");
+  const [title, setTitle] = useState<string>("");
   return (
     <AddQustionListStyle>
       <Input
         name="addTitle"
         placeholder="제목을 입력해주세요"
         value={title}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => setTitle(e.target.value)}
       ></Input>
       <div>
         <CustomButton
           Size={{ width: "63px", font: "15px" }}
-          onClick={handleAddQuestion}
+          onClick={()=>handleAddQuestion(title)}
           text={"확인"}
         />
         <CustomButton
