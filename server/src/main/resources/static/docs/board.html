@@ -605,7 +605,7 @@ Content-Length: 828
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /board/write HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNjgwNjA1NjA2LCJleHAiOjE2ODA2MDc0MDZ9.QBUfa3tzewbtnOnR3zxv95EQC2cFzg2RDsT4hyblilA
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNjgwNjA4MDgyLCJleHAiOjE2ODA2MDk4ODJ9.LiawBBzqa795M44hSpuF4JaQz6lXF5hZnOhG2aAvIH8
 Content-Length: 57
 Host: api.injagang.com
 
@@ -672,7 +672,7 @@ Host: api.injagang.com
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /board/2 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNjgwNjA1NjA2LCJleHAiOjE2ODA2MDc0MDZ9.I85HTfRdmureBGUcYEA4dMnl33rpSHXE5meQbEJcHEI
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNjgwNjA4MDgyLCJleHAiOjE2ODA2MDk4ODJ9.kcMK-qSeCymGimHh1wCS5TImg2SMobvnH-B0jHV6kxo
 Host: api.injagang.com</code></pre>
 </div>
 </div>
@@ -812,7 +812,7 @@ Content-Length: 301
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /board/revise HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiaWF0IjoxNjgwNjA1NjA2LCJleHAiOjE2ODA2MDc0MDZ9.kSmacKG6b2jinN0xlMmnjB-qLjvMpPZ8XlwZ_fZkkVQ
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiaWF0IjoxNjgwNjA4MDgyLCJleHAiOjE2ODA2MDk4ODJ9.7wmyk2WdCrjNh-1EtgNqujErf80Rh8UfjqllWv8Vf1A
 Content-Length: 75
 Host: api.injagang.com
 
@@ -877,10 +877,29 @@ Host: api.injagang.com
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /board/37 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsImlhdCI6MTY4MDYwNTYwNiwiZXhwIjoxNjgwNjA3NDA2fQ.SJ6Va54IbqNLH8-JyH56qv80vsFI9esbrZDdCL2mtak
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsImlhdCI6MTY4MDYwODA4MywiZXhwIjoxNjgwNjA5ODgzfQ.8W-yjC8g7HvRBeHNw595igMtSnYWqoyGjzhPacC1d3s
 Host: api.injagang.com</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /board/{boardId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boardId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">삭제할 게시글 ID</p></td>
+</tr>
+</tbody>
+</table>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -910,7 +929,7 @@ Host: api.injagang.com</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /board/feedback HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNjgwNjA1NjA2LCJleHAiOjE2ODA2MDc0MDZ9.MYsPhscdKoqAyULFzdtBlp8CUmjyOGUTB1lWxneGPpg
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNjgwNjA4MDgzLCJleHAiOjE2ODA2MDk4ODN9.4uhtL_yssOv8a7d7fmV7zC6LjEdRBCUgKqO1JCM3J5Q
 Content-Length: 66
 Host: api.injagang.com
 
@@ -978,7 +997,7 @@ Host: api.injagang.com
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /board/feedback/revise HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImlhdCI6MTY4MDYwNTYwNiwiZXhwIjoxNjgwNjA3NDA2fQ.3TSYd458nfkgpMHKG7MCsHcvM-2d59dwJiyiWW3uehA
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImlhdCI6MTY4MDYwODA4MywiZXhwIjoxNjgwNjA5ODgzfQ.eGrLOgD029tECOSJ9AnqJkU8uRxTsPve_7KgkeB8m0o
 Content-Length: 41
 Host: api.injagang.com
 
@@ -1040,7 +1059,7 @@ Host: api.injagang.com
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /board/feedback/14 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsImlhdCI6MTY4MDYwNTYwNiwiZXhwIjoxNjgwNjA3NDA2fQ.ATehWY5XkIfPO4Q9qcXEm9z0E-RjBQ_WF0pDHSkXSUo
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsImlhdCI6MTY4MDYwODA4MywiZXhwIjoxNjgwNjA5ODgzfQ.POhMisZrCv98-Ags0rOoCGIBhOkABQy-EE5xps4jq7E
 Host: api.injagang.com</code></pre>
 </div>
 </div>
@@ -1063,7 +1082,7 @@ Host: api.injagang.com</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. /board/feedback/{qnaId}</caption>
+<caption class="title">Table 3. /board/feedback/{qnaId}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1145,7 +1164,7 @@ Content-Length: 282
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-04-04 19:53:13 +0900
+Last updated 2023-04-04 19:54:08 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
