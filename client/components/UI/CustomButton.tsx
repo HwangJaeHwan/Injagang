@@ -8,6 +8,7 @@ interface ButtonProps {
       width: string;
       font: string;
     }
+    className?: string
 }
 
 interface SelectProps {
@@ -37,10 +38,14 @@ const BeautyButton = styled.button<SelectProps>`
   &:active {
     background-color: red;
   }
+
+  &.active_button {
+    background-color: red;
+  }
 `;
 
-const CustomButton = ({onClick,text,Size}: ButtonProps) => {
-  return <BeautyButton Size={Size} onClick={onClick}>{text}</BeautyButton>;
+const CustomButton = ({onClick,text,Size, className}: ButtonProps) => {
+  return <BeautyButton className={className} Size={Size} onClick={onClick}>{text}</BeautyButton>;
 };
 
 export default CustomButton;

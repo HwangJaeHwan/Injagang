@@ -8,6 +8,7 @@ import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -64,6 +65,7 @@ const question = () => {
   const [content, setContent] = useState<string>("");
   const [essayId, setEssayId] = useState<number>(0);
   const dispatch = useDispatch();
+  const router = useRouter();
   const essayReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.essay,
   );
@@ -73,10 +75,12 @@ const question = () => {
   }, []);
 
   useEffect(() => {
-    const findEssayId = essayReducer.essayList.filter(
-      (list, idx) => list.title === essayTitle,
-    )[0].essayId;
-    setEssayId(findEssayId);
+    if(essayTitle !== ""){
+      const findEssayId = essayReducer.essayList.filter(
+        (list, idx) => list.title === essayTitle,
+      )[0].essayId;
+      setEssayId(findEssayId);
+    }
   }, [essayTitle]);
 
   const handlTextChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -90,6 +94,7 @@ const question = () => {
       essayId,
     };
     dispatch(writeBoard(data));
+    router.push('/qna/list')
   };
 
   return (
