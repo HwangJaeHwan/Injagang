@@ -11,7 +11,7 @@ const Card = styled.div`
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
   margin: 15px 15px;
-  .essay_title{
+  .essay_title {
     width: 88%;
     word-break: break-all;
   }
@@ -43,52 +43,47 @@ interface qnaListItem {
 
 interface qnaList extends Array<qnaListItem> {}
 
-interface QuestionItemProps {
+interface QnAListItemProps {
   content: string | { question: string; answer: string; quna?: number };
-  onChange: (index: number, value: string, title: string) => void;
   index: number;
-  questionTitle: string;
-  questionContent: React.Dispatch<React.SetStateAction<qnaList>>;
+  templateTitle: string;
+  onChange: (index: number, question: string, answer: string) => void;
+  // questionContent: React.Dispatch<React.SetStateAction<qnaList>>;
 }
 
-const QuestionItem = ({
+const QnAListItem = ({
   content,
-  onChange,
   index,
-  questionTitle,
-  questionContent,
-}: QuestionItemProps) => {
-  const [text, setText] = useState("");
+  templateTitle,
+  onChange,
+}: QnAListItemProps) => {
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
 
   useEffect(() => {
-    if (index === 0) {
-      questionContent([]);
-    }
-    const title = typeof content === "string" ? content : content.question;
-    questionContent(cur => [...cur, { question: title, answer: "" }]);
-    if (typeof content !== "string") {
-      setText(content.answer);
-    }
-  }, [questionTitle]);
+    setQuestion(
+      typeof content === "string"
+        ? `${index + 1} ${content}`
+        : `${index + 1} ${content.question}`,
+    );
+  }, []);
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-    const title = typeof content === "string" ? content : content.question;
-    onChange(index, event.target.value, title);
-  };
-
+  //   <h3 className="essay_title">
+  //   {index + 1}. {typeof content === "string" ? content : content.question}
+  // </h3>
   return (
     <Card>
-      <h3 className="essay_title">
-        {index + 1}. {typeof content === "string" ? content : content.question}
-      </h3>
-      <textarea value={text} onChange={handleTextChange} />
+      <textarea value={question} onChange={e => setQuestion(e.target.value)} />
+      <textarea
+        value={answer}
+        onChange={e => setAnswer(e.target.value)}
+        onBlur={() => onChange(index, question, answer)}
+      />
       <p>
-        글자 수: {text.length}/{500}
+        글자 수: {answer.length}/{500}
       </p>
     </Card>
   );
 };
 
-export default QuestionItem;
-
+export default QnAListItem;

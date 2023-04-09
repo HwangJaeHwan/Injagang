@@ -21,8 +21,8 @@ const BoardListViewStyle = styled.table`
 `;
 
 const BoardListView = () => {
-  const boardReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.board,
+  const boardReducer = useSelector(
+    (state: RootReducerType) => state.board.boardInFoList
   );
   return (
     <BoardListViewStyle>
@@ -33,8 +33,8 @@ const BoardListView = () => {
           <th>닉네임</th>
         </tr>
       </thead>
-      {boardReducer.boardInFoList &&
-        boardReducer.boardInFoList.map((list, i) =>
+      {boardReducer &&
+        boardReducer.map((list, i) =>
           list.boardInfos.map((list, idx) => (
             <BoardListItme key={list.id} {...list}></BoardListItme>
           )),

@@ -10,8 +10,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   signup: signupReducer,
   template: templateReducer,
-  essay: essayReducer,
   board: boardReducer,
+  essay: essayReducer,
   feedBack: feedbackReducer,
 });
 

@@ -4,7 +4,7 @@ import { ColBox } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 import { getTemplate } from "@/components/redux/Template/actions";
 import { readEssayList } from "@/components/redux/Essay/actions";
-import QuestionEditor from "@/components/Edit/QuestionEditor";
+import QnAEditor from "@/components/Edit/QnAEditor";
 import { useDispatch } from "react-redux";
 
 const EditStyle = styled.div`
@@ -30,7 +30,7 @@ const Edit = () => {
 
   return (
     <EditStyle>
-      <QuestionEditor isEdit={isEdit} />
+      <QnAEditor isEdit={isEdit} />
     </EditStyle>
   );
 };

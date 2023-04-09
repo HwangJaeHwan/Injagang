@@ -97,7 +97,7 @@ export const getTemplate =
         dispatch({
           type: TEMPLATE_SUCCESS,
           payload: {
-            templateState: response.data,
+            templateState: response.data
           },
         });
       }
