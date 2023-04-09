@@ -38,4 +38,4 @@ const MyListPreView = ({ preViewData }: MyListPreViewProps) => {
   );
 };
 
-export default MyListPreView;
+export default React.memo(MyListPreView);

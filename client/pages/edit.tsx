@@ -1,11 +1,12 @@
 import QuestionItem from "@/components/Edit/QuestionItem";
 import ControlMenu from "@/components/UI/ControlMenu";
-import { ColBox } from "@/styles/GlobalStyle";
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import Modal from "@/components/UI/Modal";
 import AddQustionList from "@/components/Edit/AddQustionList";
+
+import { ColBox } from "@/styles/GlobalStyle";
 import CustomButton from "@/components/UI/CustomButton";
+
 import { BiPlus } from "react-icons/bi";
 import { useRouter } from "next/router";
 
@@ -18,7 +19,6 @@ import {
   readEssayList,
   updateEssay,
 } from "@/components/redux/Essay/actions";
-import essayReducer from "@/components/redux/Essay/reducer";
 import Cookies from "js-cookie";
 
 const EditStyle = styled.div`
@@ -286,13 +286,6 @@ const Edit = () => {
           </div>
         </div>
       </Container>
-      {isOpenModal && (
-        <Modal
-          isOpen={isOpenModal}
-          onClose={closeModal}
-          contents={{ title: "fds", qnaList: "sdfs" }}
-        />
-      )}
     </EditStyle>
   );
 };

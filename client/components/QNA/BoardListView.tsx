@@ -2,22 +2,20 @@ import React from "react";
 import { InitiaState } from "@/components/redux/QnA/reducer";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import BoardListItme from "./BoardListItme";
 
 const BoardListViewStyle = styled.table`
-  border: 1px solid #af5454;
+  border: 1px solid #0a0a0a;
   margin: 30px auto;
   width: 80%;
-  height: 60vh;
   thead th {
     font-weight: bold;
     font-size: 18px;
-    border: 1px solid #835757;
+    border: none;
+    background-color: #ffa600e4;
   }
   thead th:first-child {
-    border: 1px solid #835757;
     width: 10%;
   }
 `;
@@ -26,7 +24,6 @@ const BoardListView = () => {
   const boardReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.board,
   );
-  const router = useRouter();
   return (
     <BoardListViewStyle>
       <thead>

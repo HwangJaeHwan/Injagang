@@ -12,6 +12,7 @@ import CustomButton from "@/components/UI/CustomButton";
 import BoardItem from "@/components/BoardItem";
 import { writeFeedback } from "@/components/redux/FeedBack/action";
 import FeedBackView from "@/components/QNA/FeedBAckView";
+import EditMenuBar from "@/components/QNA/Question/EditMenuBar";
 
 const ViewStyle = styled.div`
   ${ColBox}
@@ -102,6 +103,7 @@ const answer = () => {
   });
   const [correctionText, setCorrectionText] = useState<string>("");
   const [feedBackIndex, setFeedBackIndex] = useState<number>(0);
+  const [removeID, setRemoveID] = useState<number>(0);
   const dispatch = useDispatch();
   const boardId = router.query;
   const boardReducer: InitiaState = useSelector(
@@ -111,6 +113,7 @@ const answer = () => {
   useEffect(() => {
     if (!isNaN(Number(boardId.id))) {
       dispatch(getBoardDetail(Number(boardId.id)));
+      setRemoveID(Number(boardId.id))
     }
   }, [router.query]);
 
@@ -137,7 +140,6 @@ const answer = () => {
     setFeedBackIndex(qnaId);
   };
 
-  console.log(boardId);
   return (
     <ViewStyle>
       <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
@@ -150,6 +152,7 @@ const answer = () => {
         <RigthContainer>
           <AnswerDragView onChange={setCorrection} />
         </RigthContainer>
+        <EditMenuBar boardID={removeID}/>
       </Card>
       <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
         <CorrectionContainer>
@@ -169,9 +172,9 @@ const answer = () => {
           <ControlLeftButtons>
             {boardReducer.qnaIdList.map((list, i) => (
               <CustomButton
-                className={list === feedBackIndex ? "active_button": " "}
+                className={list === feedBackIndex ? "active_button" : " "}
                 Size={{ width: "40px", font: "15px" }}
-                text={`${i+1}`}
+                text={`${i + 1}`}
                 onClick={() => handleFeedBackIndex(list)}
                 key={list}
               ></CustomButton>

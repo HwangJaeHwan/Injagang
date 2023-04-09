@@ -139,8 +139,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isProfile, setIsProfile] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const authReducer: InitiaState = useSelector(

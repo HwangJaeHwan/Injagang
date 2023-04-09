@@ -46,11 +46,13 @@ const EssayDetailViewItem = styled.div`
   }
 `;
 
+
 interface EssayProps {
   essayId: number;
 }
 
 const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
+  console.log("sdfafasfasfasfasff")
   const dispatch = useDispatch();
   const essayReducer = useSelector((state: RootReducerType) => state.essay);
   useEffect(() => {

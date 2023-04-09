@@ -5,7 +5,8 @@ import styled from "styled-components";
 const BoardListItem = styled.tbody`
   text-align: center;
   td {
-    border: 1px solid #835757;
+    border: 1px solid #0a0a0a;
+    height: 35px;
   }
   &:hover{
     cursor: pointer;
