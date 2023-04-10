@@ -1,6 +1,7 @@
 package com.injagang.domain;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,13 @@ public class ExpectedQuestion {
 
     private String question;
 
+    @Enumerated(value = EnumType.STRING)
     private QuestionType questionType;
-    
 
+
+    @Builder
+    public ExpectedQuestion(String question, QuestionType questionType) {
+        this.question = question;
+        this.questionType = questionType;
+    }
 }
