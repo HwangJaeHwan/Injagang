@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { InitiaState } from "../redux/FeedBack/reducer";
+import { InitiaState } from "../../../redux/FeedBack/reducer";
 import { useSelector } from "react-redux";
-import { RootReducerType } from "../redux/store";
-import { getFeedbackList, updateFeedback } from "../redux/FeedBack/action";
+import { RootReducerType } from "../../../redux/store";
+import { getFeedbackList, updateFeedback } from "../../../redux/FeedBack/action";
 import FeedBackItems from "./FeedBackItems";
 import { ColBox } from "@/styles/GlobalStyle";
 
@@ -21,8 +21,8 @@ type FeedBackViewProps = {
 const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
   const dispatch = useDispatch();
 
-  const feedbackReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.feedBack,
+  const feedbackList = useSelector(
+    (state: RootReducerType) => state.feedBack.feedbackList,
   );
 
   const handleUpdateFeedBack = (feedbackId:number,  reviseContent:string) => {
@@ -42,12 +42,12 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
 
   return (
     <FeedBackViewStyle>
-      {feedbackReducer.feedbackList &&
-        feedbackReducer.feedbackList.map((a, i) => (
+      {feedbackList &&
+        feedbackList.map((feedback, idx) => (
           <FeedBackItems
-            key={a.feedbackId}
+            key={feedback.feedbackId}
             handleUpdateFeedBack={handleUpdateFeedBack}
-            {...a}
+            {...feedback}
           ></FeedBackItems>
         ))}
     </FeedBackViewStyle>

@@ -15,9 +15,9 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { ColBox } from "@/styles/GlobalStyle";
-import QnAListTitle from "./QnAListTitle";
+import QnAListTitle from "../ListTitle";
 import essayReducer from "../redux/Essay/reducer";
-import QuestionContent from "../QNA/Question/QuestionContent";
+import QuestionContent from "../QNA/Answer/QuestionContent";
 
 const QnAEditorStyle = styled.div`
   text-align: center;
@@ -92,6 +92,7 @@ interface QnAList {
 }
 
 interface qnaListItem {
+  qnaId: number;
   question: string;
   answer: string;
 }
@@ -126,6 +127,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
   const [templateTitle, setTemplateTitle] = useState<string>("커스텀자소서");
   const [qnaContent, setQnAContent] = useState<qnaList>([]);
   const [couter, setCounter] = useState(5);
+  const [deletedItemExists, setDeletedItemExists] = useState<boolean>(false);
 
   /** ESSAY의 로딩이 완료가되면 useState에 반영한다. */
   useEffect(() => {
@@ -142,22 +144,19 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
   useEffect(() => {
     if (!templateReducer.loading) {
       const customTemplate = {
-        essayId: 10000,
+        templateId: 10000,
         title: "커스텀자소서",
         qnaList: [],
       };
       setQnALists(cur => [customTemplate, ...templateReducer.templateList]);
     }
   }, [templateReducer.templateList]);
-
   /** 수정모드에서는 기존의 리스트를 반환, 작성모드에서는 선택된 템플릿 리스트를 반환 */
   const getQuestionItem = useCallback(() => {
     if (isEdit) {
       return qnaLists;
     }
     const filteItem = qnaLists.filter(list => list.title === templateTitle);
-    console.log({ qnaLists });
-    console.log({ filteItem });
     return filteItem;
   }, [templateTitle, qnaLists]);
 
@@ -165,7 +164,6 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     setMainTitle(title);
   };
 
-  
   /**질문FORM 추가 함수 */
   const handleAddQnA = () => {
     if (templateTitle === "") {
@@ -180,24 +178,53 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     });
   };
 
-  const handleChangeText = (
-    index: number,
-    question: string,
-    answer: string,
-  ) => {
-    const filterList = qnaContent[index];
-    if(filterList) {
-      const newList = [...qnaContent];
-      newList[index].question = question;
-      newList[index].answer = answer;
-      setQnAContent(newList);     
-    } else {
-      setQnAContent(curList => [...curList, {question: "", answer: ""}])
-    }
-    console.log(qnaContent)
+  const handleChangeQnA = (index: number, question: string, answer: string) => {
+    const newList = [...qnaContent];
+    newList[index].question = question;
+    newList[index].answer = answer;
+    setQnAContent(newList);
   };
 
-  const handleSubmit = () => {};
+  // const handleDeleteQna = (index: number) => {
+  //   setQnALists(prevLists => {
+  //     const newLists = [...prevLists];
+  //     const filterIndex = newLists.findIndex(a => a.title === templateTitle);
+  //     const newContent = [...newLists[filterIndex].qnaList];
+  //     newContent.splice(index, 1);
+  //     newLists[filterIndex].qnaList = newContent;
+  //     return newLists;
+  //   });
+  //   setDeletedItemExists(true)
+  // };
+
+  const handleQnASelect = (index: number, question: string, answer: string) => {
+    const filterList = qnaContent[index];
+    console.log("필터결과", filterList);
+    console.log("질문내용", question);
+    console.log("질문답변", answer);
+    if (filterList) {
+      return;
+    } else {
+      setQnAContent(curList => [
+        ...curList,
+        { qnaId: index, question, answer: answer },
+      ]);
+    }
+  };
+  console.log("결과", qnaContent);
+  const handleSubmit = () => {
+    const data = {
+      title: mainTitle,
+      qnaList: qnaContent,
+    };
+    if (isEdit) {
+      const essayId = JSON.parse(router.query.essayId as string) as number;
+      dispatch(updateEssay(data, essayId));
+      router.replace("/myEssay");
+      return;
+    }
+    dispatch(addEssay(data, Number(Cookies.get("useId"))));
+  };
 
   return (
     <QnAEditorStyle>
@@ -212,13 +239,16 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
         />
         {qnaLists &&
           getQuestionItem().map((list, index) => (
-            <div className="content-container" key={list.essayId}>
-              {list.qnaList.map((list, idx) => (
+            <div
+              className="content-container"
+              key={isEdit ? list.essayId : list.templateId}
+            >
+              {list.qnaList.map((qna, idx) => (
                 <QuestionItem
                   key={idx}
-                  content={list}
-                  templateTitle={templateTitle}
-                  onChange={handleChangeText}
+                  content={qna}
+                  onChange={handleChangeQnA}
+                  curInfo={handleQnASelect}
                   index={idx}
                 ></QuestionItem>
               ))}

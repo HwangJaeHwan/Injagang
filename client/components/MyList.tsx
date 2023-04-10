@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { BiPlus } from "react-icons/bi";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
@@ -29,7 +29,7 @@ interface CurList {
 
 const MyListStyle = styled.div`
   width: 45rem;
-  height: 550px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +58,7 @@ const ListContainer = styled.div`
   background-color: #302e2e;
   border-radius: 5px;
   width: 90%;
-  height: 250px;
+  height: 350px;
   margin: 15px auto;
   overflow-x: hidden;
   .list-items {

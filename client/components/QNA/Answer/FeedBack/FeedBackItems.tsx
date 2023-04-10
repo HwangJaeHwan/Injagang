@@ -1,9 +1,10 @@
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomButton from "../UI/CustomButton";
+import CustomButton from "../../../UI/CustomButton";
 import { Dispatch } from "redux";
-import Modal from "../UI/Modal";
+import Modal from "../../../UI/Modal";
+import TextArea from "@/components/TextArea";
 
 const FeedBackItemsStyle = styled.div`
   ${ColBox}
@@ -35,16 +36,17 @@ const CommentTop = styled.div`
   margin: 10px auto;
   textarea {
     ${ScrollBar}
-    padding: 15px;
-    line-height: 1.5;
     height: 100%;
     width: 100%;
+    padding: 15px;
+    line-height: 1.5;
     border-radius: 15px;
     resize: none;
   }
 `;
 
 const CommentFooter = styled.div`
+  margin-top: 15px;
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -71,9 +73,12 @@ const FeedBackItems = ({
   owner,
   handleUpdateFeedBack,
 }: FeedBackItemsProps) => {
+
   const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
   const [text, setText] = useState<string>(content);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+
   const handleUpdate = () => {
     if (content !== text) {
       handleUpdateFeedBack(feedbackId, text);
@@ -95,6 +100,10 @@ const FeedBackItems = ({
   const handleReadOnly = () => {
     setIsReadOnly(!isReadOnly);
   };
+
+  const handleChangeFeedBack = (feedback: string) => {
+    setText(feedback);
+  };
   return (
     <FeedBackItemsStyle>
       {isOpenModal && (
@@ -111,11 +120,11 @@ const FeedBackItems = ({
           <h4 className="correction_sentence">{target}</h4>
         </CorrectionContainer>
         <CommentTop>
-          <textarea
-            value={text}
-            onChange={e => setText(e.target.value)}
+          <TextArea
+            handleChangeText={handleChangeFeedBack}
             readOnly={isReadOnly}
-          ></textarea>
+            originData={text}
+          ></TextArea>
         </CommentTop>
         <CommentFooter>
           {owner ? (

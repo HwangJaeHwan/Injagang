@@ -1,5 +1,4 @@
 import React from "react";
-import { InitiaState } from "@/components/redux/QnA/reducer";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import styled from "styled-components";

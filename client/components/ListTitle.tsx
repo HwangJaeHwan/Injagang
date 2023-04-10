@@ -15,7 +15,7 @@ type QnAListTitleProps = {
   handleChangeMainTitle: (title: string) => void;
 };
 
-const QnAListTitle = ({
+const ListTitle = ({
   handleChangeMainTitle,
 }: QnAListTitleProps) => {
   const [title, setTitle] = useState<string>("");
@@ -29,4 +29,4 @@ const QnAListTitle = ({
   );
 };
 
-export default QnAListTitle;
+export default ListTitle;

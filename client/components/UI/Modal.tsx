@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAction: () => void;
+  onAction?: () => void;
   contents: {
     title: string;
     content: string;
@@ -21,18 +21,28 @@ const Modal = ({ isOpen, onClose, onAction, contents }: ModalProps) => {
           <h2>{contents.title}</h2>
           <p>{contents.content}</p>
         </div>
-        <div className="modal_Controller">
-          <CustomButton
-            Size={{ width: "150px", font: "15px" }}
-            onClick={onAction}
-            text={"예"}
-          />
-          <CustomButton
-            Size={{ width: "150px", font: "15px" }}
-            onClick={onClose}
-            text={"아니오"}
-          />
-        </div>
+        {onAction ? (
+          <div className="modal_Controller">
+            <CustomButton
+              Size={{ width: "150px", font: "15px" }}
+              onClick={onAction}
+              text={"예"}
+            />
+            <CustomButton
+              Size={{ width: "150px", font: "15px" }}
+              onClick={onClose}
+              text={"아니오"}
+            />
+          </div>
+        ) : (
+          <div className="modal_center_btn">
+            <CustomButton
+              Size={{ width: "250px", font: "15px" }}
+              onClick={onClose}
+              text={"확인"}
+            />
+          </div>
+        )}
       </ModalBox>
     </ModalStyle>
   );
@@ -72,6 +82,12 @@ const ModalBox = styled.div`
   .modal_Controller {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+  }
+  .modal_center_btn {
+    display: flex;
+    justify-content: center;
     width: 100%;
     padding: 10px;
   }
