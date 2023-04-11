@@ -5,7 +5,7 @@ import com.injagang.domain.QuestionType;
 import com.injagang.domain.User;
 import com.injagang.repository.ExpectedQuestionRepository;
 import com.injagang.repository.UserRepository;
-import com.injagang.request.QuestionResponse;
+import com.injagang.response.QuestionResponse;
 import com.injagang.request.QuestionWrite;
 import com.injagang.request.RandomRequest;
 import org.junit.jupiter.api.*;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 

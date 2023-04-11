@@ -1,4 +1,4 @@
-package com.injagang.request;
+package com.injagang.response;
 
 import com.injagang.domain.ExpectedQuestion;
 import lombok.Getter;
