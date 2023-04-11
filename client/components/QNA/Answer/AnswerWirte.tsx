@@ -3,17 +3,16 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { getBoardDetail } from "@/components/redux/QnA/actions";
-import { InitiaState } from "@/components/redux/QnA/reducer";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import AnswerDragView from "@/components/AnswerDragView";
+import AnswerDragView from "@/components/QNA/Answer/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
-import BoardItem from "@/components/BoardItem";
+import BoardItem from "@/components/QNA/Answer/BoardItem";
 import { writeFeedback } from "@/components/redux/FeedBack/action";
 import FeedBackView from "@/components/QNA/Answer/FeedBack/FeedBackView";
 import EditMenuBar from "@/components/QNA/Answer/EditMenuBar";
-import TextArea from "@/components/TextArea";
+import TextArea from "@/components/UI/TextArea";
 import Modal from "@/components/UI/Modal";
 
 const AnswerWirteStyle = styled.div`
@@ -108,6 +107,7 @@ const AnswerWirte = () => {
   const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
   const [isViolation, setIsViolation] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isFeedUpdate, setIsFeedUpdate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const boardId = router.query;
 
@@ -147,6 +147,7 @@ const AnswerWirte = () => {
       targetQuestionIndex: 0,
     });
     handleClear();
+    setIsFeedUpdate(!isFeedUpdate);
   };
 
   const handleClear = () => {
@@ -222,7 +223,10 @@ const AnswerWirte = () => {
           </ControlRightButtons>
         </CommentFooter>
       </Card>
-      <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
+      <FeedBackView
+        targetNumber={feedBackIndex}
+        isUpdate={isFeedUpdate}
+      ></FeedBackView>
       {isOpenModal && (
         <Modal
           isOpen={isOpenModal}
@@ -230,7 +234,7 @@ const AnswerWirte = () => {
           contents={{
             title: "경고",
             content: `Target질문을 선택해주세요.
-              FeedBack은 30자이상 작성하세요. `,
+              피드백은 30자이상 작성하세요. `,
           }}
         ></Modal>
       )}

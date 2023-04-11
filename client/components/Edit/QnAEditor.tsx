@@ -2,7 +2,6 @@ import QuestionItem from "@/components/Edit/QuestionItem";
 import ControlMenu from "@/components/UI/ControlMenu";
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import AddQustionList from "@/components/Edit/AddQustionList";
 import CustomButton from "@/components/UI/CustomButton";
 import { BiPlus } from "react-icons/bi";
 import { useSelector } from "react-redux";
@@ -10,14 +9,17 @@ import { RootReducerType } from "@/components/redux/store";
 import templateReducer, {
   InitiaState,
 } from "@/components/redux/Template/reducer";
-import { addEssay, updateEssay } from "@/components/redux/Essay/actions";
+import {
+  addEssay,
+  deleteEssayList,
+  updateEssay,
+} from "@/components/redux/Essay/actions";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { ColBox } from "@/styles/GlobalStyle";
-import QnAListTitle from "../ListTitle";
-import essayReducer from "../redux/Essay/reducer";
-import QuestionContent from "../QNA/Answer/QuestionContent";
+import QnAListTitle from "../UI/ListTitle";
+import Modal from "../UI/Modal";
 
 const QnAEditorStyle = styled.div`
   text-align: center;
@@ -51,6 +53,9 @@ const QnAEditorStyle = styled.div`
     svg {
       font-size: 50px;
       cursor: pointer;
+    }
+    button:last-child {
+      margin-left: 8px;
     }
   }
 `;
@@ -122,12 +127,15 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     (state: RootReducerType) => state.template,
   );
 
-  const [mainTitle, setMainTitle] = useState("");
   const [qnaLists, setQnALists] = useState<QnAList[]>([]);
   const [templateTitle, setTemplateTitle] = useState<string>("커스텀자소서");
+  const [mainTitle, setMainTitle] = useState<string>("");
   const [qnaContent, setQnAContent] = useState<qnaList>([]);
-  const [couter, setCounter] = useState(5);
-  const [deletedItemExists, setDeletedItemExists] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>("");
+  const essayId = isEdit
+    ? (JSON.parse(router.query.essayId as string) as number)
+    : 0;
 
   /** ESSAY의 로딩이 완료가되면 useState에 반영한다. */
   useEffect(() => {
@@ -211,19 +219,56 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
       ]);
     }
   };
-  console.log("결과", qnaContent);
+
   const handleSubmit = () => {
+    const filterJudge = qnaContent.filter(
+      a => a.answer === "" || a.question === "",
+    ).length;
+    if (!isEdit && mainTitle === "") {
+      setIsOpenModal(true);
+      setModalMsg("메인 제목을 입력해주세요");
+      return;
+    }
+    if (qnaContent.length < 1) {
+      setIsOpenModal(true);
+      setModalMsg("질문과 답변은 1개이상 작성해주세요.");
+      return;
+    }
+    if (filterJudge > 0) {
+      setIsOpenModal(true);
+      setModalMsg("질문 답변의 내용을 채워주세요");
+      return;
+    }
     const data = {
-      title: mainTitle,
+      title: isEdit
+        ? mainTitle === ""
+          ? templateTitle
+          : mainTitle
+        : mainTitle,
       qnaList: qnaContent,
     };
     if (isEdit) {
-      const essayId = JSON.parse(router.query.essayId as string) as number;
       dispatch(updateEssay(data, essayId));
       router.replace("/myEssay");
       return;
     }
     dispatch(addEssay(data, Number(Cookies.get("useId"))));
+    router.replace("/myEssay");
+  };
+
+  const handleModal = (mode: number) => {
+    if (mode === 1) {
+      setIsOpenModal(false);
+    }
+    if (mode === 2) {
+      setModalMsg(`${essayId}번 자소서를 정말 삭제하시겠습니까?`);
+      setIsOpenModal(true);
+    }
+  };
+
+  const handleDeleteEssay = () => {
+    dispatch(deleteEssayList(essayId));
+    router.push("/myEssay");
   };
 
   return (
@@ -238,7 +283,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
           onChange={setTemplateTitle}
         />
         {qnaLists &&
-          getQuestionItem().map((list, index) => (
+          getQuestionItem().map(list => (
             <div
               className="content-container"
               key={isEdit ? list.essayId : list.templateId}
@@ -263,13 +308,35 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
             onClick={() => router.push("/myEssay")}
             text="뒤로가기"
           />
-          <CustomButton
-            Size={{ width: "150px", font: "20px" }}
-            onClick={handleSubmit}
-            text={isEdit ? "수정완료" : "작성완료"}
-          />
+          <div>
+            {isEdit ? (
+              <CustomButton
+                Size={{ width: "150px", font: "20px" }}
+                onClick={() => handleModal(2)}
+                text="삭제하기"
+              />
+            ) : (
+              <></>
+            )}
+            <CustomButton
+              Size={{ width: "150px", font: "20px" }}
+              onClick={handleSubmit}
+              text={isEdit ? "수정완료" : "작성완료"}
+            />
+          </div>
         </div>
       </div>
+      {isOpenModal && (
+        <Modal
+          isOpen={isOpenModal}
+          onClose={() => handleModal(1)}
+          onAction={isEdit ? handleDeleteEssay : () => handleModal(1)}
+          contents={{
+            title: "경고",
+            content: modalMsg,
+          }}
+        ></Modal>
+      )}
     </QnAEditorStyle>
   );
 };

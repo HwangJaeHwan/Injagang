@@ -2,7 +2,7 @@ import React from "react";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import BoardListItme from "./BoardListItme";
+import BoardListItme from "./BoardListItem";
 
 const BoardListViewStyle = styled.table`
   border: 1px solid #0a0a0a;

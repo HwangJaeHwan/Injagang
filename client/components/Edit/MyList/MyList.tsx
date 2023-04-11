@@ -7,7 +7,7 @@ import MyListPreView from "./MyListPreView";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { getEssayList } from "./redux/Essay/actions";
+import { deleteEssayList, getEssayList } from "../../redux/Essay/actions";
 import Cookies from "js-cookie";
 import MyListItems from "./MyListItems";
 
@@ -138,4 +138,4 @@ const MyList = () => {
   );
 };
 
-export default React.memo(MyList);
+export default MyList;

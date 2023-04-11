@@ -1,5 +1,5 @@
 import EssayDetailView from "@/components/QNA/Question/EssayDetailView";
-import QuestionTitle from "@/components/ListTitle";
+import QuestionTitle from "@/components/UI/ListTitle";
 import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
 import { InitiaState } from "@/components/redux/Essay/reducer";
@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import TextArea from "@/components/TextArea";
+import TextArea from "@/components/UI/TextArea";
 
 const LeftContainer = styled.div`
   ${ColBox}

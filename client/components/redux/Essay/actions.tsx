@@ -111,3 +111,21 @@ export const readEssayList =
       });
     }
   };
+
+/**자소서 삭제 */
+export const deleteEssayList =
+  (essayId: number) =>
+  async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
+    try {
+      const request = await fetcher(METHOD.DELETE, `/essay/delete/${essayId}`, {
+        headers: { Authorization: Cookies.get("accessToken") },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ESSAY_FAILURE,
+        payload: {
+          error,
+        },
+      });
+    }
+  };

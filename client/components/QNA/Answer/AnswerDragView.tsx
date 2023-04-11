@@ -4,9 +4,9 @@ import ReactDOM from "react-dom";
 import { BiMessageAltAdd } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import boardReducer, { InitiaState } from "./redux/QnA/reducer";
-import { RootReducerType } from "./redux/store";
-import { CorrectionItem } from "@/pages/qna/answer/[id]";
+import { InitiaState } from "../../redux/QnA/reducer";
+import { RootReducerType } from "../../redux/store";
+import { CorrectionItem } from "./AnswerWirte";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
@@ -43,8 +43,8 @@ interface EssayDragProps {
 /**드래그 첨삭 기능을 가진 자소서 View */
 const EssayDragView = ({ onChange }: EssayDragProps) => {
   const [added, setAdded] = useState<boolean>(false);
-  const boardReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.board,
+  const boardList = useSelector(
+    (state: RootReducerType) => state.board.boardList,
   );
   /**드래그 첨삭 탐색*/
   const handleSelect = (dragTitleNumber: number, qnaId: number) => {
@@ -112,23 +112,22 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
   return (
     <EssayDragStyle>
       <h2 className="essay_title">
-        {boardReducer.boardList[0]?.essayTitle &&
-          boardReducer.boardList[0].essayTitle}
+        {boardList[0]?.essayTitle && boardList[0].essayTitle}
       </h2>
-      {boardReducer.boardList[0]?.qnaList &&
-        boardReducer.boardList[0].qnaList.map((a, i) => (
-          <EssayDragItems key={i}>
+      {boardList[0]?.qnaList &&
+        boardList[0].qnaList.map((list, idx) => (
+          <EssayDragItems key={list.qnaId}>
             <h3 className="essay_question">
               <span>질문: </span>
-              {a.question}
+              {list.question}
             </h3>
             <p
               className="essay_answer"
-              onMouseUp={() => handleSelect(i + 1, a.qnaId)}
+              onMouseUp={() => handleSelect(idx + 1, list.qnaId)}
               onDoubleClick={handleRemove}
               onClick={handleSpan}
             >
-              {a.answer}
+              {list.answer}
             </p>
           </EssayDragItems>
         ))}

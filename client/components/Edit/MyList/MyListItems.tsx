@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { BiPlus, BiEdit } from "react-icons/bi";
+import {BiEdit} from "react-icons/bi";
 import { useRouter } from "next/router";
 
 interface CurList {
@@ -42,6 +42,7 @@ const MyListItems = ({
   curList,
 }: MyListItemsProps) => {
   const router = useRouter();
+
   return (
     <MyListItemsStyle className="list-items">
       <div
@@ -51,17 +52,19 @@ const MyListItems = ({
         {list.title}
       </div>
       {curList.index === idx && (
-        <BiEdit
-          onClick={() =>
-            router.push({
-              pathname: "/edit",
-              query: { essayId: JSON.stringify(curList.essayId) },
-            })
-          }
-        />
+        <div>
+          <BiEdit
+            onClick={() =>
+              router.push({
+                pathname: "/edit",
+                query: { essayId: JSON.stringify(curList.essayId)},
+              })
+            }
+          />
+        </div>
       )}
     </MyListItemsStyle>
   );
 };
 
-export default React.memo(MyListItems);
+export default MyListItems;

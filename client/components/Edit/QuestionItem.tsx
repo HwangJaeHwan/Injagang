@@ -2,6 +2,7 @@ import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import React, { useState, useEffect } from "react";
 import styled, { useTheme } from "styled-components";
 import { BiX } from "react-icons/bi";
+
 const Card = styled.div`
   ${ColBox}
   padding: 15px 15px;

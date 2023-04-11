@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
-const BoardListItem = styled.tbody`
+const BoardListItemStyle = styled.tbody`
   text-align: center;
   td {
     border: 1px solid #0a0a0a;
@@ -19,17 +19,17 @@ type BoardListItemProps = {
   title: string;
 };
 
-const BoardListItme = ({ id, nickname, title }: BoardListItemProps) => {
+const BoardListItem = ({ id, nickname, title }: BoardListItemProps) => {
     const router = useRouter();
   return (
-    <BoardListItem>
+    <BoardListItemStyle>
       <tr onClick = {() => router.push(`/qna/answer/${id}`)}>
         <td>{id}</td>
         <td>{title}</td>
         <td>{nickname}</td>
       </tr>
-    </BoardListItem>
+    </BoardListItemStyle>
   );
 };
 
-export default BoardListItme;
+export default BoardListItem;

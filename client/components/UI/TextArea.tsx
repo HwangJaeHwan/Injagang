@@ -4,15 +4,14 @@ import styled from "styled-components";
 
 const TextAreaStyle = styled.textarea`
   ${FlexBox}
-  ${ScrollBar}
   resize: vertical;
   box-sizing: border-box;
   color: #22272e;
   background-color: #ffffff;
   font-weight: bold;
   width: 100%;
+  height: 100%;
   line-height: 1.5;
-  height: 400px;
   padding: 10px 15px;
   border-radius: 5px;
   overflow-y: auto;

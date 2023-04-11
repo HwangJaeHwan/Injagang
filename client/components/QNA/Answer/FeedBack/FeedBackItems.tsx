@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CustomButton from "../../../UI/CustomButton";
 import { Dispatch } from "redux";
 import Modal from "../../../UI/Modal";
-import TextArea from "@/components/TextArea";
+import TextArea from "@/components/UI/TextArea";
 
 const FeedBackItemsStyle = styled.div`
   ${ColBox}

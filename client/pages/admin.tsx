@@ -9,7 +9,6 @@ import TextReader from "@/components/test/TextReder";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
-
 const AdminPageStyle = styled.div`
   ${ColBox}
 `;
