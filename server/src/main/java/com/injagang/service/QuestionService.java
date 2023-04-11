@@ -7,7 +7,7 @@ import com.injagang.exception.UnauthorizedException;
 import com.injagang.exception.UserNotFoundException;
 import com.injagang.repository.ExpectedQuestionRepository;
 import com.injagang.repository.UserRepository;
-import com.injagang.request.QuestionResponse;
+import com.injagang.response.QuestionResponse;
 import com.injagang.request.QuestionWrite;
 import com.injagang.request.RandomRequest;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +70,9 @@ public class QuestionService {
 
 
     public List<QuestionResponse> randomQuestions(RandomRequest request) {
+
+        log.info("size = {}", request.getSize());
+        log.info("type = {}", request.getQuestionType());
 
         List<ExpectedQuestion> questions = questionRepository.findAllByQuestionType(request.getQuestionType());
 

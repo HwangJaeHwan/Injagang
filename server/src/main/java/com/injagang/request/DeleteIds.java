@@ -11,4 +11,9 @@ public class DeleteIds {
     private List<Long> ids = new ArrayList<>();
 
 
+    public void addId(Long id) {
+        ids.add(id);
+    }
+
+
 }
