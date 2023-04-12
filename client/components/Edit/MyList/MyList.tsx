@@ -124,6 +124,7 @@ const MyList = () => {
       <ListContainer>
         {essayReducer.map((list, idx) => (
           <MyListItems
+            key={list.essayId}
             idx={list.essayId}
             list={list}
             curList={curList}
