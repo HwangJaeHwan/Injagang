@@ -5,6 +5,7 @@ import signupReducer from "./Join/reducer";
 import templateReducer from "./Template/reducer";
 import boardReducer from "./QnA/reducer";
 import feedbackReducer from "./FeedBack/reducer";
+import interViewQuestionReducer from "./InterViewQuestion/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   board: boardReducer,
   essay: essayReducer,
   feedBack: feedbackReducer,
+  interViewQuestion: interViewQuestionReducer,
 });
 
 export default rootReducer;

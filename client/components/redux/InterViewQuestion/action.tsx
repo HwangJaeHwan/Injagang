@@ -9,10 +9,18 @@ import {
 import fetcher, { METHOD } from "@/components/test/fecher";
 import Cookies from "js-cookie";
 
+type AddQuestionData = {
+  questions: string[];
+  questionType: QuestionType | string;
+};
+
 export const handleAddQuestion =
-  (newList: InterviewQuestionList[]) =>
+  (newList: AddQuestionData) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
+      if (newList.questionType === "ALL") {
+        newList.questionType = "";
+      }
       dispatch({ type: QUESTION_REQUEST });
       const request = await fetcher(METHOD.POST, "questions/add", newList, {
         headers: {
@@ -20,7 +28,12 @@ export const handleAddQuestion =
         },
       });
     } catch (error: any) {
-      dispatch({ type: QUESTION_FAILURE, payload: error });
+      dispatch({
+        type: QUESTION_FAILURE,
+        payload: {
+          error,
+        },
+      });
     }
   };
 
@@ -29,12 +42,16 @@ export enum QuestionType {
   SITUATION = "SITUATION",
   JOB = "JOB",
   PERSONALITY = "PERSONALITY",
+  ALL = "ALL",
 }
 
 export const getInterViewQnaList =
-  (type: QuestionType | null) =>
+  (type: QuestionType | string) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
+      if (type === "ALL") {
+        type = "";
+      }
       dispatch({ type: QUESTION_REQUEST });
       const response = await fetcher(
         METHOD.GET,
