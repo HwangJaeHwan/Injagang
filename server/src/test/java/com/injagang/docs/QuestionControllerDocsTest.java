@@ -106,7 +106,7 @@ public class QuestionControllerDocsTest {
                         .header("Authorization", jws)
                         .content(json))
                 .andDo(document("question-add", requestHeaders(
-                        headerWithName("Authorization").description("로그인 인증")
+                        headerWithName("Authorization").description("ADMIN 인증")
                 ), requestFields(
                         fieldWithPath("questions[]").description("질문 리스트"),
                         fieldWithPath("questionType").description("질문의 타입(CS, SITUATION, JOB, PERSONALITY)")
@@ -184,7 +184,7 @@ public class QuestionControllerDocsTest {
                 .content(json)
                 .header("Authorization", jws))
                 .andDo(document("question-delete",requestHeaders(
-                        headerWithName("Authorization").description("로그인 인증")
+                        headerWithName("Authorization").description("ADMIN 인증")
                 ),requestFields(
                         fieldWithPath("ids[]").description("삭제할 질문 ID")
                 )));
