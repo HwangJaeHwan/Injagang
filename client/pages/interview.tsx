@@ -1,14 +1,20 @@
 import React from "react";
 import InterviewRecord from "@/components/InterView/interviewRecord";
 import InterViewListView from "@/components/InterView/InterViewListView";
+import styled from "styled-components";
+import { ColBox } from "@/styles/GlobalStyle";
 
-const interview = () => {
+const InterViewStyle = styled.div`
+  ${ColBox}
+`;
+
+const Interview = () => {
   return (
-    <div>
+    <InterViewStyle>
       <InterviewRecord />
       <InterViewListView></InterViewListView>
-    </div>
+    </InterViewStyle>
   );
 };
 
-export default interview;
+export default Interview;

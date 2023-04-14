@@ -14,6 +14,7 @@ import AddQustionList from "../Admin/AddTextInput";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
 import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
+import TextToSpeech from "../test/TextReder";
 
 const InterViewListViewStyle = styled.div``;
 
@@ -86,10 +87,11 @@ const InterViewListView = () => {
     }
   };
 
+  /**인터뷰질문리스트 삭제 */
   const handleRemoveQuestions = () => {
     const data = {
-      ids: checkList
-    }
+      ids: checkList,
+    };
     setAllCheck(false);
     dispatch(handleDeleteInterViewQnaList(data));
   };
@@ -132,6 +134,16 @@ const InterViewListView = () => {
       {authRole === "ADMIN" && (
         <AddQuestionListView qType={selectType}></AddQuestionListView>
       )}
+      <TextToSpeech
+        speechData={[
+          "자신의 장단점에 대해 말씀해주세요",
+          "자신의 단점에 대해 말씀해주세요",
+          "오늘은 무슨 요일이에요?",
+          "당신은 몇살 인가요?",
+          "당신은 누구 인가요?",
+          "오늘 점심은 뭐 먹었나요?",
+        ]}
+      />
     </InterViewListViewStyle>
   );
 };
