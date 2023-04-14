@@ -21,10 +21,6 @@ const BoardItemContainer = styled.div`
   }
 `;
 
-const BoardControlBox = styled.div `
-  
-`
-
 interface BoardItemProps {
   title: string;
   nickname: string;
@@ -32,7 +28,7 @@ interface BoardItemProps {
   owner: boolean;
 }
 
-const BoardItem = ({ title, nickname, content, owner }: BoardItemProps) => {
+const BoardItem = ({ title, nickname, content}: BoardItemProps) => {
   return (
     <BoardItemContainer>
       <h2 className="board_title"> 제목: {title}</h2>
@@ -42,4 +38,4 @@ const BoardItem = ({ title, nickname, content, owner }: BoardItemProps) => {
   );
 };
 
-export default BoardItem;
+export default React.memo(BoardItem);

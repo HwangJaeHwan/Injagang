@@ -34,13 +34,13 @@ const boardReducer = (state = initialState, action: boardDispatchType) => {
     case BOARD_SUCCESS:
       return {
         ...state,
-        boardList: [action.payload.list],
+        boardList: action.payload.list,
         qnaIdList: action.payload.qnaIdList.map(list => list.qnaId),
       };
     case BOARDINFO_SUCCESS:
       return {
         ...state,
-        boardInFoList: [action.payload.boardInfoList]
+        boardInFoList: action.payload.boardInfoList
       }
       ;
     case BOARD_FAILURE:

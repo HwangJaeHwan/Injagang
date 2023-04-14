@@ -1,9 +1,8 @@
 import React from "react";
-import { InitiaState } from "@/components/redux/QnA/reducer";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import BoardListItme from "./BoardListItme";
+import BoardListItme from "./BoardListItem";
 
 const BoardListViewStyle = styled.table`
   border: 1px solid #0a0a0a;
@@ -21,8 +20,8 @@ const BoardListViewStyle = styled.table`
 `;
 
 const BoardListView = () => {
-  const boardReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.board,
+  const boardReducer = useSelector(
+    (state: RootReducerType) => state.board.boardInFoList
   );
   return (
     <BoardListViewStyle>
@@ -33,8 +32,8 @@ const BoardListView = () => {
           <th>닉네임</th>
         </tr>
       </thead>
-      {boardReducer.boardInFoList &&
-        boardReducer.boardInFoList.map((list, i) =>
+      {boardReducer &&
+        boardReducer.map((list, i) =>
           list.boardInfos.map((list, idx) => (
             <BoardListItme key={list.id} {...list}></BoardListItme>
           )),

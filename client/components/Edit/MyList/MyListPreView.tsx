@@ -6,7 +6,7 @@ const MyListPreViewStyle = styled.div`
   ${ColBox}
   ${ScrollBar}
   width: 90%;
-  height: 150px;
+  height: 200px;
   border-radius: 5px;
   padding: 15px 25px;
   margin: 15px auto;

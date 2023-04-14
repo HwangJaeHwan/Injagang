@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getProfile,
-} from "@/components/redux/Auth/actions";
+import { getProfile } from "@/components/redux/Auth/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
 
@@ -19,7 +17,7 @@ const WithAuth = <P extends WithAuthProps>(
   return (props: P) => {
     const [verified, setVerified] = useState(false);
     const router = useRouter();
-    const routes = ["/join", "/login","/","/qna/list"];
+    const routes = ["/join", "/login", "/", "/qna/list"];
     const whiteList = routes.includes(router.asPath);
     const authReducer: InitiaState = useSelector(
       (state: RootReducerType) => state.auth,
@@ -29,24 +27,24 @@ const WithAuth = <P extends WithAuthProps>(
     useEffect(() => {
       const accessToken = Cookies.get("accessToken");
       //인증이 필요없는 페이지 통과
-      if (whiteList){
-        return
+      if (whiteList) {
+        return;
       }
       if (!accessToken) {
         router.replace("/login");
-        return
+        return;
       } else {
         dispatch(getProfile());
       }
     }, [router.asPath]);
 
     useEffect(() => {
-        if(authReducer.success){
-            setVerified(true)
-        }
-    },[authReducer.success])
+      if (authReducer.success) {
+        setVerified(true);
+      }
+    }, [authReducer.success]);
 
-    if (verified || whiteList ) {
+    if (verified || whiteList) {
       return <WrappedComponent {...props} />;
     } else {
       return null;

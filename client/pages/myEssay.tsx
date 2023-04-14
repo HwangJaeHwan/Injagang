@@ -1,5 +1,5 @@
 import React from "react";
-import MyList from "@/components/MyList";
+import MyList from "@/components/Edit/MyList/MyList";
 import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
 

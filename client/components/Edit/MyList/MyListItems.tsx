@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { BiPlus, BiEdit } from "react-icons/bi";
+import {BiEdit} from "react-icons/bi";
 import { useRouter } from "next/router";
 
 interface CurList {
@@ -29,16 +29,22 @@ const MyListItemsStyle = styled.div`
 `;
 
 interface MyListItemsProps {
-    idx: number;
-    list: any;
-    getMyListView: any;
-    curList: CurList;
+  idx: number;
+  list: any;
+  getMyListView: (idx: number, id: number) => void;
+  curList: CurList;
 }
 
-const MyListItems = ({ idx, list, getMyListView, curList }:MyListItemsProps) => {
-    const router = useRouter();
+const MyListItems = ({
+  idx,
+  list,
+  getMyListView,
+  curList,
+}: MyListItemsProps) => {
+  const router = useRouter();
+
   return (
-    <MyListItemsStyle  className="list-items">
+    <MyListItemsStyle className="list-items">
       <div
         className={curList?.index === idx ? "active-item" : ""}
         onClick={() => getMyListView(idx, list.essayId)}
@@ -46,14 +52,16 @@ const MyListItems = ({ idx, list, getMyListView, curList }:MyListItemsProps) => 
         {list.title}
       </div>
       {curList.index === idx && (
-        <BiEdit
-          onClick={() =>
-            router.push({
-              pathname: "/edit",
-              query: { essayId: JSON.stringify(curList.essayId) },
-            })
-          }
-        />
+        <div>
+          <BiEdit
+            onClick={() =>
+              router.push({
+                pathname: "/edit",
+                query: { essayId: JSON.stringify(curList.essayId)},
+              })
+            }
+          />
+        </div>
       )}
     </MyListItemsStyle>
   );

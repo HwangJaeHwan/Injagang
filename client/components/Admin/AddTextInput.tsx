@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import CustomButton from "../UI/CustomButton";
+import { text } from "stream/consumers";
 
-const AddQustionListStyle = styled.div`
+const AddTextInputStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   button {
-    font-size: 15px;
     margin: auto 2px;
   }
 `;
@@ -17,41 +17,44 @@ const Input = styled.input`
   width: 37.5%;
 `;
 
-interface AddQustionListProps {
-  title: string;
-  handleAddQuestion: () => void;
+interface AddTextInputProps {
+  handleAddQuestion: (title: string) => void;
   handleCancelQuestion: () => void;
-  onChange: (value: string) => void;
 }
-const AddQustionList = ({
-  title,
+const AddTextInput = ({
   handleAddQuestion,
   handleCancelQuestion,
-  onChange,
-}: AddQustionListProps) => {
-  console.log("ADD");
+}: AddTextInputProps) => {
+  const [title, setTitle] = useState<string>("");
+  const textRef = useRef<HTMLInputElement | null>(null);
+  const handleAddText = (target = null) => {
+    handleAddQuestion(title);
+    setTitle("");
+    textRef.current?.focus();
+  };
   return (
-    <AddQustionListStyle>
+    <AddTextInputStyle>
       <Input
+        ref={textRef}
         name="addTitle"
         placeholder="제목을 입력해주세요"
         value={title}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => setTitle(e.target.value)}
       ></Input>
       <div>
         <CustomButton
           Size={{ width: "63px", font: "15px" }}
-          onClick={handleAddQuestion}
+          onClick={handleAddText}
           text={"확인"}
         />
         <CustomButton
           Size={{ width: "63px", font: "15px" }}
           onClick={handleCancelQuestion}
-          text={"취소"}
+          text={"확정"}
         />
       </div>
-    </AddQustionListStyle>
+    </AddTextInputStyle>
   );
 };
 
-export default AddQustionList;
+export default AddTextInput;

@@ -16,7 +16,6 @@ import { InitiaState } from "../redux/Auth/reducer";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
-import Cookies from "js-cookie";
 const NavStyle = styled.nav`
   position: fixed;
   height: 100%;

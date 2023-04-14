@@ -1,6 +1,8 @@
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import React, { useState, useEffect } from "react";
 import styled, { useTheme } from "styled-components";
+import { BiX } from "react-icons/bi";
+
 const Card = styled.div`
   ${ColBox}
   padding: 15px 15px;
@@ -11,29 +13,43 @@ const Card = styled.div`
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
   margin: 15px 15px;
-  .essay_title{
+  .essay_title {
     width: 88%;
     word-break: break-all;
   }
+`;
 
-  textarea {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    resize: vertical;
-    box-sizing: border-box;
-    color: #22272e;
-    background-color: #444654;
-    font-weight: bold;
-    width: 90%;
-    line-height: 1.5;
-    height: 300px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    overflow-y: auto;
-    margin: 15px auto;
-    ${ScrollBar}
-  }
+const TitleTextArea = styled.textarea`
+  font-family: "Nanum Pen Script";
+  font-size: 15px;
+
+  box-sizing: border-box;
+  width: 90%;
+  min-height: 30px;
+  max-height: 200px;
+  resize: vertical;
+
+  border-radius: 5px;
+  background-color: #444654;
+  color: white;
+
+  padding: 15px;
+  ${ScrollBar};
+`;
+
+const AnswerTextArea = styled.textarea`
+  resize: vertical;
+  font-family: "Nanum Pen Script";
+  font-weight: normal;
+  width: 90%;
+  line-height: 2;
+  height: 300px;
+  border-radius: 5px;
+  margin: 8px auto;
+  padding: 20px;
+  color: white;
+  background-color: #444654;
+  ${ScrollBar}
 `;
 
 interface qnaListItem {
@@ -43,52 +59,53 @@ interface qnaListItem {
 
 interface qnaList extends Array<qnaListItem> {}
 
-interface QuestionItemProps {
+interface QnAListItemProps {
   content: string | { question: string; answer: string; quna?: number };
-  onChange: (index: number, value: string, title: string) => void;
   index: number;
-  questionTitle: string;
-  questionContent: React.Dispatch<React.SetStateAction<qnaList>>;
+  onChange: (index: number, question: string, answer: string) => void;
+  curInfo: (index: number, question: string, answer: string) => void;
 }
 
-const QuestionItem = ({
+const QnAListItem = ({
   content,
-  onChange,
   index,
-  questionTitle,
-  questionContent,
-}: QuestionItemProps) => {
-  const [text, setText] = useState("");
+  onChange,
+  curInfo,
+}: QnAListItemProps) => {
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
+  const originQuestion =
+    typeof content === "string" ? content : content.question;
+  const originAnswer = typeof content === "string" ? "" : content.answer;
 
   useEffect(() => {
-    if (index === 0) {
-      questionContent([]);
-    }
-    const title = typeof content === "string" ? content : content.question;
-    questionContent(cur => [...cur, { question: title, answer: "" }]);
-    if (typeof content !== "string") {
-      setText(content.answer);
-    }
-  }, [questionTitle]);
+    console.log("origin", originQuestion, originAnswer);
+    setQuestion(originQuestion);
+    setAnswer(originAnswer);
+    curInfo(index, originQuestion, originAnswer);
+  }, []);
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-    const title = typeof content === "string" ? content : content.question;
-    onChange(index, event.target.value, title);
+  const handleJudge = () => {
+    onChange(index, question, answer);
   };
-
   return (
     <Card>
-      <h3 className="essay_title">
-        {index + 1}. {typeof content === "string" ? content : content.question}
-      </h3>
-      <textarea value={text} onChange={handleTextChange} />
+      <TitleTextArea
+        value={question}
+        onChange={e => setQuestion(e.target.value)}
+      />
+      <AnswerTextArea
+        value={answer}
+        placeholder="자기소개서 답변을 입력해주세요.
+        스크롤도 가능하고 아래로 사이즈 조절도 가능합니다."
+        onChange={e => setAnswer(e.target.value)}
+        onBlur={handleJudge}
+      />
       <p>
-        글자 수: {text.length}/{500}
+        글자 수: {answer.length}/{500}
       </p>
     </Card>
   );
 };
 
-export default QuestionItem;
-
+export default QnAListItem;

@@ -12,7 +12,7 @@ interface Theme {
   };
 }
 
-const lightTheme:Theme = {
+const lightTheme: Theme = {
   colors: {
     primary: "white",
     secondary: "#3399FF",
@@ -26,7 +26,7 @@ const lightTheme:Theme = {
   },
 };
 
-const darkTheme:Theme = {
+const darkTheme: Theme = {
   colors: {
     primary: "#202123",
     secondary: "#202123",

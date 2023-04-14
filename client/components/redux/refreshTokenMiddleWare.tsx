@@ -45,7 +45,7 @@ const refreshTokenMiddleWare: Middleware =
           if (message === "Refresh 토큰이 만료되었습니다.") {
             //리프레시 토큰 로그인 페이지로 보내기
             //로그인 페이지로 보내기
-            console.log("토큰이 만료되었다.");
+            console.log("리프레시토큰이 만료되었다.");
             Router.replace("/login");
           }
           dispatch({ type: action.type, payload: { error } });

@@ -9,6 +9,7 @@ export interface essayRequest {
 }
 
 export type qnaList = {
+  qnaId: number;
   question: string;
   answer: string;
 };

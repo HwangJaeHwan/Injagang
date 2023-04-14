@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getEssayList, readEssayList } from "./redux/Essay/actions";
-import { RootReducerType } from "./redux/store";
+import { readEssayList } from "../../redux/Essay/actions";
+import { RootReducerType } from "../../redux/store";
 import styled from "styled-components";
 import { ScrollBar } from "@/styles/GlobalStyle";
 
@@ -28,7 +28,7 @@ const EssayContent = styled.div`
 
 const EssayDetailViewItem = styled.div`
   margin: 20px;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   .essay_question {
     margin-bottom: 15px;
     > span {
@@ -46,15 +46,15 @@ const EssayDetailViewItem = styled.div`
   }
 `;
 
-
 interface EssayProps {
   essayId: number;
 }
 
 const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
-  console.log("sdfafasfasfasfasff")
   const dispatch = useDispatch();
-  const essayReducer = useSelector((state: RootReducerType) => state.essay);
+  const readEssayReducer = useSelector(
+    (state: RootReducerType) => state.essay.readEssayList,
+  );
   useEffect(() => {
     if (essayId > 0) {
       dispatch(readEssayList(essayId));
@@ -62,18 +62,18 @@ const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
   }, [essayId]);
   return (
     <EssayDetailStyle>
-      {essayReducer.readEssayList &&
-        essayReducer.readEssayList.map((essayList, i) => (
-          <EssayContainer key={i}>
+      {readEssayReducer &&
+        readEssayReducer.map(essayList => (
+          <EssayContainer key={essayList.essayId}>
             <h2 className="essay_title">{essayList.title}</h2>
             <EssayContent>
-              {essayList.qnaList.map((a, i) => (
-                <EssayDetailViewItem key={i}>
+              {essayList.qnaList.map(qna => (
+                <EssayDetailViewItem key={qna.qnaId}>
                   <h3 className="essay_question">
-                    <span>질문:</span> {a.question}
+                    <span>질문:</span> {qna.question}
                   </h3>
                   <h5 className="essay_answer">
-                    <span>답변:</span> {a.answer}{" "}
+                    <span>답변:</span> {qna.answer}{" "}
                   </h5>
                 </EssayDetailViewItem>
               ))}
