@@ -1,5 +1,6 @@
 package com.injagang.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,13 @@ public class Interview {
 
     private String title;
 
-    private String url;
+    private String path;
+
+
+    @Builder
+    public Interview(User user, String title, String path) {
+        this.user = user;
+        this.title = title;
+        this.path = path;
+    }
 }

@@ -1,0 +1,55 @@
+= 인자강 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 질문 추가
+
+=== 요청
+include::{snippets}/question-add/http-request.adoc[]
+include::{snippets}/question-add/request-headers.adoc[]
+include::{snippets}/question-add/request-fields.adoc[]
+
+
+== 질문 리스트
+
+=== 요청
+
+include::{snippets}/question-list/http-request.adoc[]
+include::{snippets}/question-list/request-parameters.adoc[]
+
+=== 응답
+include::{snippets}/question-list/response-body.adoc[]
+include::{snippets}/question-list/response-fields.adoc[]
+
+
+
+== 랜덤 리스트
+
+=== 요청
+include::{snippets}/question-random/http-request.adoc[]
+include::{snippets}/question-random/request-parameters.adoc[]
+
+
+=== 응답
+include::{snippets}/question-random/response-body.adoc[]
+include::{snippets}/question-random/response-fields.adoc[]
+
+
+== 질문 삭제
+
+=== 요청
+
+include::{snippets}/question-delete/http-request.adoc[]
+include::{snippets}/question-delete/request-fields.adoc[]
+
+
+
+
+
+
+
