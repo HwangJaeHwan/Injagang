@@ -1,6 +1,7 @@
 export const BOARD_SUCCESS = "BOARD_SUCCESS";
 export const BOARD_REQUEST = "BOARD_REQUEST";
 export const BOARD_FAILURE = "BOARD_FAILURE";
+export const BOARD_UPDATED = "BOARD_UPDATED";
 export const BOARDINFO_SUCCESS = "BOARDINFO_SUCCESS";
 
 export interface boardRequest {
@@ -66,8 +67,13 @@ export interface boardFailDispatch {
   };
 }
 
+export interface boardUpdatedDispatch {
+  type: typeof BOARD_UPDATED;
+}
+
 export type boardDispatchType =
   | boardRequest
   | boardFailDispatch
   | boardInfoSuccessDispatch
-  | boardSuccessDispatch;
+  | boardSuccessDispatch
+  | boardUpdatedDispatch;

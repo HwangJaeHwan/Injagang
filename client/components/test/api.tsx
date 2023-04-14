@@ -1,5 +1,4 @@
 import { METHOD } from "@/components/test/fecher";
-import { useRouter } from "next/router";
 import fetcher from "@/components/test/fecher";
 import Cookies from "js-cookie";
 

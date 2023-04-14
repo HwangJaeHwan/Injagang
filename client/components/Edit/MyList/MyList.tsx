@@ -89,6 +89,9 @@ const MyList = () => {
   const essayReducer = useSelector(
     (state: RootReducerType) => state.essay.essayList,
   );
+  const essayIsUpdated = useSelector(
+    (state: RootReducerType) => state.essay.isUpdated,
+  );
 
   // useEffect(() => {
   //   dispatch(getEssayList(1))
@@ -96,10 +99,14 @@ const MyList = () => {
 
   //EssayList의 최신화가 이루어질때마다 바로 반영하기위한
   useEffect(() => {
-    setTimeout(() => {
+    if (essayIsUpdated) {
       dispatch(getEssayList(Number(Cookies.get("userId"))));
-    }, 100);
-  }, [dispatch]);
+    }
+  }, [essayIsUpdated]);
+
+  useEffect(() => {
+    dispatch(getEssayList(Number(Cookies.get("userId"))));
+  }, []);
 
   useEffect(() => {
     const filterList = essayReducer.filter(

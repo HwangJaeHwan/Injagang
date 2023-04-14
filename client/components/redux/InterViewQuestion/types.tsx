@@ -1,6 +1,7 @@
 export const QUESTION_SUCCESS = "QUESTION_SUCCESS";
 export const QUESTION_REQUEST = "QUESTION_REQUEST";
 export const QUESTION_FAILURE = "QUESTION_FAILURE";
+export const QUESTION_UPDATED = "QUESTION_UPDATED";
 
 export interface questionRequest {
   type: typeof QUESTION_REQUEST;
@@ -25,7 +26,12 @@ export interface questionSuccessDispatch {
   };
 }
 
+export interface questionUpdated {
+  type: typeof QUESTION_UPDATED;
+}
+
 export type questionDispatchType =
   | questionRequest
   | questionSuccessDispatch
-  | qeestionFailDispatch;
+  | qeestionFailDispatch
+  | questionUpdated;

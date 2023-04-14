@@ -15,16 +15,24 @@ const PageNation = () => {
   const boardReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.board,
   );
+  const boardIsUpdated = useSelector(
+    (state: RootReducerType) => state.board.isUpdated,
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     setTotalPage(boardReducer.boardInFoList[0]?.totalPage);
   }, [boardReducer.boardInFoList]);
-  
+
   // 페이지가 변경될때마다 새로운 페이지리스트 호출
   useEffect(() => {
-    dispatch(getBoardList(curPageNumber))
-  },[curPageNumber])
+    dispatch(getBoardList(curPageNumber));
+  }, [curPageNumber]);
 
+  useEffect(() => {
+    if (boardIsUpdated) {
+      dispatch(getBoardList(curPageNumber));
+    }
+  }, [boardIsUpdated]);
 
   const handleBtnClick = (idx: number) => {
     setCurPageNumber(idx + 1);
@@ -32,9 +40,9 @@ const PageNation = () => {
 
   /** 이전페이지 호출와 페이지넘김을 담당*/
   const handlePreBtn = () => {
-    if(curPageNumber > 1){
+    if (curPageNumber > 1) {
       setCurPageNumber(curPageNumber - 1);
-      if (curPageNumber === minPageNumLimit+1) {
+      if (curPageNumber === minPageNumLimit + 1) {
         setMinPageNumLimit(minPageNumLimit - pageMoveNumberLimit);
         setMaxPageNumLimit(maxPageNumLimit - pageMoveNumberLimit);
       }
@@ -62,7 +70,7 @@ const PageNation = () => {
         Array(totalPage)
           .fill(1)
           .map((_, idx) => {
-            if (idx+1 > minPageNumLimit && idx + 1 < maxPageNumLimit + 1)
+            if (idx + 1 > minPageNumLimit && idx + 1 < maxPageNumLimit + 1)
               return (
                 <CustomButton
                   className={idx + 1 === curPageNumber ? "active_button" : ""}

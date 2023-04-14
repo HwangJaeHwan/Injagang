@@ -23,7 +23,8 @@ const BoardListView = () => {
   const boardReducer = useSelector(
     (state: RootReducerType) => state.board.boardInFoList
   );
-  return (
+  const boardIsUpdated = useSelector((state:RootReducerType) => state.board.isUpdated)
+  return ( 
     <BoardListViewStyle>
       <thead>
         <tr>

@@ -16,7 +16,6 @@ const WirteStyle = styled.div`
 const question = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("dsfasfasfsad로딩");
     dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
 

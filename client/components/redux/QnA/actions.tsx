@@ -9,8 +9,10 @@ import {
   BOARD_SUCCESS,
   BOARDINFO_SUCCESS,
   qnaList,
+  BOARD_UPDATED,
 } from "./types";
 
+/**해당하는 QNA의 세부내용을 불러온다. */
 export const getBoardDetail =
   (boardId: number) => async (dispatch: Dispatch<boardDispatchType>) => {
     try {
@@ -42,12 +44,17 @@ type Board = {
   content: string;
   essayId: number;
 };
+
+/**QNA 작성 API */
 export const writeBoard =
   (boardData: Board) => async (dispatch: Dispatch<boardDispatchType>) => {
     try {
       const request = await fetcher(METHOD.POST, "/board/write", boardData, {
         headers: { Authorization: Cookies.get("accessToken") },
       });
+      if (request.status === 200) {
+        dispatch({ type: BOARD_UPDATED });
+      }
     } catch (error: any) {
       dispatch({
         type: BOARD_FAILURE,
@@ -58,6 +65,7 @@ export const writeBoard =
     }
   };
 
+/**QNA 삭제 API*/
 export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
   try {
     const request = await fetcher(METHOD.DELETE, `/board/${boardId}`, {
@@ -80,6 +88,7 @@ type ChangeData = {
   changeTitle: string;
   changeContent: string;
 };
+/**QNA 업데이트 API */
 export const updateBoard =
   (changeData: ChangeData) => async (dispatch: Dispatch) => {
     try {
@@ -96,6 +105,7 @@ export const updateBoard =
     }
   };
 
+/**QNA리스트를 가져온다. */
 export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: BOARD_REQUEST });

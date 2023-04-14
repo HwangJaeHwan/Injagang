@@ -10,6 +10,7 @@ import {
   errorClear,
   qnaList,
   ESSAY_READ_SUCCESS,
+  ESSAY_UPDATED,
 } from "./types";
 
 interface EssayList {
@@ -26,6 +27,7 @@ export const addEssay =
       const request = await fetcher(METHOD.POST, "/essay/write", essayData, {
         headers: { Authorization: Cookies.get("accessToken") },
       });
+      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -48,6 +50,7 @@ export const updateEssay =
           headers: { Authorization: Cookies.get("accessToken") },
         },
       );
+      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -120,6 +123,7 @@ export const deleteEssayList =
       const request = await fetcher(METHOD.DELETE, `/essay/delete/${essayId}`, {
         headers: { Authorization: Cookies.get("accessToken") },
       });
+      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,

@@ -53,6 +53,10 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
   };
 
   const handleSubmit = () => {
+    if(qType === "ALL") {
+        alert("타입을 선택해주세요")
+        return 
+    }
     const addList = {
       questions: addText,
       questionType: qType,

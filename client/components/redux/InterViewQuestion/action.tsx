@@ -4,6 +4,7 @@ import {
   QUESTION_FAILURE,
   QUESTION_REQUEST,
   QUESTION_SUCCESS,
+  QUESTION_UPDATED,
   questionDispatchType,
 } from "./types";
 import fetcher, { METHOD } from "@/components/test/fecher";
@@ -27,6 +28,10 @@ export const handleAddQuestion =
           Authorization: Cookies.get("accessToken"),
         },
       });
+      console.log("sadfasfasfasfsaf", request);
+      if (request.status === 200) {
+        dispatch({ type: QUESTION_UPDATED });
+      }
     } catch (error: any) {
       dispatch({
         type: QUESTION_FAILURE,
@@ -75,16 +80,21 @@ export const getInterViewQnaList =
     }
   };
 
+  interface IDStype {
+    ids: number[]
+  }
+
 export const handleDeleteInterViewQnaList =
-  () =>
+  (ids: IDStype) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
-      dispatch({ type: QUESTION_REQUEST });
-      const request = await fetcher(METHOD.DELETE, "/questions", {
-        headers: {
-          Authorization: Cookies.get("accessToken"),
-        },
+      const request = await fetcher(METHOD.DELETE, `/questions`, {
+        data: ids,
+        headers: { Authorization: Cookies.get("accessToken") },
       });
+      if (request.status === 200) {
+        dispatch({ type: QUESTION_UPDATED });
+      }
     } catch (error: any) {
       dispatch({
         type: QUESTION_FAILURE,

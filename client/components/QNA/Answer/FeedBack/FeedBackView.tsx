@@ -18,14 +18,17 @@ const FeedBackViewStyle = styled.div`
 
 type FeedBackViewProps = {
   targetNumber: number;
-  isUpdate: boolean;
 };
 
-const FeedBackView = ({ targetNumber, isUpdate }: FeedBackViewProps) => {
+const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
   const dispatch = useDispatch();
 
   const feedbackList = useSelector(
     (state: RootReducerType) => state.feedBack.feedbackList,
+  );
+
+  const feedIsUpdated = useSelector(
+    (state: RootReducerType) => state.feedBack.isUpdated,
   );
 
   const handleUpdateFeedBack = (feedbackId: number, reviseContent: string) => {
@@ -34,14 +37,13 @@ const FeedBackView = ({ targetNumber, isUpdate }: FeedBackViewProps) => {
       reviseContent,
     };
     dispatch(updateFeedback(data));
-    dispatch(getFeedbackList(targetNumber));
   };
 
   useEffect(() => {
     if (targetNumber !== 0) {
       dispatch(getFeedbackList(targetNumber));
     }
-  }, [targetNumber, isUpdate]);
+  }, [targetNumber, feedIsUpdated]);
 
   return (
     <FeedBackViewStyle>

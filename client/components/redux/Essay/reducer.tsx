@@ -6,6 +6,7 @@ import {
   essayState,
   readEssayState,
   ESSAY_READ_SUCCESS,
+  ESSAY_UPDATED,
 } from "./types";
 
 export interface InitiaState {
@@ -13,11 +14,13 @@ export interface InitiaState {
   error: null;
   essayList: essayState[];
   readEssayList: readEssayState[];
+  isUpdated: boolean;
 }
 
 const initialState: InitiaState = {
   loading: false,
   error: null,
+  isUpdated: false,
   essayList: [
     {
       essayId: 0,
@@ -25,13 +28,13 @@ const initialState: InitiaState = {
       questions: [],
     },
   ],
-  readEssayList : [
+  readEssayList: [
     {
       essayId: 0,
       title: "",
       qnaList: [],
-    }
-  ]
+    },
+  ],
 };
 
 const essayReducer = (state = initialState, action: essayDispatchType) => {
@@ -45,6 +48,7 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
       return {
         ...state,
         essayList: action.payload.list,
+        isUpdated: false,
       };
     case ESSAY_FAILURE:
       return {
@@ -56,6 +60,12 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
         ...state,
         readEssayList: action.payload.readList,
         loading: false,
+        isUpdated: false,
+      };
+    case ESSAY_UPDATED:
+      return {
+        ...state,
+        isUpdated: true,
       };
     default:
       return state;
