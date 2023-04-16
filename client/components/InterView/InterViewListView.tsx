@@ -10,12 +10,10 @@ import {
 } from "../redux/InterViewQuestion/action";
 import InterViewListItem from "./InterViewListItem";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
-import AddQustionList from "../Admin/AddTextInput";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
 import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
 import TextToSpeech from "../test/TextReder";
-
 const InterViewListViewStyle = styled.div``;
 
 const Container = styled.div`
@@ -37,6 +35,7 @@ const InterViewListView = () => {
   const [selectType, setSelectType] = useState<QuestionType | string>("ALL");
   const [allCheck, setAllCheck] = useState<boolean>(false);
   const [checkList, setCheckList] = useState<number[]>([]);
+  const [addInterViewList, setAddInterViewList] = useState<string[]>([]);
   const dispatch = useDispatch();
   const interViewList = useSelector(
     (state: RootReducerType) => state.interViewQuestion.list,
@@ -96,6 +95,14 @@ const InterViewListView = () => {
     dispatch(handleDeleteInterViewQnaList(data));
   };
 
+  /**인터뷰 영상촬영을 위한 질문리스트 추가 */
+  const hadleSetInterViewList = () => {
+    const filterItem = interViewList.filter((a, i) => a.id === checkList[i]);
+    const questionList = filterItem.map((a, i) => a.questions);
+    setAddInterViewList(questionList);
+    console.log("sadfa");
+  };
+
   return (
     <InterViewListViewStyle>
       <Card size={{ height: "450px", width: "300px", flex: "Col" }}>
@@ -116,34 +123,32 @@ const InterViewListView = () => {
               ></InterViewListItem>
             ))}
         </Container>
-        {authRole === "ADMIN" && (
-          <div>
-            <CustomButton
-              onClick={handleAllCheck}
-              text={allCheck ? "전체해제" : "전체선택"}
-              Size={{ width: "100px", font: "15px" }}
-            />
+        <div>
+          <CustomButton
+            onClick={handleAllCheck}
+            text={allCheck ? "전체해제" : "전체선택"}
+            Size={{ width: "100px", font: "15px" }}
+          />
+          {authRole === "ADMIN" ? (
             <CustomButton
               onClick={handleRemoveQuestions}
               text={"삭제하기"}
               Size={{ width: "100px", font: "15px" }}
             />
-          </div>
-        )}
+          ) : (
+            <CustomButton
+              onClick={hadleSetInterViewList}
+              text={"항목추가"}
+              Size={{ width: "100px", font: "15px" }}
+            />
+          )}
+        </div>
       </Card>
-      {authRole === "ADMIN" && (
-        <AddQuestionListView qType={selectType}></AddQuestionListView>
-      )}
-      <TextToSpeech
-        speechData={[
-          "자신의 장단점에 대해 말씀해주세요",
-          "자신의 단점에 대해 말씀해주세요",
-          "오늘은 무슨 요일이에요?",
-          "당신은 몇살 인가요?",
-          "당신은 누구 인가요?",
-          "오늘 점심은 뭐 먹었나요?",
-        ]}
-      />
+      <AddQuestionListView
+        qType={selectType}
+        addList={addInterViewList}
+      ></AddQuestionListView>
+      <TextToSpeech speechData={addInterViewList} />
     </InterViewListViewStyle>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddTextInput from "./AddTextInput";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
 import styled from "styled-components";
@@ -11,6 +11,8 @@ import {
   getInterViewQnaList,
   handleAddQuestion,
 } from "../redux/InterViewQuestion/action";
+import { useSelector } from "react-redux";
+import { RootReducerType } from "../redux/store";
 
 const AddQuestionListViewStyle = styled.div`
   height: 100%;
@@ -26,12 +28,20 @@ const Container = styled.div`
 
 type AddQuestionListViewProps = {
   qType: QuestionType | string;
+  addList?: string[];
 };
 
-const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
+const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   const [addText, setAddText] = useState<string[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const authRole = useSelector((state: RootReducerType) => state.auth.role);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (addList) {
+      setAddText(cur => [...cur, ...addList]);
+    }
+  }, [addList]);
 
   const handleAddText = (text: string) => {
     if (text === "") {
@@ -39,7 +49,7 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
       return;
     }
     setAddText(cur => [...cur, text]);
-    console.log(qType)
+    console.log(qType);
   };
 
   const handleRemoveText = (index: number) => {
@@ -53,9 +63,9 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
   };
 
   const handleSubmit = () => {
-    if(qType === "ALL") {
-        alert("타입을 선택해주세요")
-        return 
+    if (qType === "ALL") {
+      alert("타입을 선택해주세요");
+      return;
     }
     const addList = {
       questions: addText,
@@ -64,6 +74,10 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
     dispatch(handleAddQuestion(addList));
     setAddText([]);
   };
+
+  const handleSetInterViewQuestions = () => {
+    alert("SADFSF")
+  }
   return (
     <AddQuestionListViewStyle>
       <Card size={{ height: "450px", width: "300px", flex: "Col" }}>
@@ -79,7 +93,9 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
         </Container>
         <AddTextInput
           handleAddQuestion={handleAddText}
-          handleCancelQuestion={handleSubmit}
+          handleCancelQuestion={
+            authRole === "ADMIN" ? handleSubmit :handleSetInterViewQuestions
+          }
         />
       </Card>
       {isOpenModal && (
@@ -93,4 +109,4 @@ const AddQuestionListView = ({ qType }: AddQuestionListViewProps) => {
   );
 };
 
-export default AddQuestionListView;
+export default React.memo(AddQuestionListView);

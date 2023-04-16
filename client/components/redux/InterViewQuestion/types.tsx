@@ -1,3 +1,5 @@
+import { QuestionType } from "./action";
+
 export const QUESTION_SUCCESS = "QUESTION_SUCCESS";
 export const QUESTION_REQUEST = "QUESTION_REQUEST";
 export const QUESTION_FAILURE = "QUESTION_FAILURE";
@@ -42,6 +44,7 @@ export interface questionRanDomDispatch {
   type: typeof QUESTIONRANDOM_SUCCESS;
   payload: {
     randomList: questionRanDomList[];
+    qType: QuestionType;
   };
 }
 

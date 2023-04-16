@@ -124,6 +124,7 @@ export const getRandomList =
           type: QUESTIONRANDOM_SUCCESS,
           payload: {
             randomList: response.data,
+            qType: rendomSet.question,
           },
         });
       }
