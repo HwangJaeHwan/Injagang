@@ -49,7 +49,7 @@ public class InterviewService {
     public UrlResource playVideo(Long interviewId) throws MalformedURLException {
 
         Interview interview = interviewRepository.findById(interviewId).orElseThrow(RuntimeException::new);
-        
+
         return new UrlResource(file + interview.getPath());
 
     }

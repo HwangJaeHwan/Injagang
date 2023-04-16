@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -69,19 +70,52 @@ public class QuestionService {
     }
 
 
-    public List<QuestionResponse> randomQuestions(RandomRequest request) {
+    public List<QuestionResponse> randomQuestions(List<RandomRequest> requests) {
 
-        log.info("size = {}", request.getSize());
-        log.info("type = {}", request.getQuestionType());
+        int sum = 0;
+        int count = 0;
+        HashMap<QuestionType, Integer> hash = new HashMap<>();
 
-        List<ExpectedQuestion> questions = questionRepository.findAllByQuestionType(request.getQuestionType());
-
-        Collections.shuffle(questions);
+        for (RandomRequest request : requests) {
+            hash.put(request.getQuestionType(), request.getSize());
+            sum += request.getSize();
+        }
 
         List<QuestionResponse> random = new ArrayList<>();
 
-        IntStream.range(0, request.getSize())
-                .forEach(i-> random.add(new QuestionResponse(questions.get(i))));
+        List<ExpectedQuestion> questions = questionRepository.findAll();
+
+        Collections.shuffle(questions);
+
+
+        for (ExpectedQuestion question : questions) {
+
+            if (sum == count) {
+                break;
+            }
+
+
+            if (hash.get(question.getQuestionType()) != null) {
+
+                if (hash.get(question.getQuestionType()) > 0) {
+
+                    hash.put(question.getQuestionType(), hash.get(question.getQuestionType()) - 1);
+
+                    random.add(new QuestionResponse(question));
+                    count++;
+                }
+
+            }
+
+
+
+
+
+        }
+
+
+
+
 
         return random;
 

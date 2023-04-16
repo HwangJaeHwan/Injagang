@@ -9,6 +9,7 @@ import com.injagang.repository.ExpectedQuestionRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.DeleteIds;
 import com.injagang.request.QuestionWrite;
+import com.injagang.request.RandomRequest;
 import com.injagang.service.QuestionService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,10 +110,39 @@ class QuestionControllerTest {
 
         saveQuestions();
 
-        mockMvc.perform(get("/questions/random")
-                        .param("size", "5")
-                        .param("questionType", "CS")
-                ).andExpect(jsonPath("$.length()").value(5L))
+        List<RandomRequest> requests = new ArrayList<>();
+
+        RandomRequest csRequest = RandomRequest.builder()
+                .size(5)
+                .questionType(QuestionType.CS)
+                .build();
+
+        RandomRequest jobRequest = RandomRequest.builder()
+                .size(6)
+                .questionType(QuestionType.JOB)
+                .build();
+
+        RandomRequest situationRequest = RandomRequest.builder()
+                .size(7)
+                .questionType(QuestionType.SITUATION)
+                .build();
+
+        RandomRequest personalityRequest = RandomRequest.builder()
+                .size(8)
+                .questionType(QuestionType.PERSONALITY)
+                .build();
+
+        requests.add(csRequest);
+        requests.add(jobRequest);
+        requests.add(situationRequest);
+        requests.add(personalityRequest);
+
+        String json = objectMapper.writeValueAsString(requests);
+
+        mockMvc.perform(post("/questions/random")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(jsonPath("$.length()").value(26L))
                 .andExpect(status().isOk())
                 .andDo(print());
 
