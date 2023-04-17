@@ -29,10 +29,10 @@ public class QuestionController {
 
     }
 
-    @GetMapping("/random")
-    public List<QuestionResponse> random(RandomRequest request) {
+    @PostMapping("/random")
+    public List<QuestionResponse> random( @RequestBody List<RandomRequest> requests) {
 
-        return questionService.randomQuestions(request);
+        return questionService.randomQuestions(requests);
 
     }
 

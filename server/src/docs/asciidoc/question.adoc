@@ -32,7 +32,7 @@ include::{snippets}/question-list/response-fields.adoc[]
 
 === 요청
 include::{snippets}/question-random/http-request.adoc[]
-include::{snippets}/question-random/request-parameters.adoc[]
+include::{snippets}/question-random/request-fields.adoc[]
 
 
 === 응답
@@ -45,6 +45,7 @@ include::{snippets}/question-random/response-fields.adoc[]
 === 요청
 
 include::{snippets}/question-delete/http-request.adoc[]
+include::{snippets}/question-delete/request-headers.adoc[]
 include::{snippets}/question-delete/request-fields.adoc[]
 
 

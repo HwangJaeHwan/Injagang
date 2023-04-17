@@ -140,6 +140,9 @@ class QuestionServiceTest {
 
         saveQuestions();
 
+        List<RandomRequest> requests = new ArrayList<>();
+
+
         RandomRequest csRequest = RandomRequest.builder()
                 .size(5)
                 .questionType(QuestionType.CS)
@@ -160,16 +163,16 @@ class QuestionServiceTest {
                 .questionType(QuestionType.PERSONALITY)
                 .build();
 
-        List<QuestionResponse> cs = questionService.randomQuestions(csRequest);
-        List<QuestionResponse> job = questionService.randomQuestions(jobRequest);
-        List<QuestionResponse> situation = questionService.randomQuestions(situationRequest);
-        List<QuestionResponse> personality = questionService.randomQuestions(personalityRequest);
+        requests.add(csRequest);
+        requests.add(jobRequest);
+        requests.add(situationRequest);
+        requests.add(personalityRequest);
+
+        List<QuestionResponse> questions = questionService.randomQuestions(requests);
 
 
-        assertEquals(5, cs.size());
-        assertEquals(6, job.size());
-        assertEquals(7, situation.size());
-        assertEquals(8, personality.size());
+        assertEquals(26, questions.size());
+
 
 
     }
