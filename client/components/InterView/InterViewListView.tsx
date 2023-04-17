@@ -105,7 +105,7 @@ const InterViewListView = () => {
 
   return (
     <InterViewListViewStyle>
-      <Card size={{ height: "450px", width: "300px", flex: "Col" }}>
+      <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
         <ControlMenu
           value={selectType}
           optionList={InterViewSelectData}
@@ -148,7 +148,6 @@ const InterViewListView = () => {
         qType={selectType}
         addList={addInterViewList}
       ></AddQuestionListView>
-      <TextToSpeech speechData={addInterViewList} />
     </InterViewListViewStyle>
   );
 };

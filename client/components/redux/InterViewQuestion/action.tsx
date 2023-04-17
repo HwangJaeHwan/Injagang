@@ -108,23 +108,19 @@ export const handleDeleteInterViewQnaList =
 
 type RanDomList = {
   size: number;
-  question: QuestionType;
+  questionType: QuestionType;
 };
 
 export const getRandomList =
-  (rendomSet: RanDomList) =>
+  (randomSet: RanDomList[]) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
-      const response = await fetcher(
-        METHOD.GET,
-        `questions/random?size=${rendomSet.size}&questionType=${rendomSet.question}`,
-      );
+      const response = await fetcher(METHOD.POST, "/questions/random", randomSet);
       if (response) {
         dispatch({
           type: QUESTIONRANDOM_SUCCESS,
           payload: {
             randomList: response.data,
-            qType: rendomSet.question,
           },
         });
       }

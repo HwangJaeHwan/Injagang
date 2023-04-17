@@ -3,16 +3,15 @@ import AddTextInput from "./AddTextInput";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
 import styled from "styled-components";
 import AddQuestionItem from "./AddQuestionItem";
-import { RxContainer } from "react-icons/rx";
 import Modal from "../UI/Modal";
 import { useDispatch } from "react-redux";
 import {
   QuestionType,
-  getInterViewQnaList,
   handleAddQuestion,
 } from "../redux/InterViewQuestion/action";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
+import { addInterViewList } from "../redux/InterViewList/action";
 
 const AddQuestionListViewStyle = styled.div`
   height: 100%;
@@ -37,12 +36,14 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   const authRole = useSelector((state: RootReducerType) => state.auth.role);
   const dispatch = useDispatch();
 
+  //유저가 추가한 리스트를 입력
   useEffect(() => {
     if (addList) {
       setAddText(cur => [...cur, ...addList]);
     }
   }, [addList]);
 
+  /**입력한 텍스트 리스트에 추가 */
   const handleAddText = (text: string) => {
     if (text === "") {
       setIsOpenModal(true);
@@ -52,16 +53,19 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
     console.log(qType);
   };
 
+  /**현재 리스트에서 삭제 */
   const handleRemoveText = (index: number) => {
     const filterItem = [...addText];
     filterItem.splice(index, 1);
     setAddText(filterItem);
   };
 
+  /**룰 위반시 경고 */
   const handleModal = () => {
     setIsOpenModal(!isOpenModal);
   };
 
+  /**ADMIN 인터뷰리스트 추가 */
   const handleSubmit = () => {
     if (qType === "ALL") {
       alert("타입을 선택해주세요");
@@ -74,13 +78,13 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
     dispatch(handleAddQuestion(addList));
     setAddText([]);
   };
-
+  /**인터뷰촬영시 질문리스트 확정 */
   const handleSetInterViewQuestions = () => {
-    alert("SADFSF")
-  }
+    dispatch(addInterViewList(addText))
+  };
   return (
     <AddQuestionListViewStyle>
-      <Card size={{ height: "450px", width: "300px", flex: "Col" }}>
+      <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
         <Container>
           {addText.map((question, idx) => (
             <AddQuestionItem
@@ -94,7 +98,7 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
         <AddTextInput
           handleAddQuestion={handleAddText}
           handleCancelQuestion={
-            authRole === "ADMIN" ? handleSubmit :handleSetInterViewQuestions
+            authRole === "ADMIN" ? handleSubmit : handleSetInterViewQuestions
           }
         />
       </Card>

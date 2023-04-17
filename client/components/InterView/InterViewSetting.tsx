@@ -3,12 +3,14 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootReducerType } from "../redux/store";
+import { QuestionType, getRandomList } from "../redux/InterViewQuestion/action";
+import TextToSpeech from "../test/TextReder";
 
 const InterViewSettingStyle = styled.div``;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 500px;
   padding: 20px;
   border-radius: 8px;
   background-color: #15202b;
@@ -47,9 +49,17 @@ const InterViewSetting = () => {
     personality: 0,
   });
   const dispatch = useDispatch();
-  const csRendomList = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.rendomList.cs,
+  const userInterViewList = useSelector(
+    (state: RootReducerType) => state.userInterViewList.interViewList,
   );
+  const randomList = useSelector(
+    (state: RootReducerType) => state.interViewQuestion.randomList,
+  );
+
+  useEffect(() => {
+    console.log("adsfasfasfas", userInterViewList);
+  }, [userInterViewList]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRendomSetting(cur => ({
@@ -58,9 +68,24 @@ const InterViewSetting = () => {
     }));
   };
 
+  const handleSubmit = () => {
+    event?.preventDefault();
+    const data = [
+      { size: rendomSetting.cs, questionType: QuestionType.CS },
+      { size: rendomSetting.situation, questionType: QuestionType.SITUATION },
+      { size: rendomSetting.job, questionType: QuestionType.JOB },
+      {
+        size: rendomSetting.personality,
+        questionType: QuestionType.PERSONALITY,
+      },
+    ];
+
+    dispatch(getRandomList(data));
+  };
+
   return (
     <InterViewSettingStyle>
-      <Form onSubmit={() => console.log("클릭")}>
+      <Form onSubmit={handleSubmit}>
         <Label>CS 질문</Label>
         <Input
           type="number"
@@ -71,26 +96,27 @@ const InterViewSetting = () => {
         <Label>상황 질문</Label>
         <Input
           type="number"
-          name="cs"
-          value={rendomSetting.cs}
+          name="situation"
+          value={rendomSetting.situation}
           onChange={handleChange}
         />
         <Label>성격 질문</Label>
         <Input
           type="number"
-          name="cs"
-          value={rendomSetting.cs}
+          name="personality"
+          value={rendomSetting.personality}
           onChange={handleChange}
         />
         <Label>직업 질문</Label>
         <Input
           type="number"
-          name="cs"
-          value={rendomSetting.cs}
+          name="job"
+          value={rendomSetting.job}
           onChange={handleChange}
         />
         <Button type="submit">셋팅완료</Button>
       </Form>
+      <TextToSpeech speechData={["fsdafas","sadfsaf","sdafasf"]}/>
     </InterViewSettingStyle>
   );
 };

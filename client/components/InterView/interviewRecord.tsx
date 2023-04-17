@@ -107,6 +107,7 @@ const InterviewRecord = () => {
     }
   };
 
+
   return (
     <RecordStyle>
       <Camera>

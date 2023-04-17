@@ -34,17 +34,14 @@ export interface questionUpdated {
 }
 
 export type questionRanDomList = {
-  cs?: InterviewQuestionList[];
-  situation?: InterviewQuestionList[];
-  job?: InterviewQuestionList[];
-  personality?: InterviewQuestionList[];
+  id: number;
+  questions: QuestionType;
 };
 
 export interface questionRanDomDispatch {
   type: typeof QUESTIONRANDOM_SUCCESS;
   payload: {
     randomList: questionRanDomList[];
-    qType: QuestionType;
   };
 }
 
@@ -53,4 +50,4 @@ export type questionDispatchType =
   | questionSuccessDispatch
   | qeestionFailDispatch
   | questionUpdated
-  | questionRanDomDispatch
+  | questionRanDomDispatch;

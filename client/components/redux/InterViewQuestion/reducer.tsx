@@ -7,30 +7,21 @@ import {
   QUESTION_SUCCESS,
   QUESTION_UPDATED,
   questionDispatchType,
+  questionRanDomList,
 } from "./types";
 
 interface InitiaState {
   loading: boolean;
   isUpdated: boolean;
-  rendomList: {
-    cs?: string[];
-    situation?: string[];
-    job?: string[];
-    personality?: string[];
-  };
+  randomList: questionRanDomList[];
   error: any;
   list: InterviewQuestionList[];
 }
 const InitaState: InitiaState = {
   loading: false,
   isUpdated: false,
+  randomList: [],
   error: null,
-  rendomList: {
-    cs: [],
-    situation: [],
-    job: [],
-    personality: [],
-  },
   list: [],
 };
 const interViewQuestionReducer = (
@@ -66,17 +57,10 @@ const interViewQuestionReducer = (
       };
 
     case QUESTIONRANDOM_SUCCESS:
-      const { qType, randomList } = action.payload;
-
       return {
         ...state,
         lading: false,
-        randomList: {
-          cs: qType === QuestionType.CS ? randomList : [],
-          situation: qType === QuestionType.SITUATION ? randomList : [],
-          personalbar: qType === QuestionType.PERSONALITY ? randomList : [],
-          job: qType === QuestionType.JOB ? randomList : [],
-        },
+        randomList: action.payload.randomList
       };
 
     default:
