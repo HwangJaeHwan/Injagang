@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { RootReducerType } from "../redux/store";
 import { QuestionType, getRandomList } from "../redux/InterViewQuestion/action";
 import TextToSpeech from "../test/TextReder";
-
 const InterViewSettingStyle = styled.div``;
 const Form = styled.form`
   display: flex;
@@ -41,7 +40,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const InterViewSetting = () => {
+const InterViewRandomSetting = () => {
   const [rendomSetting, setRendomSetting] = useState({
     cs: 0,
     situation: 0,
@@ -116,9 +115,8 @@ const InterViewSetting = () => {
         />
         <Button type="submit">셋팅완료</Button>
       </Form>
-      <TextToSpeech speechData={["fsdafas","sadfsaf","sdafasf"]}/>
     </InterViewSettingStyle>
   );
 };
 
-export default InterViewSetting;
+export default InterViewRandomSetting;

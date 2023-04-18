@@ -33,6 +33,7 @@ type AddQuestionListViewProps = {
 const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   const [addText, setAddText] = useState<string[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState({ title: "", content: "" });
   const authRole = useSelector((state: RootReducerType) => state.auth.role);
   const dispatch = useDispatch();
 
@@ -46,6 +47,7 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   /**입력한 텍스트 리스트에 추가 */
   const handleAddText = (text: string) => {
     if (text === "") {
+      setModalMsg({ title: "경고", content: "값을 입력해주세요" });
       setIsOpenModal(true);
       return;
     }
@@ -80,7 +82,14 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   };
   /**인터뷰촬영시 질문리스트 확정 */
   const handleSetInterViewQuestions = () => {
-    dispatch(addInterViewList(addText))
+    if (addText.length < 1) {
+      setIsOpenModal(true);
+      setModalMsg({ title: "경고", content: "현재는 리스트가 비어있습니다." });
+      return
+    }
+    dispatch(addInterViewList(addText));
+    setIsOpenModal(true);
+    setModalMsg({ title: "MSG", content: "리스트 설정이 완료되었습니다." });
   };
   return (
     <AddQuestionListViewStyle>
@@ -106,7 +115,7 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
         <Modal
           isOpen={isOpenModal}
           onClose={handleModal}
-          contents={{ title: "경고", content: "값을 입력해주세요." }}
+          contents={modalMsg}
         ></Modal>
       )}
     </AddQuestionListViewStyle>
