@@ -3,15 +3,18 @@ import styled from "styled-components";
 import TextToSpeech from "../test/TextReder";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
+import { saveAs } from "file-saver";
+import InterViewSlider from "./InterViewSlider";
+import CustomButton from "../UI/CustomButton";
+import { ColBox } from "@/styles/GlobalStyle";
 
 const RecordStyle = styled.div`
-  padding: 30px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  video {
+  padding: 30px;
+  ~ video {
     border-radius: 15px;
     border: 8px solid ${({ theme }) => theme.colors.primary};
   }
@@ -19,7 +22,8 @@ const RecordStyle = styled.div`
 
 const Camera = styled.div`
   position: relative;
-
+  border-radius: 15px;
+  border: 8px solid #1111115e;
   button {
     position: absolute;
     bottom: 20px;
@@ -43,26 +47,22 @@ const Camera = styled.div`
 
 const Result = styled.div`
   position: relative;
+  height: 100%;
+  width: 100%;
+  ${ColBox}
+`;
+
+const ResultContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-
-    appearance: none;
-    border: none;
-    outline: none;
-
-    padding: 8px 16px;
-    background-image: linear-gradient(to right, #844fff 50%, #ff4f84 50%);
-    background-position: 0%;
-    background-size: 200%;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-    transition: 0.4s;
-    cursor: pointer;
+    height: 50px;
+    margin: 15px;
   }
 `;
+
+const InfoUserList = styled.div``;
 
 const InterviewRecord = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -71,6 +71,7 @@ const InterviewRecord = () => {
   const [curIndex, setCurIndex] = useState<number>(0);
   const [isRecord, setIsRecord] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [videoIndex, setVideoIndex] = useState<number>(0);
 
   const userList = useSelector(
     (state: RootReducerType) => state.userInterViewList.interViewList,
@@ -79,6 +80,10 @@ const InterviewRecord = () => {
   const randomList = useSelector(
     (state: RootReducerType) => state.interViewQuestion.randomList,
   );
+  const [speechData, setSpeechData] = useState([
+    ...randomList.map(a => a.questions),
+    ...userList,
+  ]);
 
   /**유저에게 권한을 요청함(캠여부판단) */
   const getUserAccess = async () => {
@@ -99,6 +104,9 @@ const InterviewRecord = () => {
 
   /**녹화촬영을 시작한다. */
   const handleRecord = () => {
+    if (curIndex > speechData.length + 1) {
+      return;
+    }
     getUserAccess().then(stream => {
       mediaRecorderRef.current = new MediaRecorder(stream, {
         mimeType: "video/webm",
@@ -145,6 +153,7 @@ const InterviewRecord = () => {
     }
   };
 
+  /**딜레이 설정 */
   const wait = (duration: number): Promise<void> => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -153,6 +162,7 @@ const InterviewRecord = () => {
     });
   };
 
+  /**음성 대기 */
   const waitSpeechEnd = (
     utterance: SpeechSynthesisUtterance,
   ): Promise<void> => {
@@ -165,11 +175,6 @@ const InterviewRecord = () => {
 
   const handleSpeak = async (): Promise<void> => {
     if (!isRecord) {
-      const speechData = [
-        "자신의 장단점에 대해 말해보세요",
-        "프로젝트를 하면서 힘들었던 일에 대해 말해보세요",
-        "당신의 꿈은 무엇인가요?",
-      ];
       if (curIndex < speechData.length) {
         const utterance = new SpeechSynthesisUtterance(speechData[curIndex]);
         await wait(2000);
@@ -185,6 +190,18 @@ const InterviewRecord = () => {
     }
   };
 
+  const downloadVideo = () => {
+    if (recordedChunks.length > 0) {
+      const blob = new Blob(recordedChunks, { type: "video/webm" });
+      const url = URL.createObjectURL(blob);
+      saveAs(url, "interview-record.webm");
+    }
+  };
+
+  useEffect(() => {
+    console.log(recordedChunks);
+  }, [recordedChunks]);
+
   return (
     <RecordStyle>
       <Camera>
@@ -193,20 +210,35 @@ const InterviewRecord = () => {
           {!isRecord ? "Start Recording" : "Stop Recording"}
         </button>
       </Camera>
+      <button onClick={downloadVideo}>Download Video</button>
+      {speechData.length > 0 && (
+        <InfoUserList>
+          {`${speechData.length}개의 질문이 대기중입니다.`}
+          <br />
+          {`${curIndex}/${speechData.length} 진행중`}
+        </InfoUserList>
+      )}
       <Result>
-        {recordedChunks && recordedChunks.length > 0 && (
-          <video
-            autoPlay
-            controls
-            src={URL.createObjectURL(recordedChunks[0])}
-          ></video>
+        {recordedChunks.length > 0 && (
+          <ResultContainer>
+            <CustomButton
+              text="<"
+              onClick={() => setVideoIndex(videoIndex - 1)}
+              Size={{ width: "70px", font: "15px" }}
+            ></CustomButton>
+            <InterViewSlider
+              idx={videoIndex}
+              video={recordedChunks}
+              question={speechData}
+            />
+            <CustomButton
+              text=">"
+              onClick={() => setVideoIndex(videoIndex + 1)}
+              Size={{ width: "70px", font: "15px" }}
+            ></CustomButton>
+          </ResultContainer>
         )}
       </Result>
-      {
-        <TextToSpeech
-          speechData={[...randomList.map(a => a.questions), ...userList]}
-        />
-      }
     </RecordStyle>
   );
 };

@@ -8,6 +8,8 @@ import CustomButton from "@/components/UI/CustomButton";
 
 const InterViewStyle = styled.div`
   ${ColBox}
+  height: 100vh;
+  width: 80vw;
 `;
 
 const renderComponent = (nextBtn: number) => {
@@ -29,7 +31,7 @@ const Interview = () => {
     "면접영상촬영시작",
     "나만의 질문 리스트 셋팅",
     "랜덤 배치 리스트 셋팅",
-    "면접 시작",
+    "면접 시작 (아래의 스타트 버튼을 눌러주세요)",
   ]);
 
   const handleChangeScreen = () => {
