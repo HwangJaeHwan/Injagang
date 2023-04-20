@@ -9,7 +9,6 @@ import CustomButton from "../UI/CustomButton";
 import { ColBox } from "@/styles/GlobalStyle";
 
 const RecordStyle = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +48,6 @@ const Result = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  ${ColBox}
 `;
 
 const ResultContainer = styled.div`
@@ -64,6 +62,10 @@ const ResultContainer = styled.div`
 
 const InfoUserList = styled.div``;
 
+const InterViewResult = () => {
+  return <div> 5 </div>;
+};
+
 const InterviewRecord = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -71,6 +73,7 @@ const InterviewRecord = () => {
   const [curIndex, setCurIndex] = useState<number>(0);
   const [isRecord, setIsRecord] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isResult, setIsResult] = useState<boolean>(false);
   const [videoIndex, setVideoIndex] = useState<number>(0);
 
   const userList = useSelector(
@@ -190,14 +193,6 @@ const InterviewRecord = () => {
     }
   };
 
-  const downloadVideo = () => {
-    if (recordedChunks.length > 0) {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const url = URL.createObjectURL(blob);
-      saveAs(url, "interview-record.webm");
-    }
-  };
-
   useEffect(() => {
     console.log(recordedChunks);
   }, [recordedChunks]);
@@ -210,35 +205,51 @@ const InterviewRecord = () => {
           {!isRecord ? "Start Recording" : "Stop Recording"}
         </button>
       </Camera>
-      <button onClick={downloadVideo}>Download Video</button>
       {speechData.length > 0 && (
         <InfoUserList>
-          {`${speechData.length}개의 질문이 대기중입니다.`}
+          <h2>{speechData.length}개의 질문이 대기중입니다.</h2>
           <br />
-          {`${curIndex}/${speechData.length} 진행중`}
+          <h2>
+            {curIndex}/{speechData.length} 진행중`
+          </h2>
         </InfoUserList>
       )}
-      <Result>
-        {recordedChunks.length > 0 && (
-          <ResultContainer>
-            <CustomButton
-              text="<"
-              onClick={() => setVideoIndex(videoIndex - 1)}
-              Size={{ width: "70px", font: "15px" }}
-            ></CustomButton>
-            <InterViewSlider
-              idx={videoIndex}
-              video={recordedChunks}
-              question={speechData}
-            />
-            <CustomButton
-              text=">"
-              onClick={() => setVideoIndex(videoIndex + 1)}
-              Size={{ width: "70px", font: "15px" }}
-            ></CustomButton>
-          </ResultContainer>
-        )}
-      </Result>
+      <CustomButton
+        text="결과확인"
+        onClick={() => setIsResult(!isResult)}
+        Size={{ width: "150px", font: "15px" }}
+      ></CustomButton>
+      {isResult && (
+        <Result>
+          {recordedChunks.length > 0 && (
+            <ResultContainer>
+              <CustomButton
+                text="<"
+                onClick={() =>
+                  setVideoIndex(prevIndex =>
+                    prevIndex <= 0 ? 0 : videoIndex - 1,
+                  )
+                }
+                Size={{ width: "70px", font: "15px" }}
+              />
+              <InterViewSlider
+                idx={videoIndex}
+                video={recordedChunks}
+                question={speechData}
+              />
+              <CustomButton
+                text=">"
+                onClick={() =>
+                  setVideoIndex(prevIndex =>
+                    prevIndex >= recordedChunks.length - 1 ? 0 : videoIndex + 1,
+                  )
+                }
+                Size={{ width: "70px", font: "15px" }}
+              ></CustomButton>
+            </ResultContainer>
+          )}
+        </Result>
+      )}
     </RecordStyle>
   );
 };

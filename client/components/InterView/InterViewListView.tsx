@@ -9,19 +9,23 @@ import {
   getInterViewQnaList,
 } from "../redux/InterViewQuestion/action";
 import InterViewListItem from "./InterViewListItem";
-import { Card, ScrollBar } from "@/styles/GlobalStyle";
+import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
 import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
-import TextToSpeech from "../test/TextReder";
-import Modal from "../UI/Modal";
-const InterViewListViewStyle = styled.div``;
+const InterViewListViewStyle = styled.div`
+  ${ColBox}
+`;
 
 const Container = styled.div`
   ${ScrollBar}
   width: 100%;
-  height: 90%;
+  height: 100%;
   overflow-x: hidden;
+`;
+
+const Explanation = styled.div`
+  margin: 30px;
 `;
 
 const InterViewSelectData = [
@@ -106,13 +110,15 @@ const InterViewListView = () => {
 
   return (
     <InterViewListViewStyle>
-      <h2>자신만의 면접 질문 리스트를 만들어주세요.</h2>
-      <p>(선택사항)샘플 리스트를 선택하여 추가하면 됩니다.</p>
-      <p>(선택사항)자신이 원하는 질문도 추가하면 됩니다.</p>
-      <p>
-        랜덤셋팅도 있으니 넘어가셔도 됩니다. 자신만의 질문과
-        랜덤셋팅을조합할수도있습니다.
-      </p>
+      <Explanation>
+        <h2>자신만의 면접 질문 리스트를 만들어주세요.</h2>
+        <p>(선택사항)샘플 리스트를 선택하여 추가하면 됩니다.</p>
+        <p>(선택사항)자신이 원하는 질문도 추가하면 됩니다.</p>
+        <p>
+          랜덤셋팅도 있으니 넘어가셔도 됩니다. 자신만의 질문과
+          랜덤셋팅을조합할수도있습니다.
+        </p>
+      </Explanation>
       <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
         <ControlMenu
           value={selectType}

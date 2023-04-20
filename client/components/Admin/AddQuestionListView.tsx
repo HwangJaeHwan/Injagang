@@ -14,8 +14,6 @@ import { RootReducerType } from "../redux/store";
 import { addInterViewList } from "../redux/InterViewList/action";
 
 const AddQuestionListViewStyle = styled.div`
-  height: 100%;
-  width: 100%;
 `;
 
 const Container = styled.div`

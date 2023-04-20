@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootReducerType } from "../redux/store";
 import { QuestionType, getRandomList } from "../redux/InterViewQuestion/action";
-import TextToSpeech from "../test/TextReder";
-const InterViewSettingStyle = styled.div``;
+const InterViewSettingStyle = styled.div`
+  margin: 30px auto;
+`;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
