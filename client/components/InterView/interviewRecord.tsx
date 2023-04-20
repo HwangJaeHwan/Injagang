@@ -3,7 +3,6 @@ import styled from "styled-components";
 import TextToSpeech from "../test/TextReder";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
-import { saveAs } from "file-saver";
 import InterViewSlider from "./InterViewSlider";
 import CustomButton from "../UI/CustomButton";
 import { ColBox } from "@/styles/GlobalStyle";
@@ -107,7 +106,7 @@ const InterviewRecord = () => {
 
   /**녹화촬영을 시작한다. */
   const handleRecord = () => {
-    if (curIndex > speechData.length + 1) {
+    if (curIndex > speechData.length - 1) {
       return;
     }
     getUserAccess().then(stream => {
@@ -119,7 +118,7 @@ const InterviewRecord = () => {
 
       mediaRecorderRef.current.addEventListener("dataavailable", e => {
         if (e.data.size > 0) {
-          setRecordedChunks(pre => [e.data, ...pre]);
+          setRecordedChunks(pre => [...pre, e.data]);
           console.log(recordedChunks);
         }
       });

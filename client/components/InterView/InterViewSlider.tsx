@@ -23,9 +23,13 @@ type InterViewSliderProps = {
 const InterViewSlider = ({ video, question, idx }: InterViewSliderProps) => {
   const downloadVideo = () => {
     if (video.length > 0) {
-      const blob = new Blob(video, { type: "video/webm" });
-      const url = URL.createObjectURL(blob);
-      saveAs(url, "interview-record.webm");
+      const url = URL.createObjectURL(video[idx]);
+      fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+          saveAs(blob, "interview_video.mp4");
+          URL.revokeObjectURL(url);
+        });
     }
   };
   return (

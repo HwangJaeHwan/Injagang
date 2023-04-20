@@ -18,20 +18,25 @@ import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
 const NavStyle = styled.nav`
   position: fixed;
-  height: 100%;
-  width: 20%;
-  padding: 40px 10px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  height: 100%;
+  width: 300px;
+  padding: 40px 10px;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
-  transition: all 0.5s ease-in-out;
+  transition: all 1s ease-in-out;
   overflow: hidden;
   border-right: 0.5px solid rgba(236, 225, 225, 0.904);
-  @media screen and (max-width: 768px) {
+
+
+  @media screen and (max-width: 1200px) {
+    width: 100px;
   }
+
+
   svg {
     font-size: 2.5rem;
     color: ${({ theme }) => theme.colors.text};
@@ -51,14 +56,14 @@ const NavMenu = styled.ul`
   flex-direction: column;
   gap: 15px;
   font-size: 20px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1200px) {
   }
 `;
 
 const NavItem = styled.li`
   list-style: none;
   opacity: 0.8;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1200px) {
   }
   &:hover {
     color: ${({ theme }) => theme.colors.black};
@@ -92,7 +97,7 @@ const NavLink = styled.div`
     opacity: 0.8;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1200px) {
     &:hover {
     }
     .navitem-title,
