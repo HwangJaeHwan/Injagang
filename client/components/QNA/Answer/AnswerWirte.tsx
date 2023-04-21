@@ -107,7 +107,6 @@ const AnswerWirte = () => {
   const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
   const [isViolation, setIsViolation] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [isFeedUpdate, setIsFeedUpdate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const boardId = router.query;
 
@@ -147,7 +146,6 @@ const AnswerWirte = () => {
       targetQuestionIndex: 0,
     });
     handleClear();
-    setIsFeedUpdate(!isFeedUpdate);
   };
 
   const handleClear = () => {
@@ -225,7 +223,6 @@ const AnswerWirte = () => {
       </Card>
       <FeedBackView
         targetNumber={feedBackIndex}
-        isUpdate={isFeedUpdate}
       ></FeedBackView>
       {isOpenModal && (
         <Modal

@@ -1,7 +1,10 @@
+import { QuestionType } from "./action";
+
 export const QUESTION_SUCCESS = "QUESTION_SUCCESS";
 export const QUESTION_REQUEST = "QUESTION_REQUEST";
 export const QUESTION_FAILURE = "QUESTION_FAILURE";
 export const QUESTION_UPDATED = "QUESTION_UPDATED";
+export const QUESTIONRANDOM_SUCCESS = "QUESTIONRANDOM_SUCCESS";
 
 export interface questionRequest {
   type: typeof QUESTION_REQUEST;
@@ -30,8 +33,21 @@ export interface questionUpdated {
   type: typeof QUESTION_UPDATED;
 }
 
+export type questionRanDomList = {
+  id: number;
+  questions: QuestionType;
+};
+
+export interface questionRanDomDispatch {
+  type: typeof QUESTIONRANDOM_SUCCESS;
+  payload: {
+    randomList: questionRanDomList[];
+  };
+}
+
 export type questionDispatchType =
   | questionRequest
   | questionSuccessDispatch
   | qeestionFailDispatch
-  | questionUpdated;
+  | questionUpdated
+  | questionRanDomDispatch;

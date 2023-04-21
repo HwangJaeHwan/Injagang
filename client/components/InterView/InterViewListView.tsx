@@ -10,11 +10,11 @@ import {
 } from "../redux/InterViewQuestion/action";
 import InterViewListItem from "./InterViewListItem";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
-import AddQustionList from "../Admin/AddTextInput";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
 import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
-
+import TextToSpeech from "../test/TextReder";
+import Modal from "../UI/Modal";
 const InterViewListViewStyle = styled.div``;
 
 const Container = styled.div`
@@ -36,6 +36,8 @@ const InterViewListView = () => {
   const [selectType, setSelectType] = useState<QuestionType | string>("ALL");
   const [allCheck, setAllCheck] = useState<boolean>(false);
   const [checkList, setCheckList] = useState<number[]>([]);
+  const [addInterViewList, setAddInterViewList] = useState<string[]>([]);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
   const interViewList = useSelector(
     (state: RootReducerType) => state.interViewQuestion.list,
@@ -86,17 +88,32 @@ const InterViewListView = () => {
     }
   };
 
+  /**인터뷰질문리스트 삭제 */
   const handleRemoveQuestions = () => {
     const data = {
-      ids: checkList
-    }
+      ids: checkList,
+    };
     setAllCheck(false);
     dispatch(handleDeleteInterViewQnaList(data));
   };
 
+  /**인터뷰 영상촬영을 위한 질문리스트 추가 */
+  const hadleSetInterViewList = () => {
+    const filterItem = interViewList.filter((a, i) => a.id === checkList[i]);
+    const questionList = filterItem.map((a, i) => a.questions);
+    setAddInterViewList(questionList);
+  };
+
   return (
     <InterViewListViewStyle>
-      <Card size={{ height: "450px", width: "300px", flex: "Col" }}>
+      <h2>자신만의 면접 질문 리스트를 만들어주세요.</h2>
+      <p>(선택사항)샘플 리스트를 선택하여 추가하면 됩니다.</p>
+      <p>(선택사항)자신이 원하는 질문도 추가하면 됩니다.</p>
+      <p>
+        랜덤셋팅도 있으니 넘어가셔도 됩니다. 자신만의 질문과
+        랜덤셋팅을조합할수도있습니다.
+      </p>
+      <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
         <ControlMenu
           value={selectType}
           optionList={InterViewSelectData}
@@ -114,24 +131,31 @@ const InterViewListView = () => {
               ></InterViewListItem>
             ))}
         </Container>
-        {authRole === "ADMIN" && (
-          <div>
-            <CustomButton
-              onClick={handleAllCheck}
-              text={allCheck ? "전체해제" : "전체선택"}
-              Size={{ width: "100px", font: "15px" }}
-            />
+        <div>
+          <CustomButton
+            onClick={handleAllCheck}
+            text={allCheck ? "전체해제" : "전체선택"}
+            Size={{ width: "100px", font: "15px" }}
+          />
+          {authRole === "ADMIN" ? (
             <CustomButton
               onClick={handleRemoveQuestions}
               text={"삭제하기"}
               Size={{ width: "100px", font: "15px" }}
             />
-          </div>
-        )}
+          ) : (
+            <CustomButton
+              onClick={hadleSetInterViewList}
+              text={"항목추가"}
+              Size={{ width: "100px", font: "15px" }}
+            />
+          )}
+        </div>
       </Card>
-      {authRole === "ADMIN" && (
-        <AddQuestionListView qType={selectType}></AddQuestionListView>
-      )}
+      <AddQuestionListView
+        qType={selectType}
+        addList={addInterViewList}
+      ></AddQuestionListView>
     </InterViewListViewStyle>
   );
 };

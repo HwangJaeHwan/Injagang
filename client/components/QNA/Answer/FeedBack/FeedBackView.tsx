@@ -48,7 +48,7 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
   return (
     <FeedBackViewStyle>
       {feedbackList &&
-        feedbackList.map((feedback, idx) => (
+        feedbackList.map((feedback) => (
           <FeedBackItems
             key={feedback.feedbackId}
             handleUpdateFeedBack={handleUpdateFeedBack}

@@ -1,6 +1,7 @@
 import { Dispatch } from "react";
 import {
   InterviewQuestionList,
+  QUESTIONRANDOM_SUCCESS,
   QUESTION_FAILURE,
   QUESTION_REQUEST,
   QUESTION_SUCCESS,
@@ -80,9 +81,9 @@ export const getInterViewQnaList =
     }
   };
 
-  interface IDStype {
-    ids: number[]
-  }
+interface IDStype {
+  ids: number[];
+}
 
 export const handleDeleteInterViewQnaList =
   (ids: IDStype) =>
@@ -94,6 +95,34 @@ export const handleDeleteInterViewQnaList =
       });
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
+      }
+    } catch (error: any) {
+      dispatch({
+        type: QUESTION_FAILURE,
+        payload: {
+          error,
+        },
+      });
+    }
+  };
+
+type RanDomList = {
+  size: number;
+  questionType: QuestionType;
+};
+
+export const getRandomList =
+  (randomSet: RanDomList[]) =>
+  async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
+    try {
+      const response = await fetcher(METHOD.POST, "/questions/random", randomSet);
+      if (response) {
+        dispatch({
+          type: QUESTIONRANDOM_SUCCESS,
+          payload: {
+            randomList: response.data,
+          },
+        });
       }
     } catch (error: any) {
       dispatch({

@@ -1,21 +1,26 @@
+import { QuestionType } from "./action";
 import {
   InterviewQuestionList,
+  QUESTIONRANDOM_SUCCESS,
   QUESTION_FAILURE,
   QUESTION_REQUEST,
   QUESTION_SUCCESS,
   QUESTION_UPDATED,
   questionDispatchType,
+  questionRanDomList,
 } from "./types";
 
 interface InitiaState {
   loading: boolean;
   isUpdated: boolean;
+  randomList: questionRanDomList[];
   error: any;
   list: InterviewQuestionList[];
 }
 const InitaState: InitiaState = {
   loading: false,
   isUpdated: false,
+  randomList: [],
   error: null,
   list: [],
 };
@@ -49,6 +54,13 @@ const interViewQuestionReducer = (
         ...state,
         loading: false,
         isUpdated: true,
+      };
+
+    case QUESTIONRANDOM_SUCCESS:
+      return {
+        ...state,
+        lading: false,
+        randomList: action.payload.randomList
       };
 
     default:
