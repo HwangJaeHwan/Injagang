@@ -12,7 +12,7 @@ const Card = styled.div`
   min-height: 300px;
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
-  margin: 15px 15px;
+  margin: 25px auto;
   .essay_title {
     width: 88%;
     word-break: break-all;

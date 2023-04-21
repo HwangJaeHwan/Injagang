@@ -20,15 +20,13 @@ import { useDispatch } from "react-redux";
 import { ColBox } from "@/styles/GlobalStyle";
 import QnAListTitle from "../UI/ListTitle";
 import Modal from "../UI/Modal";
+import { v } from "@/styles/variables";
+import { QnAList, qnaList } from "./types";
 
 const QnAEditorStyle = styled.div`
   text-align: center;
   width: 100%;
-  .content-container {
-    ${ColBox}
-    width: 100%;
-    margin: 15px auto;
-  }
+  height: 100%;
 
   h2 {
     font-size: 1.5rem;
@@ -36,73 +34,52 @@ const QnAEditorStyle = styled.div`
     text-decoration-line: underline;
   }
 
-  select {
-    width: 50%;
-    height: 40px;
-  }
-
-  .button_container {
-    ${ColBox}
-    margin: 13px auto;
-    width: 50%;
-    .flex-end {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    svg {
-      font-size: 50px;
-      cursor: pointer;
-    }
-    button:last-child {
-      margin-left: 8px;
+  @media screen and (max-width: 900px) {
+    select {
+      width: ${v.smItemWidth};
     }
   }
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70%;
+const TopContainer = styled.div`
+  ${ColBox}
+  width: 100%;
   margin: 20px auto;
   padding: 20px;
-  /* border: 1px solid #ccc; */
   border-radius: 10px;
-  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
 `;
 
-const TitleInput = styled.input`
-  width: 50%;
-  height: 40px;
-  border-radius: 5px;
-  border-color: black;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text};
-  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
-  margin-bottom: 15px;
+const QuestionItmesContainer = styled.div`
+  ${ColBox}
+  width: ${v.xLItemWidth};
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+    width: ${v.smItemWidth};
+  }
 `;
 
-type qna = {
-  qnaId: number;
-  question: string;
-  answer: string;
-};
+const BottomContainer = styled.div`
+  ${ColBox}
+  gap:20px;
+  svg {
+    font-size: 50px;
+    cursor: pointer;
+  }
+`;
 
-interface QnAList {
-  essayId?: number;
-  templateId?: number;
-  title: string;
-  qnaList: Array<qna | string>;
-}
-
-interface qnaListItem {
-  qnaId: number;
-  question: string;
-  answer: string;
-}
-
-interface qnaList extends Array<qnaListItem> {}
+const ControlButtonContainer = styled.div`
+  width: ${v.lgItemWidth};
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  button:last-child {
+    margin-left: 8px;
+  }
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+    width: ${v.smItemWidth};
+  }
+`;
 
 type QnAEditorProps = {
   isEdit: boolean;
@@ -193,8 +170,23 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     setQnAContent(newList);
   };
 
+  // const handleDeleteQna = (index: number) => {
+  //   setQnALists(prevLists => {
+  //     const newLists = [...prevLists];
+  //     const filterIndex = newLists.findIndex(a => a.title === templateTitle);
+  //     const newContent = [...newLists[filterIndex].qnaList];
+  //     newContent.splice(index, 1);
+  //     newLists[filterIndex].qnaList = newContent;
+  //     return newLists;
+  //   });
+  //   setDeletedItemExists(true)
+  // };
+
   const handleQnASelect = (index: number, question: string, answer: string) => {
     const filterList = qnaContent[index];
+    console.log("필터결과", filterList);
+    console.log("질문내용", question);
+    console.log("질문답변", answer);
     if (filterList) {
       return;
     } else {
@@ -259,40 +251,44 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
   return (
     <QnAEditorStyle>
       <h2>{isEdit ? "자소서 수정하기" : "자소서 작성하기"}</h2>
-      <Container>
+
+      <TopContainer>
         <QnAListTitle onChange={handleChangeMainTitle} />
         <ControlMenu
-          Size={{ width: "10", height: "10" }}
+          Size={{ width: `${v.lgItemWidth}`, height: "40px" }}
           value={templateTitle}
           optionList={qnaLists}
           onChange={setTemplateTitle}
         />
         {qnaLists &&
           getQuestionItem().map(list => (
-            <div
-              className="content-container"
+            <QuestionItmesContainer
               key={isEdit ? list.essayId : list.templateId}
             >
-              {list.qnaList.map((qna, idx) => (
-                <QuestionItem
-                  key={idx}
-                  content={qna}
-                  onChange={handleChangeQnA}
-                  curInfo={handleQnASelect}
-                  index={idx}
-                ></QuestionItem>
-              ))}
-            </div>
+              {list.qnaList &&
+                list.qnaList.map((qna, idx) => (
+                  <QuestionItem
+                    key={idx}
+                    content={qna}
+                    onChange={handleChangeQnA}
+                    curInfo={handleQnASelect}
+                    index={idx}
+                  ></QuestionItem>
+                ))}
+            </QuestionItmesContainer>
           ))}
-      </Container>
-      <div className="button_container">
+      </TopContainer>
+
+      <BottomContainer>
         <BiPlus onClick={handleAddQnA}></BiPlus>
-        <div className="flex-end">
-          <CustomButton
-            Size={{ width: "150px", font: "20px" }}
-            onClick={() => router.push("/myEssay")}
-            text="뒤로가기"
-          />
+        <ControlButtonContainer>
+          <div>
+            <CustomButton
+              Size={{ width: "150px", font: "20px" }}
+              onClick={() => router.push("/myEssay")}
+              text="뒤로가기"
+            />
+          </div>
           <div>
             {isEdit ? (
               <CustomButton
@@ -309,8 +305,9 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
               text={isEdit ? "수정완료" : "작성완료"}
             />
           </div>
-        </div>
-      </div>
+        </ControlButtonContainer>
+      </BottomContainer>
+
       {isOpenModal && (
         <Modal
           isOpen={isOpenModal}

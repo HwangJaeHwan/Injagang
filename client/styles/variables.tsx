@@ -5,4 +5,5 @@ export const v = {
   smWidth: `23rem`,
   smItemWidth: `21rem`,
   lgItemWidth: `42rem`,
+  xLItemWidth: `48rem`,
 };

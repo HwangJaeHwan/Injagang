@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { v } from "@/styles/variables";
 const TitleInput = styled.input`
-  width: ${v.smItemWidth};
+  width: ${v.lgItemWidth};
   height: 40px;
   border-radius: 5px;
   border-color: black;
@@ -10,6 +10,9 @@ const TitleInput = styled.input`
   color: ${({ theme }) => theme.colors.text};
   box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
   margin-bottom: 15px;
+  @media screen and (max-width: 900px) {
+      width: ${v.smItemWidth};
+  }
 `;
 
 type QnAListTitleProps = {

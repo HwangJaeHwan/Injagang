@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 
 const EditStyle = styled.div`
   ${ColBox}
+  width: 100%;
 `;
 
 const Edit = () => {
