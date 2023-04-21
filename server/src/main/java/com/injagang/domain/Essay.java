@@ -1,5 +1,6 @@
 package com.injagang.domain;
 
+import com.injagang.domain.base.Timestamp;
 import com.injagang.domain.qna.EssayQnA;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Essay {
+public class Essay extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

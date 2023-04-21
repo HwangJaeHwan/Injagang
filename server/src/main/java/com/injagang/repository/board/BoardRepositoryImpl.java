@@ -4,6 +4,8 @@ import com.injagang.domain.Board;
 import com.injagang.request.PageDTO;
 import com.injagang.request.SearchDTO;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,7 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom{
                 .where(builder)
                 .offset(pageDTO.getOffset())
                 .limit(15)
-//                .orderBy(getOrder(pageDTO))
+                .orderBy(new OrderSpecifier<>(Order.DESC, board.createdTime))
                 .fetch();
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(board.count())
@@ -55,18 +57,7 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom{
         return PageableExecutionUtils.getPage(content, PageRequest.of(pageDTO.getPage()-1, 15), countQuery::fetchOne);
     }
 
-//    private OrderSpecifier<?> getOrder(PageDTO pageDTO){
-//
-//        switch (pageDTO.getSort()){
-//            case "createdTime":
-//                return new OrderSpecifier<>(Order.DESC, board.createdTime);
-//
-//        }
-//
-//
-//        return new OrderSpecifier<>(Order.DESC, quiz.createdTime);
-//
-//    }
+
 
 
 }
