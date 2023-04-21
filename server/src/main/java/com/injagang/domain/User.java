@@ -1,5 +1,6 @@
 package com.injagang.domain;
 
+import com.injagang.domain.base.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Table(name ="users")
 @NoArgsConstructor(access = PROTECTED)
-public class User {
+public class User extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

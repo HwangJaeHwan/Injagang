@@ -1,6 +1,7 @@
 package com.injagang.domain;
 
 
+import com.injagang.domain.base.Timestamp;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.QnA;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Board {
+public class Board extends Timestamp {
 
 
     @Id
