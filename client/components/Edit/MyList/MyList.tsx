@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BiPlus } from "react-icons/bi";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
@@ -7,39 +7,23 @@ import MyListPreView from "./MyListPreView";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { deleteEssayList, getEssayList } from "../../redux/Essay/actions";
+import { getEssayList } from "../../redux/Essay/actions";
 import Cookies from "js-cookie";
 import MyListItems from "./MyListItems";
-
-interface QnaList {
-  question: string;
-  answer: string;
-}
-
-interface EssayList {
-  essayId: number;
-  title: string;
-  qnaList: QnaList[];
-}
-
-interface CurList {
-  index: number;
-  essayId: number;
-}
+import { CurList } from "./types";
+import { v } from "@/styles/variables";
 
 const MyListStyle = styled.div`
-  width: 45rem;
+  width: ${v.lgWidth};
   height: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .footer-Icon svg {
+  ${ColBox}
+  .footer_icon svg {
     font-size: 50px;
     margin-bottom: 30px;
     cursor: pointer;
   }
-  .footer-Icon svg:hover {
-    color: ${({ theme }) => theme.colors.button};
+  @media screen and (max-width: 900px) {
+    width: ${v.smWidth};
   }
 `;
 
@@ -61,23 +45,6 @@ const ListContainer = styled.div`
   height: 350px;
   margin: 15px auto;
   overflow-x: hidden;
-  .list-items {
-    display: flex;
-    align-items: center;
-    margin: 4px auto;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  svg {
-    font-size: 30px;
-  }
-  input {
-    font-size: 21px;
-    border-radius: 5px;
-  }
-  .active-item {
-    background-color: #f39214f2;
-  }
 `;
 
 const MyList = () => {
@@ -139,7 +106,7 @@ const MyList = () => {
           />
         ))}
       </ListContainer>
-      <div className="footer-Icon">
+      <div className="footer_icon">
         <BiPlus onClick={() => router.push("/edit")} />
       </div>
     </MyListStyle>

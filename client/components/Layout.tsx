@@ -23,10 +23,15 @@ const LayoutStyle = styled.div`
 
 const Sidebar = styled.div`
   width: 300px;
+  @media screen and (max-width: 1200px) {
+    width: 100px;
+  }
 `;
 
 const Content = styled.div`
   margin: 4rem auto;
+  width: 80%;
+  min-width: 0;
 `;
 
 interface LayoutProps {
@@ -97,18 +102,14 @@ const Layout = ({ children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LayoutStyle>
-        <Sidebar style={{ width: !isShowNav ? "20%" : "0%" }}>
-          {!isShowNav && (
-            <NavBar
-              navitems={items}
-              toggleTheme={handleToggleTheme}
-              mode={isDarkMode}
-            />
-          )}
+        <Sidebar>
+          <NavBar
+            navitems={items}
+            toggleTheme={handleToggleTheme}
+            mode={isDarkMode}
+          />
         </Sidebar>
-        <Content style={{ margin: !isShowNav ? "4rem auto" : "0" }}>
-          {children}
-        </Content>
+        <Content>{children}</Content>
       </LayoutStyle>
     </ThemeProvider>
   );

@@ -1,31 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import {BiEdit} from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
 import { useRouter } from "next/router";
-
-interface CurList {
-  index: number;
-  essayId: number;
-}
+import { CurList } from "./types";
 
 const MyListItemsStyle = styled.div`
-  .list-items {
-    display: flex;
-    align-items: center;
-    margin: 4px auto;
-    font-size: 20px;
-    cursor: pointer;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 8px 0;
+  gap: 10px;
+  font-size: 20px;
+  cursor: pointer;
   svg {
     font-size: 30px;
   }
-  input {
-    font-size: 21px;
-    border-radius: 5px;
-  }
-  .active-item {
-    background-color: #f33514f1;
-  }
+`;
+type MyListItemsTitleProps = {
+  isActive: boolean;
+};
+
+const MyListItemsTitle = styled.div<MyListItemsTitleProps>`
+  width: 90%;
+  background-color: ${({ isActive }) => (isActive ? "#f18a15f0" : "")};
+  border-radius: 8px;
 `;
 
 interface MyListItemsProps {
@@ -44,24 +43,22 @@ const MyListItems = ({
   const router = useRouter();
 
   return (
-    <MyListItemsStyle className="list-items">
-      <div
-        className={curList?.index === idx ? "active-item" : ""}
+    <MyListItemsStyle>
+      <MyListItemsTitle
+        isActive={curList?.index === idx ? true : false}
         onClick={() => getMyListView(idx, list.essayId)}
       >
         {list.title}
-      </div>
+      </MyListItemsTitle>
       {curList.index === idx && (
-        <div>
-          <BiEdit
-            onClick={() =>
-              router.push({
-                pathname: "/edit",
-                query: { essayId: JSON.stringify(curList.essayId)},
-              })
-            }
-          />
-        </div>
+        <BiEdit
+          onClick={() =>
+            router.push({
+              pathname: "/edit",
+              query: { essayId: JSON.stringify(curList.essayId) },
+            })
+          }
+        />
       )}
     </MyListItemsStyle>
   );

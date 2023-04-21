@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { v } from "@/styles/variables";
 const TitleInput = styled.input`
-  width: 50%;
+  width: ${v.smItemWidth};
   height: 40px;
   border-radius: 5px;
   border-color: black;
@@ -12,18 +13,16 @@ const TitleInput = styled.input`
 `;
 
 type QnAListTitleProps = {
-  handleChangeMainTitle: (title: string) => void;
+  onChange: (title: string) => void;
 };
 
-const ListTitle = ({
-  handleChangeMainTitle,
-}: QnAListTitleProps) => {
+const ListTitle = ({ onChange }: QnAListTitleProps) => {
   const [title, setTitle] = useState<string>("");
   return (
     <TitleInput
       value={title}
       onChange={e => setTitle(e.target.value)}
-      onBlur={() => handleChangeMainTitle(title)}
+      onBlur={() => onChange(title)}
       placeholder="제목을 입력해주세요"
     ></TitleInput>
   );

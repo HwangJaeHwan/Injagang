@@ -31,7 +31,7 @@ const MyListPreView = ({ preViewData }: MyListPreViewProps) => {
       {preViewData &&
         preViewData.map((list, idx) => (
           <MyListBox key={idx}>
-            <span>{idx + 1}.</span> {list}
+            <span>{idx + 1}.</span> <p>{list}</p>
           </MyListBox>
         ))}
     </MyListPreViewStyle>

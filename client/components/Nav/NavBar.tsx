@@ -16,34 +16,42 @@ import { InitiaState } from "../redux/Auth/reducer";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import Modal from "../UI/Modal";
 const NavStyle = styled.nav`
+  ${ColBox}
   position: fixed;
-  display: flex;
   justify-content: space-between;
-  flex-direction: column;
   height: 100%;
   width: 300px;
+  min-width: 100px;
   padding: 40px 10px;
-  align-items: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
-  transition: all 1s ease-in-out;
+  transition: all 0.5s ease;
   overflow: hidden;
   border-right: 0.5px solid rgba(236, 225, 225, 0.904);
+  font-family: "Noto Sans KR", sans-serif;
 
+  svg {
+    font-size: 2.5rem;
+  }
 
   @media screen and (max-width: 1200px) {
     width: 100px;
   }
-
-
   svg {
-    font-size: 2.5rem;
-    color: ${({ theme }) => theme.colors.text};
+    &:hover {
+      color: ${({ theme }) => theme.colors.black};
+    }
   }
 `;
-const NavTop = styled.div`
-  cursor: pointer;
+const NavTop = styled.div``;
+
+const NavBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const StyledLink = styled(Link)`
@@ -55,7 +63,6 @@ const NavMenu = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  font-size: 20px;
   @media screen and (max-width: 1200px) {
   }
 `;
@@ -63,71 +70,44 @@ const NavMenu = styled.ul`
 const NavItem = styled.li`
   list-style: none;
   opacity: 0.8;
-  @media screen and (max-width: 1200px) {
-  }
-  &:hover {
-    color: ${({ theme }) => theme.colors.black};
-    svg {
-      color: ${({ theme }) => theme.colors.black};
-    }
-  }
 `;
 
 const NavLink = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  .brand-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+`;
+
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 230px;
+  gap: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background-color: #2365b1;
+    opacity: 0.8;
+  }
+  .navLogo {
+    font-size: 3.5rem;
+  }
+  .navLogo_title {
     font-size: 28px;
     color: RGB(255, 0, 0);
   }
 
-  .brand-logo svg {
-    font-size: 4rem;
-    color: ${({ theme }) => theme.colors.logo};
-  }
-  .navitem-cotainer {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-  }
-  .navitem-cotainer:hover {
-    background-color: #2365b1;
-    opacity: 0.8;
-  }
-
   @media screen and (max-width: 1200px) {
+    width: 100%;
     &:hover {
     }
-    .navitem-title,
-    .brand-logo h4 {
+    .navitem_title,
+    .navLogo_title {
       display: none;
     }
-    .brand-logo svg {
+    .navLogo {
       font-size: 3rem;
     }
   }
-`;
-const NavBottom = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  cursor: pointer;
-  .profile {
-    /* position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: red;
-    color: red; */
-  }
-`;
-
-const ProfileBar = styled.div`
-  position: relative;
-  height: 100px;
-  width: 100px;
-  background-color: red;
 `;
 
 interface MenuItem {
@@ -143,6 +123,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const authReducer: InitiaState = useSelector(
@@ -151,6 +132,7 @@ const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
 
   const handleCheckOut = () => {
     dispatch(checkOut());
+    setIsOpenModal(false);
     return;
   };
 
@@ -159,10 +141,10 @@ const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
       <NavTop>
         <StyledLink href="/">
           <NavLink>
-            <div className="brand-logo">
-              <BiRocket />
-              <h4>InJaGang</h4>
-            </div>
+            <NavContainer>
+              <BiRocket className="navLogo" />
+              <h4 className="navLogo_title">InJaGang</h4>
+            </NavContainer>
           </NavLink>
         </StyledLink>
         <NavMenu>
@@ -170,34 +152,54 @@ const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
             <NavItem key={title}>
               <StyledLink href={path} style={{ textDecoration: "none" }}>
                 <NavLink>
-                  <div className="navitem-cotainer">
-                    <i className="navitem-icon">{icon}</i>
-                    <span className="navitem-title">{title}</span>
-                  </div>
+                  <NavContainer>
+                    <i className="navitem_icon">{icon}</i>
+                    <span className="navitem_title">{title}</span>
+                  </NavContainer>
                 </NavLink>
               </StyledLink>
             </NavItem>
           ))}
         </NavMenu>
       </NavTop>
+
       <NavBottom>
         {authReducer.role === "ADMIN" && (
           <StyledLink href="/admin">
             <GrUserAdmin />
           </StyledLink>
         )}
-        {authReducer.role === "" ? (
-          <BiLogIn onClick={() => router.push("/login")} />
-        ) : (
-          <BiLogOut onClick={handleCheckOut} />
-        )}
-        {mode === true ? (
-          <BiSun onClick={toggleTheme} />
-        ) : (
-          <BiMoon onClick={toggleTheme} />
-        )}
+        <NavContainer>
+          {authReducer.role === "" ? (
+            <>
+              <BiLogIn onClick={() => router.push("/login")} />
+              <span className="navitem_title">Login</span>
+            </>
+          ) : (
+            <>
+              <BiLogOut onClick={() => setIsOpenModal(true)} />
+              <span className="navitem_title">LogOut</span>
+            </>
+          )}
+        </NavContainer>
+        <NavContainer>
+          {mode === true ? (
+            <BiSun onClick={toggleTheme} />
+          ) : (
+            <BiMoon onClick={toggleTheme} />
+          )}
+        </NavContainer>
+        <NavContainer>
           <BiUser onClick={() => router.push("/myPage")}></BiUser>
+          <span className="navitem_title">나의정보</span>
+        </NavContainer>
       </NavBottom>
+      <Modal
+        isOpen={isOpenModal}
+        onClose={() => setIsOpenModal(!isOpenModal)}
+        onAction={handleCheckOut}
+        contents={{ title: "MSG", content: "정말 로그아웃을 원하시나요?" }}
+      />
     </NavStyle>
   );
 };

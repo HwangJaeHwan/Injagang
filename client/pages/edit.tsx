@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 
 const EditStyle = styled.div`
   ${ColBox}
-  width: 100%;
 `;
 
 const Edit = () => {
@@ -17,7 +16,7 @@ const Edit = () => {
   const router = useRouter();
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  /** 최초 렌더링시 MyList 수정모드인지 생성모드인지 구분역할 */
+  /** 최초 렌더링시 MyList 수정모드인지 작성모드인지 구분역할 */
   useEffect(() => {
     if (router.query.essayId) {
       const essayId = JSON.parse(router.query.essayId as string) as number;

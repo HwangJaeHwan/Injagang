@@ -8,7 +8,7 @@ const Card = styled.div`
   padding: 15px 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
-  width: 85%;
+  width: 100%;
   min-height: 300px;
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
