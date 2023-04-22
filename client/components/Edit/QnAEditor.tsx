@@ -163,6 +163,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     });
   };
 
+  /**현재 질문리스트 수정 */
   const handleChangeQnA = (index: number, question: string, answer: string) => {
     const newList = [...qnaContent];
     newList[index].question = question;
@@ -170,6 +171,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     setQnAContent(newList);
   };
 
+  /**현재 질문리스트의 정보를 전달 */
   const handleQnASelect = (index: number, question: string, answer: string) => {
     const filterList = qnaContent[index];
     if (filterList) {
@@ -182,6 +184,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     }
   };
 
+  /**필터링후 자소서 작성 반영 */
   const handleSubmit = () => {
     const filterJudge = qnaContent.filter(
       a => a.answer === "" || a.question === "",
@@ -218,6 +221,8 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     router.replace("/myEssay");
   };
 
+
+  /**모드1은 액션이 없는 모달, 모드2 삭제액션이 담긴 모달 */
   const handleModal = (mode: number) => {
     if (mode === 1) {
       setIsOpenModal(false);
@@ -228,6 +233,7 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     }
   };
 
+  /**자소서 삭제*/
   const handleDeleteEssay = () => {
     dispatch(deleteEssayList(essayId));
     router.push("/myEssay");

@@ -10,7 +10,7 @@ import Cookies from "js-cookie";
 const WirteStyle = styled.div`
   ${ColBox}
   height: 100vh;
-  width: 80vw;
+  width: 100%;
 `;
 
 const question = () => {

@@ -30,7 +30,6 @@ const AdminPage = () => {
       <MemberTable members={members} />
       <TemplateView />
       <InterViewListView />
-      <TextReader />
     </AdminPageStyle>
   ) : (
     <div>당신은 관리자가 아닙니다.</div>
