@@ -170,23 +170,8 @@ const QnAEditor = ({ isEdit }: QnAEditorProps) => {
     setQnAContent(newList);
   };
 
-  // const handleDeleteQna = (index: number) => {
-  //   setQnALists(prevLists => {
-  //     const newLists = [...prevLists];
-  //     const filterIndex = newLists.findIndex(a => a.title === templateTitle);
-  //     const newContent = [...newLists[filterIndex].qnaList];
-  //     newContent.splice(index, 1);
-  //     newLists[filterIndex].qnaList = newContent;
-  //     return newLists;
-  //   });
-  //   setDeletedItemExists(true)
-  // };
-
   const handleQnASelect = (index: number, question: string, answer: string) => {
     const filterList = qnaContent[index];
-    console.log("필터결과", filterList);
-    console.log("질문내용", question);
-    console.log("질문답변", answer);
     if (filterList) {
       return;
     } else {

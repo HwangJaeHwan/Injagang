@@ -5,12 +5,8 @@ import styled from "styled-components";
 
 const MyPageStyle = styled.div`
   ${ColBox}
-  height: 90vh;
-  width: 80vw;
-  h3 {
-    margin-top: 20px;
-    margin-bottom: 15px;
-  }
+  width: 100%;
+  height: 100%;
 `;
 
 const myPage = () => {

@@ -79,15 +79,16 @@ const QnAListItem = ({
   const originAnswer = typeof content === "string" ? "" : content.answer;
 
   useEffect(() => {
-    console.log("origin", originQuestion, originAnswer);
     setQuestion(originQuestion);
     setAnswer(originAnswer);
     curInfo(index, originQuestion, originAnswer);
   }, []);
 
+  /**질문 작성이 끝난후 QnAEiditor에 전달 */
   const handleJudge = () => {
     onChange(index, question, answer);
   };
+
   return (
     <Card>
       <TitleTextArea

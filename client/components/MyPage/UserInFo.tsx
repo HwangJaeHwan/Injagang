@@ -5,7 +5,26 @@ import { useDispatch } from "react-redux";
 import { nicknameChange } from "../redux/Auth/actions";
 import { FlexBox } from "@/styles/GlobalStyle";
 import { RxAvatar } from "react-icons/rx";
+import Modal from "../UI/Modal";
 
+const UserInfoStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  margin: 20px;
+  padding: 15px;
+  svg {
+    font-size: 150px;
+  }
+  background-color: #494747;
+  border-radius: 5px;
+`;
+
+const UserInfoContainer = styled.div`
+  width: 80%;
+`;
 const Input = styled.input`
   display: flex;
   padding: 8px;
@@ -15,20 +34,9 @@ const Input = styled.input`
   border: 1px solid #ccc;
 `;
 
-const UserInfoStyle = styled.div`
-  ${FlexBox}
-  width: 100%;
-  margin: 20px;
-  padding: 12px;
-  svg {
-    font-size: 150px;
-  }
-  background-color: #494747;
-  border-radius: 5px;
-`;
-
 const UserInFo = () => {
   const [nickName, setNickName] = useState<string>("");
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,11 +49,12 @@ const UserInFo = () => {
 
   const handleChangeNickName = () => {
     dispatch(nicknameChange(nickName));
+    setIsOpenModal(false);
   };
 
   return (
     <UserInfoStyle>
-      <div>
+      <UserInfoContainer>
         <h3>닉네임변경</h3>
         <Input
           value={nickName}
@@ -54,11 +63,22 @@ const UserInFo = () => {
         ></Input>
         <CustomButton
           Size={{ width: "80%", font: "15px" }}
-          onClick={handleChangeNickName}
+          onClick={() => setIsOpenModal(true)}
           text="변경"
         ></CustomButton>
-      </div>
+      </UserInfoContainer>
       <RxAvatar />
+      {isOpenModal && (
+        <Modal
+          isOpen={isOpenModal}
+          onClose={() => setIsOpenModal(false)}
+          onAction={handleChangeNickName}
+          contents={{
+            title: "MSG",
+            content: `${nickName}로 변경하시겠습니까?`,
+          }}
+        />
+      )}
     </UserInfoStyle>
   );
 };
