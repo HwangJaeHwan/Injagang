@@ -50,9 +50,13 @@ const CommentFooter = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 800px) {
+    justify-content: center;
+  }
 `;
 
 const ControlRightButtons = styled.div`
+  display: flex;
   button:first-child {
     margin-right: 5px;
   }
@@ -73,11 +77,9 @@ const FeedBackItems = ({
   owner,
   handleUpdateFeedBack,
 }: FeedBackItemsProps) => {
-
   const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
   const [text, setText] = useState<string>(content);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
 
   const handleUpdate = () => {
     if (content !== text) {

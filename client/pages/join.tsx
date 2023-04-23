@@ -8,6 +8,9 @@ import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Join/reducer";
 
 const JoinStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   ${FlexBox};
   height: 100vh;
   width: 100vw;

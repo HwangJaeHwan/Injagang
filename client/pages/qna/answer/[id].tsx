@@ -5,7 +5,8 @@ import AnswerWirte from "@/components/QNA/Answer/AnswerWirte";
 
 const ViewStyle = styled.div`
   ${ColBox}
-  width: 80vw;
+  width: 100%;
+  height: 100vh;
 `;
 
 const answer = () => {

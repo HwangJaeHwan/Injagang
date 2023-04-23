@@ -48,6 +48,9 @@ const shakeAnimation = keyframes`
 
 const LoginStyle = styled.div`
   ${FlexBox};
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100vh;
   width: 100vw;
   background-color: #31404e;

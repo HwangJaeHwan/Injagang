@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { getBoardDetail } from "@/components/redux/QnA/actions";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
+import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import AnswerDragView from "@/components/QNA/Answer/AnswerDragView";
 import CustomButton from "@/components/UI/CustomButton";
 import BoardItem from "@/components/QNA/Answer/BoardItem";
@@ -14,27 +14,47 @@ import FeedBackView from "@/components/QNA/Answer/FeedBack/FeedBackView";
 import EditMenuBar from "@/components/QNA/Answer/EditMenuBar";
 import TextArea from "@/components/UI/TextArea";
 import Modal from "@/components/UI/Modal";
+import { v } from "@/styles/variables";
 
 const AnswerWirteStyle = styled.div`
   ${ColBox}
   width: 100%;
+  height: 90%;
 `;
 
 const LeftContainer = styled.div`
   ${ColBox}
   ${ScrollBar}
   overflow-x: hidden;
-  margin: 30px auto;
-  width: 45%;
+  width: 50%;
   height: 100%;
   word-break: break-all;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    height: 45%;
+  }
 `;
 
 const RigthContainer = styled.div`
   ${ColBox}
-  margin: 30px auto;
   height: 100%;
-  width: 45%;
+  width: 50%;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    height: 45%;
+  }
+`;
+
+const SwitchContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 95%;
+  gap: 30px;
+  padding: 8px;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
 `;
 
 const CorrectionContainer = styled.div`
@@ -85,6 +105,12 @@ const ControlLeftButtons = styled.div`
 const ControlRightButtons = styled.div`
   button:first-child {
     margin-right: 5px;
+  }
+
+  @media screen and (max-width: 756px) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 `;
 
@@ -169,17 +195,20 @@ const AnswerWirte = () => {
   return (
     <AnswerWirteStyle>
       <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
-        <LeftContainer>
-          {boardList &&
-            boardList.map((list, i) => (
-              <BoardItem key={list.boardId} {...list} />
-            ))}
-        </LeftContainer>
-        <RigthContainer>
-          <AnswerDragView onChange={setCorrection} />
-        </RigthContainer>
-        <EditMenuBar boardID={removeID} />
+        <SwitchContainer>
+          <LeftContainer>
+            {boardList &&
+              boardList.map((list, i) => (
+                <BoardItem key={list.boardId} {...list} />
+              ))}
+          </LeftContainer>
+          <RigthContainer>
+            <AnswerDragView onChange={setCorrection} />
+          </RigthContainer>
+        </SwitchContainer>
+        {boardList.length > 0 && boardList[0].owner && <EditMenuBar boardID={removeID} />}
       </Card>
+
       <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
         <CorrectionContainer>
           <span className="correction_title">
@@ -188,6 +217,7 @@ const AnswerWirte = () => {
           </span>
           <h4 className="correction_sentence">{correction.targetAnswer}</h4>
         </CorrectionContainer>
+
         <CommentTop>
           <TextArea
             handleChangeText={handleChangeFeedBack}
@@ -195,6 +225,7 @@ const AnswerWirte = () => {
             clear={isFeedBackClear}
           ></TextArea>
         </CommentTop>
+
         <CommentFooter>
           <ControlLeftButtons>
             {boardQnAIdList.map((list, i) => (
@@ -207,6 +238,7 @@ const AnswerWirte = () => {
               ></CustomButton>
             ))}
           </ControlLeftButtons>
+
           <ControlRightButtons>
             <CustomButton
               text="비우기"
@@ -221,9 +253,8 @@ const AnswerWirte = () => {
           </ControlRightButtons>
         </CommentFooter>
       </Card>
-      <FeedBackView
-        targetNumber={feedBackIndex}
-      ></FeedBackView>
+
+      <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
       {isOpenModal && (
         <Modal
           isOpen={isOpenModal}

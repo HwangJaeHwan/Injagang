@@ -13,7 +13,7 @@ import { ColBox } from "@/styles/GlobalStyle";
 const FeedBackViewStyle = styled.div`
   ${ColBox}
   width: 100%;
-  margin-top: 10vh;
+  margin-top: 5vh;
 `;
 
 type FeedBackViewProps = {

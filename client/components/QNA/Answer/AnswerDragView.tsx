@@ -4,26 +4,25 @@ import ReactDOM from "react-dom";
 import { BiMessageAltAdd } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { InitiaState } from "../../redux/QnA/reducer";
 import { RootReducerType } from "../../redux/store";
 import { CorrectionItem } from "./AnswerWirte";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
+  background-color: #191919;
+  color: #dad6d1;
   padding: 15px;
-  background-color: #858080e8;
   height: 100vh;
   width: 100%;
   word-break: break-all;
   overflow-x: hidden;
-  color: black;
   .essay_title {
     text-align: center;
   }
 `;
 
 const EssayDragItems = styled.div`
-  margin: 20px;
+  margin: 30px auto;
   font-family: "Noto Sans KR", sans-serif;
   .essay_question {
     margin-bottom: 15px;
@@ -36,6 +35,21 @@ const EssayDragItems = styled.div`
     line-height: 1.7em;
   }
 `;
+
+const EssayQuestionContainer = styled.div`
+  border-top: 1.5px solid #e4dddd;
+  border-bottom: 1.5px solid #e4dddd;
+  padding: 12px;
+  margin: 15px auto;
+  font-size: 14px;
+  line-height: 1.45;
+`;
+
+const EssayAnswerContainer = styled.div`
+  padding: 12px ;
+  line-height: 1.6;
+`;
+
 interface EssayDragProps {
   onChange: React.Dispatch<React.SetStateAction<CorrectionItem>>;
 }
@@ -69,7 +83,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
       setAdded(true);
       btn.onclick = event => {
         event.stopPropagation();
-        newNode.style.backgroundColor = "#e446163d";
+        newNode.style.backgroundColor = "#e69a0def";
         try {
           range?.surroundContents(newNode);
         } catch (error) {
@@ -109,6 +123,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
       setAdded(false);
     }
   };
+
   return (
     <EssayDragStyle>
       <h2 className="essay_title">
@@ -117,18 +132,21 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
       {boardList[0]?.qnaList &&
         boardList[0].qnaList.map((list, idx) => (
           <EssayDragItems key={list.qnaId}>
-            <h3 className="essay_question">
-              <span>질문: </span>
-              {list.question}
-            </h3>
-            <p
-              className="essay_answer"
-              onMouseUp={() => handleSelect(idx + 1, list.qnaId)}
-              onDoubleClick={handleRemove}
-              onClick={handleSpan}
-            >
-              {list.answer}
-            </p>
+            <EssayQuestionContainer>
+              <h4 className="essay_question">
+                <span>질문:</span> {list.question}
+              </h4>
+            </EssayQuestionContainer>
+            <EssayAnswerContainer>
+              <p
+                className="essay_answer"
+                onMouseUp={() => handleSelect(idx + 1, list.qnaId)}
+                onDoubleClick={handleRemove}
+                onClick={handleSpan}
+              >
+                답변: {list.answer}
+              </p>
+            </EssayAnswerContainer>
           </EssayDragItems>
         ))}
     </EssayDragStyle>
