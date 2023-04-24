@@ -67,5 +67,4 @@ export const Card = styled.div<CardProps>`
   height: ${({ size }) => size.height || "100%"};
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
-  margin: 15px 15px;
 `;

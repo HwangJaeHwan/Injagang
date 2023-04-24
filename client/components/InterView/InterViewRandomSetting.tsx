@@ -13,7 +13,7 @@ const Form = styled.form`
   width: 500px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #15202b;
+  background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
 `;
 

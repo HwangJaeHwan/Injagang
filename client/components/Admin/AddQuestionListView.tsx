@@ -14,6 +14,10 @@ import { RootReducerType } from "../redux/store";
 import { addInterViewList } from "../redux/InterViewList/action";
 
 const AddQuestionListViewStyle = styled.div`
+  width: 45%;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const Container = styled.div`
@@ -91,7 +95,7 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   };
   return (
     <AddQuestionListViewStyle>
-      <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
+      <Card size={{ height: "450px", width: "100%", flex: "Col" }}>
         <Container>
           {addText.map((question, idx) => (
             <AddQuestionItem

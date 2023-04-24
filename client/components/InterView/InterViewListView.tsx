@@ -9,13 +9,35 @@ import {
   getInterViewQnaList,
 } from "../redux/InterViewQuestion/action";
 import InterViewListItem from "./InterViewListItem";
-import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
+import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
 import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
 const InterViewListViewStyle = styled.div`
   ${ColBox}
+  width: 100%;
+  height: 90%;
+  @media screen and (max-width: 1200px) {
+    width: 90%;
+  }
 `;
+
+const SwitchContainer = styled.div`
+  ${FlexBox}
+  width: 90%;
+  gap: 25px;
+  @media screen and (max-width: 1200px) {
+    ${ColBox}
+  }
+`;
+
+const LeftContainer = styled.div`
+  width: 45%;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
+`;
+
 
 const Container = styled.div`
   ${ScrollBar}
@@ -119,49 +141,53 @@ const InterViewListView = () => {
           랜덤셋팅을조합할수도있습니다.
         </p>
       </Explanation>
-      <Card size={{ height: "450px", width: "500px", flex: "Col" }}>
-        <ControlMenu
-          value={selectType}
-          optionList={InterViewSelectData}
-          onChange={setSelectType}
-          Size={{ width: "100%", height: "30px" }}
-        ></ControlMenu>
-        <Container>
-          {interViewList &&
-            interViewList.map((a, i) => (
-              <InterViewListItem
-                key={a.id}
-                allCheck={allCheck}
-                onChange={handleAddCheckList}
-                {...a}
-              ></InterViewListItem>
-            ))}
-        </Container>
-        <div>
-          <CustomButton
-            onClick={handleAllCheck}
-            text={allCheck ? "전체해제" : "전체선택"}
-            Size={{ width: "100px", font: "15px" }}
-          />
-          {authRole === "ADMIN" ? (
-            <CustomButton
-              onClick={handleRemoveQuestions}
-              text={"삭제하기"}
-              Size={{ width: "100px", font: "15px" }}
-            />
-          ) : (
-            <CustomButton
-              onClick={hadleSetInterViewList}
-              text={"항목추가"}
-              Size={{ width: "100px", font: "15px" }}
-            />
-          )}
-        </div>
-      </Card>
-      <AddQuestionListView
-        qType={selectType}
-        addList={addInterViewList}
-      ></AddQuestionListView>
+      <SwitchContainer>
+        <LeftContainer>
+          <Card size={{ height: "450px", width: "100%", flex: "Col" }}>
+            <ControlMenu
+              value={selectType}
+              optionList={InterViewSelectData}
+              onChange={setSelectType}
+              Size={{ width: "100%", height: "30px" }}
+            ></ControlMenu>
+            <Container>
+              {interViewList &&
+                interViewList.map((a, i) => (
+                  <InterViewListItem
+                    key={a.id}
+                    allCheck={allCheck}
+                    onChange={handleAddCheckList}
+                    {...a}
+                  ></InterViewListItem>
+                ))}
+            </Container>
+            <div>
+              <CustomButton
+                onClick={handleAllCheck}
+                text={allCheck ? "전체해제" : "전체선택"}
+                Size={{ width: "100px", font: "15px" }}
+              />
+              {authRole === "ADMIN" ? (
+                <CustomButton
+                  onClick={handleRemoveQuestions}
+                  text={"삭제하기"}
+                  Size={{ width: "100px", font: "15px" }}
+                />
+              ) : (
+                <CustomButton
+                  onClick={hadleSetInterViewList}
+                  text={"항목추가"}
+                  Size={{ width: "100px", font: "15px" }}
+                />
+              )}
+            </div>
+          </Card>
+        </LeftContainer>
+        <AddQuestionListView
+          qType={selectType}
+          addList={addInterViewList}
+        ></AddQuestionListView>
+      </SwitchContainer>
     </InterViewListViewStyle>
   );
 };

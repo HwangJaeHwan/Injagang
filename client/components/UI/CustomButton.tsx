@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 interface ButtonProps {
-    onClick: () => void;
-    text: string;
-    Size: {
-      width: string;
-      font: string;
-    }
-    className?: string
+  onClick: () => void;
+  text: string | React.ReactNode;
+  Size: {
+    width: string;
+    font: string;
+  };
+  className?: string;
 }
 
 interface SelectProps {
@@ -20,9 +20,9 @@ interface SelectProps {
 
 const BeautyButton = styled.button<SelectProps>`
   width: ${({ Size }) => Size.width || "100%"};
-  background-color: ${({theme}) => theme.colors.button};
-  color: ${({theme}) => theme.colors.text};
-  font-size: ${({Size}) => Size.font || "16px"};
+  background-color: ${({ theme }) => theme.colors.button};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ Size }) => Size.font || "16px"};
   border: none;
   padding: 10px 15px;
   border-radius: 10px;
@@ -44,8 +44,12 @@ const BeautyButton = styled.button<SelectProps>`
   }
 `;
 
-const CustomButton = ({onClick,text,Size, className}: ButtonProps) => {
-  return <BeautyButton className={className} Size={Size} onClick={onClick}>{text}</BeautyButton>;
+const CustomButton = ({ onClick, text, Size, className }: ButtonProps) => {
+  return (
+    <BeautyButton className={className} Size={Size} onClick={onClick}>
+      {text}
+    </BeautyButton>
+  );
 };
 
 export default CustomButton;

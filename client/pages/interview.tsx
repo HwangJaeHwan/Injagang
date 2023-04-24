@@ -5,11 +5,41 @@ import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
 import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
 import CustomButton from "@/components/UI/CustomButton";
+import { BiArrowBack } from "react-icons/bi";
+import ArrowAnimation from "@/components/InterView/InterViewMenual";
+import Image from "next/image";
+import interViewimg from "../assets/images/interView.svg";
 
 const InterViewStyle = styled.div`
   ${ColBox}
   height: 100vh;
   width: 80vw;
+`;
+
+const Menual = styled.div`
+  ${ColBox}
+  margin:50px;
+  width: 100%;
+  height: 100%;
+  .interViewImg_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 60%;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #fff;
+  }
+  @media screen and (max-width: 800px) {
+    .interViewImg_box {
+      width: 85%;
+      height: 60%;
+    }
+  }
 `;
 
 const renderComponent = (nextBtn: number) => {
@@ -45,6 +75,7 @@ const Interview = () => {
   return (
     <InterViewStyle>
       <CustomButton
+        className="Arrow_btn"
         onClick={handleChangeScreen}
         text={btnText[curIndex]}
         Size={{ width: "50%", font: "20px" }}
@@ -53,9 +84,18 @@ const Interview = () => {
       {curIndex > 1 && (
         <CustomButton
           onClick={handleChangePrevScreen}
-          text={"<"}
-          Size={{ width: "40px", font: "20px" }}
+          text={<BiArrowBack />}
+          Size={{ width: "50px", font: "22px" }}
         ></CustomButton>
+      )}
+      {curIndex === 0 && (
+        <Menual>
+          <ArrowAnimation targetId="Arrow_btn" />
+
+          <div className="interViewImg_box">
+            <Image src={interViewimg} alt="interView" />
+          </div>
+        </Menual>
       )}
     </InterViewStyle>
   );
