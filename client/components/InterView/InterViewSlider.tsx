@@ -6,6 +6,15 @@ import { saveAs } from "file-saver";
 
 const InterViewSliderStyle = styled.div`
   ${ColBox}
+  width: 100%;
+  height: 100%;
+  gap: 12px;
+  border:3px solid black;
+  border-radius: 12px;
+  video{
+    width: 100%;
+    height: 100;
+  }
 `;
 
 const InterViewInfo = styled.div`

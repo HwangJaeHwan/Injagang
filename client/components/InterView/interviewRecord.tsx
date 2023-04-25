@@ -8,7 +8,6 @@ import CustomButton from "../UI/CustomButton";
 import Image from "next/image";
 import interViewimg from "../../assets/images/interView.svg";
 import interViewin from "../../assets/images/interviewIn.svg";
-import hand from "../../assets/images/hand.svg";
 import { v } from "@/styles/variables";
 import { MdPlayArrow, MdPause, MdStop } from "react-icons/md";
 import { ColBox } from "@/styles/GlobalStyle";
@@ -21,20 +20,30 @@ const RecordStyle = styled.div`
   height: 100vh;
 `;
 
-const RecordContainer = styled.div`
+const RecordContainer = styled.div<{ isResult: boolean }>`
   position: relative;
   display: flex;
+  flex-grow: 1;
   width: ${v.lgItemWidth};
   height: 50%;
-  border: 1px solid black;
+  border: ${({ isResult }) => !isResult && "3px solid black"};
   border-radius: 12px;
   .interView_img {
+    display: ${({ isResult }) => (isResult ? "none" : "block")};
     position: relative;
     width: 100%;
     height: 100%;
   }
-  @media screen and (max-width: 1200px) {
+  video {
+    width: 100%;
+    height: ${({ isResult }) => (isResult ? "70%" : "100%")};
+  }
+  @media screen and (max-width: 800px) {
     width: ${v.smItemWidth};
+    video {
+      height: ${({ isResult }) => (isResult ? "60%" : "100%")};
+    }
+
   }
 `;
 
@@ -70,14 +79,13 @@ const Camera = styled.div`
     transition: 0.4s;
     cursor: pointer;
   }
-  video {
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 const Result = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   width: 100%;
   height: 30%;
 `;
@@ -87,10 +95,13 @@ const ResultContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  gap: 8px;
 `;
 
-const InfoUserList = styled.div``;
+const InfoUserList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const InterviewRecord = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -228,7 +239,7 @@ const InterviewRecord = () => {
 
   return (
     <RecordStyle>
-      <RecordContainer>
+      <RecordContainer isResult={isResult}>
         {changeImg ? (
           <Image
             className={"interView_img"}
@@ -243,7 +254,7 @@ const InterviewRecord = () => {
           />
         )}
         <Camera>
-          {isResult ? (
+          {!isResult ? (
             <video autoPlay muted ref={videoRef}></video>
           ) : (
             recordedChunks.length > 0 && (
@@ -264,52 +275,52 @@ const InterviewRecord = () => {
               <MdStop onClick={handleSpeak}></MdStop>
             </RecordSvgContainer>
           ) : (
-            <button className={"record_btn"} onClick={handleSpeak}>
-              {!isRecord ? "Start Recording" : "Stop Recording"}
-            </button>
+            !isResult && (
+              <button className={"record_btn"} onClick={handleSpeak}>
+                {!isRecord ? "Start Recording" : "Stop Recording"}
+              </button>
+            )
           )}
         </Camera>
       </RecordContainer>
-      {speechData.length > 0 && (
-        <InfoUserList>
-          <h2>{speechData.length}개의 질문이 대기중입니다.</h2>
-          <br />
-          <h2>
-            {curIndex}/{speechData.length} 진행중
-          </h2>
-        </InfoUserList>
-      )}
-      {
-        <Result>
-          {recordedChunks.length > 0 && (
-            <ResultContainer>
-              <CustomButton
-                text="<"
-                onClick={() =>
-                  setVideoIndex(prevIndex =>
-                    prevIndex <= 0 ? 0 : videoIndex - 1,
-                  )
-                }
-                Size={{ width: "70px", font: "15px" }}
-              />
-              <CustomButton
-                text="결과확인"
-                onClick={() => setIsResult(!isResult)}
-                Size={{ width: "150px", font: "15px" }}
-              ></CustomButton>
-              <CustomButton
-                text=">"
-                onClick={() =>
-                  setVideoIndex(prevIndex =>
-                    prevIndex >= recordedChunks.length - 1 ? 0 : videoIndex + 1,
-                  )
-                }
-                Size={{ width: "70px", font: "15px" }}
-              ></CustomButton>
-            </ResultContainer>
-          )}
-        </Result>
-      }
+      <Result>
+        {speechData.length > 0 && (
+          <InfoUserList>
+            <h2>{speechData.length}개의 질문이 대기중입니다.</h2>
+            <br />
+            <h2>
+              {curIndex}/{speechData.length} 진행중
+            </h2>
+          </InfoUserList>
+        )}
+        {recordedChunks.length > 0 && (
+          <ResultContainer>
+            <CustomButton
+              text="< 이전영상"
+              onClick={() =>
+                setVideoIndex(prevIndex =>
+                  prevIndex <= 0 ? 0 : videoIndex - 1,
+                )
+              }
+              Size={{ width: "150px", font: "15px" }}
+            />
+            <CustomButton
+              text="결과확인"
+              onClick={() => setIsResult(!isResult)}
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+            <CustomButton
+              text="다음영상>"
+              onClick={() =>
+                setVideoIndex(prevIndex =>
+                  prevIndex >= recordedChunks.length - 1 ? 0 : videoIndex + 1,
+                )
+              }
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+          </ResultContainer>
+        )}
+      </Result>
     </RecordStyle>
   );
 };
