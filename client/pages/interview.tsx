@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import InterviewRecord from "@/components/InterView/interviewRecord";
 import InterViewListView from "@/components/InterView/InterViewListView";
 import styled from "styled-components";
-import { ColBox } from "@/styles/GlobalStyle";
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
 import CustomButton from "@/components/UI/CustomButton";
 import { BiArrowBack } from "react-icons/bi";
 import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import Image from "next/image";
 import interViewimg from "../assets/images/interView.svg";
+import { v } from "../styles/variables";
 
 const InterViewStyle = styled.div`
   ${ColBox}
@@ -40,6 +41,21 @@ const Menual = styled.div`
       height: 60%;
     }
   }
+`;
+
+const ControlBtn = styled.div`
+  ${FlexBox}
+  width: ${v.lgItemWidth};
+  gap: 8px;
+  @media screen and (max-width: 800px) {
+    width: ${v.smItemWidth};
+  }
+`;
+
+const RecordComponent = styled.div`
+  ${ColBox}
+  width: 100%;
+  height: 80%;
 `;
 
 const renderComponent = (nextBtn: number) => {
@@ -74,24 +90,27 @@ const Interview = () => {
 
   return (
     <InterViewStyle>
-      <CustomButton
-        className="Arrow_btn"
-        onClick={handleChangeScreen}
-        text={btnText[curIndex]}
-        Size={{ width: "50%", font: "20px" }}
-      ></CustomButton>
-      {renderComponent(curIndex)}
-      {curIndex > 1 && (
-        <CustomButton
-          onClick={handleChangePrevScreen}
-          text={<BiArrowBack />}
-          Size={{ width: "50px", font: "22px" }}
-        ></CustomButton>
-      )}
+      {
+        <ControlBtn>
+          {curIndex > 1 && (
+            <CustomButton
+              onClick={handleChangePrevScreen}
+              text={<BiArrowBack />}
+              Size={{ width: "50px", font: "22px" }}
+            ></CustomButton>
+          )}
+          <CustomButton
+            className="Arrow_btn"
+            onClick={handleChangeScreen}
+            text={btnText[curIndex]}
+            Size={{ width: "90%", font: "20px" }}
+          ></CustomButton>
+        </ControlBtn>
+      }
+      <RecordComponent>{renderComponent(curIndex)}</RecordComponent>
       {curIndex === 0 && (
         <Menual>
           <ArrowAnimation targetId="Arrow_btn" />
-
           <div className="interViewImg_box">
             <Image src={interViewimg} alt="interView" />
           </div>

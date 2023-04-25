@@ -1,19 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 import CustomButton from "../UI/CustomButton";
-import { ColBox } from "@/styles/GlobalStyle";
+import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import { saveAs } from "file-saver";
-
+import { MdOutlineFileDownload } from "react-icons/md";
 const InterViewSliderStyle = styled.div`
   ${ColBox}
   width: 100%;
   height: 100%;
+  overflow-x: auto;
+  ${ScrollBar}
   gap: 12px;
-  border:3px solid black;
+  font-size: 13px;
+  border: 3px solid black;
   border-radius: 12px;
-  video{
+  video {
     width: 100%;
-    height: 100;
+    height: 100%;
+  }
+  svg{
+    font-size: 50px;
+  }
+  button {
+    ${FlexBox}
+    background-color: #777;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    font-size: large;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  &:hover {
+    button {
+      background-color: #fff;
+      opacity: 1;
+    }
   }
 `;
 
@@ -48,11 +70,9 @@ const InterViewSlider = ({ video, question, idx }: InterViewSliderProps) => {
         <h2>나의 대답: </h2>
       </InterViewInfo>
       <video autoPlay controls src={URL.createObjectURL(video[idx])}></video>
-      <CustomButton
-        text={"영상다운로드"}
-        onClick={downloadVideo}
-        Size={{ width: "300px", font: "20px" }}
-      ></CustomButton>
+      <button onClick={downloadVideo}>
+        <MdOutlineFileDownload></MdOutlineFileDownload>DOWNLOAD
+      </button>
     </InterViewSliderStyle>
   );
 };

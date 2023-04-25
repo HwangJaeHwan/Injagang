@@ -17,7 +17,7 @@ const RecordStyle = styled.div`
   margin: 15px;
   gap: 15px;
   width: 90%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const RecordContainer = styled.div<{ isResult: boolean }>`
@@ -43,7 +43,6 @@ const RecordContainer = styled.div<{ isResult: boolean }>`
     video {
       height: ${({ isResult }) => (isResult ? "60%" : "100%")};
     }
-
   }
 `;
 
@@ -277,7 +276,7 @@ const InterviewRecord = () => {
           ) : (
             !isResult && (
               <button className={"record_btn"} onClick={handleSpeak}>
-                {!isRecord ? "Start Recording" : "Stop Recording"}
+                {!isRecord ? "I'm ready to record" : "Stop Recording"}
               </button>
             )
           )}
