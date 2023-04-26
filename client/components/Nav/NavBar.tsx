@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import Modal from "../UI/Modal";
+import SwitchSlider from "../UI/SwitchSlider";
 const NavStyle = styled.nav`
   ${ColBox}
   position: fixed;
@@ -183,11 +184,9 @@ const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
           )}
         </NavContainer>
         <NavContainer>
-          {mode === true ? (
-            <BiSun onClick={toggleTheme} />
-          ) : (
-            <BiMoon onClick={toggleTheme} />
-          )}
+          {/* <BiSun onClick={toggleTheme} />
+            <BiMoon onClick={toggleTheme} /> */}
+          <SwitchSlider isToggle={mode} onClick={toggleTheme} />
         </NavContainer>
         <NavContainer>
           <BiUser onClick={() => router.push("/myPage")}></BiUser>
