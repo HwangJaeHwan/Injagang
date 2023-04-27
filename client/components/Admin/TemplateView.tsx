@@ -29,6 +29,11 @@ const Card = styled.div`
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
   text-align: center;
   margin: 15px 15px;
+
+  @media screen and (max-width: 800px) {
+    ${ColBox}
+    flex-direction: column-reverse;
+  }
 `;
 
 const TitleView = styled.div`
@@ -44,6 +49,15 @@ const TitleView = styled.div`
   }
   svg:hover {
     color: red;
+  }
+  .template_Item {
+    cursor: pointer;
+  }
+  
+  @media screen and (max-width: 800px) {
+    border-right: 0px;
+    width: 100%;
+    height: 50%;
   }
 `;
 
@@ -64,6 +78,11 @@ const QuestionView = styled.div`
   }
   svg:hover {
     color: red;
+  }
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    height: 50%;
+    border-bottom: 1px solid white;
   }
 `;
 /**템플릿 현재의 상태를 보여주기*/
@@ -100,7 +119,10 @@ const TemplateView = () => {
         <TitleView>
           {templateReducer.templateList.map((list, index) => (
             <div key={index}>
-              <div onClick={() => handleList(list.qnaList, list.templateId)}>
+              <div
+                className="template_Item"
+                onClick={() => handleList(list.qnaList, list.templateId)}
+              >
                 {list.title}
               </div>
             </div>
@@ -117,7 +139,9 @@ const TemplateView = () => {
           ) : (
             <div className="endTitle">
               {curTemplateList.length < 1 ? (
-                <div style={{ color: "red" }}>현재 선택된 리스트가 없습니다.</div>
+                <div style={{ color: "red" }}>
+                  현재 선택된 리스트가 없습니다.
+                </div>
               ) : (
                 <>
                   {curTemplateList.map((question, index) => (

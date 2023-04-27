@@ -26,17 +26,17 @@ const signupReducer = (state = initalState, action: signupDispatchType) => {
       };
     case SIGNUP_SUCCESS:
       const {status} = action.payload
-      console.log("SAAsdASDAsdASDAsdSADA",status)
       return {
         ...state,
         loading: false,
         status: status,
+        error: null,
       };
     case SIGNUP_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload.error.response.data.message
       };
     default:
       return state;

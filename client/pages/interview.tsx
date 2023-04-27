@@ -38,7 +38,7 @@ const Menual = styled.div`
   @media screen and (max-width: 800px) {
     .interViewImg_box {
       width: 85%;
-      height: 60%;
+      height: 100%;
     }
   }
 `;
@@ -107,7 +107,6 @@ const Interview = () => {
           ></CustomButton>
         </ControlBtn>
       }
-      <RecordComponent>{renderComponent(curIndex)}</RecordComponent>
       {curIndex === 0 && (
         <Menual>
           <ArrowAnimation targetId="Arrow_btn" />
@@ -116,6 +115,7 @@ const Interview = () => {
           </div>
         </Menual>
       )}
+      <RecordComponent>{renderComponent(curIndex)}</RecordComponent>
     </InterViewStyle>
   );
 };

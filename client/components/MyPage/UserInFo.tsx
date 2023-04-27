@@ -13,7 +13,6 @@ const UserInfoStyle = styled.div`
   align-items: center;
   width: 100%;
   height: 250px;
-  margin: 20px;
   padding: 15px;
   svg {
     font-size: 150px;

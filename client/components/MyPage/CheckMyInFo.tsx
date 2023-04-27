@@ -22,6 +22,7 @@ const CheckMyInFoStyle = styled.div`
 
 const SwitchContainer = styled.div`
   ${FlexBox}
+  gap:15px;
   width: 100%;
   height: 90%;
   @media screen and (max-width: 900px) {

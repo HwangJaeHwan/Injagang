@@ -129,9 +129,7 @@ const LoginPage = () => {
       [name]: value,
     }));
   };
-  useEffect(() => {
-    setShakeTrigger(false);
-  },[errorMsg])
+
 
   const handleLogin = () => {
     if (loginInfo.loginId.trim() === "") {
@@ -162,7 +160,10 @@ const LoginPage = () => {
     }
     if (authReducer.error) {
       setErrorMsg("아이디나 비밀번호가 일치하지않습니다.");
-      setShakeTrigger(true);
+      setShakeTrigger(false);
+      setTimeout(() => {
+        setShakeTrigger(true);
+      },50)
       return
     }
   }, [authReducer.error, authReducer.success]);

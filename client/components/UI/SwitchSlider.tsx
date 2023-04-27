@@ -45,6 +45,20 @@ const Slider = styled.span`
   }
 `;
 
+const Crater = styled.span`
+    position: absolute;
+    background-color: black;
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+    transform: rotate(-45deg);
+    .creater__1{
+        top: 12px;
+        left: 10px;
+        width: 4px;
+        height: 4px;
+    }
+`;
+
 type SwitchSliderProps = {
   isToggle: boolean;
   onClick: () => void;
@@ -53,7 +67,13 @@ const SwitchSlider = ({ isToggle, onClick }: SwitchSliderProps) => {
   return (
     <SwitchSliderStyle>
       <CheckBox type="checkbox" onClick={onClick} checked={isToggle} />
-      <Slider />
+      <Slider>
+        <Crater>
+          <span className="crater__1"></span>
+          <span className="crater__2"></span>
+          <span className="crater__3"></span>
+        </Crater>
+      </Slider>
     </SwitchSliderStyle>
   );
 };

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { memberShipRequest } from "@/components/redux/Join/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Join/reducer";
+import { clearAuthError } from "@/components/redux/Auth/actions";
 
 const JoinStyle = styled.div`
   position: absolute;
@@ -52,6 +53,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const WarningMsg = styled.p`
+  margin-bottom: 8px;
+  color: red;
+  text-align: center;
+`;
+
 const SignupPage = () => {
   const [joinInfo, setJoinInfo] = useState({
     loginId: "",
@@ -60,16 +67,31 @@ const SignupPage = () => {
     email: "",
     nickName: "",
   });
+  const [msg, setMsg] = useState<string | null>("");
   const router = useRouter();
   const dispatch = useDispatch();
   const membershipReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.signup,
   );
 
+  const memberError = useSelector(
+    (state: RootReducerType) => state.signup.error,
+  );
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (
+      joinInfo.loginId.length === 0 ||
+      joinInfo.password.length === 0 ||
+      joinInfo.confirmPassword.length === 0 ||
+      joinInfo.email.length === 0 ||
+      joinInfo.nickName.length === 0
+    ) {
+      setMsg("빈칸을 채워주세요.");
+      return;
+    }
     if (joinInfo.password !== joinInfo.confirmPassword) {
-      console.log("비밀번호를 재확인해주세요");
+      setMsg("비밀번호를 재확인해주세요");
       return;
     }
     const joinData = {
@@ -86,6 +108,9 @@ const SignupPage = () => {
     if (membershipReducer.status === 200) {
       membershipReducer.status = 0;
       router.replace("/login");
+      dispatch(clearAuthError());
+    } else if (memberError) {
+      setMsg(memberError)
     }
   }, [membershipReducer]);
 
@@ -135,6 +160,7 @@ const SignupPage = () => {
           value={joinInfo.nickName}
           onChange={handleChange}
         />
+        <WarningMsg>{msg}</WarningMsg>
         <Button type="submit">회원가입</Button>
       </Form>
     </JoinStyle>
