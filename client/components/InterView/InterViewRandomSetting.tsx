@@ -4,17 +4,24 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootReducerType } from "../redux/store";
 import { QuestionType, getRandomList } from "../redux/InterViewQuestion/action";
+import { ColBox } from "@/styles/GlobalStyle";
 const InterViewSettingStyle = styled.div`
+  ${ColBox}
+  width: 100%;
+  height: 100%;
   margin: 30px auto;
 `;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 60%;
   padding: 20px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
+  @media screen and (max-width: 800px){ 
+    width: 90%;
+  }
 `;
 
 const Label = styled.label`

@@ -20,6 +20,7 @@ const AnswerWirteStyle = styled.div`
   ${ColBox}
   width: 100%;
   height: 90%;
+  gap: 30px;
 `;
 
 const LeftContainer = styled.div`

@@ -130,7 +130,7 @@ const LoginPage = () => {
     }));
   };
 
-
+  
   const handleLogin = () => {
     if (loginInfo.loginId.trim() === "") {
       setErrorMsg("아이디를 입력해주세요");
