@@ -66,7 +66,7 @@ type SwitchSliderProps = {
 const SwitchSlider = ({ isToggle, onClick }: SwitchSliderProps) => {
   return (
     <SwitchSliderStyle>
-      <CheckBox type="checkbox" onClick={onClick} checked={isToggle} />
+      <CheckBox type="checkbox" onClick={onClick} defaultChecked={isToggle} />
       <Slider>
         <Crater>
           <span className="crater__1"></span>
