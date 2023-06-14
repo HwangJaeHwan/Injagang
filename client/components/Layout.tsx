@@ -2,18 +2,13 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "../styles/theme";
 import { GlobalStyle } from "../styles/GlobalStyle";
 import { useRouter } from "next/router";
-import NavBar from "../components/Nav/NavBar";
 import styled from "styled-components";
-import {
-  BiEdit,
-  BiUserVoice,
-  BiCommentDetail,
-  BiSearchAlt2,
-} from "react-icons/bi";
 import { ReactNode, useEffect } from "react";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
+
 import Head from "next/head";
 import WithAuth from "./WithAuth";
+import NavBar from "../components/Nav/NavBar";
 
 const LayoutStyle = styled.div`
   display: flex;
@@ -62,36 +57,6 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, []);
 
-  type MenuItem = {
-    title: string;
-    path: string;
-    icon: ReactElement;
-  };
-
-  /**Navbar에 생성할 리스트를 통제하기 위한 역할*/
-  const items: MenuItem[] = [
-    {
-      title: "자소서작성",
-      path: "/myEssay",
-      icon: <BiEdit />,
-    },
-    {
-      title: "탐색하기",
-      path: "/search",
-      icon: <BiSearchAlt2 />,
-    },
-    {
-      title: "면접연습",
-      path: "/interview",
-      icon: <BiUserVoice />,
-    },
-    {
-      title: "Q&A",
-      path: "/qna/list",
-      icon: <BiCommentDetail />,
-    },
-  ];
-
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
@@ -104,7 +69,6 @@ const Layout = ({ children }: LayoutProps) => {
       <LayoutStyle>
         <Sidebar>
           <NavBar
-            navitems={items}
             toggleTheme={handleToggleTheme}
             mode={isDarkMode}
           />

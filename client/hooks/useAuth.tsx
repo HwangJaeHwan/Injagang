@@ -6,6 +6,7 @@ import { InitiaState } from "@/components/redux/Auth/reducer";
 import Router, { useRouter } from "next/router";
 import Cookies from "js-cookie";
 
+//인증을 위한 훅
 export const useAuth = () => {
   const authReducer: InitiaState = useSelector(
     (state: RootReducerType) => state.auth,
@@ -18,7 +19,6 @@ export const useAuth = () => {
     const accessToken = Cookies.get("accessToken");
 
     if (!accessToken) {
-      router.replace("/login");
       return;
     }
 

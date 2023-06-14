@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState, ReactElement, useEffect } from "react";
+import { useState, ReactElement } from "react";
 import {
-  BiSun,
   BiRocket,
-  BiMoon,
   BiLogOut,
   BiLogIn,
   BiUser,
@@ -17,8 +15,10 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { navItems } from "@/constants"
 import Modal from "../UI/Modal";
 import SwitchSlider from "../UI/SwitchSlider";
+
 const NavStyle = styled.nav`
   ${ColBox}
   position: fixed;
@@ -118,12 +118,11 @@ interface MenuItem {
 }
 
 interface NavbarProps {
-  navitems: MenuItem[];
   toggleTheme: () => void;
   mode: boolean;
 }
 
-const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
+const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -149,7 +148,7 @@ const Navbar = ({ navitems, toggleTheme, mode }: NavbarProps) => {
           </NavLink>
         </StyledLink>
         <NavMenu>
-          {navitems.map(({ title, path, icon }) => (
+          {navItems.map(({ title, path, icon }) => (
             <NavItem key={title}>
               <StyledLink href={path} style={{ textDecoration: "none" }}>
                 <NavLink>
