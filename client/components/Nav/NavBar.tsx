@@ -1,21 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import { useState, ReactElement } from "react";
-import {
-  BiRocket,
-  BiLogOut,
-  BiLogIn,
-  BiUser,
-} from "react-icons/bi";
+import { BiRocket, BiLogOut, BiLogIn, BiUser } from "react-icons/bi";
 import { GrUserAdmin } from "react-icons/gr";
+import Link from "next/link";
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import { InitiaState } from "../redux/Auth/reducer";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { checkOut } from "../redux/Auth/actions";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
-import { navItems } from "@/constants"
+
+import { ColBox } from "@/styles/GlobalStyle";
+import { navItems } from "@/constants";
 import Modal from "../UI/Modal";
 import SwitchSlider from "../UI/SwitchSlider";
 
@@ -40,11 +36,11 @@ const NavStyle = styled.nav`
 
   @media screen and (max-width: 1200px) {
     width: 100px;
-  }
-  svg {
+    svg {
     &:hover {
       color: ${({ theme }) => theme.colors.black};
     }
+  }
   }
 `;
 const NavTop = styled.div``;
@@ -110,12 +106,6 @@ const NavContainer = styled.div`
     }
   }
 `;
-
-interface MenuItem {
-  title: string;
-  path: string;
-  icon: ReactElement;
-}
 
 interface NavbarProps {
   toggleTheme: () => void;
@@ -188,8 +178,14 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
           <SwitchSlider isToggle={mode} onClick={toggleTheme} />
         </NavContainer>
         <NavContainer>
-          <BiUser onClick={() => router.push("/myPage")}></BiUser>
-          <span className="navitem_title">나의정보</span>
+          <StyledLink href={"/myPage"} style={{ textDecoration: "none" }}>
+            <NavLink>
+              <NavContainer>
+                <BiUser></BiUser>
+                <span className="navitem_title">나의정보</span>
+              </NavContainer>
+            </NavLink>
+          </StyledLink>
         </NavContainer>
       </NavBottom>
       <Modal
