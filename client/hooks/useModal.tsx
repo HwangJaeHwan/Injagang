@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CustomButton from "@/components/UI/CustomButton";
 
 interface ModalProps {
-  onAction?: () => void|null,
+  onAction?: () => void;
   contents: {
     title: string;
     content: string;
@@ -14,18 +14,24 @@ const useModal = () => {
   const [modal, setModal] = useState<ModalProps>({
     onAction: () => {},
     contents: {
-      title: '',
-      content: '',
-    }
+      title: "",
+      content: "",
+    },
   });
 
-  const openModal = useCallback(() => {
+  const setModalState = useCallback(({ onAction, contents }: ModalProps) => {
     setModalOpen(true);
-  }, [setModalOpen]);
+    setModal({ onAction, contents });
+  }, []);
 
-  const closeModal = useCallback(() => {
+  const submitModal = () => {
+    if (modal.onAction) modal.onAction();
     setModalOpen(false);
-  }, [setModalOpen]);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const Modal = () => {
     return (
@@ -39,7 +45,7 @@ const useModal = () => {
             <div className="modal_Controller">
               <CustomButton
                 Size={{ width: "150px", font: "15px" }}
-                onClick={modal.onAction}
+                onClick={submitModal}
                 text={"예"}
               />
               <CustomButton
@@ -64,9 +70,8 @@ const useModal = () => {
 
   return {
     isModalOpen,
-    setModalOpen,
-    setModal,
-    Modal
+    setModalState,
+    Modal,
   };
 };
 
@@ -98,6 +103,7 @@ const ModalBox = styled.div`
     margin: 20px;
   }
   .modal_Contents p {
+    margin-top: 20px;
     text-align: center;
     color: #e6dfdf;
   }
