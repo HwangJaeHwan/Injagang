@@ -1,11 +1,10 @@
-import { ScrollBar } from "@/styles/GlobalStyle";
-import React, { useState, useEffect, MouseEventHandler } from "react";
-import ReactDOM from "react-dom";
-import { BiMessageAltAdd } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState} from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { RootReducerType } from "../../redux/store";
+
 import { CorrectionItem } from "./AnswerWirte";
+import { ScrollBar } from "@/styles/GlobalStyle";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
@@ -46,7 +45,7 @@ const EssayQuestionContainer = styled.div`
 `;
 
 const EssayAnswerContainer = styled.div`
-  padding: 12px ;
+  padding: 12px;
   line-height: 1.6;
 `;
 
@@ -56,72 +55,59 @@ interface EssayDragProps {
 
 /**드래그 첨삭 기능을 가진 자소서 View */
 const EssayDragView = ({ onChange }: EssayDragProps) => {
-  const [added, setAdded] = useState<boolean>(false);
+  const [selectedData, setSelectedData] = useState({
+    dragTitleNumber: 0,
+    qnaId: 0,
+    selectedText: "",
+    start: 0,
+    end: 0,
+    added: false,
+  });
   const boardList = useSelector(
     (state: RootReducerType) => state.board.boardList,
   );
+  
+  useEffect(() => {
+    handleApply()
+  },[selectedData])
+
   /**드래그 첨삭 탐색*/
   const handleSelect = (dragTitleNumber: number, qnaId: number) => {
     const selectedText = window.getSelection()?.toString();
-    if (selectedText === "") {
-      return;
-    }
-    if (selectedText && !added && !document.querySelector(".select_span")) {
+    if (selectedText && selectedText !== "") {
       const range = window.getSelection()?.getRangeAt(0);
-      const newNode = document.createElement("span");
-      const btn = document.createElement("span");
-      newNode.className = "select_span";
-      btn.className = "btnbtn";
-      const icon = (
-        <BiMessageAltAdd style={{ fontSize: "20px", opacity: 0.5 }} />
-      );
-      if (!document.querySelector(".btnbtn")) {
-        ReactDOM.render(icon, btn);
-        newNode.append(btn);
-      }
-      range?.insertNode(newNode);
-      setAdded(true);
-      btn.onclick = event => {
-        event.stopPropagation();
-        newNode.style.backgroundColor = "#e69a0def";
-        try {
-          range?.surroundContents(newNode);
-        } catch (error) {
-          btn.remove();
-          setAdded(false);
-          return;
-        }
-        onChange({
-          targetQuestion: dragTitleNumber,
-          targetAnswer: selectedText,
-          targetQuestionIndex: qnaId,
-        });
-        setAdded(false);
-      };
+      const start = range?.startOffset || 0;
+      const end = range?.endOffset || 0;
+
+      setSelectedData({
+        dragTitleNumber,
+        qnaId,
+        selectedText,
+        start,
+        end,
+        added: true,
+      });
     }
   };
 
-  /**드래그 첨삭 삭제 */
-  const handleSpan: MouseEventHandler<HTMLParagraphElement> = event => {
-    const target = event.target as HTMLElement;
-    if (target.tagName.toLowerCase() === "span") {
-      const parent = target.parentNode as HTMLElement;
-      const targetText = document.createTextNode(target.innerText);
-      parent.replaceChild(targetText, target);
-      onChange({ targetAnswer: "", targetQuestion: 0, targetQuestionIndex: 0 });
-      setAdded(false);
-    }
+  const handleApply = () => {
+    const { dragTitleNumber, selectedText, qnaId } = selectedData;
+    onChange({
+      targetQuestion: dragTitleNumber,
+      targetAnswer: selectedText,
+      targetQuestionIndex: qnaId,
+    });
   };
 
-  /**드래그 첨삭 버튼삭제 */
   const handleRemove = () => {
-    if (added) {
-      const btn = document.querySelector(".btnbtn");
-      const newNode = document.querySelector(".spspsp");
-      btn?.remove();
-      newNode?.remove();
-      setAdded(false);
-    }
+    setSelectedData({
+      dragTitleNumber: 0,
+      qnaId: 0,
+      selectedText: "",
+      start: 0,
+      end: 0,
+      added: false,
+    });
   };
 
   return (
@@ -141,10 +127,25 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
               <p
                 className="essay_answer"
                 onMouseUp={() => handleSelect(idx + 1, list.qnaId)}
-                onDoubleClick={handleRemove}
-                onClick={handleSpan}
               >
-                답변: {list.answer}
+                답변:
+                {selectedData.added && selectedData.qnaId === list.qnaId ? (
+                  <>
+                    {list.answer.substring(0, selectedData.start)}
+                    <span
+                      style={{ backgroundColor: "#e69a0def" }}
+                      onClick={handleRemove}
+                    >
+                      {selectedData.selectedText}
+                    </span>
+                    {list.answer.substring(
+                      selectedData.end,
+                      list.answer.length,
+                    )}
+                  </>
+                ) : (
+                  list.answer
+                )}
               </p>
             </EssayAnswerContainer>
           </EssayDragItems>
