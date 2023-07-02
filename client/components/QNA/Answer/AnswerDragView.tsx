@@ -5,6 +5,7 @@ import { RootReducerType } from "../../redux/store";
 
 import { CorrectionItem } from "./AnswerWirte";
 import { ScrollBar } from "@/styles/GlobalStyle";
+import useModal from "@/hooks/useModal";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
@@ -64,9 +65,10 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
     added: false,
   });
   const boardList = useSelector(
-    (state: RootReducerType) => state.board.boardList,
+    (state: RootReducerType) => state.board.boardList
   );
   
+  const {setModal, Modal} = useModal()
   useEffect(() => {
     handleApply()
   },[selectedData])
@@ -74,6 +76,16 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
   /**드래그 첨삭 탐색*/
   const handleSelect = (dragTitleNumber: number, qnaId: number) => {
     const selectedText = window.getSelection()?.toString();
+    if (selectedText !== "" && selectedData.added) {
+      setModal({
+        contents: {
+          title: "Message",
+          content: "이미 선택한 문장이 존재합니다."
+        }
+      })
+      return
+    }
+
     if (selectedText && selectedText !== "") {
       const range = window.getSelection()?.getRangeAt(0);
       const start = range?.startOffset || 0;
@@ -90,6 +102,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
     }
   };
 
+  /**드래그 첨삭 적용 */
   const handleApply = () => {
     const { dragTitleNumber, selectedText, qnaId } = selectedData;
     onChange({
@@ -99,6 +112,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
     });
   };
 
+  /**현재 드래그 첨삭 삭제 */
   const handleRemove = () => {
     setSelectedData({
       dragTitleNumber: 0,
@@ -150,6 +164,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
             </EssayAnswerContainer>
           </EssayDragItems>
         ))}
+        <Modal/>
     </EssayDragStyle>
   );
 };

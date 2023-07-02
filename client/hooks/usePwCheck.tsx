@@ -6,8 +6,7 @@ interface useCheckProps {
   password: string;
 }
 
-const usePwCheck = (props: useCheckProps) => {
-  const { password } = props;
+const usePwCheck = ({password}: useCheckProps) => {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -16,7 +15,7 @@ const usePwCheck = (props: useCheckProps) => {
       const uppercaseRegex = /[A-Z]/;
       const lowercaseRegex = /[a-z]/;
       const numberRegex = /[0-9]/;
-      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; 
 
       if (password.length < 10) {
         setIsValid(false);

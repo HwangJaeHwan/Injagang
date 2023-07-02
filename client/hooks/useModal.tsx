@@ -9,43 +9,46 @@ interface ModalProps {
     content: string;
   };
 }
+
 const useModal = () => {
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [modal, setModal] = useState<ModalProps>({
-    onAction: () => {},
-    contents: {
-      title: "",
-      content: "",
-    },
+  const [modalState, setModalState] = useState<{ isModalOpen: boolean, modal: ModalProps | null }>({
+    isModalOpen: false,
+    modal: null
   });
 
-  const setModalState = useCallback(({ onAction, contents }: ModalProps) => {
-    setModalOpen(true);
-    setModal({ onAction, contents });
+  const setModal = useCallback((modalProps: ModalProps) => {
+    setModalState({
+      isModalOpen: true,
+      modal: modalProps
+    });
   }, []);
 
-  const submitModal = () => {
-    if (modal.onAction) modal.onAction();
-    setModalOpen(false);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  const closeModal = useCallback(() => {
+    setModalState(prevState => ({ ...prevState, isModalOpen: false }));
+  }, []);
 
   const Modal = () => {
+    if (!modalState.isModalOpen || !modalState.modal) {
+      return null;
+    }
+    
+    const { title, content } = modalState.modal.contents;
+    
     return (
-      <ModalStyle isOpen={isModalOpen}>
+      <ModalStyle isOpen={modalState.isModalOpen}>
         <ModalBox>
           <div className="modal_Contents">
-            <h2>{modal.contents.title}</h2>
-            <p>{modal.contents.content}</p>
+            <h2>{title}</h2>
+            <p>{content}</p>
           </div>
-          {modal.onAction ? (
+          {modalState.modal.onAction ? (
             <div className="modal_Controller">
               <CustomButton
                 Size={{ width: "150px", font: "15px" }}
-                onClick={submitModal}
+                onClick={() => {
+                  modalState.modal?.onAction?.();
+                  closeModal();
+                }}
                 text={"예"}
               />
               <CustomButton
@@ -69,13 +72,17 @@ const useModal = () => {
   };
 
   return {
-    isModalOpen,
-    setModalState,
+    isModalOpen: modalState.isModalOpen,
+    setModal,
     Modal,
   };
 };
 
-const ModalStyle = styled.div<{ isOpen: boolean }>`
+interface ModalStyleProps {
+  isOpen: boolean;
+}
+
+const ModalStyle = styled.div<ModalStyleProps>`
   display: ${props => (props.isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
@@ -86,6 +93,7 @@ const ModalStyle = styled.div<{ isOpen: boolean }>`
   width: 100vw;
   background-color: rgba(36, 31, 31, 0.5);
 `;
+
 const ModalBox = styled.div`
   display: flex;
   flex-direction: column;

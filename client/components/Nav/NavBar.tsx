@@ -12,8 +12,106 @@ import { checkOut } from "../redux/Auth/actions";
 
 import { ColBox } from "@/styles/GlobalStyle";
 import { navItems } from "@/constants";
-import Modal from "../UI/Modal";
 import SwitchSlider from "../UI/SwitchSlider";
+import useModal from "@/hooks/useModal";
+
+interface NavbarProps {
+  toggleTheme: () => void;
+  mode: boolean;
+}
+
+const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
+  const { Modal, setModal } = useModal();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const authReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.auth,
+  );
+
+  const handleCheckOut = () => {
+    dispatch(checkOut());
+    return;
+  };
+
+  return (
+    <NavStyle>
+      <NavTop>
+        <StyledLink href="/">
+          <NavLink>
+            <NavContainer>
+              <BiRocket className="navLogo" />
+              <h4 className="navLogo_title">InJaGang</h4>
+            </NavContainer>
+          </NavLink>
+        </StyledLink>
+        <NavMenu>
+          {navItems.map(({ title, path, icon }) => (
+            <NavItem key={title}>
+              <StyledLink href={path} style={{ textDecoration: "none" }}>
+                <NavLink>
+                  <NavContainer>
+                    <i className="navitem_icon">{icon}</i>
+                    <span className="navitem_title">{title}</span>
+                  </NavContainer>
+                </NavLink>
+              </StyledLink>
+            </NavItem>
+          ))}
+        </NavMenu>
+      </NavTop>
+
+      <NavBottom>
+        {authReducer.role === "ADMIN" && (
+          <StyledLink href="/admin">
+            <GrUserAdmin />
+          </StyledLink>
+        )}
+        <NavContainer>
+          {authReducer.role === "" ? (
+            <>
+              <BiLogIn onClick={() => router.push("/login")} />
+              <span className="navitem_title">Login</span>
+            </>
+          ) : (
+            <>
+              <BiLogOut
+                onClick={() =>
+                  setModal({
+                    onAction:handleCheckOut,
+                    contents: {
+                      title: "Message",
+                      content: "정말 로그아웃을 원하시나요?",
+                    },
+                  })
+                }
+              />
+              <span className="navitem_title">LogOut</span>
+            </>
+          )}
+        </NavContainer>
+
+        <NavContainer>
+          {/* <BiSun onClick={toggleTheme} />
+            <BiMoon onClick={toggleTheme} /> */}
+          <SwitchSlider isToggle={mode} onClick={toggleTheme} />
+        </NavContainer>
+        <NavContainer>
+          <StyledLink href={"/myPage"} style={{ textDecoration: "none" }}>
+            <NavLink>
+              <NavContainer>
+                <BiUser></BiUser>
+                <span className="navitem_title">나의정보</span>
+              </NavContainer>
+            </NavLink>
+          </StyledLink>
+        </NavContainer>
+      </NavBottom>
+      <Modal />
+    </NavStyle>
+  );
+};
+
+export default Navbar;
 
 const NavStyle = styled.nav`
   ${ColBox}
@@ -37,10 +135,10 @@ const NavStyle = styled.nav`
   @media screen and (max-width: 1200px) {
     width: 100px;
     svg {
-    &:hover {
-      color: ${({ theme }) => theme.colors.black};
+      &:hover {
+        color: ${({ theme }) => theme.colors.black};
+      }
     }
-  }
   }
 `;
 const NavTop = styled.div``;
@@ -106,96 +204,3 @@ const NavContainer = styled.div`
     }
   }
 `;
-
-interface NavbarProps {
-  toggleTheme: () => void;
-  mode: boolean;
-}
-
-const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const authReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.auth,
-  );
-
-  const handleCheckOut = () => {
-    dispatch(checkOut());
-    setIsOpenModal(false);
-    return;
-  };
-
-  return (
-    <NavStyle>
-      <NavTop>
-        <StyledLink href="/">
-          <NavLink>
-            <NavContainer>
-              <BiRocket className="navLogo" />
-              <h4 className="navLogo_title">InJaGang</h4>
-            </NavContainer>
-          </NavLink>
-        </StyledLink>
-        <NavMenu>
-          {navItems.map(({ title, path, icon }) => (
-            <NavItem key={title}>
-              <StyledLink href={path} style={{ textDecoration: "none" }}>
-                <NavLink>
-                  <NavContainer>
-                    <i className="navitem_icon">{icon}</i>
-                    <span className="navitem_title">{title}</span>
-                  </NavContainer>
-                </NavLink>
-              </StyledLink>
-            </NavItem>
-          ))}
-        </NavMenu>
-      </NavTop>
-
-      <NavBottom>
-        {authReducer.role === "ADMIN" && (
-          <StyledLink href="/admin">
-            <GrUserAdmin />
-          </StyledLink>
-        )}
-        <NavContainer>
-          {authReducer.role === "" ? (
-            <>
-              <BiLogIn onClick={() => router.push("/login")} />
-              <span className="navitem_title">Login</span>
-            </>
-          ) : (
-            <>
-              <BiLogOut onClick={() => setIsOpenModal(true)} />
-              <span className="navitem_title">LogOut</span>
-            </>
-          )}
-        </NavContainer>
-        <NavContainer>
-          {/* <BiSun onClick={toggleTheme} />
-            <BiMoon onClick={toggleTheme} /> */}
-          <SwitchSlider isToggle={mode} onClick={toggleTheme} />
-        </NavContainer>
-        <NavContainer>
-          <StyledLink href={"/myPage"} style={{ textDecoration: "none" }}>
-            <NavLink>
-              <NavContainer>
-                <BiUser></BiUser>
-                <span className="navitem_title">나의정보</span>
-              </NavContainer>
-            </NavLink>
-          </StyledLink>
-        </NavContainer>
-      </NavBottom>
-      <Modal
-        isOpen={isOpenModal}
-        onClose={() => setIsOpenModal(!isOpenModal)}
-        onAction={handleCheckOut}
-        contents={{ title: "MSG", content: "정말 로그아웃을 원하시나요?" }}
-      />
-    </NavStyle>
-  );
-};
-
-export default Navbar;

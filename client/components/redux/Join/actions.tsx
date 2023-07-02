@@ -2,6 +2,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
   SIGNUP_SUCCESS,
+  SIGNUP_CLEAR,
   signupDispatchType,
 } from "./types";
 import { METHOD } from "@/components/test/fecher";
@@ -34,3 +35,7 @@ export const memberShipRequest =
       dispatch({ type: SIGNUP_FAILURE, payload: { error } });
     }
   };
+
+export const memberShipCleare = () => ({
+  type: SIGNUP_CLEAR,
+});

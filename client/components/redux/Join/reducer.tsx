@@ -2,6 +2,7 @@ import {
   SIGNUP_FAILURE,
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
+  SIGNUP_CLEAR,
   signupDispatchType,
 } from "./types";
 
@@ -38,6 +39,12 @@ const signupReducer = (state = initalState, action: signupDispatchType) => {
         loading: false,
         error: action.payload.error.response.data.message
       };
+    case SIGNUP_CLEAR:
+      return {
+        loading:false,
+        error: null,
+        status: 0,
+      }
     default:
       return state;
   }

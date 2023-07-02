@@ -1,12 +1,140 @@
-import { FlexBox } from "@/styles/GlobalStyle";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { memberShipRequest } from "@/components/redux/Join/actions";
+
+import { FlexBox } from "@/styles/GlobalStyle";
+import { memberShipRequest, memberShipCleare} from "@/components/redux/Join/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Join/reducer";
 import { clearAuthError } from "@/components/redux/Auth/actions";
+import usePwCheck from "@/hooks/usePwCheck";
+
+interface joinInfoType {
+  [key: string]: string;
+  loginId: string,
+  password: string,
+  confirmPassword: string,
+  email: string,
+  nickName: string,
+}
+
+const SignupPage = () => {
+  const [joinInfo, setJoinInfo] = useState<joinInfoType>({
+    loginId: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    nickName: "",
+  });
+  const passwordCheck = useRef<HTMLInputElement | null>(null);
+  const confirmPasswordCheck = useRef<HTMLInputElement | null>(null);
+  const [msg, setMsg] = useState<string | null>("");
+  const { isValid, errorMessage } = usePwCheck({ password: joinInfo.password });
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const membershipReducer: InitiaState = useSelector(
+    (state: RootReducerType) => state.signup,
+  );
+
+  const memberError = useSelector(
+    (state: RootReducerType) => state.signup.error,
+  );
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    for (const checkValue in joinInfo) {
+      if(joinInfo[checkValue].length === 0) {
+        setMsg("빈칸을 채워주세요.");
+        return; 
+      }
+    }
+    if (!isValid) {
+      setMsg(errorMessage);
+      if (passwordCheck.current) passwordCheck.current.focus();
+      return;
+    }
+    if (joinInfo.password !== joinInfo.confirmPassword) {
+      setMsg("비밀번호를 재확인해주세요");
+      return;
+    }
+    const joinData = {
+      loginId: joinInfo.loginId,
+      password: joinInfo.password,
+      passwordCheck: joinInfo.confirmPassword,
+      email: joinInfo.email,
+      nickname: joinInfo.nickName,
+    };
+    await dispatch(memberShipRequest(joinData))
+    .then((response) => response)
+  };
+
+  useEffect(() => {
+    if (membershipReducer.status === 200) {
+      router.replace("/login");
+      dispatch(clearAuthError());
+      dispatch(memberShipCleare());
+    } else if (memberError) {
+      setMsg(memberError);
+    }
+  }, [membershipReducer]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setJoinInfo(cur => ({
+      ...cur,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <JoinStyle>
+      <Form onSubmit={handleSubmit}>
+        <Label>아이디</Label>
+        <Input
+          type="test"
+          name="loginId"
+          value={joinInfo.loginId}
+          onChange={handleChange}
+        />
+        <Label>비밀번호</Label>
+        <Input
+          type="password"
+          name="password"
+          ref={passwordCheck}
+          value={joinInfo.password}
+          onChange={handleChange}
+        />
+        <Label>재확인</Label>
+        <Input
+          type="password"
+          name="confirmPassword"
+          ref={confirmPasswordCheck}
+          value={joinInfo.confirmPassword}
+          onChange={handleChange}
+        />
+        <Label>Email</Label>
+        <Input
+          type="email"
+          name="email"
+          value={joinInfo.email}
+          onChange={handleChange}
+        />
+        <Label>닉네임</Label>
+        <Input
+          type="text"
+          name="nickName"
+          value={joinInfo.nickName}
+          onChange={handleChange}
+        />
+        <WarningMsg>{msg}</WarningMsg>
+        <Button type="submit">회원가입</Button>
+      </Form>
+    </JoinStyle>
+  );
+};
+
+export default SignupPage;
 
 const JoinStyle = styled.div`
   position: absolute;
@@ -58,113 +186,3 @@ const WarningMsg = styled.p`
   color: red;
   text-align: center;
 `;
-
-const SignupPage = () => {
-  const [joinInfo, setJoinInfo] = useState({
-    loginId: "",
-    password: "",
-    confirmPassword: "",
-    email: "",
-    nickName: "",
-  });
-  const [msg, setMsg] = useState<string | null>("");
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const membershipReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.signup,
-  );
-
-  const memberError = useSelector(
-    (state: RootReducerType) => state.signup.error,
-  );
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (
-      joinInfo.loginId.length === 0 ||
-      joinInfo.password.length === 0 ||
-      joinInfo.confirmPassword.length === 0 ||
-      joinInfo.email.length === 0 ||
-      joinInfo.nickName.length === 0
-    ) {
-      setMsg("빈칸을 채워주세요.");
-      return;
-    }
-    if (joinInfo.password !== joinInfo.confirmPassword) {
-      setMsg("비밀번호를 재확인해주세요");
-      return;
-    }
-    const joinData = {
-      loginId: joinInfo.loginId,
-      password: joinInfo.password,
-      passwordCheck: joinInfo.confirmPassword,
-      email: joinInfo.email,
-      nickname: joinInfo.nickName,
-    };
-    await dispatch(memberShipRequest(joinData));
-  };
-
-  useEffect(() => {
-    if (membershipReducer.status === 200) {
-      membershipReducer.status = 0;
-      router.replace("/login");
-      dispatch(clearAuthError());
-    } else if (memberError) {
-      setMsg(memberError)
-    }
-  }, [membershipReducer]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setJoinInfo(cur => ({
-      ...cur,
-      [name]: value,
-    }));
-  };
-
-  return (
-    <JoinStyle>
-      <Form onSubmit={handleSubmit}>
-        <Label>아이디</Label>
-        <Input
-          type="test"
-          name="loginId"
-          value={joinInfo.loginId}
-          onChange={handleChange}
-        />
-        <Label>비밀번호</Label>
-        <Input
-          type="password"
-          name="password"
-          value={joinInfo.password}
-          onChange={handleChange}
-        />
-        <Label>재확인</Label>
-        <Input
-          type="password"
-          name="confirmPassword"
-          value={joinInfo.confirmPassword}
-          onChange={handleChange}
-        />
-        <Label>Email</Label>
-        <Input
-          type="email"
-          name="email"
-          value={joinInfo.email}
-          onChange={handleChange}
-        />
-        <Label>닉네임</Label>
-        <Input
-          type="text"
-          name="nickName"
-          value={joinInfo.nickName}
-          onChange={handleChange}
-        />
-        <WarningMsg>{msg}</WarningMsg>
-        <Button type="submit">회원가입</Button>
-      </Form>
-    </JoinStyle>
-  );
-};
-
-export default SignupPage;
