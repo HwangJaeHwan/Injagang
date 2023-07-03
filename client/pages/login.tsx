@@ -1,5 +1,5 @@
 import { FlexBox } from "@/styles/GlobalStyle";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
@@ -7,6 +7,7 @@ import styled, { css, keyframes } from "styled-components";
 import { authenTicate, clearAuthError, getProfile } from "@/components/redux/Auth/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
+import InputField from "@/components/UI/InputField";
 
 
 // 오류가 발생했을시 흔드는 효과 
@@ -72,19 +73,6 @@ const Form = styled.form<{ shakeTrigger: boolean }>`
     `}
 `;
 
-const Label = styled.label`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-`;
-
-const Input = styled.input`
-  padding: 8px;
-  margin-bottom: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-`;
-
 const Button = styled.button`
   padding: 8px 16px;
   width: 100%;
@@ -119,19 +107,6 @@ const LoginPage = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setLoginInfo(cur => ({
-      ...cur,
-      [name]: value,
-    }));
-  };
-
-  
-  const handleLogin = () => {
     if (loginInfo.loginId.trim() === "") {
       setErrorMsg("아이디를 입력해주세요");
       loginRef.current?.focus();
@@ -150,6 +125,15 @@ const LoginPage = () => {
     };
     dispatch(authenTicate(loginData));
   };
+
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoginInfo(cur => ({
+      ...cur,
+      [name]: value,
+    }));
+  },[])
+
 
   useEffect(() => {
     if (authReducer.success) {
@@ -171,16 +155,16 @@ const LoginPage = () => {
   return (
     <LoginStyle>
       <Form shakeTrigger={shakeTrigger} onSubmit={handleSubmit}>
-        <Label>아이디</Label>
-        <Input
+        <InputField
+          label="아이디"
           ref={loginRef}
           type="text"
           name="loginId"
           value={loginInfo.loginId}
           onChange={handleChange}
         />
-        <Label>비밀번호</Label>
-        <Input
+        <InputField
+          label="비밀번호"
           ref={passwordRef}
           type="password"
           name="password"
@@ -188,7 +172,7 @@ const LoginPage = () => {
           onChange={handleChange}
         />
         {errorMsg && <ERROR> {errorMsg} </ERROR>}
-        <Button type="submit" onClick={handleLogin}>
+        <Button type="submit">
           로그인
         </Button>
         <Button onClick={() => router.replace("/join")}>회원가입</Button>

@@ -4,19 +4,23 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { FlexBox } from "@/styles/GlobalStyle";
-import { memberShipRequest, memberShipCleare} from "@/components/redux/Join/actions";
+import {
+  memberShipRequest,
+  memberShipCleare,
+} from "@/components/redux/Join/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Join/reducer";
 import { clearAuthError } from "@/components/redux/Auth/actions";
 import usePwCheck from "@/hooks/usePwCheck";
+import InputField from "@/components/UI/InputField";
 
 interface joinInfoType {
   [key: string]: string;
-  loginId: string,
-  password: string,
-  confirmPassword: string,
-  email: string,
-  nickName: string,
+  loginId: string;
+  password: string;
+  confirmPassword: string;
+  email: string;
+  nickName: string;
 }
 
 const SignupPage = () => {
@@ -44,20 +48,23 @@ const SignupPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     for (const checkValue in joinInfo) {
-      if(joinInfo[checkValue].length === 0) {
+      if (joinInfo[checkValue].length === 0) {
         setMsg("빈칸을 채워주세요.");
-        return; 
+        return;
       }
     }
+
     if (!isValid) {
       setMsg(errorMessage);
       if (passwordCheck.current) passwordCheck.current.focus();
       return;
     }
+
     if (joinInfo.password !== joinInfo.confirmPassword) {
       setMsg("비밀번호를 재확인해주세요");
       return;
     }
+
     const joinData = {
       loginId: joinInfo.loginId,
       password: joinInfo.password,
@@ -65,8 +72,7 @@ const SignupPage = () => {
       email: joinInfo.email,
       nickname: joinInfo.nickName,
     };
-    await dispatch(memberShipRequest(joinData))
-    .then((response) => response)
+    dispatch(memberShipRequest(joinData));
   };
 
   useEffect(() => {
@@ -90,38 +96,38 @@ const SignupPage = () => {
   return (
     <JoinStyle>
       <Form onSubmit={handleSubmit}>
-        <Label>아이디</Label>
-        <Input
+        <InputField
+          label="아이디"
           type="test"
           name="loginId"
           value={joinInfo.loginId}
           onChange={handleChange}
         />
-        <Label>비밀번호</Label>
-        <Input
+        <InputField
+          label="비밀번호"
           type="password"
           name="password"
           ref={passwordCheck}
           value={joinInfo.password}
           onChange={handleChange}
         />
-        <Label>재확인</Label>
-        <Input
+        <InputField
+          label="재확인"
           type="password"
           name="confirmPassword"
           ref={confirmPasswordCheck}
           value={joinInfo.confirmPassword}
           onChange={handleChange}
         />
-        <Label>Email</Label>
-        <Input
+        <InputField
+          label="이메일"
           type="email"
           name="email"
           value={joinInfo.email}
           onChange={handleChange}
         />
-        <Label>닉네임</Label>
-        <Input
+        <InputField
+          label="닉네임"
           type="text"
           name="nickName"
           value={joinInfo.nickName}
