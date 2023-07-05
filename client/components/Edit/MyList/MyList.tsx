@@ -66,14 +66,9 @@ const MyList = () => {
 
   //EssayList의 최신화가 이루어질때마다 바로 반영하기위한
   useEffect(() => {
-    if (essayIsUpdated) {
       dispatch(getEssayList(Number(Cookies.get("userId"))));
-    }
   }, [essayIsUpdated]);
 
-  useEffect(() => {
-    dispatch(getEssayList(Number(Cookies.get("userId"))));
-  }, []);
 
   useEffect(() => {
     const filterList = essayReducer.filter(

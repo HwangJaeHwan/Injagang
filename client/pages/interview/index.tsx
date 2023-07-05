@@ -9,7 +9,7 @@ import { BiArrowBack } from "react-icons/bi";
 import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import Image from "next/image";
 import interViewimg from "../assets/images/interView.svg";
-import { v } from "../styles/variables";
+import { v } from "@/styles/variables";
 
 const InterViewStyle = styled.div`
   ${ColBox}

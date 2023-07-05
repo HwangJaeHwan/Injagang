@@ -163,19 +163,6 @@ const Form = styled.form`
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
 `;
 
-const Label = styled.label`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-`;
-
-const Input = styled.input`
-  padding: 8px;
-  margin-bottom: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-`;
-
 const Button = styled.button`
   padding: 8px 16px;
   background-color: #2ecc71;

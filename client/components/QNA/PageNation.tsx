@@ -69,12 +69,12 @@ const PageNation = () => {
       {totalPage !== 0 &&
         Array(totalPage)
           .fill(1)
-          .map((_, idx) => {
+          .map((page, idx) => {
             if (idx + 1 > minPageNumLimit && idx + 1 < maxPageNumLimit + 1)
               return (
                 <CustomButton
                   className={idx + 1 === curPageNumber ? "active_button" : ""}
-                  key={idx}
+                  key={page}
                   Size={{ width: "40px", font: "15px" }}
                   onClick={() => handleBtnClick(idx)}
                   text={`${idx + 1}`}

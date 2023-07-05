@@ -126,13 +126,13 @@ const LoginPage = () => {
     dispatch(authenTicate(loginData));
   };
 
-  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setLoginInfo(cur => ({
       ...cur,
       [name]: value,
     }));
-  },[])
+  }
 
 
   useEffect(() => {
