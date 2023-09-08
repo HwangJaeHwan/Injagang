@@ -11,7 +11,6 @@ import { METHOD } from "@/util/fecher";
 import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
-import { SERVER } from "@/api/config";
 import {
   authInfoAPI,
   checkOutAPI,
