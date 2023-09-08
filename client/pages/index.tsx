@@ -21,6 +21,7 @@ const Card = styled.div`
 `;
 
 const Home = () => {
+  console.log(process.env.BACKEND_SERVER_API)
   return (
     <HomeStyle>
       <Search />

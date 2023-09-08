@@ -6,7 +6,7 @@ import {
   FEEDBACK_FAILURE,
   FEEDBACK_UPDATED,
 } from "./types";
-import fetcher, { METHOD } from "@/components/test/fecher";
+import fetcher, { METHOD } from "@/util/fecher";
 import Cookies from "js-cookie";
 
 export const getFeedbackList =

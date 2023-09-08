@@ -7,8 +7,7 @@ const AuthFailed = () => {
         router.replace('/login')
     },[])
     return (
-        <>
-            
+        <>            
         </>
     );
 };

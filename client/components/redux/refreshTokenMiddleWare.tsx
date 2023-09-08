@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Middleware } from "redux";
-import fetcher, { METHOD } from "../test/fecher";
+import fetcher, { METHOD } from "@/util/fecher";;
 import Router from "next/router";
 
 const refreshTokenMiddleWare: Middleware =

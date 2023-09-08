@@ -5,8 +5,8 @@ import {
   SIGNUP_CLEAR,
   signupDispatchType,
 } from "./types";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
+import { METHOD } from "@/util/fecher";
+import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
 
 type MembershipRequest = {

@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import TextToSpeech from "../test/TextReder";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
 import InterViewSlider from "./InterViewSlider";

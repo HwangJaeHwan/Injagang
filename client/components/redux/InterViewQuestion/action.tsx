@@ -8,7 +8,7 @@ import {
   QUESTION_UPDATED,
   questionDispatchType,
 } from "./types";
-import fetcher, { METHOD } from "@/components/test/fecher";
+import fetcher, { METHOD } from "@/util/fecher";
 import Cookies from "js-cookie";
 
 type AddQuestionData = {

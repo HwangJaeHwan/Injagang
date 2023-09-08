@@ -1,16 +1,13 @@
 import styled from "styled-components";
-import react, { useState } from "react";
 import MemberTable from "@/components/Admin/MemberTable";
 import TemplateView from "@/components/Admin/TemplateView";
-import Drage from "@/components/test/drag";
 import { ColBox } from "@/styles/GlobalStyle";
-import TextReader from "@/components/test/TextReder";
+
 
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Auth/reducer";
 import InterViewListView from "@/components/InterView/InterViewListView";
-import AddQustionList from "@/components/Admin/AddTextInput";
 const AdminPageStyle = styled.div`
   ${ColBox}
 `;

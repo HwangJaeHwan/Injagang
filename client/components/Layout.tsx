@@ -79,4 +79,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default WithAuth(Layout);
+export default Layout;

@@ -7,10 +7,17 @@ import {
   PROFILE_SUCCESS,
   AUTH_INIT,
 } from "./types";
-import { METHOD } from "@/components/test/fecher";
-import fetcher from "@/components/test/fecher";
+import { METHOD } from "@/util/fecher";
+import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
+import { SERVER } from "@/api/config";
+import {
+  authInfoAPI,
+  checkOutAPI,
+  loginAPI,
+  nickChangeAPI,
+} from "@/api/AUTH/authAPI";
 
 type AuthenTicate = {
   loginId: string;
@@ -32,7 +39,7 @@ export const authenTicate =
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     try {
       dispatch({ type: AUTHENTICATE_REQUEST });
-      const response = await fetcher(METHOD.POST, "/login", loginData);
+      const response = await loginAPI(loginData);
       if (response) {
         const token = response.data.jws;
         const { access, refresh, userId } = response.data;
@@ -54,11 +61,11 @@ export const checkOut =
   () =>
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     try {
-      const data = {
+      const tokenData = {
         access: Cookies.get("accessToken"),
         refresh: Cookies.get("refreshToken"),
       };
-      const request = await fetcher(METHOD.POST, "/logout", data);
+      const request = await checkOutAPI(tokenData);
       dispatch({ type: AUTH_INIT });
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
@@ -70,9 +77,7 @@ export const getProfile =
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     try {
       // console.log({ headers });
-      const response = await fetcher(METHOD.GET, "/info", {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const response = await authInfoAPI();
       if (response) {
         dispatch({
           type: PROFILE_SUCCESS,
@@ -88,16 +93,14 @@ export const getProfile =
   };
 
 export const nicknameChange =
-  (nickName: string) =>
+  (changeNickname: string) =>
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     dispatch({ type: AUTHENTICATE_REQUEST });
-    const data = {
-      changeNickname: nickName,
+    const changeData = {
+      changeNickname,
     };
     try {
-      const response = await fetcher(METHOD.PATCH, "/nicknameChange", data, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const response = await nickChangeAPI(changeData);
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }
