@@ -1,25 +1,45 @@
-import { METHOD } from "@/util/fecher";
-import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
-import Cookies from "js-cookie";
 import {
   boardDispatchType,
   BOARD_REQUEST,
   BOARD_FAILURE,
   BOARD_SUCCESS,
   BOARDINFO_SUCCESS,
-  qnaList,
   BOARD_UPDATED,
 } from "./types";
+import {
+  deleteQnaBoardAPI,
+  getDetailBoardAPI,
+  getQnaBoardListAPI,
+  reviseQnaBoardAPI,
+  writeQnaBoardAPI,
+} from "@/api/QnABoard/qnaBoardAPI";
+import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
+
+/**QNA리스트를 가져온다. */
+export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ type: BOARD_REQUEST });
+    const response = await getQnaBoardListAPI(page);
+    if (response) {
+      dispatch({
+        type: BOARDINFO_SUCCESS,
+        payload: {
+          boardInfoList: [response.data],
+        },
+      });
+    }
+  } catch (error: any) {
+    dispatch({ type: BOARD_FAILURE, payload: { error } });
+  }
+};
 
 /**해당하는 QNA의 세부내용을 불러온다. */
 export const getBoardDetail =
   (boardId: number) => async (dispatch: Dispatch<boardDispatchType>) => {
     try {
       dispatch({ type: BOARD_REQUEST });
-      const response = await fetcher(METHOD.GET, `/board/${boardId}`, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const response = await getDetailBoardAPI(boardId);
       if (response) {
         dispatch({
           type: BOARD_SUCCESS,
@@ -39,19 +59,12 @@ export const getBoardDetail =
     }
   };
 
-type Board = {
-  title: string;
-  content: string;
-  essayId: number;
-};
-
 /**QNA 작성 API */
 export const writeBoard =
-  (boardData: Board) => async (dispatch: Dispatch<boardDispatchType>) => {
+  (boardData: IWriteQnaBoard) =>
+  async (dispatch: Dispatch<boardDispatchType>) => {
     try {
-      const request = await fetcher(METHOD.POST, "/board/write", boardData, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const request = await writeQnaBoardAPI(boardData);
       if (request.status === 200) {
         dispatch({ type: BOARD_UPDATED });
       }
@@ -68,11 +81,8 @@ export const writeBoard =
 /**QNA 삭제 API*/
 export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
   try {
-    const request = await fetcher(METHOD.DELETE, `/board/${boardId}`, {
-      headers: {
-        Authorization: Cookies.get("accessToken"),
-      },
-    });
+    const request = await deleteQnaBoardAPI(boardId);
+    //TODO : 디스패치 누락? 확인 검토 해보기
   } catch (error: any) {
     dispatch({
       type: BOARD_FAILURE,
@@ -83,18 +93,11 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
   }
 };
 
-type ChangeData = {
-  boardId: number;
-  changeTitle: string;
-  changeContent: string;
-};
 /**QNA 업데이트 API */
 export const updateBoard =
-  (changeData: ChangeData) => async (dispatch: Dispatch) => {
+  (changeData: IReviseQnaBoard) => async (dispatch: Dispatch) => {
     try {
-      const request = await fetcher(METHOD.PATCH, "/board/revise", changeData, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const request = await reviseQnaBoardAPI(changeData);
     } catch (error: any) {
       dispatch({
         type: BOARD_FAILURE,
@@ -104,21 +107,3 @@ export const updateBoard =
       });
     }
   };
-
-/**QNA리스트를 가져온다. */
-export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
-  try {
-    dispatch({ type: BOARD_REQUEST });
-    const response = await fetcher(METHOD.GET, `/board?page=${page}`);
-    if (response) {
-      dispatch({
-        type: BOARDINFO_SUCCESS,
-        payload: {
-          boardInfoList: [response.data],
-        },
-      });
-    }
-  } catch (error: any) {
-    dispatch({ type: BOARD_FAILURE, payload: { error } });
-  }
-};
