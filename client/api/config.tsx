@@ -20,7 +20,7 @@ export const ESSAY_APIS = {
 
 export const BOARD_APIS = {
   WRITE_API: `${SERVER}/board/write`,
-  READ_API: `${SERVER}/board/read/`,
+  READ_API: `${SERVER}/board/`,
   GET_API: `${SERVER}/board`,
   DELETE_API: `${SERVER}/board/delete/`,
   REVISE_API: `${SERVER}/board/revise`,
