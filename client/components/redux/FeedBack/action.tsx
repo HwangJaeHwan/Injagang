@@ -6,16 +6,18 @@ import {
   FEEDBACK_FAILURE,
   FEEDBACK_UPDATED,
 } from "./types";
-import fetcher, { METHOD } from "@/util/fecher";
-import Cookies from "js-cookie";
+import {
+  getFeedBackListAPI,
+  reviseFeedBackAPI,
+  writeFeedBackAPI,
+} from "@/api/FEEDBACK/feedBackAPI";
+import { IReviseFeedBack, IWriteFeedBack } from "@/types/feedback/FeedBackType";
 
 export const getFeedbackList =
   (qnaId: number) => async (dispatch: Dispatch<feedBackDispatchType>) => {
     try {
       dispatch({ type: FEEDBACK_REQUEST });
-      const response = await fetcher(METHOD.GET, `/board/feedback/${qnaId}`, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const response = await getFeedBackListAPI(qnaId);
       if (response) {
         dispatch({
           type: FEEDBACK_SUCCESS,
@@ -34,25 +36,12 @@ export const getFeedbackList =
     }
   };
 
-type UpdateFeedback = {
-  feedbackId: number;
-  reviseContent: string;
-};
 export const updateFeedback =
-  (updateData: UpdateFeedback) =>
+  (updateData: IReviseFeedBack) =>
   async (dispatch: Dispatch<feedBackDispatchType>) => {
     try {
       dispatch({ type: FEEDBACK_REQUEST });
-      const request = await fetcher(
-        METHOD.PATCH,
-        "/board/feedback/revise",
-        updateData,
-        {
-          headers: {
-            Authorization: Cookies.get("accessToken"),
-          },
-        },
-      );
+      const request = await reviseFeedBackAPI(updateData);
       if (request.status === 200) {
         dispatch({ type: FEEDBACK_UPDATED });
       }
@@ -64,21 +53,12 @@ export const updateFeedback =
     }
   };
 
-type WirteFeedBack = {
-  qnaId: number;
-  feedbackTarget: string;
-  feedbackContent: string;
-};
 export const writeFeedback =
-  (wirteData: WirteFeedBack) =>
+  (wirteData: IWriteFeedBack) =>
   async (dispatch: Dispatch<feedBackDispatchType>) => {
     try {
       dispatch({ type: FEEDBACK_REQUEST });
-      const request = await fetcher(METHOD.POST, "/board/feedback", wirteData, {
-        headers: {
-          Authorization: Cookies.get("accessToken"),
-        },
-      });
+      const request = await writeFeedBackAPI(wirteData);
       if (request.status === 200) {
         dispatch({ type: FEEDBACK_UPDATED });
       }
