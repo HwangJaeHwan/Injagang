@@ -1,25 +1,25 @@
-enum QuestionType {
+export enum QuestionType {
   CS = "CS",
   SITUATION = "SITUATION",
   JOB = "JOB",
   PERSONALITY = "PERSONALITY",
 }
 
-interface IAddQuestions {
+export interface IAddQuestions {
   questions: string[];
-  questionType: QuestionType;
+  questionType: QuestionType | string;
 }
 
-interface IGetQuestion {
+export interface IGetQuestion {
   id: number;
   questions: string[];
 }
 
-interface IRandomQuestions {
+export interface IRandomQuestions {
   size: number;
   questionType: QuestionType;
 }
 
-interface IDeleteQuestions {
+export interface IDeleteQuestions {
   ids: number[];
 }

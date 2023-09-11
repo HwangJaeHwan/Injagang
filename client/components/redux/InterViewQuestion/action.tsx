@@ -1,6 +1,5 @@
 import { Dispatch } from "react";
 import {
-  InterviewQuestionList,
   QUESTIONRANDOM_SUCCESS,
   QUESTION_FAILURE,
   QUESTION_REQUEST,
@@ -8,28 +7,29 @@ import {
   QUESTION_UPDATED,
   questionDispatchType,
 } from "./types";
-import fetcher, { METHOD } from "@/util/fecher";
-import Cookies from "js-cookie";
 
-type AddQuestionData = {
-  questions: string[];
-  questionType: QuestionType | string;
-};
+import {
+  IAddQuestions,
+  IDeleteQuestions,
+  IRandomQuestions,
+  QuestionType,
+} from "@/types/InterViewQuestion/InterViewQuestionType";
+import {
+  addInterViewQuestionAPI,
+  deleteInterViewQuestionAPI,
+  getInterViewQuestionListAPI,
+  getRandomQuestionsAPI,
+} from "@/api/INTERVIEWQUESTION/interViewQuestionAPI";
 
 export const handleAddQuestion =
-  (newList: AddQuestionData) =>
+  (newList: IAddQuestions) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
       if (newList.questionType === "ALL") {
         newList.questionType = "";
       }
       dispatch({ type: QUESTION_REQUEST });
-      const request = await fetcher(METHOD.POST, "questions/add", newList, {
-        headers: {
-          Authorization: Cookies.get("accessToken"),
-        },
-      });
-      console.log("sadfasfasfasfsaf", request);
+      const request = await addInterViewQuestionAPI(newList);
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
       }
@@ -43,26 +43,16 @@ export const handleAddQuestion =
     }
   };
 
-export enum QuestionType {
-  CS = "CS",
-  SITUATION = "SITUATION",
-  JOB = "JOB",
-  PERSONALITY = "PERSONALITY",
-  ALL = "ALL",
-}
-
 export const getInterViewQnaList =
   (type: QuestionType | string) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
+      // TODO : 처리 방식에 대해서 고려해야함.
       if (type === "ALL") {
         type = "";
       }
       dispatch({ type: QUESTION_REQUEST });
-      const response = await fetcher(
-        METHOD.GET,
-        `/questions?questionType=${type}`,
-      );
+      const response = await getInterViewQuestionListAPI(type);
       if (response) {
         dispatch({
           type: QUESTION_SUCCESS,
@@ -81,18 +71,11 @@ export const getInterViewQnaList =
     }
   };
 
-interface IDStype {
-  ids: number[];
-}
-
 export const handleDeleteInterViewQnaList =
-  (ids: IDStype) =>
+  (ids: IDeleteQuestions) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
-      const request = await fetcher(METHOD.DELETE, `/questions`, {
-        data: ids,
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const request = await deleteInterViewQuestionAPI(ids);
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
       }
@@ -106,16 +89,11 @@ export const handleDeleteInterViewQnaList =
     }
   };
 
-type RanDomList = {
-  size: number;
-  questionType: QuestionType;
-};
-
 export const getRandomList =
-  (randomSet: RanDomList[]) =>
+  (randomSet: IRandomQuestions[]) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
-      const response = await fetcher(METHOD.POST, "/questions/random", randomSet);
+      const response = await getRandomQuestionsAPI(randomSet);
       if (response) {
         dispatch({
           type: QUESTIONRANDOM_SUCCESS,

@@ -4,15 +4,12 @@ import ControlMenu from "../UI/ControlMenu";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
-import {
-  QuestionType,
-  getInterViewQnaList,
-} from "../redux/InterViewQuestion/action";
 import InterViewListItem from "./InterViewListItem";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import AddQuestionListView from "../Admin/AddQuestionListView";
 import CustomButton from "../UI/CustomButton";
-import { handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
+import { getInterViewQnaList, handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
+import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 const InterViewListViewStyle = styled.div`
   ${ColBox}
   width: 100%;
@@ -55,7 +52,7 @@ const InterViewSelectData = [
   { title: QuestionType.SITUATION, id: 2 },
   { title: QuestionType.JOB, id: 3 },
   { title: QuestionType.PERSONALITY, id: 4 },
-  { title: QuestionType.ALL, id: 5 },
+  { title: "ALL", id: 5 },
 ];
 
 const InterViewListView = () => {
