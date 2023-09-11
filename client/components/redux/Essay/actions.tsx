@@ -7,49 +7,24 @@ import {
   ESSAY_FAILURE,
   ESSAY_SUCCESS,
   essayDispatchType,
-  errorClear,
-  qnaList,
   ESSAY_READ_SUCCESS,
   ESSAY_UPDATED,
 } from "./types";
-
-interface EssayList {
-  title: string;
-  qnaList: qnaList[];
-}
+import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
+import {
+  addEssayAPI,
+  deleteEssayAPI,
+  getEssayListAPI,
+  reviseEssayAPI,
+} from "@/api/ESSAY/essayAPI";
 
 /**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =
-  (essayData: EssayList, userId: number) =>
+  (essayData: IWriteEssayList) =>
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       dispatch({ type: ESSAY_REQUEST });
-      const request = await fetcher(METHOD.POST, "/essay/write", essayData, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
-    } catch (error: any) {
-      dispatch({
-        type: ESSAY_FAILURE,
-        payload: {
-          error,
-        },
-      });
-    }
-  };
-
-export const updateEssay =
-  (modifiedEssayData: EssayList, essayId: number) =>
-  async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
-    try {
-      const request = await fetcher(
-        METHOD.PATCH,
-        `essay/revise/${essayId}`,
-        modifiedEssayData,
-        {
-          headers: { Authorization: Cookies.get("accessToken") },
-        },
-      );
+      const request = await addEssayAPI(essayData);
       if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
     } catch (error: any) {
       dispatch({
@@ -67,9 +42,7 @@ export const getEssayList =
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       dispatch({ type: ESSAY_REQUEST });
-      const response = await fetcher(METHOD.GET, `/essay/${userId}`, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const response = await getEssayListAPI(userId);
       if (response) {
         dispatch({
           type: ESSAY_SUCCESS,
@@ -115,14 +88,28 @@ export const readEssayList =
     }
   };
 
+export const updateEssay =
+  (essayId: number, modifiedEssayData: IReviseEssayList) =>
+  async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
+    try {
+      const request = await reviseEssayAPI(essayId, modifiedEssayData);
+      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+    } catch (error: any) {
+      dispatch({
+        type: ESSAY_FAILURE,
+        payload: {
+          error,
+        },
+      });
+    }
+  };
+
 /**자소서 삭제 */
 export const deleteEssayList =
   (essayId: number) =>
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
-      const request = await fetcher(METHOD.DELETE, `/essay/delete/${essayId}`, {
-        headers: { Authorization: Cookies.get("accessToken") },
-      });
+      const request = await deleteEssayAPI(essayId);
       if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
     } catch (error: any) {
       dispatch({

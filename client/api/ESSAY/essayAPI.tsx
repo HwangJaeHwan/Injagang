@@ -1,33 +1,30 @@
-import { AUTH_APIS } from "../config";
+import { ESSAY_APIS } from "../config";
 import { fetcher, METHOD } from "../client";
-import {
-  ISignin,
-  ISignup,
-  ICheckOut,
-  ChangeNick,
-  IChangePw,
-} from "@/types/auth/AuthType";
+import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
 
-export const authInfoAPI = async () => {
-  return fetcher(METHOD.GET, AUTH_APIS.INFO_API);
+export const readEssayList = async (targetId: number) => {
+  return fetcher(METHOD.GET, `${ESSAY_APIS.READ_API}${targetId}`);
 };
 
-export const loginAPI = async (loginData: ISignin) => {
-  return fetcher(METHOD.POST, AUTH_APIS.SIGNIN_API, loginData);
+export const getEssayListAPI = async (targetId: number) => {
+  return fetcher(METHOD.GET, `${ESSAY_APIS.GET_API}${targetId}`);
 };
 
-export const checkOutAPI = async (checkOutData: ICheckOut) => {
-  return fetcher(METHOD.POST, AUTH_APIS.LOGOUT_API, checkOutData);
+export const addEssayAPI = async (essayPayload: IWriteEssayList) => {
+  return fetcher(METHOD.POST, ESSAY_APIS.WRITE_API, essayPayload);
 };
 
-export const nickChangeAPI = async (changeData: ChangeNick) => {
-  return fetcher(METHOD.PATCH, AUTH_APIS.NICK_CHNAGE_API, changeData);
+export const reviseEssayAPI = async (
+  targetId: number,
+  essayPayload: IReviseEssayList,
+) => {
+  return fetcher(
+    METHOD.PATCH,
+    `${ESSAY_APIS.REVISE_API}${targetId}`,
+    essayPayload,
+  );
 };
 
-export const passwordChangeAPI = async (changePwData: IChangePw) => {
-  return fetcher(METHOD.PATCH, AUTH_APIS.PASSWORD_CHAGNE_API, changePwData);
-};
-
-export const signupAPI = async (signupData: ISignup) => {
-  return fetcher(METHOD.POST, AUTH_APIS.SIGNUP_API, signupData);
+export const deleteEssayAPI = async (targetId: number) => {
+  return fetcher(METHOD.DELETE, `${ESSAY_APIS.DELETE_API}${targetId}`);
 };
