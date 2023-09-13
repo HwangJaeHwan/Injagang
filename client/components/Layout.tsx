@@ -7,8 +7,8 @@ import { ReactNode, useEffect } from "react";
 import { useState } from "react";
 
 import Head from "next/head";
-import WithAuth from "./WithAuth";
 import NavBar from "../components/Nav/NavBar";
+import useThemeToggler from "@/hooks/useThemeMode";
 
 const LayoutStyle = styled.div`
   display: flex;
@@ -35,27 +35,12 @@ interface LayoutProps {
 
 /**컴포넌트와 navbar의 영역을 분할하고, 전체 컴포넌트의 렌더링을 통제하기 위한 역할*/
 const Layout = ({ children }: LayoutProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, ChangeDarkMode] = useThemeToggler(false);
   const router = useRouter();
   const routes = ["/join", "/login"];
   const isShowNav = routes.includes(router.asPath);
 
-  const handleToggleTheme = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem("theme", JSON.stringify(newMode));
-  };
 
-  //유저의 브라우저에 저장된 테마를 반영하기위한 역할
-  useEffect(() => {
-    const storageTheme = localStorage.getItem("theme");
-    if (storageTheme) {
-      const isThemeMode = JSON.parse(storageTheme);
-      if (isThemeMode !== isDarkMode) {
-        setIsDarkMode(isThemeMode);
-      }
-    }
-  }, []);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -68,10 +53,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Head>
       <LayoutStyle>
         <Sidebar>
-          <NavBar
-            toggleTheme={handleToggleTheme}
-            mode={isDarkMode}
-          />
+          <NavBar toggleTheme={ChangeDarkMode} mode={isDarkMode} />
         </Sidebar>
         <Content>{children}</Content>
       </LayoutStyle>

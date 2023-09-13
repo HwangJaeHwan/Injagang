@@ -75,7 +75,6 @@ export const getProfile =
   () =>
   async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
     try {
-      // console.log({ headers });
       const response = await authInfoAPI();
       if (response) {
         dispatch({
