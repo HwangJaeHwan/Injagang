@@ -20,6 +20,7 @@ const Card = styled.div`
   margin: 15px 15px;
 `;
 
+
 const Home = () => {
   console.log(process.env.BACKEND_SERVER_API)
   return (

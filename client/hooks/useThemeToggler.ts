@@ -1,22 +1,20 @@
+import { LocalStorageManager } from "@/util/localStorageManager";
 import React, { useCallback, useEffect, useState } from "react";
 
 const useThemeToggler = (defaultValue: boolean): [boolean, () => void] => {
   const [toggle, setToggle] = useState<boolean>(defaultValue);
+  const storage = new LocalStorageManager("theme");
 
   const ChangeToggleTheme = useCallback(() => {
-    console.log(toggle);
     const currentMode = !toggle;
     setToggle(currentMode);
-    localStorage.setItem("theme", JSON.stringify(currentMode));
+    storage.save(currentMode);
   }, [toggle]);
 
   useEffect(() => {
-    const storageTheme = localStorage.getItem("theme");
-    if (storageTheme) {
-      const currentMode = JSON.parse(storageTheme);
-      if (currentMode !== defaultValue) {
-        setToggle(currentMode);
-      }
+    const currentSaveMode = storage.get();
+    if (currentSaveMode) {
+      setToggle(currentSaveMode);
     }
   }, []);
 

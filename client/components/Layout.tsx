@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
-import useThemeToggler from "@/hooks/useThemeMode";
+import useThemeToggler from "@/hooks/useThemeToggler";
 
 const LayoutStyle = styled.div`
   display: flex;
