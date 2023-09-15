@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import templateReducer, {
   InitiaState,
-} from "@/components/redux/Template/reducer";
+} from "@/components/redux/Template/server/reducer";
 import {
   addEssay,
   deleteEssayList,

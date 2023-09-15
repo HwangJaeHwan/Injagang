@@ -5,9 +5,9 @@ import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addTemplate } from "@/components/redux/Template/actions";
+import { addTemplate } from "@/components/redux/Template/server/actions";
 import { RootReducerType } from "@/components/redux/store";
-import { InitiaState } from "@/components/redux/Template/reducer";
+import { InitiaState } from "@/components/redux/Template/server/reducer";
 
 const Controller = styled.div`
   svg {
