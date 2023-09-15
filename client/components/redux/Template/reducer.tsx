@@ -20,7 +20,6 @@ const initialState: InitiaState = {
       templateId: 0,
       title: "",
       questions: [],
-      qnaList: [],
     },
   ],
 };
@@ -36,14 +35,14 @@ const templateReducer = (
         loading: true,
       };
     case TEMPLATE_SUCCESS:
-      console.log(action.payload.templateState)
+      console.log(action.payload.templateState);
       return {
         ...state,
         loading: false,
         templateList: action.payload.templateState.map(it => ({
           templateId: it.templateId,
           title: it.title,
-          qnaList: it.questions,
+          questions: it.questions,
         })),
       };
     case TEMPLATE_FAILURE:

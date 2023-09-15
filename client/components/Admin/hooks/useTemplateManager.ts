@@ -9,7 +9,7 @@ import {
 
 const useTemplateManager = () => {
   const dispatch = useDispatch();
-  const templateReducer: InitiaState = useSelector(
+  const {templateList, loading, error} = useSelector(
     (state: RootReducerType) => state.template,
   );
 
@@ -21,7 +21,7 @@ const useTemplateManager = () => {
     dispatch(removeTemplate(index));
   }, []);
 
-  return { templateReducer, removeTemplateItem };
+  return { templateList, removeTemplateItem };
 };
 
 export default useTemplateManager;

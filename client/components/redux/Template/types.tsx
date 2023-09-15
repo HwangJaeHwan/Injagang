@@ -9,8 +9,7 @@ export interface templateRequest {
 export type TemplateState = {
   templateId: number;
   title: string;
-  questions?: string[];
-  qnaList: string[];
+  questions: string[];
 };
 
 export interface templateFailDispatch {
@@ -26,7 +25,6 @@ export interface templateSuccessDispatch {
     templateState: TemplateState[];
   };
 }
-
 
 export type templateDispatchType =
   | templateRequest
