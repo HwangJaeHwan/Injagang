@@ -1,53 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
-import { BiPlus, BiTrash } from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
 import useTemplateManager from "../hooks/useTemplateManager";
-import TemplateItem from "./TemplateItem";
+import TemplateTitleItem from "./TemplateTitleItem";
 import useUserTemplateManager from "../hooks/useUserTemplateManager";
+import TemplateDetail from "./TemplateDetail";
 
-/**템플릿 현재의 상태를 보여주기*/
 const TemplateList = () => {
-  const { templateList, removeTemplateItem } = useTemplateManager();
-  const { isAddTemplate, setIsAddTemplate, selectedTemplateList } =
-    useUserTemplateManager();
+  const { templateList } = useTemplateManager();
+  const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
 
   return (
     <TemplateStlyed>
       <Card>
         <TemplateTtileList>
           {templateList.map(item => (
-            <TemplateItem key={item.templateId} list={item} />
+            <TemplateTitleItem key={item.templateId} list={item} />
           ))}
           {!isAddTemplate && (
             <BiPlus onClick={() => setIsAddTemplate(true)}></BiPlus>
           )}
         </TemplateTtileList>
-        <TemplateListDetail>
-          {isAddTemplate ? (
-            <TemplateQuestionAdd />
-          ) : (
-            <div className="endTitle">
-              {selectedTemplateList.questions.length < 1 ? (
-                <div style={{ color: "red" }}>
-                  현재 선택된 리스트가 없습니다.
-                </div>
-              ) : (
-                <>
-                  {selectedTemplateList.questions.map((question, index) => (
-                    <div key={index}> {question}</div>
-                  ))}
-                  <BiTrash
-                    onClick={() =>
-                      removeTemplateItem(selectedTemplateList.templateId)
-                    }
-                  />
-                </>
-              )}
-            </div>
-          )}
-        </TemplateListDetail>
+        <TemplateViewController>
+          {isAddTemplate ? <TemplateQuestionAdd /> : <TemplateDetail />}
+        </TemplateViewController>
       </Card>
     </TemplateStlyed>
   );
@@ -102,7 +80,7 @@ const TemplateTtileList = styled.div`
   }
 `;
 
-const TemplateListDetail = styled.div`
+const TemplateViewController = styled.div`
   ${ColBox}
   justify-content: space-between;
   width: 50%;

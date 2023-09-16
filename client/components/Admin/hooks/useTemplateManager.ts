@@ -19,8 +19,10 @@ const useTemplateManager = () => {
 
   const removeTemplateItem = useCallback((index: number) => {
     const resetCurTemplate = {
-      templateId: 0, questions: [], title: "" 
-    }
+      templateId: 0,
+      questions: [],
+      title: "",
+    };
     dispatch(removeTemplate(index));
     dispatch(setCurTemplateList(resetCurTemplate));
   }, []);

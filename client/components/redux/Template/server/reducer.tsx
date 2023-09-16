@@ -35,7 +35,6 @@ const templateReducer = (
         loading: true,
       };
     case TEMPLATE_SUCCESS:
-      console.log(action.payload.templateState);
       return {
         ...state,
         loading: false,
