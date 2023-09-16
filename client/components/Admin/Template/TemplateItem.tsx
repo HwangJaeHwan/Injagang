@@ -1,17 +1,16 @@
 import { IGetTemplate } from "@/types/template/TemplateType";
 import React from "react";
+import useUserTemplateManager from "../hooks/useUserTemplateManager";
 
 interface TemplateItemProps {
   list: IGetTemplate;
-  handleList: (question: string[], index: number) => void;
 }
 
-const TemplateItem = ({ list, handleList }: TemplateItemProps) => {
+const TemplateItem = ({ list }: TemplateItemProps) => {
+  const { setItemInfo } = useUserTemplateManager();
+
   return (
-    <div
-      className="template_Item"
-      onClick={() => handleList(list.questions, list.templateId)}
-    >
+    <div className="template_Item" onClick={() => setItemInfo(list)}>
       {list.title}
     </div>
   );

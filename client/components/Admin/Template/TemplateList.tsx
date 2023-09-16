@@ -11,7 +11,6 @@ import TemplateItem from "./TemplateItem";
 /**템플릿 현재의 상태를 보여주기*/
 const TemplateList = () => {
   const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
-  // 뷰모드&추가모드를구분짓는 역할
   const [isAddContent, setIsAddContent] = useState<boolean>(false);
   const [curIndex, changeCurIndex] = useSelectedIndex(0);
   const { templateList, removeTemplateItem } = useTemplateManager();
@@ -32,12 +31,8 @@ const TemplateList = () => {
     <TemplateStlyed>
       <Card>
         <TemplateTtileList>
-          {templateList.map((list, index) => (
-            <TemplateItem
-              key={list.templateId}
-              list={list}
-              handleList={handleList}
-            />
+          {templateList.map(item => (
+            <TemplateItem key={item.templateId} list={item} />
           ))}
           {!isAddContent && (
             <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>

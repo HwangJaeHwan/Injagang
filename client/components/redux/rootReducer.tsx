@@ -2,11 +2,13 @@ import { combineReducers } from "redux";
 import authReducer from "./Auth/reducer";
 import essayReducer from "./Essay/reducer";
 import signupReducer from "./Join/reducer";
-import templateReducer from "./Template/reducer";
+import templateReducer from "./Template/server/reducer";
 import boardReducer from "./QnA/reducer";
 import feedbackReducer from "./FeedBack/reducer";
 import interViewQuestionReducer from "./InterViewQuestion/reducer";
 import userInterViewListReducer from "./InterViewList/reducer";
+
+import userTemplateReducer from "./Template/user/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,6 +19,7 @@ const rootReducer = combineReducers({
   feedBack: feedbackReducer,
   interViewQuestion: interViewQuestionReducer,
   userInterViewList: userInterViewListReducer,
+  userTemplaetList: userTemplateReducer,
 });
 
 export default rootReducer;

@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { InitiaState } from "@/components/redux/Template/reducer";
 import {
   getTemplate,
   removeTemplate,
-} from "@/components/redux/Template/actions";
+} from "@/components/redux/Template/server/actions";
 
 const useTemplateManager = () => {
   const dispatch = useDispatch();
-  const {templateList, loading, error} = useSelector(
+  const { templateList, loading, error } = useSelector(
     (state: RootReducerType) => state.template,
   );
 
