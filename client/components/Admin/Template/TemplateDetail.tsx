@@ -11,13 +11,10 @@ const TemplateDetail = () => {
     return <div style={{ color: "red" }}>현재 선택된 리스트가 없습니다.</div>;
   };
 
+  if (isTemplateSelected) return <NoTemplateSelected />;
+
   return (
-    <>
       <div className="endTitle">
-        {isTemplateSelected ? (
-          <NoTemplateSelected />
-        ) : (
-          <>
             {selectedTemplateList.questions.map((question, index) => (
               <div key={index}> {question}</div>
             ))}
@@ -26,10 +23,7 @@ const TemplateDetail = () => {
                 removeTemplateItem(selectedTemplateList.templateId)
               }
             />
-          </>
-        )}
       </div>
-    </>
   );
 };
 
