@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { BiPlus } from "react-icons/bi";
-import TemplateQuestionAdd from "./TemplateQuestionAdd";
 import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateTitleItem from "./TemplateTitleItem";
 import useUserTemplateManager from "../hooks/useUserTemplateManager";
 import TemplateDetail from "./TemplateDetail";
+import AddTemplate from "./AddTemplate";
 
 const TemplateList = () => {
   const { templateList, loading, error } = useTemplateManager();
@@ -27,7 +27,7 @@ const TemplateList = () => {
           )}
         </TemplateTtileList>
         <TemplateViewController>
-          {isAddTemplate ? <TemplateQuestionAdd /> : <TemplateDetail />}
+          {isAddTemplate ? <AddTemplate /> : <TemplateDetail />}
         </TemplateViewController>
       </Card>
     </TemplateStlyed>

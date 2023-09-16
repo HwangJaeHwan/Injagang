@@ -28,7 +28,7 @@ const Input = styled.input`
   width: 70%;
 `;
 
-const TemplateQuestionAdd = () => {
+const AddTemplate = () => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
   const {isAddTemplate, setIsAddTemplate} = useUserTemplateManager()
@@ -115,4 +115,4 @@ const TemplateQuestionAdd = () => {
   );
 };
 
-export default TemplateQuestionAdd;
+export default AddTemplate;
