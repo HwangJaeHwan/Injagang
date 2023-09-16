@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addTemplate } from "@/components/redux/Template/server/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { InitiaState } from "@/components/redux/Template/server/reducer";
+import useUserTemplateManager from "../hooks/useUserTemplateManager";
 
 const Controller = styled.div`
   svg {
@@ -27,13 +28,10 @@ const Input = styled.input`
   width: 70%;
 `;
 
-interface TemplateQuestionAddProps {
-  setIsAddContent: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const TemplateQuestionAdd = ({ setIsAddContent }: TemplateQuestionAddProps) => {
+const TemplateQuestionAdd = () => {
   const [templateTitle, setTemplateTitle] = useState<string>("");
   const [templateQuestion, setTemplateQuestion] = useState<string[]>([]);
+  const {isAddTemplate, setIsAddTemplate} = useUserTemplateManager()
   const questionRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
 
@@ -76,7 +74,7 @@ const TemplateQuestionAdd = ({ setIsAddContent }: TemplateQuestionAddProps) => {
     //API 요청 부분으로 수정 해야함 (추가요청)
     setTemplateTitle("");
     setTemplateQuestion([]);
-    setIsAddContent(false);
+    setIsAddTemplate(false);
   };
   
   useEffect(() => {

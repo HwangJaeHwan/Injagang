@@ -5,6 +5,7 @@ import {
   getTemplate,
   removeTemplate,
 } from "@/components/redux/Template/server/actions";
+import { setCurTemplateList } from "@/components/redux/Template/user/actions";
 
 const useTemplateManager = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,11 @@ const useTemplateManager = () => {
   }, []);
 
   const removeTemplateItem = useCallback((index: number) => {
+    const resetCurTemplate = {
+      templateId: 0, questions: [], title: "" 
+    }
     dispatch(removeTemplate(index));
+    dispatch(setCurTemplateList(resetCurTemplate));
   }, []);
 
   return { templateList, removeTemplateItem };

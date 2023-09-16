@@ -1,31 +1,17 @@
 import React, { useState } from "react";
-
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { BiPlus, BiTrash } from "react-icons/bi";
 import TemplateQuestionAdd from "./TemplateQuestionAdd";
-import useSelectedIndex from "@/hooks/useSelectedIndex";
 import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateItem from "./TemplateItem";
+import useUserTemplateManager from "../hooks/useUserTemplateManager";
 
 /**템플릿 현재의 상태를 보여주기*/
 const TemplateList = () => {
-  const [curTemplateList, setCurTemplateList] = useState<string[]>([]);
-  const [isAddContent, setIsAddContent] = useState<boolean>(false);
-  const [curIndex, changeCurIndex] = useSelectedIndex(0);
   const { templateList, removeTemplateItem } = useTemplateManager();
-
-  /**현재선택된 템플릿리스트정보를 저장하기위한 함수 */
-  const handleList = (qnaList: string[] = [], index: number) => {
-    setCurTemplateList([...qnaList]);
-    changeCurIndex(index);
-  };
-
-  /**현재선택된 템플릿리스트 삭제요청을 위한 함수 */
-  const handleRemoveList = async () => {
-    removeTemplateItem(curIndex);
-    setCurTemplateList([]);
-  };
+  const { isAddTemplate, setIsAddTemplate, selectedTemplateList } =
+    useUserTemplateManager();
 
   return (
     <TemplateStlyed>
@@ -34,30 +20,34 @@ const TemplateList = () => {
           {templateList.map(item => (
             <TemplateItem key={item.templateId} list={item} />
           ))}
-          {!isAddContent && (
-            <BiPlus onClick={() => setIsAddContent(true)}></BiPlus>
+          {!isAddTemplate && (
+            <BiPlus onClick={() => setIsAddTemplate(true)}></BiPlus>
           )}
         </TemplateTtileList>
-        <QuestionView>
-          {isAddContent ? (
-            <TemplateQuestionAdd setIsAddContent={setIsAddContent} />
+        <TemplateListDetail>
+          {isAddTemplate ? (
+            <TemplateQuestionAdd />
           ) : (
             <div className="endTitle">
-              {curTemplateList.length < 1 ? (
+              {selectedTemplateList.questions.length < 1 ? (
                 <div style={{ color: "red" }}>
                   현재 선택된 리스트가 없습니다.
                 </div>
               ) : (
                 <>
-                  {curTemplateList.map((question, index) => (
+                  {selectedTemplateList.questions.map((question, index) => (
                     <div key={index}> {question}</div>
                   ))}
-                  <BiTrash onClick={handleRemoveList} />
+                  <BiTrash
+                    onClick={() =>
+                      removeTemplateItem(selectedTemplateList.templateId)
+                    }
+                  />
                 </>
               )}
             </div>
           )}
-        </QuestionView>
+        </TemplateListDetail>
       </Card>
     </TemplateStlyed>
   );
@@ -112,7 +102,7 @@ const TemplateTtileList = styled.div`
   }
 `;
 
-const QuestionView = styled.div`
+const TemplateListDetail = styled.div`
   ${ColBox}
   justify-content: space-between;
   width: 50%;

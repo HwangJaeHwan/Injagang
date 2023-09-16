@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import {
@@ -9,19 +9,17 @@ import { IGetTemplate } from "@/types/template/TemplateType";
 
 const useUserTemplateManager = () => {
   const dispatch = useDispatch();
+  const { selectedTemplateList, isAddTemplate } = useSelector(
+    (state: RootReducerType) => state.userTemplaetList,
+  );
 
   const setItemInfo = useCallback((itemList: IGetTemplate) => {
     dispatch(setCurTemplateList(itemList));
   }, []);
 
   const setIsAddTemplate = useCallback((isAdd: boolean) => {
-    dispatch(addTemplaetToggle());
+    dispatch(addTemplaetToggle(isAdd));
   }, []);
-
-  const { selectedTemplateList, isAddTemplate } = useSelector(
-    (state: RootReducerType) => state.userTemplaetList,
-  );
-  console.log(selectedTemplateList, isAddTemplate);
 
   return { selectedTemplateList, isAddTemplate, setItemInfo, setIsAddTemplate };
 };

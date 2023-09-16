@@ -1,39 +1,43 @@
+import { IGetTemplate } from "@/types/template/TemplateType";
 import {
   userTemplateDispatchType,
   SET_CUR_TEMPLATE_LIST,
-  ADD_TEMPLAETE_TOGGLE,
+  ADD_TEMPLATE_TOGGLE,
 } from "./types";
 
 interface InitiaState {
-  selectedTemplateList: string[];
   isAddTemplate: boolean;
+  selectedTemplateList: IGetTemplate;
 }
 
 const initialState: InitiaState = {
-  selectedTemplateList: [],
   isAddTemplate: false,
+  selectedTemplateList: {
+    templateId: 0,
+    title: "",
+    questions: [],
+  },
 };
 
 const userTemplateReducer = (
   state = initialState,
   action: userTemplateDispatchType,
-) => {
+): InitiaState => {
   switch (action.type) {
     case SET_CUR_TEMPLATE_LIST:
       return {
         ...state,
-        selectedTemplateList: action.payload,
+        selectedTemplateList: action.payload.selectedTemplateList,
       };
 
-    case ADD_TEMPLAETE_TOGGLE:
+    case ADD_TEMPLATE_TOGGLE:
       return {
         ...state,
-        isAddTemplate: !state.isAddTemplate,
+        isAddTemplate: action.payload.isAddTemplate,
       };
 
     default:
       return state;
   }
 };
-
 export default userTemplateReducer;
