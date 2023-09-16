@@ -9,8 +9,11 @@ import useUserTemplateManager from "../hooks/useUserTemplateManager";
 import TemplateDetail from "./TemplateDetail";
 
 const TemplateList = () => {
-  const { templateList } = useTemplateManager();
+  const { templateList, loading, error } = useTemplateManager();
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
+
+  if(loading) return <p>로딩중</p>
+  if(error) return <p>Error발생</p>
 
   return (
     <TemplateStlyed>
