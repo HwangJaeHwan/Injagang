@@ -27,7 +27,7 @@ const useTemplateManager = () => {
     dispatch(setCurTemplateList(resetCurTemplate));
   }, []);
 
-  return { templateList, removeTemplateItem };
+  return { templateList, removeTemplateItem, loading, error };
 };
 
 export default useTemplateManager;
