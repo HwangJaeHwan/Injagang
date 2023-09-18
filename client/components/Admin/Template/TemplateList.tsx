@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { BiPlus } from "react-icons/bi";
+import {v} from "@/styles/variables"
 import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateTitleItem from "./TemplateTitleItem";
 import useUserTemplateManager from "../hooks/useUserTemplateManager";
@@ -9,11 +10,15 @@ import TemplateDetail from "./TemplateDetail";
 import AddTemplate from "./AddTemplate";
 
 const TemplateList = () => {
-  const { templateList, loading, error } = useTemplateManager();
+  const { templateList, loading, error, getTemplateList } =
+    useTemplateManager();
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
 
-  if(loading) return <p>로딩중</p>
-  if(error) return <p>Error발생</p>
+  useEffect(() => {
+    getTemplateList();
+  }, []);
+
+  if (error) return <p>Error발생</p>;
 
   return (
     <TemplateStlyed>
@@ -27,6 +32,7 @@ const TemplateList = () => {
           )}
         </TemplateTtileList>
         <TemplateViewController>
+          {loading && <p>로딩중</p>}
           {isAddTemplate ? <AddTemplate /> : <TemplateDetail />}
         </TemplateViewController>
       </Card>
@@ -38,6 +44,7 @@ export default TemplateList;
 const TemplateStlyed = styled.div`
   ${ColBox}
   width: 100%;
+  background-color: green;
 `;
 
 const Card = styled.div`
@@ -45,7 +52,7 @@ const Card = styled.div`
   padding: 15px 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
-  width: 70%;
+  width: ${v.mdWidth};
   height: 350px;
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
@@ -55,6 +62,7 @@ const Card = styled.div`
   @media screen and (max-width: 800px) {
     ${ColBox}
     flex-direction: column-reverse;
+    width: ${v.xsWidth}
   }
 `;
 

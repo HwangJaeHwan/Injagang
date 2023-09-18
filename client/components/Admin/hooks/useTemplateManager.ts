@@ -13,9 +13,9 @@ const useTemplateManager = () => {
     (state: RootReducerType) => state.template,
   );
 
-  useEffect(() => {
+  const getTemplateList = () => {
     dispatch(getTemplate());
-  }, []);
+  };
 
   const removeTemplateItem = useCallback((index: number) => {
     const resetCurTemplate = {
@@ -27,7 +27,7 @@ const useTemplateManager = () => {
     dispatch(setCurTemplateList(resetCurTemplate));
   }, []);
 
-  return { templateList, removeTemplateItem, loading, error };
+  return { templateList, removeTemplateItem, getTemplateList, loading, error };
 };
 
 export default useTemplateManager;
