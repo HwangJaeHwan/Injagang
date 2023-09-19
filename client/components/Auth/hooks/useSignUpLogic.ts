@@ -21,27 +21,38 @@ const useSignUpLogic = () => {
     email: "",
     nickName: "",
   });
-  const [msg, setMsg] = useState<string | null>("");
+  const [userMsg, setUserMsg] = useState<string | null>("");
   const { isValid, errorMessage } = usePwCheck({ password: joinInfo.password });
   const { confirmSignUp } = useSignUpManager();
+
+  const validation = [
+    {
+      check: () => hasEmptyFields(joinInfo),
+      message: ERROR_MESSAGES.FILL_BLANKS,
+    },
+    {
+      check: () => !isValid,
+      message: errorMessage,
+    },
+    {
+      check: () => joinInfo.password !== joinInfo.confirmPassword,
+      message: ERROR_MESSAGES.CHECK_PASSWORD,
+    },
+  ];
+
+  const runValidationChecks = () => {
+    const isValidation = validation.find(item => item.check());
+    if (isValidation) {
+      setUserMsg(isValidation.message);
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (hasEmptyFields(joinInfo)) {
-        setMsg(ERROR_MESSAGES.FILL_BLANKS);
-        return;
-      }
-
-      if (!isValid) {
-        setMsg(errorMessage);
-        return;
-      }
-
-      if (joinInfo.password !== joinInfo.confirmPassword) {
-        setMsg(ERROR_MESSAGES.CHECK_PASSWORD);
-        return;
-      }
+      if (!runValidationChecks()) return;
 
       const joinData = {
         loginId: joinInfo.loginId,
@@ -52,7 +63,7 @@ const useSignUpLogic = () => {
       };
       confirmSignUp(joinData);
     },
-    [],
+    [joinInfo],
   );
 
   const handleValueChange = useCallback(
@@ -66,7 +77,7 @@ const useSignUpLogic = () => {
     [],
   );
 
-  return { handleSubmit, handleValueChange, msg, joinInfo };
+  return { handleSubmit, handleValueChange, userMsg, joinInfo };
 };
 
 export default useSignUpLogic;
