@@ -12,7 +12,7 @@ const Login = () => {
     handleChange,
     handleSubmit,
     userLogicMsg,
-    loginRef,
+    loginIdRef,
     passwordRef,
   } = useLoginLogic();
   const [shakeTrigger, setShakeTrigger] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Login = () => {
     <Form shakeTrigger={shakeTrigger} onSubmit={handleSubmit}>
       <InputField
         label="아이디"
-        ref={loginRef}
+        ref={loginIdRef}
         type="text"
         name="loginId"
         value={loginInfo.loginId}
@@ -44,7 +44,6 @@ const Login = () => {
         name="password"
         value={loginInfo.password}
         onChange={handleChange}
-        required
       />
       {userLogicMsg || (userMsg && <ERROR> {userLogicMsg || userMsg} </ERROR>)}
       <Button type="submit">로그인</Button>

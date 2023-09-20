@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { authenTicate } from "@/components/redux/Auth/actions";
-import { hasEmptyFields } from "@/util/hasEmptyFields";
+import { hasEmptyFieldKey } from "@/util/hasEmpty";
 import { ERROR_MESSAGES } from "@/constants";
 
 const useLoginLogic = () => {
@@ -10,32 +10,22 @@ const useLoginLogic = () => {
     password: "",
   });
   const [userLogicMsg, setUserLogicMsg] = useState("");
-  const loginRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const refs: { [key: string]: React.RefObject<HTMLInputElement> } = {
+    loginIdRef: useRef<HTMLInputElement>(null),
+    passwordRef: useRef<HTMLInputElement>(null),
+  };
   const dispatch = useDispatch();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (hasEmptyFields(loginInfo)) {
+    const emptyfield = hasEmptyFieldKey(loginInfo);
+    if (emptyfield) {
+      refs[`${emptyfield}Ref`].current?.focus();
       setUserLogicMsg(ERROR_MESSAGES.FILL_BLANKS);
       return;
     }
 
-    if (loginInfo.loginId.trim() === "") {
-      loginRef.current?.focus();
-      return;
-    }
-
-    if (loginInfo.password.trim() === "") {
-      passwordRef.current?.focus();
-      return;
-    }
-    
-    const loginData = {
-      loginId: loginInfo.loginId,
-      password: loginInfo.password,
-    };
-    dispatch(authenTicate(loginData));
+    dispatch(authenTicate(loginInfo));
     setUserLogicMsg("");
   };
 
@@ -49,12 +39,14 @@ const useLoginLogic = () => {
     },
     [],
   );
+
+  const { loginIdRef, passwordRef } = refs;
   return {
     loginInfo,
     userLogicMsg,
     handleChange,
     handleSubmit,
-    loginRef,
+    loginIdRef,
     passwordRef,
   };
 };
