@@ -1,87 +1,55 @@
-import { FlexBox } from "@/styles/GlobalStyle";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
-import { authenTicate } from "@/components/redux/Auth/actions";
 import InputField from "@/components/UI/InputField";
 import useLoginManager from "./hooks/useLoginManager";
+import useLoginLogic from "./hooks/useLoginLogic";
 
 const Login = () => {
-  const [loginInfo, setLoginInfo] = useState({
-    loginId: "",
-    password: "",
-  });
-  const [errorMsg, setErrorMsg] = useState("");
-  const [shakeTrigger, setShakeTrigger] = useState(false);
-  const loginRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch();
-  const router = useRouter();
   const { userMsg } = useLoginManager();
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (loginInfo.loginId.trim() === "") {
-      setErrorMsg("아이디를 입력해주세요");
-      loginRef.current?.focus();
-      setShakeTrigger(true);
-      return;
-    }
-    if (loginInfo.password.trim() === "") {
-      setShakeTrigger(true);
-      passwordRef.current?.focus();
-      setErrorMsg("비밀번호를 입력해주세요");
-      return;
-    }
-    const loginData = {
-      loginId: loginInfo.loginId,
-      password: loginInfo.password,
-    };
-    dispatch(authenTicate(loginData));
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setLoginInfo(cur => ({
-      ...cur,
-      [name]: value,
-    }));
-  };
+  const {
+    loginInfo,
+    handleChange,
+    handleSubmit,
+    userLogicMsg,
+    loginRef,
+    passwordRef,
+  } = useLoginLogic();
+  const [shakeTrigger, setShakeTrigger] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
-    if (errorMsg !== " ") {
+    if (userMsg !== "") {
       setShakeTrigger(false);
       setTimeout(() => {
         setShakeTrigger(true);
       }, 50);
     }
-  }, [errorMsg, userMsg]);
+  }, [userMsg, userLogicMsg]);
 
   return (
-    <LoginStyle>
-      <Form shakeTrigger={shakeTrigger} onSubmit={handleSubmit}>
-        <InputField
-          label="아이디"
-          ref={loginRef}
-          type="text"
-          name="loginId"
-          value={loginInfo.loginId}
-          onChange={handleChange}
-        />
-        <InputField
-          label="비밀번호"
-          ref={passwordRef}
-          type="password"
-          name="password"
-          value={loginInfo.password}
-          onChange={handleChange}
-        />
-        {errorMsg && <ERROR> {errorMsg} </ERROR>}
-        <Button type="submit">로그인</Button>
-        <Button onClick={() => router.replace("/join")}>회원가입</Button>
-      </Form>
-    </LoginStyle>
+    <Form shakeTrigger={shakeTrigger} onSubmit={handleSubmit}>
+      <InputField
+        label="아이디"
+        ref={loginRef}
+        type="text"
+        name="loginId"
+        value={loginInfo.loginId}
+        onChange={handleChange}
+      />
+      <InputField
+        label="비밀번호"
+        ref={passwordRef}
+        type="password"
+        name="password"
+        value={loginInfo.password}
+        onChange={handleChange}
+        required
+      />
+      {userLogicMsg || (userMsg && <ERROR> {userLogicMsg || userMsg} </ERROR>)}
+      <Button type="submit">로그인</Button>
+      <Button onClick={() => router.replace("/join")}>회원가입</Button>
+    </Form>
   );
 };
 
@@ -122,17 +90,6 @@ const shakeAnimation = keyframes`
   100% {
     transform: translateX(0);
   }
-`;
-
-const LoginStyle = styled.div`
-  ${FlexBox};
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  background-color: #31404e;
-  color: ${({ theme }) => theme.colors.text};
 `;
 
 const Form = styled.form<{ shakeTrigger: boolean }>`
