@@ -7,7 +7,7 @@ import { ERROR_MESSAGES } from "@/constants";
 const SignUp = () => {
   const passwordCheck = useRef<HTMLInputElement | null>(null);
   const confirmPasswordCheck = useRef<HTMLInputElement | null>(null);
-  const { handleSubmit, handleValueChange, userMsg, joinInfo } = useSignUpLogic();
+  const { handleSubmit, handleValueChange, userMsg, joinInfo } = useSignUpLogic(); 
 
   useEffect(() => {
     if (userMsg === ERROR_MESSAGES.CHECK_PASSWORD) {

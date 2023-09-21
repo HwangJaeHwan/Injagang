@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
-import { getTemplate } from "@/components/redux/Template/actions";
+import { getTemplate } from "@/components/redux/Template/server/actions";
 import { readEssayList } from "@/components/redux/Essay/actions";
 import QnAEditor from "@/components/Edit/QnAEditor";
 import { useDispatch } from "react-redux";

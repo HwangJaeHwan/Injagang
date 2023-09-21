@@ -5,6 +5,7 @@ import { hasEmptyFieldKey } from "@/util/hasEmpty";
 import { ERROR_MESSAGES } from "@/constants";
 
 const useLoginLogic = () => {
+  const dispatch = useDispatch();
   const [loginInfo, setLoginInfo] = useState({
     loginId: "",
     password: "",
@@ -14,18 +15,20 @@ const useLoginLogic = () => {
     loginIdRef: useRef<HTMLInputElement>(null),
     passwordRef: useRef<HTMLInputElement>(null),
   };
-  const dispatch = useDispatch();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const runValidationCheck = () => {
     const emptyfield = hasEmptyFieldKey(loginInfo);
     if (emptyfield) {
       refs[`${emptyfield}Ref`].current?.focus();
       setUserLogicMsg(ERROR_MESSAGES.FILL_BLANKS);
       return;
     }
+    return true;
+  };
 
-    dispatch(authenTicate(loginInfo));
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    runValidationCheck() && dispatch(authenTicate(loginInfo));
     setUserLogicMsg("");
   };
 

@@ -40,7 +40,6 @@ export const authenTicate =
       dispatch({ type: AUTHENTICATE_REQUEST });
       const response = await loginAPI(loginData);
       if (response) {
-        const token = response.data.jws;
         const { access, refresh, userId } = response.data;
         dispatch({
           type: AUTHENTICATE_SUCCESS,
