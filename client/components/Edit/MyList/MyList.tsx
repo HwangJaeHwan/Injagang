@@ -7,7 +7,7 @@ import MyListPreView from "./MyListPreView";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { getEssayList } from "../../redux/Essay/actions";
+import { getEssayList } from "../../redux/Essay/server/actions";
 import Cookies from "js-cookie";
 import MyListItems from "./MyListItems";
 import { CurList } from "./types";

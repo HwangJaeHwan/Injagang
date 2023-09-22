@@ -13,7 +13,7 @@ import {
   addEssay,
   deleteEssayList,
   updateEssay,
-} from "@/components/redux/Essay/actions";
+} from "@/components/redux/Essay/server/actions";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";

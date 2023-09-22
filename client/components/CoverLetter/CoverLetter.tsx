@@ -6,10 +6,11 @@ import CoverLetterPreView from "./CoverLetterPreView";
 import CoverLetterList from "./CoverLetterList";
 
 const CoverLetter = () => {
+  const headerTitle = "나의 자소서 목록"
   return (
     <CoverLetterContainer>
       <CoverLetterPreView />
-      <ListHeader>나의 자소서 목록</ListHeader>
+      <ListHeader>{headerTitle}</ListHeader>
       <CoverLetterList/>
     </CoverLetterContainer>
   );

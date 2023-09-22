@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { readEssayList } from "../../redux/Essay/actions";
+import { readEssayList } from "../../redux/Essay/server/actions";
 import { RootReducerType } from "../../redux/store";
 import styled from "styled-components";
 import { ScrollBar } from "@/styles/GlobalStyle";

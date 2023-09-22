@@ -2,7 +2,7 @@ import EssayDetailView from "@/components/QNA/Question/EssayDetailView";
 import QuestionTitle from "@/components/UI/ListTitle";
 import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
-import { InitiaState } from "@/components/redux/Essay/reducer";
+import { InitiaState } from "@/components/redux/Essay/server/reducer";
 import { writeBoard } from "@/components/redux/QnA/actions";
 import { RootReducerType } from "@/components/redux/store";
 import { Card, ColBox, FlexBox } from "@/styles/GlobalStyle";

@@ -1,9 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
+import { useSelector } from "react-redux";
+import { RootReducerType } from "../redux/store";
+
+const CoverLetterPreViewItem = ({ question }: { question: string }) => (
+  <h2>{question}</h2>
+);
 
 const CoverLetterPreView = () => {
-  return <CoverLetterPreViewContainer>미리보기</CoverLetterPreViewContainer>;
+  const { selectedEssayList } = useSelector(
+    (state: RootReducerType) => state.userEssayList,
+  );
+  return (
+    <CoverLetterPreViewContainer>
+      {selectedEssayList.questions &&
+        selectedEssayList.questions.map((item, idx) => (
+          <CoverLetterPreViewItem key={idx} question={item} />
+        ))}
+    </CoverLetterPreViewContainer>
+  );
 };
 
 export default CoverLetterPreView;

@@ -1,11 +1,18 @@
-import React from 'react';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { setCurEssayList } from "../redux/Essay/user/actions";
+import { IGetEssayList } from "@/types/essay/EssayType";
 
-const CoverLetterItems = () => {
-    return (
-        <div>
-            자기소개서 아이템 
-        </div>
-    );
+interface CoverLetterItemsProps {
+  item: IGetEssayList;
+}
+
+const CoverLetterItems = ({ item }: CoverLetterItemsProps) => {
+  const dispatch = useDispatch();
+  const changeSeleted = () => {
+    dispatch(setCurEssayList(item));
+  };
+  return <div onClick={changeSeleted}>{item.title}</div>;
 };
 
 export default CoverLetterItems;
