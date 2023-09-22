@@ -4,7 +4,7 @@ import { ColBox } from "@/styles/GlobalStyle";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { getEssayList } from "@/components/redux/Essay/actions";
+import { getEssayList } from "@/components/redux/Essay/server/actions";
 import Cookies from "js-cookie";
 
 const WirteStyle = styled.div`

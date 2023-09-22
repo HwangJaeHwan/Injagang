@@ -21,7 +21,7 @@ export const navItems: MenuItem[] = [
   },
   {
     title: "탐색하기",
-    path: "/search",
+    path: "/coverLetter",
     icon: <BiSearchAlt2 />,
   },
   {
