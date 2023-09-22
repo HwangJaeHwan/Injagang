@@ -7,7 +7,6 @@ import {
   ESSAY_FAILURE,
   ESSAY_SUCCESS,
   essayDispatchType,
-  ESSAY_READ_SUCCESS,
   ESSAY_UPDATED,
 } from "./types";
 import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
@@ -47,7 +46,7 @@ export const getEssayList =
         dispatch({
           type: ESSAY_SUCCESS,
           payload: {
-            list: response.data,
+            essayList: response.data,
           },
         });
       }

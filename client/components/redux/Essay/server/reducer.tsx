@@ -1,19 +1,22 @@
 import {
+  IEssayList,
+  IGetEssayList,
+  IReadEssayList,
+} from "@/types/essay/EssayType";
+import {
   ESSAY_REQUEST,
   ESSAY_SUCCESS,
   ESSAY_FAILURE,
-  essayDispatchType,
-  essayState,
-  readEssayState,
   ESSAY_READ_SUCCESS,
+  essayDispatchType,
   ESSAY_UPDATED,
 } from "./types";
 
 export interface InitiaState {
   loading: boolean;
   error: null;
-  essayList: essayState[];
-  readEssayList: readEssayState[];
+  readEssayList: IEssayList[];
+  essayList: IGetEssayList[];
   isUpdated: boolean;
 }
 
@@ -25,6 +28,7 @@ const initialState: InitiaState = {
     {
       essayId: 0,
       title: "",
+      owner: false,
       questions: [],
     },
   ],
@@ -32,6 +36,7 @@ const initialState: InitiaState = {
     {
       essayId: 0,
       title: "",
+      owner: false,
       qnaList: [],
     },
   ],
@@ -47,20 +52,13 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
     case ESSAY_SUCCESS:
       return {
         ...state,
-        essayList: action.payload.list,
+        essayList: action.payload.essayList,
         isUpdated: false,
       };
     case ESSAY_FAILURE:
       return {
         ...state,
         error: action.payload.error,
-      };
-    case ESSAY_READ_SUCCESS:
-      return {
-        ...state,
-        readEssayList: action.payload.readList,
-        loading: false,
-        isUpdated: false,
       };
     case ESSAY_UPDATED:
       return {

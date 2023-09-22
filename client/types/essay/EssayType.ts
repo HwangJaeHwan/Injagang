@@ -1,3 +1,5 @@
+import { IGetTemplate } from "../template/TemplateType";
+
 interface IQnaList {
   question: string;
   answer: string;
@@ -22,10 +24,18 @@ export interface IReadEssayList extends IEssayBase {
 }
 
 export interface IGetEssayList extends IEssayBase {
+  essayId: number;
   questions: string[];
 }
 
 export interface IReviseEssayList {
   title: string;
   qnaList: IQnaList[];
+}
+
+export interface IEssayList {
+  essayId: number,
+  title: string,
+  owner: boolean,
+  qnaList: IReadQnaList[]
 }

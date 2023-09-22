@@ -1,16 +1,16 @@
 import { userEssayDispatchType, SET_CUR_ESSAY_LIST } from "./types";
-import { IEssayList } from "@/types/essay/EssayType";
+import { IGetEssayList } from "@/types/essay/EssayType";
 
 interface InitiaState {
-  selectedEssayList: IEssayList;
+  selectedEssayList: IGetEssayList;
 }
 
 const initialState: InitiaState = {
   selectedEssayList: {
-    essyId: 0,
+    essayId: 0,
     title: "",
     owner: false,
-    qnaList: [],
+    questions: [],
   },
 };
 
