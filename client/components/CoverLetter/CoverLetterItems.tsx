@@ -3,7 +3,7 @@ import { IGetEssayList } from "@/types/essay/EssayType";
 import { BiEdit } from "react-icons/bi";
 import styled from "styled-components";
 import { FlexBox } from "@/styles/GlobalStyle";
-import useCoverLetterManager from "./hooks/useCoverLetterManager";
+import useUserCoverLetterManager from "./hooks/useCoverLetterManager";
 
 interface CoverLetterItemsProps {
   item: IGetEssayList;
@@ -11,7 +11,7 @@ interface CoverLetterItemsProps {
 }
 
 const CoverLetterItems = ({ item, selectedId }: CoverLetterItemsProps) => {
-  const { moveEditPage, changeSeleted } = useCoverLetterManager();
+  const { moveEditPage, changeSeleted } = useUserCoverLetterManager();
   const isSelectedItem = selectedId === item.essayId ? true : false;
 
   return (
@@ -27,11 +27,11 @@ export default CoverLetterItems;
 const CoverLetterItemsContainer = styled.div<{ isActive: boolean }>`
   ${FlexBox}
   gap: 13px;
-  margin-bottom: 12px;
+  margin-top: 15px;
   font-size: ${({ isActive }) => (isActive ? "30px" : "20px")};
   background-color: ${({ isActive }) => (isActive ? "#e78f29" : "")};
   transition: all ease-in 0.2s;
-  width: 100%;
+  width: 95%;
   opacity: ${({ isActive }) => (isActive ? "1" : "0.2")};
   border-radius: 8px;
   cursor: pointer;
