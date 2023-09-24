@@ -6,7 +6,7 @@ interface IQnaList {
 }
 
 export interface IReadQnaList extends IQnaList {
-  qnaId: number;
+  qnaId: number | string;
 }
 
 interface IEssayBase {
@@ -34,8 +34,8 @@ export interface IReviseEssayList {
 }
 
 export interface IEssayList {
-  essayId: number,
-  title: string,
-  owner: boolean,
-  qnaList: IReadQnaList[]
+  essayId: number;
+  title: string;
+  owner: boolean;
+  qnaList: IReadQnaList[];
 }

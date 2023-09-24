@@ -42,4 +42,10 @@ export const v = {
   mdBorderRadius: "0.75rem",
   lgBorderRadius: "1rem",
   xlBorderRadius: "1.25rem",
+
+  
+  // Box Shadows
+  boxShadow1: "0 1px 2px rgba(0,0,0,0.1)",
+  boxShadow2: "0 2px 4px rgba(0,0,0,0.2)",
+  boxShadow3: "0 4px 8px rgba(0,0,0,0.3)",
 };
