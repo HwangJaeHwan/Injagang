@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { QuestionType } from "../redux/InterViewQuestion/action";
+// import { QuestionType } from "../redux/InterViewQuestion/action";
 
 interface SelectProps {
   Size: {
@@ -19,7 +19,9 @@ const ControlMenuSelect = styled.select<SelectProps>`
 
 interface ControlMenuProps {
   value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (
+    selected: string,
+  ) => void | React.Dispatch<React.SetStateAction<string>>;
   optionList: { title: string }[];
   Size: { width: string; height: string };
 }

@@ -3,6 +3,7 @@ import { IReadQnaList } from "@/types/essay/EssayType";
 import { BiX } from "react-icons/bi";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { v } from "@/styles/variables";
 interface CoverLetterQuestionItemsProps {
   item: IReadQnaList;
   onDelete: (targetID: string | number) => void;
@@ -18,8 +19,8 @@ const CoverLetterQuestionItems = ({
   onDelete,
   onUpdate,
 }: CoverLetterQuestionItemsProps) => {
-  const [answer, setAnswer] = useState(item.question);
   const [question, setQuestion] = useState(item.question);
+  const [answer, setAnswer] = useState(item.answer);
 
   return (
     <CoverLetterQuestionItemsContainer>
@@ -35,6 +36,7 @@ const CoverLetterQuestionItems = ({
         onChange={e => setAnswer(e.target.value)}
         onBlur={() => onUpdate(item.qnaId, question, answer)}
       />
+      {`글자수 : ${answer.length}/500`}
     </CoverLetterQuestionItemsContainer>
   );
 };
@@ -46,10 +48,10 @@ const CoverLetterQuestionItemsContainer = styled.div`
   padding: 15px 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.text};
-  width: 100%;
-  min-height: 300px;
+  width: 60%;
+  min-height: 250px;
   border-radius: 8px;
-  box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
+  box-shadow: ${v.boxShadow3};
   margin: 25px auto;
 `;
 

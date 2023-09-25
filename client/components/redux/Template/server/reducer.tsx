@@ -1,15 +1,15 @@
+import { IGetTemplate } from "@/types/template/TemplateType";
 import {
   TEMPLATE_REQUEST,
   TEMPLATE_FAILURE,
   TEMPLATE_SUCCESS,
   templateDispatchType,
-  TemplateState,
 } from "./types";
 
 export interface InitiaState {
   loading: boolean;
   error: null;
-  templateList: TemplateState[];
+  templateList: IGetTemplate[];
 }
 
 const initialState: InitiaState = {
