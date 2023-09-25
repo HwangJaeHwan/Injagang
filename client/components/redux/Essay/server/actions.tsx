@@ -6,6 +6,7 @@ import {
   ESSAY_REQUEST,
   ESSAY_FAILURE,
   ESSAY_SUCCESS,
+  ESSAY_READ_SUCCESS,
   essayDispatchType,
   ESSAY_UPDATED,
 } from "./types";

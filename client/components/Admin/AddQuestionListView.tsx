@@ -6,7 +6,6 @@ import AddQuestionItem from "./AddQuestionItem";
 import Modal from "../UI/Modal";
 import { useDispatch } from "react-redux";
 import {
-  QuestionType,
   handleAddQuestion,
 } from "../redux/InterViewQuestion/action";
 import { useSelector } from "react-redux";
@@ -28,7 +27,7 @@ const Container = styled.div`
 `;
 
 type AddQuestionListViewProps = {
-  qType: QuestionType | string;
+  qType: string;
   addList?: string[];
 };
 

@@ -6,60 +6,20 @@ import CoverLetterQuestionItems from "./CoverLetterQuestionItems";
 import { v4 as uuid4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { addEssay } from "@/components/redux/Essay/server/actions";
+import { v } from "@/styles/variables";
+import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
 
 const CoverLetterCreator = () => {
   const [mainTitle, setMainTitle] = useState<string>("");
-  const [qnaList, setQnAList] = useState<IReadQnaList[]>([]);
-  const dispatch = useDispatch();
-
-  const addQnAList = () => {
-    const newID = uuid4();
-    setQnAList(prev => [...prev, { question: "", answer: "", qnaId: newID }]);
-  };
-
-  const deleteQnAList = (targetID: string | number) => {
-    const filterItem = qnaList.filter(qna => qna.qnaId !== targetID);
-    setQnAList(filterItem);
-  };
-
-  const changeQnAList = (
-    targetID: string | number,
-    newQuestion: string,
-    newAnswer: string,
-  ) => {
-    setQnAList(prev =>
-      prev.map((qna, idx) =>
-        qna.qnaId === targetID
-          ? { ...qna, question: newQuestion, answer: newAnswer }
-          : { ...qna },
-      ),
-    );
-  };
-
-  useEffect(() => {
-    console.log(qnaList);
-  }, [qnaList]);
-
-  const handleDispatch = () => {
-    const formatQnAList = qnaList.map(qna => ({
-      question: qna.question,
-      answer: qna.answer,
-    }));
-    const data = {
-      title: mainTitle,
-      owner: true,
-      qnaList: formatQnAList,
-    };
-    dispatch(addEssay(data));
-  };
-
+  const { qnaList, deleteQnAList, changeQnAList, addQnAList, handleDispatch } =
+    useCoverLetterCreatorLogic();
   return (
     <CoverLetterCreatorContainer>
       <MainTitle>자소서 작성하기</MainTitle>
-      <input
+      <CoverLetterTitle
         value={mainTitle}
         onChange={e => setMainTitle(e.target.value)}
-      ></input>
+      ></CoverLetterTitle>
       {qnaList.map((qna, i) => (
         <CoverLetterQuestionItems
           key={qna.qnaId}
@@ -69,7 +29,7 @@ const CoverLetterCreator = () => {
         ></CoverLetterQuestionItems>
       ))}
       <BiPlus onClick={addQnAList}></BiPlus>
-      <button onClick={handleDispatch}>클릭</button>
+      <button onClick={() => handleDispatch(mainTitle)}>클릭</button>
     </CoverLetterCreatorContainer>
   );
 };
@@ -82,5 +42,18 @@ const CoverLetterCreatorContainer = styled.div`
 `;
 
 const MainTitle = styled.h2`
-  font-size: 26rm;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  text-decoration-line: underline;
+`;
+
+const CoverLetterTitle = styled.input`
+  width: ${v.xlItemWidth};
+  height: 40px;
+  border-radius: 5px;
+  border-color: black;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
+  margin-bottom: 15px;
 `;

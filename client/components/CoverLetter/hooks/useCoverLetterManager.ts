@@ -5,7 +5,7 @@ import { setCurEssayList } from "../../redux/Essay/user/actions";
 import { useRouter } from "next/router";
 import { IGetEssayList } from "@/types/essay/EssayType";
 
-const useUserCoverLetterManager = () => {
+const useCoverLetterManager = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -25,4 +25,4 @@ const useUserCoverLetterManager = () => {
   return { changeSeleted, moveEditPage };
 };
 
-export default useUserCoverLetterManager;
+export default useCoverLetterManager;
