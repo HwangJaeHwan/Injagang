@@ -13,10 +13,13 @@ const useCoverLetterCreatorLogic = () => {
     setQnAList(prev => [...prev, { question: "", answer: "", qnaId: newID }]);
   }, []);
 
-  const deleteQnAList = useCallback((targetID: string | number) => {
-    const filterItem = qnaList.filter(qna => qna.qnaId !== targetID);
-    setQnAList(filterItem);
-  }, []);
+  const deleteQnAList = useCallback(
+    (targetID: string | number) => {
+      const filterItem = qnaList.filter(qna => qna.qnaId !== targetID);
+      setQnAList(filterItem);
+    },
+    [qnaList],
+  );
 
   const changeQnAList = useCallback(
     (targetID: string | number, newQuestion: string, newAnswer: string) => {
@@ -47,7 +50,14 @@ const useCoverLetterCreatorLogic = () => {
     [qnaList],
   );
 
-  return { qnaList, addQnAList, changeQnAList, deleteQnAList, handleDispatch };
+  return {
+    setQnAList,
+    qnaList,
+    addQnAList,
+    changeQnAList,
+    deleteQnAList,
+    handleDispatch,
+  };
 };
 
 export default useCoverLetterCreatorLogic;
