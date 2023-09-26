@@ -54,11 +54,20 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
         ...state,
         essayList: action.payload.essayList,
         isUpdated: false,
+        loading: false,
+      };
+    case ESSAY_READ_SUCCESS:
+      return {
+        ...state,
+        readEssayList: action.payload.readList,
+        isUpdated: false,
+        loading: false,
       };
     case ESSAY_FAILURE:
       return {
         ...state,
         error: action.payload.error,
+        loading: false,
       };
     case ESSAY_UPDATED:
       return {
