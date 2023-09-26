@@ -9,9 +9,14 @@ import styled from "styled-components";
 import { v4 as uuid4 } from "uuid";
 import { v } from "@/styles/variables";
 import CustomButton from "@/components/UI/CustomButton";
+import { ColBox } from "@/styles/GlobalStyle";
+import { useRouter } from "next/router";
 
 const CoverLetterCreator = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
+  const router = useRouter();
+  const moveCoverLetterMainPage = "/coverLetter";
+
   const {
     qnaList,
     setQnAList,
@@ -42,12 +47,14 @@ const CoverLetterCreator = () => {
     setQnAList(resetSelectedTemplateList);
   }, [selectedTemplateList]);
 
+
   return (
     <CoverLetterCreatorContainer>
       <MainTitle>자소서 작성하기</MainTitle>
       <CoverLetterTitle
         value={coverLetterTitle}
         onChange={e => setCoverLetterTitle(e.target.value)}
+        placeholder="자소서 제목"
       ></CoverLetterTitle>
       <ControlMenu
         Size={{ width: `${v.xlItemWidth}`, height: "40px" }}
@@ -63,8 +70,13 @@ const CoverLetterCreator = () => {
           onUpdate={changeQnAList}
         ></CoverLetterQuestionItems>
       ))}
-      <BiPlus onClick={addQnAList}></BiPlus>
+      <BiPlusStyled onClick={addQnAList}></BiPlusStyled>
       <ControllerBtns>
+        <CustomButton
+          Size={{ width: "150px", font: "20px" }}
+          onClick={() => router.push(moveCoverLetterMainPage)}
+          text={"뒤로가기"}
+        />
         <CustomButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => handleDispatch(coverLetterTitle)}
@@ -77,8 +89,7 @@ const CoverLetterCreator = () => {
 
 export default CoverLetterCreator;
 const CoverLetterCreatorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${ColBox}
   width: 100%;
 `;
 
@@ -100,5 +111,19 @@ const CoverLetterTitle = styled.input`
 `;
 
 const ControllerBtns = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: ${v.xlItemWidth};
+`;
 
+const BiPlusStyled = styled(BiPlus)`
+  margin: 40px auto;
+  font-size: 3rem;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+  }
 `;
