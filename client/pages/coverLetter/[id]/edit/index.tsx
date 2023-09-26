@@ -5,12 +5,10 @@ import { ColBox } from "@/styles/GlobalStyle";
 import CoverLetterEdit from "@/components/CoverLetter/edit/CoverLetterEdit";
 
 const CoverLetterEditorPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
   return (
-    <div>
+    <CoverLetterStyle>
       <CoverLetterEdit></CoverLetterEdit>
-    </div>
+    </CoverLetterStyle>
   );
 };
 
