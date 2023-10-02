@@ -13,7 +13,6 @@ import { ColBox } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 
 const CoverLetterCreator = () => {
-  const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
   const router = useRouter();
   const moveCoverLetterMainPage = "/coverLetter";
 
@@ -24,6 +23,8 @@ const CoverLetterCreator = () => {
     changeQnAList,
     addQnAList,
     handleDispatch,
+    setCoverLetterTitle,
+    coverLetterTitle,
   } = useCoverLetterCreatorLogic();
 
   const {
@@ -46,7 +47,6 @@ const CoverLetterCreator = () => {
     }));
     setQnAList(resetSelectedTemplateList);
   }, [selectedTemplateList]);
-
 
   return (
     <CoverLetterCreatorContainer>
@@ -79,7 +79,7 @@ const CoverLetterCreator = () => {
         />
         <CustomButton
           Size={{ width: "150px", font: "20px" }}
-          onClick={() => handleDispatch(coverLetterTitle)}
+          onClick={() => handleDispatch()}
           text={"작성완료"}
         />
       </ControllerBtns>
