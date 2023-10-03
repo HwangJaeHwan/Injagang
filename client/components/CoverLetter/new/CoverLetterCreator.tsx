@@ -12,10 +12,10 @@ import CustomButton from "@/components/UI/CustomButton";
 import { ColBox } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 
+export const moveCoverLetterMainPage = "/coverLetter";
+
 const CoverLetterCreator = () => {
   const router = useRouter();
-  const moveCoverLetterMainPage = "/coverLetter";
-
   const {
     qnaList,
     setQnAList,
@@ -25,6 +25,7 @@ const CoverLetterCreator = () => {
     handleDispatch,
     setCoverLetterTitle,
     coverLetterTitle,
+    Modal,
   } = useCoverLetterCreatorLogic();
 
   const {
@@ -50,6 +51,7 @@ const CoverLetterCreator = () => {
 
   return (
     <CoverLetterCreatorContainer>
+      <Modal />
       <MainTitle>자소서 작성하기</MainTitle>
       <CoverLetterTitle
         value={coverLetterTitle}

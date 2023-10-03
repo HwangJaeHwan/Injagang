@@ -22,7 +22,7 @@ const CoverLetterItems = ({ item, selectedId }: CoverLetterItemsProps) => {
   );
 };
 
-export default CoverLetterItems;
+export default React.memo(CoverLetterItems);
 
 const CoverLetterItemsContainer = styled.div<{ isActive: boolean }>`
   ${FlexBox}

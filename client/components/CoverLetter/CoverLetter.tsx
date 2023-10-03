@@ -29,6 +29,9 @@ const CoverLetterContainer = styled.div`
   width: ${v.xlWidth};
   height: 600px;
   ${ColBox}
+  @media screen and (max-width: 1300px) {
+    width: ${v.mdWidth};
+  }
   @media screen and (max-width: 900px) {
     width: ${v.smWidth};
   }

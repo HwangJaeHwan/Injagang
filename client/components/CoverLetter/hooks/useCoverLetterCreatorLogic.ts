@@ -5,12 +5,15 @@ import { useDispatch } from "react-redux";
 import { addEssay } from "@/components/redux/Essay/server/actions";
 import { runValidationChecks } from "@/util/runValidationChecks";
 import { useRouter } from "next/router";
+import useModal from "@/hooks/useModal";
+import { ERROR_MESSAGES } from "@/constants";
+import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
 
 const useCoverLetterCreatorLogic = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
   const [qnaList, setQnAList] = useState<IReadQnaList[]>([]);
+  const { setModal, Modal } = useModal();
   const router = useRouter();
-  const moveCoverLetterMainPage = "/coverLetter";
   const dispatch = useDispatch();
 
   const MIN_QUESTIONS = 1;
@@ -50,21 +53,29 @@ const useCoverLetterCreatorLogic = () => {
   const 자기소개서작성규칙 = [
     {
       check: () => coverLetterTitle === "",
-      message: "제목을 입력해주세요.",
+      message: ERROR_MESSAGES.EMPTY_TITLE,
     },
     {
       check: () => qnaList.length < 1,
-      message: "질문과 답변은 1개이상 작성해주세요.",
+      message: ERROR_MESSAGES.MINIMUM_QNA,
     },
     {
       check: () => qnaList.some(q => q.answer === ""),
-      message: "답변이 비어있습니다.",
+      message: ERROR_MESSAGES.EMPTY_ANSWER,
     },
   ];
 
   const handleDispatch = useCallback(() => {
-    const isChecked = runValidationChecks(자기소개서작성규칙);
-    if (isChecked) return;
+    const isWarringMsg = runValidationChecks(자기소개서작성규칙);
+    if (isWarringMsg) {
+      setModal({
+        contents: {
+          title: "Warring",
+          content: isWarringMsg,
+        },
+      });
+      return;
+    }
 
     const formatQnAList = qnaList.map(qna => ({
       question: qna.question,
@@ -90,6 +101,7 @@ const useCoverLetterCreatorLogic = () => {
     handleDispatch,
     setCoverLetterTitle,
     coverLetterTitle,
+    Modal,
   };
 };
 

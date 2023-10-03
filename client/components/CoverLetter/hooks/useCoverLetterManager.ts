@@ -5,17 +5,13 @@ import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 
 import { useRouter } from "next/router";
-import {
-  IGetEssayList,
-  IReadEssayList,
-  IReadQnaList,
-} from "@/types/essay/EssayType";
+import { IGetEssayList, IReadQnaList } from "@/types/essay/EssayType";
 import {
   deleteEssayList,
   getDetailEssay,
   updateEssay,
 } from "@/components/redux/Essay/server/actions";
-import { deleteEssayAPI } from "@/api/ESSAY/essayAPI";
+import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
 
 const useCoverLetterManager = () => {
   const { readEssayList, loading } = useSelector(
@@ -66,11 +62,12 @@ const useCoverLetterManager = () => {
       })),
     };
     dispatch(updateEssay(essayId, resetData));
+    router.push(moveCoverLetterMainPage)
   };
 
   const deleteCoverLetter = (targetID: number) => {
-    console.log(targetID);
     dispatch(deleteEssayList(targetID));
+    router.push(moveCoverLetterMainPage)
   };
 
   return {

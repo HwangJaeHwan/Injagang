@@ -39,5 +39,8 @@ export const navItems: MenuItem[] = [
 export const ERROR_MESSAGES = {
   FILL_BLANKS: "빈칸을 채워주세요.",
   CHECK_PASSWORD: "비밀번호를 재확인해주세요",
-  DOESN_T_MATCH: "아이디나 비밀번호가 일치하지 않습니다."
+  DOESN_T_MATCH: "아이디나 비밀번호가 일치하지 않습니다.",
+  EMPTY_TITLE: "제목을 입력해주세요.",
+  MINIMUM_QNA: "질문과 답변은 1개이상 작성해주세요.",
+  EMPTY_ANSWER: "답변이 비어있습니다.",
 };
