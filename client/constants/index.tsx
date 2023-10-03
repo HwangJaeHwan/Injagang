@@ -16,12 +16,12 @@ type MenuItem = {
 export const navItems: MenuItem[] = [
   {
     title: "자소서작성",
-    path: "/myEssay",
+    path: "/coverLetter",
     icon: <BiEdit />,
   },
   {
     title: "탐색하기",
-    path: "/coverLetter",
+    path: "/search",
     icon: <BiSearchAlt2 />,
   },
   {
