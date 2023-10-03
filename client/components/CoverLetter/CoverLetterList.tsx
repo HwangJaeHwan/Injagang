@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import CoverLetterItems from "./CoverLetterItems";
 import { RootReducerType } from "@/components/redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -22,17 +21,21 @@ const CoverLetterList = () => {
     dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
 
-  if (isUpdated) return <p> 업데이트중 ..</p>;
+  const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
 
   return (
     <CoverLetterListContainer>
-      {essayList.map((item, idx) => (
-        <CoverLetterItems
-          key={item.essayId}
-          item={item}
-          selectedId={selectedEssayList.essayId}
-        />
-      ))}
+      <Suspense
+        fallback={<SuspenseStyle>사용자 정보 로딩중....</SuspenseStyle>}
+      >
+        {essayList.map((item, idx) => (
+          <CoverLetterItems
+            key={item.essayId}
+            item={item}
+            selectedId={selectedEssayList.essayId}
+          />
+        ))}
+      </Suspense>
     </CoverLetterListContainer>
   );
 };
@@ -49,4 +52,11 @@ const CoverLetterListContainer = styled.div`
   margin: 15px auto;
   overflow-x: hidden;
   box-shadow: ${v.boxShadow2};
+`;
+
+const SuspenseStyle = styled.p`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 1.8rem;
 `;
