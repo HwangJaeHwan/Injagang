@@ -62,12 +62,12 @@ const useCoverLetterManager = () => {
       })),
     };
     dispatch(updateEssay(essayId, resetData));
-    router.push(moveCoverLetterMainPage)
+    router.push(moveCoverLetterMainPage);
   };
 
   const deleteCoverLetter = (targetID: number) => {
     dispatch(deleteEssayList(targetID));
-    router.push(moveCoverLetterMainPage)
+    router.push(moveCoverLetterMainPage);
   };
 
   return {

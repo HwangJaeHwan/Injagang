@@ -6,6 +6,7 @@ import { nicknameChange } from "../redux/Auth/actions";
 import { FlexBox } from "@/styles/GlobalStyle";
 import { RxAvatar } from "react-icons/rx";
 import Modal from "../UI/Modal";
+import { SessionStorageManager } from "@/util/sessionStorageManager";
 
 const UserInfoStyle = styled.div`
   display: flex;
@@ -34,15 +35,17 @@ const Input = styled.input`
 `;
 
 const UserInFo = () => {
+  const myInfo = new SessionStorageManager('info')
   const [nickName, setNickName] = useState<string>("");
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const info = sessionStorage.getItem("info");
-    const getNick = info ? JSON.parse(info) : null;
-    if (getNick) {
-      setNickName(getNick.nickname);
+    const getMyNick = myInfo.get()
+    if (getMyNick) {
+      setNickName(getMyNick.nickName);
+    } else {
+      //인증 실패 처리 
     }
   }, []);
 

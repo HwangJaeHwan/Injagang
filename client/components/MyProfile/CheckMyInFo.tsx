@@ -2,8 +2,25 @@ import React from "react";
 import { Card, ColBox, FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
 import UserInFo from "./UserInFo";
-import PassWordInfo from "./PassWordInfo";
+import PassWordInfo from "./PassWordSetting";
 import { v } from "@/styles/variables";
+
+const CheckMyInFo = () => {
+  const headerTitle = "나의 정보";
+  return (
+    <CheckMyInFoStyle>
+      <Card size={{ width: "90%", height: "100%", flex: "Col" }}>
+        <MainTitle>{headerTitle}</MainTitle>
+        <SwitchContainer>
+          <UserInFo />
+          <PassWordInfo />
+        </SwitchContainer>
+      </Card>
+    </CheckMyInFoStyle>
+  );
+};
+
+export default CheckMyInFo;
 
 const CheckMyInFoStyle = styled.div`
   ${ColBox}
@@ -20,6 +37,8 @@ const CheckMyInFoStyle = styled.div`
   }
 `;
 
+const MainTitle = styled.h2``;
+
 const SwitchContainer = styled.div`
   ${FlexBox}
   gap:15px;
@@ -29,19 +48,3 @@ const SwitchContainer = styled.div`
     ${ColBox}
   }
 `;
-
-const CheckMyInFo = () => {
-  return (
-    <CheckMyInFoStyle>
-      <Card size={{ width: "90%", height: "100%", flex: "Col" }}>
-        <h2>나의 정보</h2>
-        <SwitchContainer>
-          <UserInFo />
-          <PassWordInfo />
-        </SwitchContainer>
-      </Card>
-    </CheckMyInFoStyle>
-  );
-};
-
-export default CheckMyInFo;

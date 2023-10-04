@@ -77,7 +77,7 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
               <BiLogOut
                 onClick={() =>
                   setModal({
-                    onAction:handleCheckOut,
+                    onAction: handleCheckOut,
                     contents: {
                       title: "Message",
                       content: "정말 로그아웃을 원하시나요?",
@@ -96,7 +96,7 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
           <SwitchSlider isToggle={mode} onClick={toggleTheme} />
         </NavContainer>
         <NavContainer>
-          <StyledLink href={"/myPage"} style={{ textDecoration: "none" }}>
+          <StyledLink href={"/myProfile"} style={{ textDecoration: "none" }}>
             <NavLink>
               <NavContainer>
                 <BiUser></BiUser>
