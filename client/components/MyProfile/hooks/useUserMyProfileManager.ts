@@ -12,6 +12,7 @@ const useUserMyProfileManager = () => {
     changePassword: "",
     changePasswordCheck: "",
   });
+  const [nickName, setNickName] = useState<string>("");
 
   const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,7 +22,7 @@ const useUserMyProfileManager = () => {
     }));
   };
 
-  return { passWordInfo, handleInfoChange };
+  return { passWordInfo, handleInfoChange, setNickName, nickName };
 };
 
 export default useUserMyProfileManager;

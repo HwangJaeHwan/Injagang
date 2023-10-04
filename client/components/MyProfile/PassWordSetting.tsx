@@ -29,7 +29,7 @@ const PasswordInputItem = ({
 };
 
 const PassWordSetting = () => {
-  const { dispatchPasswordChange } = useMyProfileManager();
+  const { dispatchPasswordChange, Modal } = useMyProfileManager();
   const { passWordInfo, handleInfoChange } = useUserMyProfileManager();
 
   const labels = {
@@ -40,6 +40,7 @@ const PassWordSetting = () => {
 
   return (
     <PassWordContainer>
+      <Modal />
       {Object.keys(passWordInfo).map(key => (
         <PasswordInputItem
           key={key}
