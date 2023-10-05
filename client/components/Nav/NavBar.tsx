@@ -24,9 +24,7 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
   const { Modal, setModal } = useModal();
   const dispatch = useDispatch();
   const router = useRouter();
-  const authReducer: InitiaState = useSelector(
-    (state: RootReducerType) => state.auth,
-  );
+  const { role } = useSelector((state: RootReducerType) => state.profile);
 
   const handleCheckOut = () => {
     dispatch(checkOut());
@@ -61,13 +59,13 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
       </NavTop>
 
       <NavBottom>
-        {authReducer.role === "ADMIN" && (
+        {role === "ADMIN" && (
           <StyledLink href="/admin">
             <GrUserAdmin />
           </StyledLink>
         )}
         <NavContainer>
-          {authReducer.role === "" ? (
+          {role === null ? (
             <>
               <BiLogIn onClick={() => router.push("/login")} />
               <span className="navitem_title">Login</span>

@@ -4,19 +4,14 @@ import {
   AUTHENTICATE_FAILURE,
   CLEAR_ERROR,
   authDispatchType,
-  PROFILE_SUCCESS,
   AUTH_INIT,
 } from "./types";
 import { METHOD } from "@/util/fecher";
 import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
-import {
-  authInfoAPI,
-  checkOutAPI,
-  loginAPI,
-  nickChangeAPI,
-} from "@/api/AUTH/authAPI";
+import { checkOutAPI, loginAPI } from "@/api/AUTH/authAPI";
+import { PROFILE_INIT, profileDispatchType } from "../MyProfile/types";
 
 type AuthenTicate = {
   loginId: string;
@@ -57,7 +52,9 @@ export const authenTicate =
 
 export const checkOut =
   () =>
-  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
+  async (
+    dispatch: Dispatch<authDispatchType | profileDispatchType>,
+  ): Promise<void> => {
     try {
       const tokenData = {
         access: Cookies.get("accessToken"),
@@ -65,39 +62,7 @@ export const checkOut =
       };
       const request = await checkOutAPI(tokenData);
       dispatch({ type: AUTH_INIT });
-    } catch (error: any) {
-      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
-    }
-  };
-
-export const getProfile =
-  () =>
-  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
-    try {
-      const response = await authInfoAPI();
-      if (response) {
-        dispatch({
-          type: PROFILE_SUCCESS,
-          payload: {
-            nickname: response.data.nickname,
-            role: response.data.role,
-          },
-        });
-      }
-    } catch (error: any) {
-      dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
-    }
-  };
-
-export const nicknameChange =
-  (changeNickname: string) =>
-  async (dispatch: Dispatch<authDispatchType>): Promise<void> => {
-    dispatch({ type: AUTHENTICATE_REQUEST });
-    const changeData = {
-      changeNickname,
-    };
-    try {
-      const response = await nickChangeAPI(changeData);
+      dispatch({ type: PROFILE_INIT });
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
     }
