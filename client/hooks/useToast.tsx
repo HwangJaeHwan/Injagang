@@ -61,13 +61,13 @@ const ToastMessage = styled.div<{ mode: TOAST_MODE }>`
   position: relative;
   background-color: ${props => {
     switch (props.mode) {
-      case "Success":
-        return "#3fc025";
-      case "Warning":
+      case "SUCCESS":
+        return "#BDFCC9";
+      case "WARNING":
         return "#ffc107";
       case "ERROR":
         return "#dc3545";
-      case "Info":
+      case "INFO":
       default:
         return "#17a2b8";
     }

@@ -9,12 +9,13 @@ import useMyProfileManager from "./hooks/useMyProfileManager";
 const UserInFo = () => {
   const myInfo = new SessionStorageManager("info");
   const { nickName, setNickName } = useUserMyProfileManager();
-  const { dispatchNickNameChange, Modal } = useMyProfileManager();
+  const { dispatchNickNameChange, Modal, RenderToast } = useMyProfileManager();
 
   useEffect(() => {
     const getMyNick = myInfo.get();
+    console.log(getMyNick)
     if (getMyNick) {
-      setNickName(getMyNick.nickName);
+      setNickName(getMyNick.nickname);
     } else {
       //인증 실패 처리
     }
@@ -37,6 +38,7 @@ const UserInFo = () => {
         ></CustomButton>
       </UserInfoContainer>
       <RxAvatar />
+      <RenderToast />
     </UserInfoStyle>
   );
 };

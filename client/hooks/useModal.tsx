@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CustomButton from "@/components/UI/CustomButton";
 
 interface ModalProps {
-  onAction?: () => void;
+  onAction?: (params?: any) => void | null;
   contents: {
     title: string;
     content: string;
@@ -11,15 +11,18 @@ interface ModalProps {
 }
 
 const useModal = () => {
-  const [modalState, setModalState] = useState<{ isModalOpen: boolean, modal: ModalProps | null }>({
+  const [modalState, setModalState] = useState<{
+    isModalOpen: boolean;
+    modal: ModalProps | null;
+  }>({
     isModalOpen: false,
-    modal: null
+    modal: null,
   });
 
   const setModal = useCallback((modalProps: ModalProps) => {
     setModalState({
       isModalOpen: true,
-      modal: modalProps
+      modal: modalProps,
     });
   }, []);
 
@@ -31,9 +34,9 @@ const useModal = () => {
     if (!modalState.isModalOpen || !modalState.modal) {
       return null;
     }
-    
+
     const { title, content } = modalState.modal.contents;
-    
+
     return (
       <ModalStyle isOpen={modalState.isModalOpen}>
         <ModalBox>

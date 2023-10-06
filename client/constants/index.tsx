@@ -44,6 +44,7 @@ export const ERROR_MESSAGES = {
   MINIMUM_QNA: "질문과 답변은 1개이상 작성해주세요.",
   EMPTY_ANSWER: "답변이 비어있습니다.",
   EMPTY_NICK: "닉네임이 비어있습니다.",
+  DUPLICATION_NICK: "중복된 닉네임이 존재합니다."
 };
 
 export const SUCCESS_MESSAGES = {
@@ -56,8 +57,8 @@ export const MODAL_MESSAGES = {
 };
 
 export const TOAST_MODE = {
-  SUCCESS: "Success",
-  WARNING: "Warning",
-  ERROR: "Error",
-  INFO: "Info",
+  SUCCESS: "SUCCESS",
+  WARNING: "WARNING",
+  ERROR: "ERROR",
+  INFO: "INFO",
 };

@@ -32,6 +32,7 @@ const profileReducer = (state = InitiaState, action: profileDispatchType) => {
       };
     case PROFILE_SUCCESS:
       const { role, nickname } = action.payload;
+      sessionStorage.setItem("info", JSON.stringify({ role, nickname }));
       return {
         ...state,
         loading: false,

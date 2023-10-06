@@ -9,18 +9,22 @@ const CheckMyInFo = () => {
   const headerTitle = "나의 정보";
   return (
     <CheckMyInFoStyle>
-      <Card size={{ width: "90%", height: "100%", flex: "Col" }}>
+      <Container>
         <MainTitle>{headerTitle}</MainTitle>
         <SwitchContainer>
           <UserInFo />
           <PassWordInfo />
         </SwitchContainer>
-      </Card>
+      </Container>
     </CheckMyInFoStyle>
   );
 };
 
 export default CheckMyInFo;
+
+const Container = styled.div`
+  display: ${ColBox};
+`;
 
 const CheckMyInFoStyle = styled.div`
   ${ColBox}
