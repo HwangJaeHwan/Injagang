@@ -11,34 +11,41 @@ interface ModalProps {
 }
 
 const useModal = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalState, setModalState] = useState<{
-    isModalOpen: boolean;
     modal: ModalProps | null;
   }>({
-    isModalOpen: false,
     modal: null,
   });
+  const MODAL_CLOSE_DELAY = 50;
 
   const setModal = useCallback((modalProps: ModalProps) => {
+    setIsModalOpen(true);
     setModalState({
-      isModalOpen: true,
       modal: modalProps,
     });
   }, []);
 
   const closeModal = useCallback(() => {
-    setModalState(prevState => ({ ...prevState, isModalOpen: false }));
+    setIsModalOpen(false);
   }, []);
 
+  const actionModal = useCallback(() => {
+    closeModal();
+    setTimeout(() => {
+      modalState.modal?.onAction?.();
+    }, MODAL_CLOSE_DELAY);
+  }, [isModalOpen]);
+
   const Modal = () => {
-    if (!modalState.isModalOpen || !modalState.modal) {
+    if (!isModalOpen || !modalState.modal) {
       return null;
     }
 
     const { title, content } = modalState.modal.contents;
 
     return (
-      <ModalStyle isOpen={modalState.isModalOpen}>
+      <ModalStyle isOpen={isModalOpen}>
         <ModalBox>
           <div className="modal_Contents">
             <h2>{title}</h2>
@@ -48,10 +55,7 @@ const useModal = () => {
             <div className="modal_Controller">
               <CustomButton
                 Size={{ width: "150px", font: "15px" }}
-                onClick={() => {
-                  modalState.modal?.onAction?.();
-                  closeModal();
-                }}
+                onClick={actionModal}
                 text={"예"}
               />
               <CustomButton
@@ -75,7 +79,7 @@ const useModal = () => {
   };
 
   return {
-    isModalOpen: modalState.isModalOpen,
+    isModalOpen,
     setModal,
     Modal,
   };
