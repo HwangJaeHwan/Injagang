@@ -16,6 +16,7 @@ import useModal from "@/hooks/useModal";
 import useToast from "@/hooks/useToast";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
+import { error } from "console";
 
 const validation = {
   password: ({
@@ -43,18 +44,12 @@ const validation = {
 
 const useMyProfileManager = () => {
   const dispatch = useDispatch();
-  const { success } = useSelector((state: RootReducerType) => state.profile);
+  const { success, error } = useSelector(
+    (state: RootReducerType) => state.profile,
+  );
   const router = useRouter();
   const { Modal, setModal } = useModal();
   const [showToast, RenderToast] = useToast();
-  const [isFirstRender, setIsFirstRender] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!isFirstRender) return;
-    success
-      ? showToast(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.CHANGE_NICK)
-      : showToast(TOAST_MODE.ERROR, ERROR_MESSAGES.DUPLICATION_NICK);
-  }, [success]);
 
   //PASSWORD DOMAIN
   const dispatchPasswordChange = useCallback(
@@ -126,7 +121,6 @@ const useMyProfileManager = () => {
 
   const nicknameValidationSuccess = (nickName: string) => {
     dispatch(nicknameChange(nickName));
-    setIsFirstRender(true);
   };
 
   const commonValidationFailure = (errorMsg: string) => {

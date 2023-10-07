@@ -2,6 +2,8 @@ import { PROFILE_REQUEST, profileDispatchType } from "./types";
 import { Dispatch } from "redux";
 import { authInfoAPI, nickChangeAPI } from "@/api/AUTH/authAPI";
 import { PROFILE_SUCCESS, PROFILE_FAILURE } from "./types";
+import { showToastAction } from "../Toast/actions";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 export const getProfile =
   () =>
@@ -30,8 +32,14 @@ export const nicknameChange =
       const response = await nickChangeAPI({ changeNickname });
       if (response) {
         dispatch(getProfile());
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.CHANGE_NICK),
+        );
       }
     } catch (error: any) {
       dispatch({ type: PROFILE_FAILURE, payload: { error } });
+      dispatch(
+        showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.DUPLICATION_NICK),
+      );
     }
   };
