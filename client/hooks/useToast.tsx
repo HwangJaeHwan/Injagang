@@ -1,9 +1,15 @@
 import React, { useCallback, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { v4 as uuid4 } from "uuid";
 import { TOAST_MODE } from "@/constants";
-import { fadeIn, fadeOut, slideIn, progressBar } from "@/styles/animations";
 import ToastItem from "./ToastItem";
+import { useSelector } from "react-redux";
+import { RootReducerType } from "@/components/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  hideToastAction,
+  showToastAction,
+} from "@/components/redux/Toast/actions";
 
 export interface IToast {
   id: string;
@@ -16,32 +22,20 @@ export interface IToast {
 export type TOAST_MODE = (typeof TOAST_MODE)[keyof typeof TOAST_MODE];
 
 const useToast = (duration: number = 3000) => {
-  const [toastList, setToastList] = useState<IToast[]>([]);
+  const { toastList } = useSelector((state: RootReducerType) => state.toast);
+  const dispatch = useDispatch();
 
   const showToast = useCallback(
     (mode: TOAST_MODE = "Info", message: string) => {
-      const id = uuid4();
-      const startTime = Date.now();
-      setToastList(pervToastList => [
-        ...pervToastList,
-        { id, message, mode, duration, startTime },
-      ]);
-      setTimeout(() => {
-        hideToast(id);
-      }, duration);
+      dispatch(showToastAction(mode, message));
     },
     [],
   );
 
-  const hideToast = (id: string) => {
-    setToastList(prevList => prevList.filter(toast => toast.id !== id));
-  };
-
   const RenderToast: React.FC = () => (
     <ToastContainer>
-      {toastList.map(toast => (
-        <ToastItem key={toast.id} {...toast} />
-      ))}
+      {toastList &&
+        toastList.map(toast => <ToastItem key={toast.id} {...toast} />)}
     </ToastContainer>
   );
   return [showToast, RenderToast] as const;
