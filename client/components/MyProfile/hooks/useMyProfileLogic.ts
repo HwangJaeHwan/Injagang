@@ -6,7 +6,7 @@ export interface IPassWordInfo {
   changePasswordCheck: string;
 }
 
-const useUserMyProfileManager = () => {
+const useMyProfileLogic = () => {
   const [passWordInfo, setPassWordInfo] = useState<IPassWordInfo>({
     nowPassword: "",
     changePassword: "",
@@ -25,4 +25,4 @@ const useUserMyProfileManager = () => {
   return { passWordInfo, handleInfoChange, setNickName, nickName };
 };
 
-export default useUserMyProfileManager;
+export default useMyProfileLogic;
