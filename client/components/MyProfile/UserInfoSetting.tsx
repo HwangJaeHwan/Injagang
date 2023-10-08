@@ -3,29 +3,24 @@ import CustomButton from "@/components/UI/CustomButton";
 import styled from "styled-components";
 import { RxAvatar } from "react-icons/rx";
 import { SessionStorageManager } from "@/util/sessionStorageManager";
-import useUserMyProfileManager from "./hooks/useUserMyProfileManager";
 import useMyProfileManager from "./hooks/useMyProfileManager";
+import useMyProfileLogic from "./hooks/useMyProfileLogic";
 
-const UserInFo = () => {
+const UserInfoSetting = () => {
   const myInfo = new SessionStorageManager("info");
-  const { nickName, setNickName } = useUserMyProfileManager();
+  const { nickName, setNickName } = useMyProfileLogic();
   const { dispatchNickNameChange, Modal, RenderToast } = useMyProfileManager();
+  const mainTitle = "닉네임 변경";
 
   useEffect(() => {
     const getMyNick = myInfo.get();
-    console.log(getMyNick)
-    if (getMyNick) {
-      setNickName(getMyNick.nickname);
-    } else {
-      //인증 실패 처리
-    }
+    getMyNick && setNickName(getMyNick.nickname);
   }, []);
 
   return (
     <UserInfoStyle>
-      <Modal />
       <UserInfoContainer>
-        <h3>닉네임변경</h3>
+        <h3>{mainTitle}</h3>
         <Input
           value={nickName}
           name="changeNickname"
@@ -38,12 +33,13 @@ const UserInFo = () => {
         ></CustomButton>
       </UserInfoContainer>
       <RxAvatar />
+      <Modal />
       <RenderToast />
     </UserInfoStyle>
   );
 };
 
-export default UserInFo;
+export default UserInfoSetting ;
 
 const UserInfoStyle = styled.div`
   display: flex;

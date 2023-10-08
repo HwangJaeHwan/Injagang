@@ -12,6 +12,8 @@ import { Dispatch } from "redux";
 import Cookies from "js-cookie";
 import { checkOutAPI, loginAPI } from "@/api/AUTH/authAPI";
 import { PROFILE_INIT, profileDispatchType } from "../MyProfile/types";
+import { showToastAction } from "../Toast/actions";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 type AuthenTicate = {
   loginId: string;
@@ -81,8 +83,17 @@ export const passWordChange =
           headers: { Authorization: Cookies.get("accessToken") },
         },
       );
+      dispatch(
+        showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.CHANGE_PASSWORD),
+      );
     } catch (error: any) {
       dispatch({ type: AUTHENTICATE_FAILURE, payload: { error } });
+      dispatch(
+        showToastAction(
+          TOAST_MODE.ERROR,
+          ERROR_MESSAGES.DOESN_T_MATCH_PASSWORD,
+        ),
+      );
     }
   };
 

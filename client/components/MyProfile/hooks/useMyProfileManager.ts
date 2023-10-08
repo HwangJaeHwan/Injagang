@@ -1,22 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { passWordChange } from "@/components/redux/Auth/actions";
 import { nicknameChange } from "@/components/redux/MyProfile/actions";
-import { IPassWordInfo } from "./useUserMyProfileManager";
+import { IPassWordInfo } from "./useMyProfileLogic";
 import { runValidationChecks } from "@/util/runValidationChecks";
 import { hasEmptyFields } from "@/util/hasEmpty";
-import {
-  ERROR_MESSAGES,
-  MODAL_MESSAGES,
-  SUCCESS_MESSAGES,
-  TOAST_MODE,
-} from "@/constants";
-import { useRouter } from "next/router";
+import { ERROR_MESSAGES, MODAL_MESSAGES } from "@/constants";
 import useModal from "@/hooks/useModal";
 import useToast from "@/hooks/useToast";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
-import { error } from "console";
 
 const validation = {
   password: ({
@@ -44,10 +35,6 @@ const validation = {
 
 const useMyProfileManager = () => {
   const dispatch = useDispatch();
-  const { success, error } = useSelector(
-    (state: RootReducerType) => state.profile,
-  );
-  const router = useRouter();
   const { Modal, setModal } = useModal();
   const [showToast, RenderToast] = useToast();
 

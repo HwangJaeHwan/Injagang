@@ -3,9 +3,7 @@ import CustomButton from "@/components/UI/CustomButton";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
 import useMyProfileManager from "./hooks/useMyProfileManager";
-import useUserMyProfileManager, {
-  IPassWordInfo,
-} from "./hooks/useUserMyProfileManager";
+import useMyProfileLogic, { IPassWordInfo } from "./hooks/useMyProfileLogic";
 
 interface PasswordInputProps {
   title: string;
@@ -29,8 +27,8 @@ const PasswordInputItem = ({
 };
 
 const PassWordSetting = () => {
-  const { dispatchPasswordChange, Modal } = useMyProfileManager();
-  const { passWordInfo, handleInfoChange } = useUserMyProfileManager();
+  const { dispatchPasswordChange, Modal, RenderToast } = useMyProfileManager();
+  const { passWordInfo, handleInfoChange } = useMyProfileLogic();
 
   const labels = {
     nowPassword: "현재비밀번호",
@@ -40,7 +38,6 @@ const PassWordSetting = () => {
 
   return (
     <PassWordContainer>
-      <Modal />
       {Object.keys(passWordInfo).map(key => (
         <PasswordInputItem
           key={key}
@@ -55,6 +52,8 @@ const PassWordSetting = () => {
         onClick={() => dispatchPasswordChange(passWordInfo)}
         text="변경"
       />
+      <RenderToast />
+      <Modal />
     </PassWordContainer>
   );
 };

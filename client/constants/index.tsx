@@ -44,11 +44,13 @@ export const ERROR_MESSAGES = {
   MINIMUM_QNA: "질문과 답변은 1개이상 작성해주세요.",
   EMPTY_ANSWER: "답변이 비어있습니다.",
   EMPTY_NICK: "닉네임이 비어있습니다.",
-  DUPLICATION_NICK: "중복된 닉네임이 존재합니다."
+  DUPLICATION_NICK: "중복된 닉네임이 존재합니다.",
+  DOESN_T_MATCH_PASSWORD: '입력한 정보가 일치하지 않습니다.'
 };
 
 export const SUCCESS_MESSAGES = {
   CHANGE_NICK: "닉네임 변경을 완료하였습니다.",
+  CHANGE_PASSWORD: "패스워드 변경을 완료하였습니다.",
 };
 
 export const MODAL_MESSAGES = {

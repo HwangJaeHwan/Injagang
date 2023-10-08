@@ -27,7 +27,7 @@ const useToast = (duration: number = 3000) => {
 
   const showToast = useCallback(
     (mode: TOAST_MODE = "Info", message: string) => {
-      dispatch(showToastAction(mode, message));
+      dispatch(showToastAction(mode, message, duration));
     },
     [],
   );

@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
-import UserInFo from "./UserInFo";
+import UserInFo from "./UserInFoSetting";
 import PassWordInfo from "./PassWordSetting";
 import { v } from "@/styles/variables";
 
