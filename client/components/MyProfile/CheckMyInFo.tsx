@@ -1,7 +1,7 @@
 import React from "react";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
-import UserInFo from "./UserInFoSetting";
+import UserInFo from "./UserInfoSetting";
 import PassWordInfo from "./PassWordSetting";
 import { v } from "@/styles/variables";
 
