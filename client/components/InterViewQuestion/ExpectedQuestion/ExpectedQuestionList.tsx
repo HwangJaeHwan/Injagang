@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ControlMenu from "../../UI/ControlMenu";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "../../redux/store";
 import ExpectedQuestionListItem from "./ExpectedQuestionListItem";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import UserQuestionPlayList from "../PlayList/UserQuestionPlayList";
 import CustomButton from "../../UI/CustomButton";
-import {
-  getInterViewQnaList,
-  handleDeleteInterViewQnaList,
-} from "../../redux/InterViewQuestion/action";
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
-import useCheckList from "../hooks/useCheckList";
+import useCheckList from "@/hooks/useCheckList";
+import useExpectedQuestionManager from "../hooks/useExpectedQuestionManager";
+import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
+import useExpectedQuestionLogic from "../hooks/useExpectedQuestionLogic";
+import useEUserQuestionManager from "../hooks/useEUserQuestionManager";
+
+const ExplanationContent = () => {
+  return (
+    <Explanation>
+      <h2>자신만의 면접 질문 리스트를 만들어주세요.</h2>
+      <p>(선택사항)샘플 리스트를 선택하여 추가하면 됩니다.</p>
+      <p>(선택사항)자신이 원하는 질문도 추가하면 됩니다.</p>
+      <p>
+        랜덤셋팅도 있으니 넘어가셔도 됩니다. 자신만의 질문과
+        랜덤셋팅을조합할수도있습니다.
+      </p>
+    </Explanation>
+  );
+};
 
 const InterViewSelectData = [
   { title: QuestionType.CS, id: 1 },
@@ -24,71 +35,36 @@ const InterViewSelectData = [
 ];
 
 const ExpectedQuestionList = () => {
-  const [selectType, setSelectType] = useState<QuestionType | string>("ALL");
-  const [addInterViewList, setAddInterViewList] = useState<string[]>([]);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const interViewList = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.list,
-  );
+  const { selectedType, dispatchSelectedType } = useEUserQuestionManager();
+  const { interViewQuestionList, dispatchRemoveQuestions } =
+    useExpectedQuestionManager();
+  const { addInterViewQuestionsList, selectedQuestionList } =
+    useExpectedQuestionLogic();
   const { checkList, handleAllCheck, handleCheckList, isAllCheck } =
-    useCheckList(interViewList);
-  const interViewListUpdated = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.isUpdated,
-  );
-  const authRole = useSelector((state: RootReducerType) => state.profile.role);
-
-  /**컨트롤 메뉴를 변경시 적용 */
-  useEffect(() => {
-    dispatch(getInterViewQnaList(selectType));
-  }, [selectType]);
-
-  /**인터뷰질문이 업데이트 되면 업데이트 적용 */
-  useEffect(() => {
-    if (interViewListUpdated) {
-      dispatch(getInterViewQnaList(selectType));
-    }
-  }, [interViewListUpdated]);
+    useCheckList(interViewQuestionList);
+  const { role } = useMyProfileManager();
 
   /**인터뷰질문리스트 삭제 */
   const handleRemoveQuestions = () => {
-    const data = {
-      ids: checkList,
-    };
     handleAllCheck();
-    dispatch(handleDeleteInterViewQnaList(data));
-  };
-
-  /**인터뷰 영상촬영을 위한 질문리스트 추가 */
-  const hadleSetInterViewList = () => {
-    const filterItem = interViewList.filter((a, i) => a.id === checkList[i]);
-    const questionList = filterItem.map((a, i) => a.questions);
-    setAddInterViewList(questionList);
+    dispatchRemoveQuestions(checkList, selectedType);
   };
 
   return (
     <InterViewListViewStyle>
-      <Explanation>
-        <h2>자신만의 면접 질문 리스트를 만들어주세요.</h2>
-        <p>(선택사항)샘플 리스트를 선택하여 추가하면 됩니다.</p>
-        <p>(선택사항)자신이 원하는 질문도 추가하면 됩니다.</p>
-        <p>
-          랜덤셋팅도 있으니 넘어가셔도 됩니다. 자신만의 질문과
-          랜덤셋팅을조합할수도있습니다.
-        </p>
-      </Explanation>
+      <ExplanationContent />
       <SwitchContainer>
         <LeftContainer>
           <Card size={{ height: "450px", width: "100%", flex: "Col" }}>
             <ControlMenu
-              value={selectType}
+              value={selectedType}
               optionList={InterViewSelectData}
-              onChange={setSelectType}
+              onChange={dispatchSelectedType}
               Size={{ width: "100%", height: "30px" }}
             ></ControlMenu>
             <Container>
-              {interViewList &&
-                interViewList.map((a, i) => (
+              {interViewQuestionList &&
+                interViewQuestionList.map((a, i) => (
                   <ExpectedQuestionListItem
                     key={a.id}
                     allCheck={isAllCheck}
@@ -103,7 +79,7 @@ const ExpectedQuestionList = () => {
                 text={isAllCheck ? "전체해제" : "전체선택"}
                 Size={{ width: "100px", font: "15px" }}
               />
-              {authRole === "ADMIN" ? (
+              {role === "ADMIN" ? (
                 <CustomButton
                   onClick={handleRemoveQuestions}
                   text={"삭제하기"}
@@ -111,7 +87,9 @@ const ExpectedQuestionList = () => {
                 />
               ) : (
                 <CustomButton
-                  onClick={hadleSetInterViewList}
+                  onClick={() =>
+                    addInterViewQuestionsList(interViewQuestionList, checkList)
+                  }
                   text={"항목추가"}
                   Size={{ width: "100px", font: "15px" }}
                 />
@@ -120,8 +98,8 @@ const ExpectedQuestionList = () => {
           </Card>
         </LeftContainer>
         <UserQuestionPlayList
-          qType={selectType}
-          addList={addInterViewList}
+          qType={selectedType}
+          addList={selectedQuestionList}
         ></UserQuestionPlayList>
       </SwitchContainer>
     </InterViewListViewStyle>
