@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import AddTextInput from "./AddTextInput";
+import QuestionAdder from "./QuestionAdder";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
 import styled from "styled-components";
-import AddQuestionItem from "./AddQuestionItem";
-import Modal from "../UI/Modal";
+import UserQuestionPlayListItems from "./UserQuestionPlayListItems";
+import Modal from "../../UI/Modal";
 import { useDispatch } from "react-redux";
-import {
-  handleAddQuestion,
-} from "../redux/InterViewQuestion/action";
+import { handleAddQuestion } from "../../redux/InterViewQuestion/action";
 import { useSelector } from "react-redux";
-import { RootReducerType } from "../redux/store";
-import { addInterViewList } from "../redux/InterViewList/action";
+import { RootReducerType } from "../../redux/store";
+import { addInterViewList } from "../../redux/InterViewList/action";
 
 const AddQuestionListViewStyle = styled.div`
   width: 45%;
@@ -31,11 +29,11 @@ type AddQuestionListViewProps = {
   addList?: string[];
 };
 
-const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
+const UserQuestionPlayList = ({ qType, addList }: AddQuestionListViewProps) => {
   const [addText, setAddText] = useState<string[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [modalMsg, setModalMsg] = useState({ title: "", content: "" });
-  const authRole = useSelector((state: RootReducerType) => state.auth.role);
+  const authRole = useSelector((state: RootReducerType) => state.profile.role);
   const dispatch = useDispatch();
 
   //유저가 추가한 리스트를 입력
@@ -86,7 +84,7 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
     if (addText.length < 1) {
       setIsOpenModal(true);
       setModalMsg({ title: "경고", content: "현재는 리스트가 비어있습니다." });
-      return
+      return;
     }
     dispatch(addInterViewList(addText));
     setIsOpenModal(true);
@@ -97,15 +95,15 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
       <Card size={{ height: "450px", width: "100%", flex: "Col" }}>
         <Container>
           {addText.map((question, idx) => (
-            <AddQuestionItem
+            <UserQuestionPlayListItems
               key={idx}
               item={question}
               index={idx}
               handleRemoveText={handleRemoveText}
-            ></AddQuestionItem>
+            ></UserQuestionPlayListItems>
           ))}
         </Container>
-        <AddTextInput
+        <QuestionAdder
           handleAddQuestion={handleAddText}
           handleCancelQuestion={
             authRole === "ADMIN" ? handleSubmit : handleSetInterViewQuestions
@@ -123,4 +121,4 @@ const AddQuestionListView = ({ qType, addList }: AddQuestionListViewProps) => {
   );
 };
 
-export default React.memo(AddQuestionListView);
+export default React.memo(UserQuestionPlayList);

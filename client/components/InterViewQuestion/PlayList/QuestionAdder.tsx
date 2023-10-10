@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import CustomButton from "../UI/CustomButton";
+import CustomButton from "../../UI/CustomButton";
 import { text } from "stream/consumers";
 
 const AddTextInputStyle = styled.div`
@@ -21,7 +21,7 @@ interface AddTextInputProps {
   handleAddQuestion: (title: string) => void;
   handleCancelQuestion: () => void;
 }
-const AddTextInput = ({
+const QuestionAdder = ({
   handleAddQuestion,
   handleCancelQuestion,
 }: AddTextInputProps) => {
@@ -57,4 +57,4 @@ const AddTextInput = ({
   );
 };
 
-export default AddTextInput;
+export default QuestionAdder;

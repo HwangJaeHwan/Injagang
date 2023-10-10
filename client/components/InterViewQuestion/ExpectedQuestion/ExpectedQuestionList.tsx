@@ -1,51 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ControlMenu from "../UI/ControlMenu";
+import ControlMenu from "../../UI/ControlMenu";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { RootReducerType } from "../redux/store";
-import InterViewListItem from "./InterViewListItem";
+import { RootReducerType } from "../../redux/store";
+import ExpectedQuestionListItem from "./ExpectedQuestionListItem";
 import { Card, ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
-import AddQuestionListView from "../Admin/AddQuestionListView";
-import CustomButton from "../UI/CustomButton";
-import { getInterViewQnaList, handleDeleteInterViewQnaList } from "../redux/InterViewQuestion/action";
+import UserQuestionPlayList from "../PlayList/UserQuestionPlayList";
+import CustomButton from "../../UI/CustomButton";
+import {
+  getInterViewQnaList,
+  handleDeleteInterViewQnaList,
+} from "../../redux/InterViewQuestion/action";
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
-const InterViewListViewStyle = styled.div`
-  ${ColBox}
-  width: 100%;
-  height: 90%;
-  @media screen and (max-width: 1200px) {
-    width: 90%;
-  }
-`;
-
-const SwitchContainer = styled.div`
-  ${FlexBox}
-  width: 90%;
-  gap: 25px;
-  @media screen and (max-width: 1200px) {
-    ${ColBox}
-  }
-`;
-
-const LeftContainer = styled.div`
-  width: 45%;
-  @media screen and (max-width: 1200px) {
-    width: 100%;
-  }
-`;
-
-
-const Container = styled.div`
-  ${ScrollBar}
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-`;
-
-const Explanation = styled.div`
-  margin: 30px;
-`;
 
 const InterViewSelectData = [
   { title: QuestionType.CS, id: 1 },
@@ -55,7 +22,7 @@ const InterViewSelectData = [
   { title: "ALL", id: 5 },
 ];
 
-const InterViewListView = () => {
+const ExpectedQuestionList = () => {
   const [selectType, setSelectType] = useState<QuestionType | string>("ALL");
   const [allCheck, setAllCheck] = useState<boolean>(false);
   const [checkList, setCheckList] = useState<number[]>([]);
@@ -68,7 +35,7 @@ const InterViewListView = () => {
   const interViewListUpdated = useSelector(
     (state: RootReducerType) => state.interViewQuestion.isUpdated,
   );
-  const authRole = useSelector((state: RootReducerType) => state.auth.role);
+  const authRole = useSelector((state: RootReducerType) => state.profile.role);
 
   /**컨트롤 메뉴를 변경시 적용 */
   useEffect(() => {
@@ -150,12 +117,12 @@ const InterViewListView = () => {
             <Container>
               {interViewList &&
                 interViewList.map((a, i) => (
-                  <InterViewListItem
+                  <ExpectedQuestionListItem
                     key={a.id}
                     allCheck={allCheck}
                     onChange={handleAddCheckList}
                     {...a}
-                  ></InterViewListItem>
+                  ></ExpectedQuestionListItem>
                 ))}
             </Container>
             <div>
@@ -180,13 +147,49 @@ const InterViewListView = () => {
             </div>
           </Card>
         </LeftContainer>
-        <AddQuestionListView
+        <UserQuestionPlayList
           qType={selectType}
           addList={addInterViewList}
-        ></AddQuestionListView>
+        ></UserQuestionPlayList>
       </SwitchContainer>
     </InterViewListViewStyle>
   );
 };
 
-export default InterViewListView;
+export default ExpectedQuestionList;
+
+const InterViewListViewStyle = styled.div`
+  ${ColBox}
+  width: 100%;
+  height: 90%;
+  @media screen and (max-width: 1200px) {
+    width: 90%;
+  }
+`;
+
+const SwitchContainer = styled.div`
+  ${FlexBox}
+  width: 90%;
+  gap: 25px;
+  @media screen and (max-width: 1200px) {
+    ${ColBox}
+  }
+`;
+
+const LeftContainer = styled.div`
+  width: 45%;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
+`;
+
+const Container = styled.div`
+  ${ScrollBar}
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+`;
+
+const Explanation = styled.div`
+  margin: 30px;
+`;

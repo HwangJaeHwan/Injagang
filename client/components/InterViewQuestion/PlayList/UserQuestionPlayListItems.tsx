@@ -13,7 +13,7 @@ type AddQuestionItemProps = {
   handleRemoveText: (index: number) => void;
 };
 
-const AddQuestionItem = ({
+const UserQuestionPlayListItems = ({
   item,
   index,
   handleRemoveText,
@@ -21,9 +21,9 @@ const AddQuestionItem = ({
   return (
     <AddQuestionItemStyle>
       {item}
-      <BiTrash onClick={()=> handleRemoveText(index)}/>
+      <BiTrash onClick={() => handleRemoveText(index)} />
     </AddQuestionItemStyle>
   );
 };
 
-export default AddQuestionItem;
+export default UserQuestionPlayListItems;

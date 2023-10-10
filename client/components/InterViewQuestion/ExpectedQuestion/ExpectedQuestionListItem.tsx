@@ -17,7 +17,7 @@ type InterViewListItemProps = {
   onChange: (id: number, isCheck: boolean) => void;
 };
 
-const InterViewListItem = ({
+const ExpectedQuestionListItem = ({
   onChange,
   questions,
   allCheck,
@@ -46,4 +46,4 @@ const InterViewListItem = ({
   );
 };
 
-export default React.memo(InterViewListItem);
+export default React.memo(ExpectedQuestionListItem);
