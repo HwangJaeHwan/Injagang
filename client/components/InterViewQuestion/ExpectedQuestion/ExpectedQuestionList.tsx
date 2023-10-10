@@ -13,6 +13,7 @@ import {
   handleDeleteInterViewQnaList,
 } from "../../redux/InterViewQuestion/action";
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
+import useCheckList from "../hooks/useCheckList";
 
 const InterViewSelectData = [
   { title: QuestionType.CS, id: 1 },
@@ -24,14 +25,14 @@ const InterViewSelectData = [
 
 const ExpectedQuestionList = () => {
   const [selectType, setSelectType] = useState<QuestionType | string>("ALL");
-  const [allCheck, setAllCheck] = useState<boolean>(false);
-  const [checkList, setCheckList] = useState<number[]>([]);
   const [addInterViewList, setAddInterViewList] = useState<string[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const dispatch = useDispatch();
   const interViewList = useSelector(
     (state: RootReducerType) => state.interViewQuestion.list,
   );
+  const { checkList, handleAllCheck, handleCheckList, isAllCheck } =
+    useCheckList(interViewList);
   const interViewListUpdated = useSelector(
     (state: RootReducerType) => state.interViewQuestion.isUpdated,
   );
@@ -49,41 +50,12 @@ const ExpectedQuestionList = () => {
     }
   }, [interViewListUpdated]);
 
-  /**전체체크 제어 */
-  const handleAllCheck = () => {
-    setAllCheck(!allCheck);
-  };
-
-  /**전체체크 변경된값이 true이면 현재리스트 배열에서 id값만 추출하여 리스트 생성 전체체크 해제시 리스트 초기화*/
-  useEffect(() => {
-    if (allCheck) {
-      const idList = interViewList.map(a => a.id);
-      setCheckList(idList);
-      return;
-    } else {
-      setCheckList([]);
-      return;
-    }
-  }, [allCheck]);
-
-  /**체크여부를 판단후 아이템을 제거하고 추가한다.*/
-  const handleAddCheckList = (id: number, isCheck: boolean) => {
-    if (isCheck) {
-      const removeItem = checkList.filter(a => a !== id);
-      setCheckList(removeItem);
-      return;
-    } else {
-      setCheckList(cur => [...cur, id]);
-      return;
-    }
-  };
-
   /**인터뷰질문리스트 삭제 */
   const handleRemoveQuestions = () => {
     const data = {
       ids: checkList,
     };
-    setAllCheck(false);
+    handleAllCheck();
     dispatch(handleDeleteInterViewQnaList(data));
   };
 
@@ -119,8 +91,8 @@ const ExpectedQuestionList = () => {
                 interViewList.map((a, i) => (
                   <ExpectedQuestionListItem
                     key={a.id}
-                    allCheck={allCheck}
-                    onChange={handleAddCheckList}
+                    allCheck={isAllCheck}
+                    onChange={handleCheckList}
                     {...a}
                   ></ExpectedQuestionListItem>
                 ))}
@@ -128,7 +100,7 @@ const ExpectedQuestionList = () => {
             <div>
               <CustomButton
                 onClick={handleAllCheck}
-                text={allCheck ? "전체해제" : "전체선택"}
+                text={isAllCheck ? "전체해제" : "전체선택"}
                 Size={{ width: "100px", font: "15px" }}
               />
               {authRole === "ADMIN" ? (
