@@ -12,6 +12,7 @@ import userTemplateReducer from "./Template/user/reducer";
 import userEssayReducer from "./Essay/user/reducer";
 import profileReducer from "./MyProfile/reducer";
 import toastReducer from "./Toast/reducer";
+import userInterViewQuestionsReducer from "./InterViewQuestion/user/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   userEssayList: userEssayReducer,
   profile: profileReducer,
   toast: toastReducer,
+  userInterViewQuestions: userInterViewQuestionsReducer,
 });
 
 export default rootReducer;

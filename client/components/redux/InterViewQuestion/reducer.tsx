@@ -1,4 +1,3 @@
-import { QuestionType } from "./action";
 import {
   InterviewQuestionList,
   QUESTIONRANDOM_SUCCESS,
@@ -60,7 +59,7 @@ const interViewQuestionReducer = (
       return {
         ...state,
         lading: false,
-        randomList: action.payload.randomList
+        randomList: action.payload.randomList,
       };
 
     default:

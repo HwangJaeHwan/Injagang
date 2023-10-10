@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch } from "redux";
 import {
   QUESTIONRANDOM_SUCCESS,
   QUESTION_FAILURE,
@@ -22,8 +22,8 @@ import {
 } from "@/api/INTERVIEWQUESTION/interViewQuestionAPI";
 
 export const handleAddQuestion =
-  (newList: IAddQuestions) =>
-  async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
+  (newList: IAddQuestions, type: QuestionType | string) =>
+  async (dispatch: Dispatch): Promise<void> => {
     try {
       if (newList.questionType === "ALL") {
         newList.questionType = "";
@@ -32,6 +32,7 @@ export const handleAddQuestion =
       const request = await addInterViewQuestionAPI(newList);
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
+        dispatch(getInterViewQnaList(type));
       }
     } catch (error: any) {
       dispatch({
@@ -72,12 +73,13 @@ export const getInterViewQnaList =
   };
 
 export const handleDeleteInterViewQnaList =
-  (ids: IDeleteQuestions) =>
+  (ids: IDeleteQuestions, type: QuestionType | string) =>
   async (dispatch: Dispatch<questionDispatchType>): Promise<void> => {
     try {
       const request = await deleteInterViewQuestionAPI(ids);
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
+        dispatch(getInterViewQnaList(type));
       }
     } catch (error: any) {
       dispatch({

@@ -1,4 +1,4 @@
-import { QuestionType } from "./action";
+import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 
 export const QUESTION_SUCCESS = "QUESTION_SUCCESS";
 export const QUESTION_REQUEST = "QUESTION_REQUEST";

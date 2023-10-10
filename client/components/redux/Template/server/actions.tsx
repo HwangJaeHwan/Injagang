@@ -18,7 +18,6 @@ export const getTemplate =
   () =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
-      console.log("wtewwetewq");
       dispatch({ type: TEMPLATE_REQUEST });
       const response = await getTemplateAPI();
       if (response) {
