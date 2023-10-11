@@ -22,7 +22,7 @@ import {
 } from "@/api/INTERVIEWQUESTION/interViewQuestionAPI";
 
 export const handleAddQuestion =
-  (newList: IAddQuestions, type: QuestionType | string) =>
+  (newList: IAddQuestions) =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
       if (newList.questionType === "ALL") {
@@ -32,7 +32,7 @@ export const handleAddQuestion =
       const request = await addInterViewQuestionAPI(newList);
       if (request.status === 200) {
         dispatch({ type: QUESTION_UPDATED });
-        dispatch(getInterViewQnaList(type));
+        dispatch(getInterViewQnaList(newList.questionType));
       }
     } catch (error: any) {
       dispatch({

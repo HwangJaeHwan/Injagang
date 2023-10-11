@@ -11,7 +11,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  selectedQuestions: [''],
+  selectedQuestions: [],
   selectedType: "all",
 };
 

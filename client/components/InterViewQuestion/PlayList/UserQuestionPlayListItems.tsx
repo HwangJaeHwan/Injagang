@@ -26,4 +26,4 @@ const UserQuestionPlayListItems = ({
   );
 };
 
-export default UserQuestionPlayListItems;
+export default React.memo(UserQuestionPlayListItems);
