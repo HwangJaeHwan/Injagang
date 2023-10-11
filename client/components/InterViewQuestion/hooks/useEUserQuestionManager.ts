@@ -8,6 +8,7 @@ import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import useExpectedQuestionManager from "./useExpectedQuestionManager";
+import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
 
 const useEUserQuestionManager = () => {
   const dispatch = useDispatch();
@@ -24,15 +25,22 @@ const useEUserQuestionManager = () => {
     dispatch(setTypeAction(type));
   }, []);
 
-  const dispatchSetSelectedQuestions = useCallback((list: string[]) => {
-    dispatch(setSelectedQuestionsAction(list));
-  }, []);
+  const dispatchSelectedQuestions = useCallback(
+    (questions: InterviewQuestionList[], checkList: number[]) => {
+      const filterItem = questions.filter((question, i) =>
+        checkList.includes(question.id),
+      );
+      const questionList = filterItem.map((item, i) => item.questions);
+      dispatch(setSelectedQuestionsAction(questionList));
+    },
+    [],
+  );
 
   return {
     selectedQuestions,
     selectedType,
     dispatchSelectedType,
-    dispatchSetSelectedQuestions,
+    dispatchSelectedQuestions,
   };
 };
 

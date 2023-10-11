@@ -23,7 +23,7 @@ const ExpectedQuestionListItem = ({
   /**현재 리스트의 체크리스트 변경하고 핸들러를 통해 id값과 체크 상태를 전달 */
   const handleCheckList = () => {
     onChange(id, isCheck);
-    setIsCheck(!isCheck);
+    setIsCheck(isCheck => !isCheck);
   };
 
   return (

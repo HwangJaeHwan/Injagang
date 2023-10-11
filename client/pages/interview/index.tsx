@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import InterviewRecord from "@/components/InterView/interviewRecord";
-import InterViewListView from "@/components/InterView/InterViewListView";
+import InterViewListView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";

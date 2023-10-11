@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CustomButton from "../../UI/CustomButton";
 import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
 import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
@@ -23,7 +23,7 @@ const ActionBtns = ({
   questions,
 }: ActionBtnProps) => {
   const { role } = useMyProfileManager();
-  const isAdmin = role === "ADMIN" ? role : "USER";
+  const isAdmin = role === "ADMIN" ? "ADMIN" : "USER";
 
   const handleRemove = () => {
     onToggleAll();
