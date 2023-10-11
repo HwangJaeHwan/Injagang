@@ -76,7 +76,7 @@ const UserQuestionPlayList = ({ qType, addList }: AddQuestionListViewProps) => {
       questions: addText,
       questionType: qType,
     };
-    dispatch(handleAddQuestion(addList));
+    dispatch(handleAddQuestion(addList, qType));
     setAddText([]);
   };
   /**인터뷰촬영시 질문리스트 확정 */

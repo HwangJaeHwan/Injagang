@@ -27,6 +27,7 @@ const useEUserQuestionManager = () => {
   const dispatchSetSelectedQuestions = useCallback((list: string[]) => {
     dispatch(setSelectedQuestionsAction(list));
   }, []);
+
   return {
     selectedQuestions,
     selectedType,

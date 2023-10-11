@@ -8,6 +8,8 @@ import { hasEmptyFields } from "@/util/hasEmpty";
 import { ERROR_MESSAGES, MODAL_MESSAGES } from "@/constants";
 import useModal from "@/hooks/useModal";
 import useToast from "@/hooks/useToast";
+import { useSelector } from "react-redux";
+import { RootReducerType } from "@/components/redux/store";
 
 const validation = {
   password: ({
@@ -35,6 +37,7 @@ const validation = {
 
 const useMyProfileManager = () => {
   const dispatch = useDispatch();
+  const { role } = useSelector((state: RootReducerType) => state.profile);
   const { Modal, setModal } = useModal();
   const [showToast, RenderToast] = useToast();
 
@@ -119,7 +122,13 @@ const useMyProfileManager = () => {
     });
   };
 
-  return { dispatchPasswordChange, dispatchNickNameChange, Modal, RenderToast };
+  return {
+    dispatchPasswordChange,
+    dispatchNickNameChange,
+    Modal,
+    RenderToast,
+    role,
+  };
 };
 
 export default useMyProfileManager;
