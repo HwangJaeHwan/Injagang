@@ -20,7 +20,7 @@ type BoardListItemProps = {
 };
 
 const BoardListItem = ({ id, nickname, title }: BoardListItemProps) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <BoardListItemStyle>
       <tr onClick = {() => router.push(`/qna/answer/${id}`)}>
