@@ -25,7 +25,7 @@ export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
       dispatch({
         type: BOARDINFO_SUCCESS,
         payload: {
-          boardInfoList: [response.data],
+          boardInfoList: response.data,
         },
       });
     }

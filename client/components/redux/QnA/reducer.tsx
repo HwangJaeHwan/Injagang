@@ -13,7 +13,7 @@ export interface InitiaState {
   loading: boolean;
   error: any;
   boardList: BOARDLIST[];
-  boardInFoList: BOARDINFOLIST[];
+  boardInFoList: BOARDINFOLIST;
   qnaIdList: number[];
   isUpdated: boolean;
 }
@@ -23,7 +23,12 @@ const initialState: InitiaState = {
   error: null,
   boardList: [],
   qnaIdList: [],
-  boardInFoList: [],
+  boardInFoList: {
+    totalPage: 0,
+    boardInfos: [],
+    isFirst: false,
+    isLast: false,
+  },
   isUpdated: false,
 };
 
@@ -57,7 +62,7 @@ const boardReducer = (state = initialState, action: boardDispatchType) => {
       return {
         ...state,
         isUpdated: true,
-      }
+      };
 
     default:
       return state;

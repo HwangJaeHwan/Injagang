@@ -56,7 +56,7 @@ export interface boardSuccessDispatch {
 export interface boardInfoSuccessDispatch {
   type: typeof BOARDINFO_SUCCESS;
   payload: {
-    boardInfoList: BOARDINFOLIST[];
+    boardInfoList: BOARDINFOLIST;
   };
 }
 
