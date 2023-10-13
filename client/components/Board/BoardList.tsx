@@ -1,16 +1,29 @@
 import React from "react";
-import { RootReducerType } from "@/components/redux/store";
-import { useSelector } from "react-redux";
-import BoardListItme from "./BoardListItem";
+import BoardListItem from "./BoardListItem";
 
-const BoardList = () => {
-  const { boardInfos } = useSelector(
-    (state: RootReducerType) => state.board.boardInFoList,
-  );
+interface BoardListProps<T> {
+  boardInfos: T[];
+  idKey: keyof T;
+  displayKeys: (keyof T)[];
+  route?: string;
+}
+
+const BoardList = <T,>({
+  boardInfos,
+  idKey,
+  displayKeys,
+  route,
+}: BoardListProps<T>) => {
   return (
     <>
-      {boardInfos.map((list, i) => (
-        <BoardListItme key={list.id} {...list}></BoardListItme>
+      {boardInfos?.map(info => (
+        <BoardListItem
+          key={String(info[idKey])}
+          item={info}
+          idKey={idKey}
+          displayKeys={displayKeys}
+          route={route}
+        />
       ))}
     </>
   );

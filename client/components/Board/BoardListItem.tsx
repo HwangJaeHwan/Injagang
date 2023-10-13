@@ -1,35 +1,44 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
-const BoardListItemStyle = styled.tbody`
+interface BoardListItemProps<T> {
+  item: T;
+  idKey: keyof T;
+  displayKeys: (keyof T)[];
+  route?: string;
+}
+
+const BoardListItem = <T,>({
+  item,
+  idKey,
+  displayKeys,
+  route,
+}: BoardListItemProps<T>) => {
+  const router = useRouter();
+
+  const navigateToDetail = () => {
+    if (route) router.push(`${route}/${item[idKey]}`);
+  };
+
+  return (
+    <BoardListItemRow onClick={navigateToDetail}>
+      {displayKeys?.map(key => (
+        <td key={`${String(item[idKey])}`}>{String(item[key])}</td>
+      ))}
+    </BoardListItemRow>
+  );
+};
+
+export default BoardListItem;
+
+const BoardListItemRow = styled.tr`
   text-align: center;
   td {
     border: 1px solid #0a0a0a;
     height: 35px;
   }
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;
-
-type BoardListItemProps = {
-  id: number;
-  nickname: string;
-  title: string;
-};
-
-const BoardListItem = ({ id, nickname, title }: BoardListItemProps) => {
-  const router = useRouter();
-  return (
-    <BoardListItemStyle>
-      <tr onClick = {() => router.push(`/qna/answer/${id}`)}>
-        <td>{id}</td>
-        <td>{title}</td>
-        <td>{nickname}</td>
-      </tr>
-    </BoardListItemStyle>
-  );
-};
-
-export default BoardListItem;
