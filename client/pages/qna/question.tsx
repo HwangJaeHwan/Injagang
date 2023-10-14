@@ -1,4 +1,4 @@
-import QuestionWirte from "@/components/QNA/Question/QuestionWirte";
+import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
 import { ColBox } from "@/styles/GlobalStyle";
 
 import React, { useEffect } from "react";
@@ -21,7 +21,7 @@ const question = () => {
 
   return (
     <WirteStyle>
-      <QuestionWirte />
+      <QuestionComposer />
     </WirteStyle>
   );
 };

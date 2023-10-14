@@ -14,16 +14,20 @@ import {
 import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
 
 const useCoverLetterManager = () => {
-  const { readEssayList, loading } = useSelector(
+  const { readEssayList, loading, essayList } = useSelector(
     (state: RootReducerType) => state.essay,
+  );
+  const { selectedEssayList } = useSelector(
+    (state: RootReducerType) => state.userEssayList,
   );
   const coverLetterMainTitle = readEssayList[0].title;
   const dispatch = useDispatch();
   const router = useRouter();
 
   //CoverLetterItems
-  const changeSeleted = (item: IGetEssayList) => {
-    dispatch(setCurEssayList(item));
+  const changeSeleted = (newList: IGetEssayList) => {
+    if (newList === selectedEssayList) return;
+    dispatch(setCurEssayList(newList));
   };
 
   const moveEditPage = (essayId: number) => {
@@ -73,6 +77,7 @@ const useCoverLetterManager = () => {
   return {
     changeSeleted,
     moveEditPage,
+    essayList,
     readEssayList,
     loading,
     getDetailEssayList,

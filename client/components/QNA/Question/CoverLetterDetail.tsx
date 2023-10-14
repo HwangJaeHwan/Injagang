@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ScrollBar } from "@/styles/GlobalStyle";
-import EssayDetailItems from "./EssayDetailItems";
+import CoverLetterItem from "./CoverLetterItem";
 import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
 
-interface EssayProps {
+interface CoverLetterProps {
   essayId: number;
 }
 
-const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
+const CoverLetterDetail = ({ essayId = 0 }: CoverLetterProps) => {
   const { readEssayList, getDetailEssayList } = useCoverLetterManager();
   useEffect(() => {
     if (essayId > 0) {
@@ -17,24 +17,24 @@ const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
   }, [essayId]);
 
   return (
-    <EssayDetailStyle>
+    <CoverLetterDetailStyle>
       {readEssayList?.map(essayList => (
-        <EssayContainer key={essayList.essayId}>
+        <CoverLetterContainer key={essayList.essayId}>
           <h2 className="essay_title">{essayList.title}</h2>
           <>
             {essayList.qnaList.map(qna => (
-              <EssayDetailItems key={qna.qnaId} {...qna} />
+              <CoverLetterItem  key={qna.qnaId} {...qna} />
             ))}
           </>
-        </EssayContainer>
+        </CoverLetterContainer>
       ))}
-    </EssayDetailStyle>
+    </CoverLetterDetailStyle>
   );
 };
 
-export default React.memo(EssayDetailView);
+export default React.memo(CoverLetterDetail);
 
-const EssayDetailStyle = styled.div`
+const CoverLetterDetailStyle = styled.div`
   ${ScrollBar}
   padding: 15px;
   background-color: #191919;
@@ -45,7 +45,7 @@ const EssayDetailStyle = styled.div`
   word-break: break-all;
   overflow-x: hidden;
 `;
-const EssayContainer = styled.div`
+const CoverLetterContainer = styled.div`
   .essay_title {
     text-align: center;
     color: #fff;

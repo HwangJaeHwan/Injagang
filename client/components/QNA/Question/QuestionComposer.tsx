@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import EssayDetailView from "@/components/QNA/Question/EssayDetailView";
+import CoverLetterDetail from "@/components/QNA/Question/CoverLetterDetail";
 import QuestionTitle from "@/components/UI/ListTitle";
 import ControlMenu from "@/components/UI/ControlMenu";
 import CustomButton from "@/components/UI/CustomButton";
@@ -11,8 +11,8 @@ import styled from "styled-components";
 import TextArea from "@/components/UI/TextArea";
 import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
 
-const QuestionWirte = () => {
-  const [essayTitle, setEssayTitle] = useState<string>("");
+const QuestionComposer = () => {
+  const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [essayId, setEssayId] = useState<number>(0);
@@ -22,8 +22,8 @@ const QuestionWirte = () => {
 
   const navigateToList = () => router.push("/qna/list");
 
-  const handleChangeTitle = (title: string) => {
-    setEssayTitle(title);
+  const changeCoverLetter = (title: string) => {
+    setCoverLetterTitle(title);
     const findEssay = essayList.find(list => list.title === title);
     if (findEssay) setEssayId(findEssay?.essayId);
   };
@@ -34,15 +34,16 @@ const QuestionWirte = () => {
       content,
       essayId,
     };
+    //TOME :: QNA MANAGER 생성시 대처
     dispatch(writeBoard(data));
     navigateToList();
   };
 
-  const handleChangeMainTtitle = (title: string) => {
+  const changeMainTitle = (title: string) => {
     setTitle(title);
   };
 
-  const handleChangeText = (text: string) => {
+  const changeContent = (text: string) => {
     setContent(text);
   };
 
@@ -50,14 +51,14 @@ const QuestionWirte = () => {
     <Card size={{ width: "80%", height: "80%", flex: "row" }}>
       <SwitchContainer>
         <LeftContainer>
-          <QuestionTitle onChange={handleChangeMainTtitle}></QuestionTitle>
+          <QuestionTitle onChange={changeMainTitle}></QuestionTitle>
           <ControlMenu
             Size={{ width: "100%", height: "40px" }}
-            value={essayTitle}
-            onChange={e => handleChangeTitle(e)}
+            value={coverLetterTitle}
+            onChange={e => changeCoverLetter(e)}
             optionList={essayList}
           ></ControlMenu>
-          <TextArea handleChangeText={handleChangeText} />
+          <TextArea handleChangeText={changeContent} />
           <CustomButton
             Size={{ width: "100%", font: "15px" }}
             text="작성완료"
@@ -65,14 +66,14 @@ const QuestionWirte = () => {
           ></CustomButton>
         </LeftContainer>
         <RigthContainer>
-          <EssayDetailView essayId={essayId} />
+          <CoverLetterDetail essayId={essayId} />
         </RigthContainer>
       </SwitchContainer>
     </Card>
   );
 };
 
-export default QuestionWirte;
+export default QuestionComposer;
 const SwitchContainer = styled.div`
   ${FlexBox}
   width: 100%;
