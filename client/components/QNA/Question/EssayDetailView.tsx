@@ -1,11 +1,38 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { readEssayList } from "../../redux/Essay/server/actions";
-import { RootReducerType } from "../../redux/store";
 import styled from "styled-components";
 import { ScrollBar } from "@/styles/GlobalStyle";
 import EssayDetailItems from "./EssayDetailItems";
+import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
+
+interface EssayProps {
+  essayId: number;
+}
+
+const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
+  const { readEssayList, getDetailEssayList } = useCoverLetterManager();
+  useEffect(() => {
+    if (essayId > 0) {
+      getDetailEssayList(essayId);
+    }
+  }, [essayId]);
+
+  return (
+    <EssayDetailStyle>
+      {readEssayList?.map(essayList => (
+        <EssayContainer key={essayList.essayId}>
+          <h2 className="essay_title">{essayList.title}</h2>
+          <>
+            {essayList.qnaList.map(qna => (
+              <EssayDetailItems key={qna.qnaId} {...qna} />
+            ))}
+          </>
+        </EssayContainer>
+      ))}
+    </EssayDetailStyle>
+  );
+};
+
+export default React.memo(EssayDetailView);
 
 const EssayDetailStyle = styled.div`
   ${ScrollBar}
@@ -24,36 +51,3 @@ const EssayContainer = styled.div`
     color: #fff;
   }
 `;
-
-interface EssayProps {
-  essayId: number;
-}
-
-const EssayDetailView = ({ essayId = 0 }: EssayProps) => {
-  const dispatch = useDispatch();
-  const readEssayReducer = useSelector(
-    (state: RootReducerType) => state.essay.readEssayList,
-  );
-  useEffect(() => {
-    if (essayId > 0) {
-      dispatch(readEssayList(essayId));
-    }
-  }, [essayId]);
-  return (
-    <EssayDetailStyle>
-      {readEssayReducer &&
-        readEssayReducer.map(essayList => (
-          <EssayContainer key={essayList.essayId}>
-            <h2 className="essay_title">{essayList.title}</h2>
-            <>
-              {essayList.qnaList.map(qna => (
-                <EssayDetailItems key={qna.qnaId} {...qna} />
-              ))}
-            </>
-          </EssayContainer>
-        ))}
-    </EssayDetailStyle>
-  );
-};
-
-export default React.memo(EssayDetailView);
