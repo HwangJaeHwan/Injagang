@@ -15,7 +15,7 @@ export const writeQnaBoardAPI = async (boardPayload: IWriteQnaBoard) => {
 };
 
 export const deleteQnaBoardAPI = async (targetId: number) => {
-  return fetcher(METHOD.DELETE, `${BOARD_APIS}${targetId}`);
+  return fetcher(METHOD.DELETE, `${BOARD_APIS.DELETE_API}${targetId}`);
 };
 
 export const reviseQnaBoardAPI = async (boardPayload: IReviseQnaBoard) => {

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { v4 as uuid4 } from "uuid";
 
 interface BoardListItemProps<T> {
   item: T;
@@ -15,7 +16,7 @@ const BoardListItem = <T,>({
   displayKeys,
   route,
 }: BoardListItemProps<T>) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const navigateToDetail = () => {
     if (route) router.push(`${route}/${item[idKey]}`);
@@ -24,7 +25,7 @@ const BoardListItem = <T,>({
   return (
     <BoardListItemRow onClick={navigateToDetail}>
       {displayKeys?.map(key => (
-        <td key={`${String(item[idKey])}`}>{String(item[key])}</td>
+        <td key={uuid4()}>{String(item[key])}</td>
       ))}
     </BoardListItemRow>
   );

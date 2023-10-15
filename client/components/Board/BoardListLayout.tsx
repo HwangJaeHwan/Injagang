@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 
 const HEAD_ITEM = ["번호", "제목", "닉네임"];
 const ID_KEY = "id";
-const ROUTE_TEMPLATE = "/qna/answer/";
+const ROUTE_TEMPLATE = "/qna/answer";
 
 const BoardListLayout = () => {
-  //TODO :: Manager위임 작업시 변경 
+  //TODO :: Manager위임 작업시 변경
   const { boardInfos } = useSelector(
     (state: RootReducerType) => state.board.boardInFoList,
   );
