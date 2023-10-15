@@ -46,9 +46,9 @@ export const ERROR_MESSAGES = {
   EMPTY_NICK: "닉네임이 비어있습니다.",
   EMPTY_LIST: "리스트가 비어있습니다.",
   DUPLICATION_NICK: "중복된 닉네임이 존재합니다.",
-  DOESN_T_MATCH_PASSWORD: '입력한 정보가 일치하지 않습니다.',
-  DOESN_T_TYPE: 'TYPE을 선택해주세요.'
-
+  DUPLICATION_TEXT: "선택한 문장이 존재합니다.",
+  DOESN_T_MATCH_PASSWORD: "입력한 정보가 일치하지 않습니다.",
+  DOESN_T_TYPE: "TYPE을 선택해주세요.",
 };
 
 export const SUCCESS_MESSAGES = {
