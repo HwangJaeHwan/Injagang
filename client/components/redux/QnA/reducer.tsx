@@ -12,7 +12,7 @@ import {
 export interface InitiaState {
   loading: boolean;
   error: any;
-  boardList: BOARDLIST[];
+  boardList: BOARDLIST;
   boardInFoList: BOARDINFOLIST;
   qnaIdList: number[];
   isUpdated: boolean;
@@ -21,7 +21,16 @@ export interface InitiaState {
 const initialState: InitiaState = {
   loading: false,
   error: null,
-  boardList: [],
+  boardList: {
+    boardId: 0,
+    title: "",
+    content: "",
+    userId: 0,
+    nickname: "",
+    owner: false,
+    essayTitle: "",
+    qnaList: [],
+  },
   qnaIdList: [],
   boardInFoList: {
     totalPage: 0,

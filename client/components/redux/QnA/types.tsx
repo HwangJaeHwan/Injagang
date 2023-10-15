@@ -48,7 +48,7 @@ export interface BOARDINFOLIST {
 export interface boardSuccessDispatch {
   type: typeof BOARD_SUCCESS;
   payload: {
-    list: BOARDLIST[];
+    list: BOARDLIST;
     qnaIdList: qnaList[];
   };
 }

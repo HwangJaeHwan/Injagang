@@ -44,7 +44,7 @@ export const getBoardDetail =
         dispatch({
           type: BOARD_SUCCESS,
           payload: {
-            list: [response.data],
+            list: response.data,
             qnaIdList: response.data.qnaList,
           },
         });

@@ -1,7 +1,7 @@
 import Modal from "@/components/UI/Modal";
 import { deleteBoard } from "@/components/redux/QnA/actions";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiDotsHorizontal, BiTrash, BiMessageAltEdit } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -32,7 +32,6 @@ const EditMenuBar = ({ boardID }: EditMenuBarProps) => {
   const [isOpenModal, setIsOpenModal] = useState(Boolean);
   const dispatch = useDispatch();
   const router = useRouter();
-  console.log(boardID);
   const handleElementClick = () => {
     setTagPosition(!tagPosition);
   };

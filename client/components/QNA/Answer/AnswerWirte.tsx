@@ -15,6 +15,154 @@ import EditMenuBar from "@/components/QNA/Answer/EditMenuBar";
 import TextArea from "@/components/UI/TextArea";
 import Modal from "@/components/UI/Modal";
 import { v } from "@/styles/variables";
+import useQnaManager from "../hooks/useQnaManager";
+
+export type CorrectionItem = {
+  targetQuestion: number;
+  targetAnswer: string;
+  targetQuestionIndex: number;
+};
+
+const AnswerWirte = () => {
+  const [correction, setCorrection] = useState<CorrectionItem>({
+    targetQuestion: 0,
+    targetAnswer: "",
+    targetQuestionIndex: 0,
+  });
+  const [correctionText, setCorrectionText] = useState<string>("");
+  const [feedBackIndex, setFeedBackIndex] = useState<number>(0);
+  const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
+  const [isViolation, setIsViolation] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  const { boardList, isUpdated } = useSelector(
+    (state: RootReducerType) => state.board,
+  );
+  const { qnaIdList } = useSelector((state: RootReducerType) => state.board);
+  const { selectedCorrection, dispatchChangeCorrection } = useQnaManager();
+
+  const handleSubmit = () => {
+    if (correctionText.length < 30 || correction.targetAnswer === "") {
+      setIsOpenModal(true);
+      setIsViolation(true);
+      setTimeout(() => {
+        setIsViolation(false);
+      }, 10);
+      return;
+    }
+    const data = {
+      qnaId: correction.targetQuestionIndex,
+      feedbackTarget: correction.targetAnswer,
+      feedbackContent: correctionText,
+    };
+    dispatch(writeFeedback(data));
+    setCorrection({
+      targetAnswer: "",
+      targetQuestion: 0,
+      targetQuestionIndex: 0,
+    });
+    handleClear();
+  };
+
+  const handleClear = () => {
+    setIsFeedBackClear(true);
+    setTimeout(() => {
+      setIsFeedBackClear(false);
+    }, 10);
+  };
+
+  const handleFeedBackIndex = (qnaId: number) => {
+    setFeedBackIndex(qnaId);
+  };
+
+  const handleChangeFeedBack = (feedBackText: string) => {
+    setCorrectionText(feedBackText);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+  };
+  if (isUpdated) return <p>보드의 정보를 가져오는중입니다. </p>;
+  useEffect(() => {
+    console.log(isUpdated);
+  }, [isUpdated]);
+  return (
+    <AnswerWirteStyle>
+      <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
+        <SwitchContainer>
+          <LeftContainer>
+            <BoardItem {...boardList} />
+          </LeftContainer>
+          <RigthContainer>
+            <AnswerDragView onChange={setCorrection} />
+          </RigthContainer>
+        </SwitchContainer>
+        {boardList.owner && <EditMenuBar boardID={boardList.boardId} />}
+      </Card>
+
+      <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
+        <CorrectionContainer>
+          <span className="correction_title">
+            현재 선택된 문장:{" "}
+            {correction.targetQuestion !== 0 ? correction.targetQuestion : ""}
+          </span>
+          <h4 className="correction_sentence">{correction.targetAnswer}</h4>
+        </CorrectionContainer>
+
+        <CommentTop>
+          <TextArea
+            handleChangeText={handleChangeFeedBack}
+            violation={isViolation}
+            clear={isFeedBackClear}
+          ></TextArea>
+        </CommentTop>
+
+        <CommentFooter>
+          <ControlLeftButtons>
+            {qnaIdList.map((list, i) => (
+              <CustomButton
+                className={list === feedBackIndex ? "active_button" : " "}
+                Size={{ width: "40px", font: "15px" }}
+                text={`${i + 1}`}
+                onClick={() => handleFeedBackIndex(list)}
+                key={list}
+              ></CustomButton>
+            ))}
+          </ControlLeftButtons>
+
+          <ControlRightButtons>
+            <CustomButton
+              text="비우기"
+              onClick={handleClear}
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+            <CustomButton
+              text="작성"
+              onClick={handleSubmit}
+              Size={{ width: "150px", font: "15px" }}
+            ></CustomButton>
+          </ControlRightButtons>
+        </CommentFooter>
+      </Card>
+
+      <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
+      {isOpenModal && (
+        <Modal
+          isOpen={isOpenModal}
+          onClose={handleCloseModal}
+          contents={{
+            title: "경고",
+            content: `Target질문을 선택해주세요.
+              피드백은 30자이상 작성하세요. `,
+          }}
+        ></Modal>
+      )}
+    </AnswerWirteStyle>
+  );
+};
+
+export default AnswerWirte;
 
 const AnswerWirteStyle = styled.div`
   ${ColBox}
@@ -114,161 +262,3 @@ const ControlRightButtons = styled.div`
     gap: 8px;
   }
 `;
-
-export type CorrectionItem = {
-  targetQuestion: number;
-  targetAnswer: string;
-  targetQuestionIndex: number;
-};
-
-const AnswerWirte = () => {
-  const router = useRouter();
-  const [correction, setCorrection] = useState<CorrectionItem>({
-    targetQuestion: 0,
-    targetAnswer: "",
-    targetQuestionIndex: 0,
-  });
-  const [correctionText, setCorrectionText] = useState<string>("");
-  const [feedBackIndex, setFeedBackIndex] = useState<number>(0);
-  const [removeID, setRemoveID] = useState<number>(0);
-  const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
-  const [isViolation, setIsViolation] = useState<boolean>(false);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const boardId = router.query;
-
-  const boardList = useSelector(
-    (state: RootReducerType) => state.board.boardList,
-  );
-
-  const boardQnAIdList = useSelector(
-    (state: RootReducerType) => state.board.qnaIdList,
-  );
-
-  useEffect(() => {
-    if (!isNaN(Number(boardId.id))) {
-      dispatch(getBoardDetail(Number(boardId.id)));
-      setRemoveID(Number(boardId.id));
-    }
-  }, [router.query]);
-
-  const handleSubmit = () => {
-    if (correctionText.length < 30 || correction.targetAnswer === "") {
-      setIsOpenModal(true);
-      setIsViolation(true);
-      setTimeout(() => {
-        setIsViolation(false);
-      }, 10);
-      return;
-    }
-    const data = {
-      qnaId: correction.targetQuestionIndex,
-      feedbackTarget: correction.targetAnswer,
-      feedbackContent: correctionText,
-    };
-    dispatch(writeFeedback(data));
-    setCorrection({
-      targetAnswer: "",
-      targetQuestion: 0,
-      targetQuestionIndex: 0,
-    });
-    handleClear();
-  };
-
-  const handleClear = () => {
-    setIsFeedBackClear(true);
-    setTimeout(() => {
-      setIsFeedBackClear(false);
-    }, 10);
-  };
-
-  const handleFeedBackIndex = (qnaId: number) => {
-    setFeedBackIndex(qnaId);
-  };
-
-  const handleChangeFeedBack = (feedBackText: string) => {
-    setCorrectionText(feedBackText);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-  };
-  return (
-    <AnswerWirteStyle>
-      <Card size={{ width: "80%", height: "45vh", flex: "row" }}>
-        <SwitchContainer>
-          <LeftContainer>
-            {boardList &&
-              boardList.map((list, i) => (
-                <BoardItem key={list.boardId} {...list} />
-              ))}
-          </LeftContainer>
-          <RigthContainer>
-            <AnswerDragView onChange={setCorrection} />
-          </RigthContainer>
-        </SwitchContainer>
-        {boardList.length > 0 && boardList[0].owner && <EditMenuBar boardID={removeID} />}
-      </Card>
-
-      <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
-        <CorrectionContainer>
-          <span className="correction_title">
-            현재 선택된 문장:{" "}
-            {correction.targetQuestion !== 0 ? correction.targetQuestion : ""}
-          </span>
-          <h4 className="correction_sentence">{correction.targetAnswer}</h4>
-        </CorrectionContainer>
-
-        <CommentTop>
-          <TextArea
-            handleChangeText={handleChangeFeedBack}
-            violation={isViolation}
-            clear={isFeedBackClear}
-          ></TextArea>
-        </CommentTop>
-
-        <CommentFooter>
-          <ControlLeftButtons>
-            {boardQnAIdList.map((list, i) => (
-              <CustomButton
-                className={list === feedBackIndex ? "active_button" : " "}
-                Size={{ width: "40px", font: "15px" }}
-                text={`${i + 1}`}
-                onClick={() => handleFeedBackIndex(list)}
-                key={list}
-              ></CustomButton>
-            ))}
-          </ControlLeftButtons>
-
-          <ControlRightButtons>
-            <CustomButton
-              text="비우기"
-              onClick={handleClear}
-              Size={{ width: "150px", font: "15px" }}
-            ></CustomButton>
-            <CustomButton
-              text="작성"
-              onClick={handleSubmit}
-              Size={{ width: "150px", font: "15px" }}
-            ></CustomButton>
-          </ControlRightButtons>
-        </CommentFooter>
-      </Card>
-
-      <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
-      {isOpenModal && (
-        <Modal
-          isOpen={isOpenModal}
-          onClose={handleCloseModal}
-          contents={{
-            title: "경고",
-            content: `Target질문을 선택해주세요.
-              피드백은 30자이상 작성하세요. `,
-          }}
-        ></Modal>
-      )}
-    </AnswerWirteStyle>
-  );
-};
-
-export default AnswerWirte;

@@ -13,6 +13,7 @@ import userEssayReducer from "./Essay/user/reducer";
 import profileReducer from "./MyProfile/reducer";
 import toastReducer from "./Toast/reducer";
 import userInterViewQuestionsReducer from "./InterViewQuestion/user/reducer";
+import userBoardReducer from "./QnA/user/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   toast: toastReducer,
   userInterViewQuestions: userInterViewQuestionsReducer,
+  userBoard: userBoardReducer,
 });
 
 export default rootReducer;

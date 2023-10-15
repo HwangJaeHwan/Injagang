@@ -1,11 +1,11 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../../redux/store";
 
 import { CorrectionItem } from "./AnswerWirte";
 import { ScrollBar } from "@/styles/GlobalStyle";
-import useModal from "@/hooks/useModal";
+import useDragCorrection from "../hooks/useDragCorrection";
 
 const EssayDragStyle = styled.div`
   ${ScrollBar}
@@ -56,81 +56,46 @@ interface EssayDragProps {
 
 /**드래그 첨삭 기능을 가진 자소서 View */
 const EssayDragView = ({ onChange }: EssayDragProps) => {
-  const [selectedData, setSelectedData] = useState({
+  const { handleCorrection, selectedText, removeCorrection, Modal } =
+    useDragCorrection();
+
+  const [selectedQnA, setSelectedQnA] = useState({
     dragTitleNumber: 0,
-    qnaId: 0,
-    selectedText: "",
-    start: 0,
-    end: 0,
-    added: false,
   });
-  const boardList = useSelector(
-    (state: RootReducerType) => state.board.boardList
-  );
-  
-  const {setModal, Modal} = useModal()
+  const { boardList } = useSelector((state: RootReducerType) => state.board);
+
   useEffect(() => {
-    handleApply()
-  },[selectedData])
+    handleApply();
+  }, [selectedText]);
 
   /**드래그 첨삭 탐색*/
-  const handleSelect = (dragTitleNumber: number, qnaId: number) => {
-    const selectedText = window.getSelection()?.toString();
-    if (selectedText !== "" && selectedData.added) {
-      setModal({
-        contents: {
-          title: "Message",
-          content: "이미 선택한 문장이 존재합니다."
-        }
-      })
-      return
-    }
-
-    if (selectedText && selectedText !== "") {
-      const range = window.getSelection()?.getRangeAt(0);
-      const start = range?.startOffset || 0;
-      const end = range?.endOffset || 0;
-
-      setSelectedData({
-        dragTitleNumber,
-        qnaId,
-        selectedText,
-        start,
-        end,
-        added: true,
-      });
-    }
+  const handleSelect = (dragTitleNumber: number, targetID: number) => {
+    setSelectedQnA({
+      dragTitleNumber,
+    });
+    handleCorrection(targetID);
   };
 
   /**드래그 첨삭 적용 */
   const handleApply = () => {
-    const { dragTitleNumber, selectedText, qnaId } = selectedData;
+    const { dragTitleNumber } = selectedQnA;
     onChange({
       targetQuestion: dragTitleNumber,
-      targetAnswer: selectedText,
-      targetQuestionIndex: qnaId,
+      targetAnswer: selectedText.selectedText,
+      targetQuestionIndex: selectedText.targetId,
     });
   };
 
   /**현재 드래그 첨삭 삭제 */
   const handleRemove = () => {
-    setSelectedData({
-      dragTitleNumber: 0,
-      qnaId: 0,
-      selectedText: "",
-      start: 0,
-      end: 0,
-      added: false,
-    });
+    removeCorrection();
   };
 
   return (
     <EssayDragStyle>
-      <h2 className="essay_title">
-        {boardList[0]?.essayTitle && boardList[0].essayTitle}
-      </h2>
-      {boardList[0]?.qnaList &&
-        boardList[0].qnaList.map((list, idx) => (
+      <h2 className="essay_title">{boardList?.essayTitle}</h2>
+      {boardList?.qnaList &&
+        boardList.qnaList.map((list, idx) => (
           <EssayDragItems key={list.qnaId}>
             <EssayQuestionContainer>
               <h4 className="essay_question">
@@ -143,17 +108,17 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
                 onMouseUp={() => handleSelect(idx + 1, list.qnaId)}
               >
                 답변:
-                {selectedData.added && selectedData.qnaId === list.qnaId ? (
+                {selectedText.added && selectedText.targetId === list.qnaId ? (
                   <>
-                    {list.answer.substring(0, selectedData.start)}
+                    {list.answer.substring(0, selectedText.start)}
                     <span
                       style={{ backgroundColor: "#e69a0def" }}
                       onClick={handleRemove}
                     >
-                      {selectedData.selectedText}
+                      {selectedText.selectedText}
                     </span>
                     {list.answer.substring(
-                      selectedData.end,
+                      selectedText.end,
                       list.answer.length,
                     )}
                   </>
@@ -164,7 +129,7 @@ const EssayDragView = ({ onChange }: EssayDragProps) => {
             </EssayAnswerContainer>
           </EssayDragItems>
         ))}
-        <Modal/>
+      <Modal />
     </EssayDragStyle>
   );
 };
