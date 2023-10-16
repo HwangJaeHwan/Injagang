@@ -1,4 +1,4 @@
-import BoardListView from "@/components/QNA/BoardListView";
+import BoardListView from "@/components/Board/BoardListLayout";
 import PageNation from "@/components/QNA/PageNation";
 import CustomButton from "@/components/UI/CustomButton";
 import { ColBox } from "@/styles/GlobalStyle";
