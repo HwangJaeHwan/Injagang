@@ -2,20 +2,16 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../../redux/store";
-
-import { CorrectionItem } from "./AnswerWirte";
 import { ScrollBar } from "@/styles/GlobalStyle";
 import useDragCorrection from "../hooks/useDragCorrection";
 import AnswerDragItem from "./AnswerDragItem";
-
-interface AnswerDragProps {
-  onChange: React.Dispatch<React.SetStateAction<CorrectionItem>>;
-}
+import userQnaManager from "../hooks/userQnaManager";
 
 /**드래그 첨삭 기능을 가진 자소서 View */
-const AnswerDragView = ({ onChange }: AnswerDragProps) => {
+const AnswerDragView = () => {
   const { handleCorrection, selectedText, removeCorrection, Modal } =
     useDragCorrection();
+  const { dispatchChangeCorrection } = userQnaManager();
 
   const { boardList } = useSelector((state: RootReducerType) => state.board);
 
@@ -25,14 +21,12 @@ const AnswerDragView = ({ onChange }: AnswerDragProps) => {
 
   /**드래그 첨삭 적용 */
   const handleApply = () => {
-    onChange({
+    dispatchChangeCorrection({
       targetQuestion: selectedText.dragTitleId,
       targetAnswer: selectedText.selectedText,
       targetQuestionIndex: selectedText.targetId,
     });
   };
-
-
 
   return (
     <AnswerDragStyle>

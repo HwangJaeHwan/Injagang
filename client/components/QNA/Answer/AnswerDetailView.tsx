@@ -5,13 +5,9 @@ import EditMenuBar from "@/components/QNA/Answer/EditMenuBar";
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { CorrectionItem } from "./AnswerWirte";
 import styled from "styled-components";
 
-interface AnswerDetailViewProps {
-  setCorrection: React.Dispatch<React.SetStateAction<CorrectionItem>>;
-}
-const AnswerDetailView = ({ setCorrection }: AnswerDetailViewProps) => {
+const AnswerDetailView = () => {
   const { boardList, isUpdated } = useSelector(
     (state: RootReducerType) => state.board,
   );
@@ -23,7 +19,7 @@ const AnswerDetailView = ({ setCorrection }: AnswerDetailViewProps) => {
           <BoardItem {...boardList} />
         </LeftContainer>
         <RigthContainer>
-          <AnswerDragView onChange={setCorrection} />
+          <AnswerDragView />
         </RigthContainer>
       </SwitchContainer>
       {boardList.owner && <EditMenuBar boardID={boardList.boardId} />}

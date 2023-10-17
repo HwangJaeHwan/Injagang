@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
-import AnswerWirte from "@/components/QNA/Answer/AnswerWirte";
+import AnswerLayout from "@/components/QNA/Answer/AnswerLayout";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { getBoardDetail } from "@/components/redux/QnA/actions";
@@ -24,7 +24,7 @@ const answer = () => {
 
   return (
     <ViewStyle>
-      <AnswerWirte />
+      <AnswerLayout />
     </ViewStyle>
   );
 };

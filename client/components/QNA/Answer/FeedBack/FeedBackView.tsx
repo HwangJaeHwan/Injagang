@@ -9,21 +9,17 @@ import {
 } from "../../../redux/FeedBack/action";
 import FeedBackItems from "./FeedBackItems";
 import { ColBox } from "@/styles/GlobalStyle";
+import userQnaManager from "../../hooks/userQnaManager";
 
-type FeedBackViewProps = {
-  targetNumber: number;
-};
-
-const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
+const FeedBackView = () => {
   const dispatch = useDispatch();
-
   const feedbackList = useSelector(
     (state: RootReducerType) => state.feedBack.feedbackList,
   );
-
   const feedIsUpdated = useSelector(
     (state: RootReducerType) => state.feedBack.isUpdated,
   );
+  const { targetFeed } = userQnaManager();
 
   const handleUpdateFeedBack = (feedbackId: number, reviseContent: string) => {
     const data = {
@@ -34,10 +30,10 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
   };
 
   useEffect(() => {
-    if (targetNumber !== 0) {
-      dispatch(getFeedbackList(targetNumber));
+    if (targetFeed !== 0) {
+      dispatch(getFeedbackList(targetFeed));
     }
-  }, [targetNumber, feedIsUpdated]);
+  }, [targetFeed, feedIsUpdated]);
 
   return (
     <FeedBackViewStyle>
