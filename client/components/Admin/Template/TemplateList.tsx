@@ -18,7 +18,7 @@ const TemplateList = () => {
     getTemplateList();
   }, []);
 
-  if (error) return <p>Error발생</p>;
+  // if (error) return <p>Error발생</p>;
 
   return (
     <TemplateStlyed>

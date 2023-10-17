@@ -32,12 +32,14 @@ const templateReducer = (
     case TEMPLATE_REQUEST:
       return {
         ...state,
+        erorr: null,
         loading: true,
       };
     case TEMPLATE_SUCCESS:
       return {
         ...state,
         loading: false,
+        erorr: null,
         templateList: action.payload.templateState.map(it => ({
           templateId: it.templateId,
           title: it.title,
