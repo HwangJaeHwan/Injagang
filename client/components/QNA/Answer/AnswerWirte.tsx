@@ -12,6 +12,7 @@ import TextArea from "@/components/UI/TextArea";
 import AnswerDetailView from "./AnswerDetailView";
 import CorrectionView from "./CorrectionView";
 import useModal from "@/hooks/useModal";
+import FeedBackComposer from "./FeedBack/FeedBackComposer";
 
 export type CorrectionItem = {
   targetQuestion: number;
@@ -34,6 +35,7 @@ const Answer = () => {
   const { qnaIdList } = useSelector((state: RootReducerType) => state.board);
 
   const handleSubmit = () => {
+    alert("작동");
     if (correctionText.length < 30 || correction.targetAnswer === "") {
       setModal({
         contents: {
@@ -77,56 +79,22 @@ const Answer = () => {
     setCorrectionText(feedBackText);
   };
 
-  const btnInfo = [
-    { text: "비우기", onClick: handleClear },
-    { text: "작성", onClick: handleSubmit },
-  ];
-
-  const TextActionBtns = () => (
-    <ControlRightButtons>
-      {btnInfo.map((info, idx) => (
-        <CustomButton {...info} Size={{ width: "150px", font: "15px" }} />
-      ))}
-    </ControlRightButtons>
-  );
-
-  const Footer = () => (
-    <CommentFooter>
-      <FeedBackViewBtns>
-        {qnaIdList.map((list, i) => (
-          <CustomButton
-            className={list === feedBackIndex ? "active_button" : " "}
-            Size={{ width: "40px", font: "15px" }}
-            text={`${i + 1}`}
-            onClick={() => handleFeedBackIndex(list)}
-            key={list}
-          ></CustomButton>
-        ))}
-      </FeedBackViewBtns>
-      <TextActionBtns />
-    </CommentFooter>
-  );
-
-  const FeedBackComposer = () => (
-    <Card size={{ width: "80%", height: "35vh", flex: "col" }}>
-      <CorrectionView {...correction} />
-      <CommentTop>
-        <TextArea
-          handleChangeText={handleChangeFeedBack}
-          violation={isViolation}
-          clear={isFeedBackClear}
-        ></TextArea>
-      </CommentTop>
-      <Footer />
-    </Card>
-  );
-
   //TODO:: 기본적인 컴포넌트 분리완료, 컴포넌트 모듈화 하고 상태에 대한 로직 분리하기, props에 따라 리덕스 고려하기 !!!!!!!
 
   return (
     <AnswerWirteStyle>
       <AnswerDetailView setCorrection={setCorrection} />
-      <FeedBackComposer />
+      <FeedBackComposer
+        correction={correction}
+        handleChangeFeedBack={handleChangeFeedBack}
+        isViolation={isViolation}
+        isFeedBackClear={isFeedBackClear}
+        handleClear={handleClear}
+        handleFeedBackIndex={handleFeedBackIndex}
+        handleSubmit={handleSubmit}
+        qnaIdList={qnaIdList}
+        feedBackIndex={feedBackIndex}
+      />
       <FeedBackView targetNumber={feedBackIndex}></FeedBackView>
       <Modal />
     </AnswerWirteStyle>

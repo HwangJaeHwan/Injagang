@@ -10,12 +10,6 @@ import {
 import FeedBackItems from "./FeedBackItems";
 import { ColBox } from "@/styles/GlobalStyle";
 
-const FeedBackViewStyle = styled.div`
-  ${ColBox}
-  width: 100%;
-  margin-top: 5vh;
-`;
-
 type FeedBackViewProps = {
   targetNumber: number;
 };
@@ -48,7 +42,7 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
   return (
     <FeedBackViewStyle>
       {feedbackList &&
-        feedbackList.map((feedback) => (
+        feedbackList.map(feedback => (
           <FeedBackItems
             key={feedback.feedbackId}
             handleUpdateFeedBack={handleUpdateFeedBack}
@@ -60,3 +54,10 @@ const FeedBackView = ({ targetNumber }: FeedBackViewProps) => {
 };
 
 export default FeedBackView;
+
+const FeedBackViewStyle = styled.div`
+  ${ColBox}
+  height: 100%;
+  width: 100%;
+  margin-top: 5vh;
+`;
