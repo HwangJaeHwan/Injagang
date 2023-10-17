@@ -46,7 +46,12 @@ const BeautyButton = styled.button<SelectProps>`
 
 const CustomButton = ({ onClick, text, Size, className }: ButtonProps) => {
   return (
-    <BeautyButton className={className} Size={Size} onClick={onClick}>
+    <BeautyButton
+      className={className}
+      Size={Size}
+      onClick={onClick}
+      onMouseDown={onClick}
+    >
       {text}
     </BeautyButton>
   );
