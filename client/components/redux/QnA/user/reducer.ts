@@ -1,11 +1,24 @@
-import { IsetCorrection, userBoardDispatchType, SET_CORRECTION } from "./types";
+import { CorrectionItem } from "@/components/QNA/Answer/AnswerWirte";
+import {
+  IsetCorrection,
+  userBoardDispatchType,
+  SET_CORRECTION,
+  INIT_CORRECITON,
+  SET_TARGETFEED,
+} from "./types";
 
 export interface InitialState {
-  selectedCorrection: string | null;
+  selectedCorrection: CorrectionItem;
+  targetFeed: number;
 }
 
 const initialState: InitialState = {
-  selectedCorrection: null,
+  selectedCorrection: {
+    targetAnswer: "",
+    targetQuestion: 0,
+    targetQuestionIndex: 0,
+  },
+  targetFeed: 0,
 };
 
 const userBoardReducer = (
@@ -17,6 +30,20 @@ const userBoardReducer = (
       return {
         ...state,
         selectedCorrection: action.payload.selectedCorrection,
+      };
+    case INIT_CORRECITON:
+      return {
+        ...state,
+        selectedCorrection: {
+          targetAnswer: "",
+          targetQuestion: 0,
+          targetQuestionIndex: 0,
+        },
+      };
+    case SET_TARGETFEED:
+      return {
+        ...state,
+        targetFeed: action.payload.targetFeed,
       };
     default:
       return state;
