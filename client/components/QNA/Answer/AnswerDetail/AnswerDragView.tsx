@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { RootReducerType } from "../../redux/store";
+import { RootReducerType } from "../../../redux/store";
 import { ScrollBar } from "@/styles/GlobalStyle";
-import useDragCorrection from "../hooks/useDragCorrection";
+import useDragCorrection from "../../hooks/useDragCorrection";
 import AnswerDragItem from "./AnswerDragItem";
-import userQnaManager from "../hooks/userQnaManager";
+import userQnaManager from "../../hooks/userQnaManager";
 
 /**드래그 첨삭 기능을 가진 자소서 View */
 const AnswerDragView = () => {

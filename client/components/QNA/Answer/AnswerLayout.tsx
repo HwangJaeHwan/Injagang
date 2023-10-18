@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
-import FeedBackView from "@/components/QNA/Answer/FeedBack/FeedBackView";
-import AnswerDetailView from "./AnswerDetailView";
+import TargetFeedBackView from "@/components/QNA/Answer/TargetFeedBack/TargetFeedBackView";
+import AnswerDetailView from "./AnswerDetail/AnswerDetailView";
 import FeedBackComposer from "./FeedBack/FeedBackComposer";
 
 export type CorrectionItem = {
@@ -18,7 +18,7 @@ const AnswerLayout = () => {
     <AnswerWirteStyle>
       <AnswerDetailView />
       <FeedBackComposer />
-      <FeedBackView />
+      <TargetFeedBackView />
     </AnswerWirteStyle>
   );
 };

@@ -7,17 +7,14 @@ import {
   getFeedbackList,
   updateFeedback,
 } from "../../../redux/FeedBack/action";
-import FeedBackItems from "./FeedBackItems";
+import TargetFeedBackItems from "./TargetFeedBackItems";
 import { ColBox } from "@/styles/GlobalStyle";
 import userQnaManager from "../../hooks/userQnaManager";
 
-const FeedBackView = () => {
+const TargetFeedBackView = () => {
   const dispatch = useDispatch();
-  const feedbackList = useSelector(
-    (state: RootReducerType) => state.feedBack.feedbackList,
-  );
-  const feedIsUpdated = useSelector(
-    (state: RootReducerType) => state.feedBack.isUpdated,
+  const {feedbackList,isUpdated} = useSelector(
+    (state: RootReducerType) => state.feedBack
   );
   const { targetFeed } = userQnaManager();
 
@@ -33,23 +30,22 @@ const FeedBackView = () => {
     if (targetFeed !== 0) {
       dispatch(getFeedbackList(targetFeed));
     }
-  }, [targetFeed, feedIsUpdated]);
+  }, [targetFeed, isUpdated]);
 
   return (
     <FeedBackViewStyle>
-      {feedbackList &&
-        feedbackList.map(feedback => (
-          <FeedBackItems
+      {feedbackList?.map(feedback => (
+          <TargetFeedBackItems
             key={feedback.feedbackId}
             handleUpdateFeedBack={handleUpdateFeedBack}
             {...feedback}
-          ></FeedBackItems>
+          ></TargetFeedBackItems>
         ))}
     </FeedBackViewStyle>
   );
 };
 
-export default FeedBackView;
+export default TargetFeedBackView;
 
 const FeedBackViewStyle = styled.div`
   ${ColBox}

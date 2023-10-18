@@ -7,10 +7,10 @@ import { Card, ScrollBar } from "@/styles/GlobalStyle";
 import { writeFeedback } from "@/components/redux/FeedBack/action";
 import TextArea from "@/components/UI/TextArea";
 
-import CorrectionView from "../CorrectionView";
+import CorrectionView from "./CorrectionView";
 import useModal from "@/hooks/useModal";
 import userQnaManager from "../../hooks/userQnaManager";
-import FeedBackFooter from "./FeddBackFooter";
+import FeedBackFooter from "./FeedBackFooter";
 
 const FeedBackComposer = () => {
   const [correctionText, setCorrectionText] = useState<string>("");

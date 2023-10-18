@@ -19,8 +19,8 @@ const ListStyle = styled.div`
       font-size: 20px;
     }
   }
-  @media screen and (max-width: 800px){
-    .edit_btn{
+  @media screen and (max-width: 800px) {
+    .edit_btn {
       width: 300px;
     }
   }

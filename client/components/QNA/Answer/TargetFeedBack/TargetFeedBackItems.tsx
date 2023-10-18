@@ -2,19 +2,103 @@ import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../../../UI/CustomButton";
-import { Dispatch } from "redux";
-import Modal from "../../../UI/Modal";
 import TextArea from "@/components/UI/TextArea";
+import useModal from "@/hooks/useModal";
+
+type FeedBackItemsProps = {
+  target: string;
+  content: string;
+  feedbackId: number;
+  owner: boolean;
+  handleUpdateFeedBack: (feedbackId: number, content: string) => void;
+};
+
+const FeedBackItems = ({
+  target,
+  content,
+  feedbackId,
+  owner,
+  handleUpdateFeedBack,
+}: FeedBackItemsProps) => {
+  const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
+  const [text, setText] = useState<string>(content);
+  const { Modal, setModal } = useModal();
+
+  const handleUpdate = () => {
+    if (content !== text) handleUpdateFeedBack(feedbackId, text);
+    closeReadOnly();
+  };
+
+  const closeReadOnly = () => {
+    setIsReadOnly(true);
+  };
+
+  const openReadOnly = () => {
+    setIsReadOnly(false);
+  };
+
+  const userEditConfirm = () => {
+    setModal({
+      onAction: openReadOnly,
+      contents: {
+        title: "경고",
+        content: "정말 피드백 수정을 원하시나요?",
+      },
+    });
+  };
+
+  const handleChangeFeedBack = (feedback: string) => {
+    setText(feedback);
+  };
+  return (
+    <FeedBackItemsStyle>
+      <Card size={{ width: "80%", height: "50vh", flex: "col" }}>
+        <CorrectionContainer>
+          <span className="correction_title">피드백:</span>
+          <h4 className="correction_sentence">{target}</h4>
+        </CorrectionContainer>
+        <CommentTop>
+          <TextArea
+            handleChangeText={handleChangeFeedBack}
+            readOnly={isReadOnly}
+            originData={text}
+          ></TextArea>
+        </CommentTop>
+        <CommentFooter>
+          {owner && (
+            <ControlRightButtons>
+              <CustomButton
+                text={isReadOnly ? "편집" : "수정완료"}
+                onClick={isReadOnly ? userEditConfirm : handleUpdate}
+                Size={{ width: "150px", font: "15px" }}
+              ></CustomButton>
+              <CustomButton
+                text="삭제"
+                onClick={() => console.log("e")}
+                Size={{ width: "150px", font: "15px" }}
+              ></CustomButton>
+            </ControlRightButtons>
+          )}
+        </CommentFooter>
+      </Card>
+      <Modal />
+    </FeedBackItemsStyle>
+  );
+};
+
+export default FeedBackItems;
 
 const FeedBackItemsStyle = styled.div`
   ${ColBox}
   width: 100%;
+  max-height: 500px;
+  margin: 20px;
 `;
 
 const CorrectionContainer = styled.div`
   ${ScrollBar}
   width: 98%;
-  height: 40%;
+  height: 30%;
   color: red;
   overflow-x: hidden;
 
@@ -31,12 +115,11 @@ const CorrectionContainer = styled.div`
 `;
 
 const CommentTop = styled.div`
-  height: 60%;
+  height: 50%;
   width: 100%;
   margin: 10px auto;
   textarea {
     ${ScrollBar}
-    height: 100%;
     width: 100%;
     padding: 15px;
     line-height: 1.5;
@@ -61,94 +144,3 @@ const ControlRightButtons = styled.div`
     margin-right: 5px;
   }
 `;
-
-type FeedBackItemsProps = {
-  target: string;
-  content: string;
-  feedbackId: number;
-  owner: boolean;
-  handleUpdateFeedBack: (feedbackId: number, content: string) => void;
-};
-
-const FeedBackItems = ({
-  target,
-  content,
-  feedbackId,
-  owner,
-  handleUpdateFeedBack,
-}: FeedBackItemsProps) => {
-  const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
-  const [text, setText] = useState<string>(content);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
-  const handleUpdate = () => {
-    if (content !== text) {
-      handleUpdateFeedBack(feedbackId, text);
-    }
-    setIsReadOnly(true);
-    setIsOpenModal(false);
-  };
-
-  const handleModal = () => {
-    setIsReadOnly(true);
-    setIsOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-    setText(content);
-  };
-
-  const handleReadOnly = () => {
-    setIsReadOnly(!isReadOnly);
-  };
-
-  const handleChangeFeedBack = (feedback: string) => {
-    setText(feedback);
-  };
-  return (
-    <FeedBackItemsStyle>
-      {isOpenModal && (
-        <Modal
-          isOpen={isOpenModal}
-          onClose={handleCloseModal}
-          onAction={handleUpdate}
-          contents={{ title: "경고", content: "내용" }}
-        />
-      )}
-      <Card size={{ width: "80%", height: "50vh", flex: "col" }}>
-        <CorrectionContainer>
-          <span className="correction_title">피드백:</span>
-          <h4 className="correction_sentence">{target}</h4>
-        </CorrectionContainer>
-        <CommentTop>
-          <TextArea
-            handleChangeText={handleChangeFeedBack}
-            readOnly={isReadOnly}
-            originData={text}
-          ></TextArea>
-        </CommentTop>
-        <CommentFooter>
-          {owner ? (
-            <ControlRightButtons>
-              <CustomButton
-                text={isReadOnly ? "편집" : "수정완료"}
-                onClick={isReadOnly ? handleReadOnly : handleModal}
-                Size={{ width: "150px", font: "15px" }}
-              ></CustomButton>
-              <CustomButton
-                text="삭제"
-                onClick={() => console.log("e")}
-                Size={{ width: "150px", font: "15px" }}
-              ></CustomButton>
-            </ControlRightButtons>
-          ) : (
-            ""
-          )}
-        </CommentFooter>
-      </Card>
-    </FeedBackItemsStyle>
-  );
-};
-
-export default FeedBackItems;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BoardListItem from "./BoardListItem";
 
 interface BoardListProps<T> {
@@ -14,6 +14,7 @@ const BoardList = <T,>({
   displayKeys,
   route,
 }: BoardListProps<T>) => {
+
   return (
     <>
       {boardInfos?.map(info => (

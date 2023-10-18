@@ -1,7 +1,7 @@
 import React from "react";
-import AnswerDragView from "@/components/QNA/Answer/AnswerDragView";
-import BoardItem from "@/components/QNA/Answer/BoardItem";
-import EditMenuBar from "@/components/QNA/Answer/EditMenuBar";
+import AnswerDragView from './AnswerDragView'
+import BoardItem from './BoardItem'
+import EditMenuBar from "./EditMenuBar";
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";

@@ -12,7 +12,7 @@ const PageNation = () => {
   const [minPageNumLimit, setMinPageNumLimit] = useState(0);
   const [maxPageNumLimit, setMaxPageNumLimit] = useState(8);
 
-  const boardReducer: InitiaState = useSelector(
+  const { boardInFoList } = useSelector(
     (state: RootReducerType) => state.board,
   );
   const boardIsUpdated = useSelector(
@@ -20,8 +20,8 @@ const PageNation = () => {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    setTotalPage(boardReducer.boardInFoList[0]?.totalPage);
-  }, [boardReducer.boardInFoList]);
+    setTotalPage(boardInFoList.totalPage);
+  }, [boardInFoList]);
 
   // 페이지가 변경될때마다 새로운 페이지리스트 호출
   useEffect(() => {

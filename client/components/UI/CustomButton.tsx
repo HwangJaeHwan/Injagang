@@ -49,7 +49,6 @@ const CustomButton = ({ onClick, text, Size, className }: ButtonProps) => {
     <BeautyButton
       className={className}
       Size={Size}
-      onClick={onClick}
       onMouseDown={onClick}
     >
       {text}
