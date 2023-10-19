@@ -25,7 +25,11 @@ const FeedBackFooter = ({
   const TextActionBtns = () => (
     <ControlRightButtons>
       {btnInfo.map((info, idx) => (
-        <CustomButton {...info} Size={{ width: "150px", font: "15px" }} />
+        <CustomButton
+          key={idx}
+          {...info}
+          Size={{ width: "150px", font: "15px" }}
+        />
       ))}
     </ControlRightButtons>
   );

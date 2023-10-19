@@ -1,16 +1,13 @@
 import React from "react";
-import AnswerDragView from './AnswerDragView'
-import BoardItem from './BoardItem'
+import AnswerDragView from "./AnswerDragView";
+import BoardItem from "./BoardItem";
 import EditMenuBar from "./EditMenuBar";
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
 import styled from "styled-components";
+import useQnaManager from "../../hooks/useQnaManager";
 
 const AnswerDetailView = () => {
-  const { boardList, isUpdated } = useSelector(
-    (state: RootReducerType) => state.board,
-  );
+  const { boardList, isUpdated } = useQnaManager();
   if (isUpdated) return <p>유저의 질문을 받아오는중입니다.</p>;
   return (
     <Card size={{ width: "80%", height: "45vh", flex: "row" }}>

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "../../../redux/store";
 import { ScrollBar } from "@/styles/GlobalStyle";
 import useDragCorrection from "../../hooks/useDragCorrection";
 import AnswerDragItem from "./AnswerDragItem";
 import userQnaManager from "../../hooks/userQnaManager";
+import useQnaManager from "../../hooks/useQnaManager";
 
 /**드래그 첨삭 기능을 가진 자소서 View */
 const AnswerDragView = () => {
   const { handleCorrection, selectedText, removeCorrection, Modal } =
     useDragCorrection();
   const { dispatchChangeCorrection } = userQnaManager();
-
-  const { boardList } = useSelector((state: RootReducerType) => state.board);
+  const { boardList } = useQnaManager();
 
   useEffect(() => {
     handleApply();
