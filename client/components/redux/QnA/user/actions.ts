@@ -1,4 +1,4 @@
-import { CorrectionItem } from "@/components/QNA/Answer/AnswerWirte";
+import { CorrectionItem } from "@/components/QNA/Answer/AnswerLayout";
 import { INIT_CORRECITON, SET_CORRECTION, SET_TARGETFEED } from "./types";
 
 export const changeCorrection = (correction: CorrectionItem) => ({

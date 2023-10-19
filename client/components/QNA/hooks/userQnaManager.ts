@@ -7,7 +7,7 @@ import {
 import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { CorrectionItem } from "../Answer/AnswerWirte";
+import { CorrectionItem } from "../Answer/AnswerLayout";
 
 const userQnaManager = () => {
   const dispatch = useDispatch();

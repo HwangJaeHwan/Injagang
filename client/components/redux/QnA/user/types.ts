@@ -1,4 +1,4 @@
-import { CorrectionItem } from "@/components/QNA/Answer/AnswerWirte";
+import { CorrectionItem } from "@/components/QNA/Answer/AnswerLayout";
 
 export const SET_CORRECTION = "SET_CORRECTION";
 export const INIT_CORRECITON = "INIT_CORRECTION";

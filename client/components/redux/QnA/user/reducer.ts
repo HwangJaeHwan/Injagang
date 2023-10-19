@@ -1,6 +1,5 @@
-import { CorrectionItem } from "@/components/QNA/Answer/AnswerWirte";
+import { CorrectionItem } from "@/components/QNA/Answer/AnswerLayout";
 import {
-  IsetCorrection,
   userBoardDispatchType,
   SET_CORRECTION,
   INIT_CORRECITON,

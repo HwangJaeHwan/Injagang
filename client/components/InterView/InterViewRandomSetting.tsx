@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootReducerType } from "../redux/store";
-import { QuestionType, getRandomList } from "../redux/InterViewQuestion/action";
+import { getRandomList } from "../redux/InterViewQuestion/action";
 import { ColBox } from "@/styles/GlobalStyle";
+import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 const InterViewSettingStyle = styled.div`
   ${ColBox}
   width: 100%;
