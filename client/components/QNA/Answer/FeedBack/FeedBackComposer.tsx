@@ -1,67 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
 import { Card, ScrollBar } from "@/styles/GlobalStyle";
-import { writeFeedback } from "@/components/redux/FeedBack/action";
-import TextArea from "@/components/UI/TextArea";
 
+import TextArea from "@/components/UI/TextArea";
 import CorrectionView from "./CorrectionView";
-import useModal from "@/hooks/useModal";
 import userQnaManager from "../../hooks/userQnaManager";
 import FeedBackFooter from "./FeedBackFooter";
+import useQnaManager from "../../hooks/useQnaManager";
+import useFeedBackLogic from "../../hooks/useFeedBackLogic";
 
 const FeedBackComposer = () => {
-  const [correctionText, setCorrectionText] = useState<string>("");
-  const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
-  const [isViolation, setIsViolation] = useState<boolean>(false);
-  const { setModal, Modal } = useModal();
-  const dispatch = useDispatch();
-  const { qnaIdList } = useSelector((state: RootReducerType) => state.board);
+  const { dispatchChangeFeed, targetFeed } = userQnaManager();
+  const { qnaIdList } = useQnaManager();
   const {
     selectedCorrection,
-    dispatchInitCorrection,
-    targetFeed,
-    dispatchChangeFeed,
-  } = userQnaManager();
-
-  const handleSubmit = () => {
-    alert("작동");
-    if (correctionText.length < 30 || selectedCorrection.targetAnswer === "") {
-      setModal({
-        contents: {
-          title: "경고",
-          content: `Target질문을 선택해주세요.
-          피드백은 30자이상 작성하세요. `,
-        },
-      });
-      setIsViolation(true);
-      setTimeout(() => {
-        setIsViolation(false);
-      }, 30);
-      return;
-    }
-    const data = {
-      qnaId: selectedCorrection.targetQuestionIndex,
-      feedbackTarget: selectedCorrection.targetAnswer,
-      feedbackContent: correctionText,
-    };
-    dispatch(writeFeedback(data));
-    dispatchInitCorrection();
-    handleClear();
-  };
-
-  const handleClear = () => {
-    setIsFeedBackClear(true);
-    setTimeout(() => {
-      setIsFeedBackClear(false);
-    }, 10);
-  };
-
-  const handleChangeFeedBack = (feedBackText: string) => {
-    setCorrectionText(feedBackText);
-  };
+    handleChangeFeedBack,
+    isViolation,
+    isFeedBackClear,
+    handleSubmit,
+    handleClear,
+    Modal,
+  } = useFeedBackLogic();
 
   //TODO:: 기본적인 컴포넌트 분리완료, 컴포넌트 모듈화 하고 상태에 대한 로직 분리하기, props에 따라 리덕스 고려하기 !!!!!!!
 
