@@ -1,10 +1,54 @@
-import Modal from "@/components/UI/Modal";
-import { deleteBoard } from "@/components/redux/QnA/actions";
+import React, { useState } from "react";
+import useModal from "@/hooks/useModal";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
 import { BiDotsHorizontal, BiTrash, BiMessageAltEdit } from "react-icons/bi";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import useQnaManager from "../../hooks/useQnaManager";
+
+type EditMenuBarProps = {
+  boardID: number;
+};
+const EditMenuBar = ({ boardID }: EditMenuBarProps) => {
+  const [tagPosition, setTagPosition] = useState(false);
+  const { Modal, setModal } = useModal();
+  const { dispatchRemoveBoard } = useQnaManager();
+  const router = useRouter();
+
+  const navigateToList = () => {
+    router.replace("/qna/list");
+  };
+
+  const handleElementClick = () => {
+    setTagPosition(!tagPosition);
+  };
+
+  const handleRemoveBoard = () => {
+    dispatchRemoveBoard(boardID);
+    navigateToList();
+  };
+
+  const userConfirm = () => {
+    setModal({
+      onAction: handleRemoveBoard,
+      contents: { title: "경고", content: "정말 삭제하시겠습니까?" },
+    });
+  };
+
+  return (
+    <MycomponetStyle>
+      <BiDotsHorizontal onClick={handleElementClick} />
+      {tagPosition && (
+        <ButtonContainer>
+          <BiTrash onClick={userConfirm} />
+          <BiMessageAltEdit />
+        </ButtonContainer>
+      )}
+      <Modal />
+    </MycomponetStyle>
+  );
+};
+
+export default EditMenuBar;
 
 const MycomponetStyle = styled.div`
   position: relative;
@@ -22,48 +66,3 @@ const MycomponetStyle = styled.div`
   }
 `;
 const ButtonContainer = styled.div``;
-
-type EditMenuBarProps = {
-  boardID: number;
-};
-const EditMenuBar = ({ boardID }: EditMenuBarProps) => {
-  const [tagPosition, setTagPosition] = useState(false);
-  const [modalClose, setModalClose] = useState(Boolean);
-  const [isOpenModal, setIsOpenModal] = useState(Boolean);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const handleElementClick = () => {
-    setTagPosition(!tagPosition);
-  };
-  const handleRemoveBoard = () => {
-    setIsOpenModal(!isOpenModal);
-    dispatch(deleteBoard(boardID));
-    router.replace("/qna/list");
-  };
-
-  const handleModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
-
-  return (
-    <MycomponetStyle>
-      {isOpenModal && (
-        <Modal
-          isOpen={isOpenModal}
-          onClose={handleModal}
-          onAction={handleRemoveBoard}
-          contents={{ title: "경고", content: "정말 삭제하시겠습니까?" }}
-        />
-      )}
-      <BiDotsHorizontal onClick={handleElementClick} />
-      {tagPosition && (
-        <ButtonContainer>
-          <BiTrash onClick={handleModal} />
-          <BiMessageAltEdit />
-        </ButtonContainer>
-      )}
-    </MycomponetStyle>
-  );
-};
-
-export default EditMenuBar;
