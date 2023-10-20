@@ -10,6 +10,62 @@ import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import Image from "next/image";
 import interViewimg from "@/assets/images/interView.svg";
 import { v } from "@/styles/variables";
+import { render } from "react-dom";
+
+
+const renderComponent = [
+  { render: null, title: "면접영상촬영시작" },
+  { render: <InterViewListView />, title: "나만의 질문 리스트 셋팅" },
+  { render: <InterViewRandomSetting />, title: "랜덤 배치 리스트 셋팅" },
+  { render: <InterviewRecord />, title: "면접 시작" },
+];
+
+const START_SCREEN = 0;
+const END_SCREEN = 3;
+const SECOND_SCREEN = 1;
+
+const Interview = () => {
+  const [curIndex, setCurIndex] = useState<number>(START_SCREEN);
+
+  const moveToNextPage = () => {
+    setCurIndex(prevIndex => (prevIndex >= END_SCREEN ? SECOND_SCREEN : prevIndex + 1));
+  };
+
+  const moveToPrevPage = () => {
+    setCurIndex(prevIndex => (prevIndex <= START_SCREEN ? START_SCREEN : prevIndex - 1));
+  };
+
+  return (
+    <InterViewStyle>
+      <ControlBtn>
+        {curIndex > SECOND_SCREEN && (
+          <CustomButton
+            onClick={moveToPrevPage}
+            text={<BiArrowBack />}
+            Size={{ width: "50px", font: "22px" }}
+          ></CustomButton>
+        )}
+        <CustomButton
+          className="Arrow_btn"
+          onClick={moveToNextPage}
+          text={renderComponent[curIndex].title}
+          Size={{ width: "90%", font: "20px" }}
+        ></CustomButton>
+      </ControlBtn>
+      {curIndex === START_SCREEN && (
+        <Menual>
+          <ArrowAnimation targetId="Arrow_btn" />
+          <div className="interViewImg_box">
+            <Image src={interViewimg} alt="interView" />
+          </div>
+        </Menual>
+      )}
+      <RecordComponent>{renderComponent[curIndex].render}</RecordComponent>
+    </InterViewStyle>
+  );
+};
+
+export default Interview;
 
 const InterViewStyle = styled.div`
   ${ColBox}
@@ -57,67 +113,3 @@ const RecordComponent = styled.div`
   width: 100%;
   height: 80%;
 `;
-
-const renderComponent = (nextBtn: number) => {
-  switch (nextBtn) {
-    case 1:
-      return <InterViewListView />;
-    case 2:
-      return <InterViewRandomSetting />;
-    case 3:
-      return <InterviewRecord />;
-    default:
-      return null;
-  }
-};
-
-const Interview = () => {
-  const [curIndex, setCurIndex] = useState<number>(0);
-  const [btnText, setBtnText] = useState([
-    "면접영상촬영시작",
-    "나만의 질문 리스트 셋팅",
-    "랜덤 배치 리스트 셋팅",
-    "면접 시작 ",
-  ]);
-
-  const handleChangeScreen = () => {
-    setCurIndex(prevIndex => (prevIndex >= 3 ? 1 : prevIndex + 1));
-  };
-
-  const handleChangePrevScreen = () => {
-    setCurIndex(prevIndex => (prevIndex <= 0 ? 0 : prevIndex - 1));
-  };
-
-  return (
-    <InterViewStyle>
-      {
-        <ControlBtn>
-          {curIndex > 1 && (
-            <CustomButton
-              onClick={handleChangePrevScreen}
-              text={<BiArrowBack />}
-              Size={{ width: "50px", font: "22px" }}
-            ></CustomButton>
-          )}
-          <CustomButton
-            className="Arrow_btn"
-            onClick={handleChangeScreen}
-            text={btnText[curIndex]}
-            Size={{ width: "90%", font: "20px" }}
-          ></CustomButton>
-        </ControlBtn>
-      }
-      {curIndex === 0 && (
-        <Menual>
-          <ArrowAnimation targetId="Arrow_btn" />
-          <div className="interViewImg_box">
-            <Image src={interViewimg} alt="interView" />
-          </div>
-        </Menual>
-      )}
-      <RecordComponent>{renderComponent(curIndex)}</RecordComponent>
-    </InterViewStyle>
-  );
-};
-
-export default Interview;
