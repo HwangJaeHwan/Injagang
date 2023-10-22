@@ -9,106 +9,15 @@ import interViewimg from "../../assets/images/interView.svg";
 import interViewin from "../../assets/images/interviewIn.svg";
 import { v } from "@/styles/variables";
 import { MdPlayArrow, MdPause, MdStop } from "react-icons/md";
-import { ColBox } from "@/styles/GlobalStyle";
-
-const RecordStyle = styled.div`
-  ${ColBox}
-  margin: 15px;
-  gap: 15px;
-  width: 90%;
-  height: 100%;
-`;
-
-const RecordContainer = styled.div<{ isResult: boolean }>`
-  position: relative;
-  display: flex;
-  flex-grow: 1;
-  width: ${v.lgItemWidth};
-  height: 50%;
-  border: ${({ isResult }) => !isResult && "3px solid black"};
-  border-radius: 12px;
-  .interView_img {
-    display: ${({ isResult }) => (isResult ? "none" : "block")};
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  video {
-    width: 100%;
-    height: ${({ isResult }) => (isResult ? "70%" : "100%")};
-  }
-  @media screen and (max-width: 800px) {
-    width: ${v.smItemWidth};
-    video {
-      height: ${({ isResult }) => (isResult ? "60%" : "100%")};
-    }
-  }
-`;
-
-const RecordSvgContainer = styled.div`
-  position: absolute;
-  bottom: 5px;
-  left: 20px;
-  svg {
-    font-size: 50px;
-  }
-`;
-
-const Camera = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  .record_btn {
-    position: absolute;
-    bottom: 20px;
-    left: 30px;
-
-    appearance: none;
-    border: none;
-    outline: none;
-
-    padding: 8px 16px;
-    background-image: linear-gradient(to right, #844fff 50%, #ff4f84 50%);
-    background-position: 0%;
-    background-size: 200%;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-    transition: 0.4s;
-    cursor: pointer;
-  }
-`;
-
-const Result = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  height: 30%;
-`;
-
-const ResultContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  gap: 8px;
-`;
-
-const InfoUserList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import useMediaRecord from "@/hooks/useMediaRecord";
+import useWebSpeech from "@/hooks/useWebSpeech";
+import VideoController from "./Video/VideoController";
+import RenderVideoInfo from "./Video/RenderVideoInfo";
 
 const InterviewRecord = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [curIndex, setCurIndex] = useState<number>(0);
   const [changeImg, setChangeImg] = useState<boolean>(false);
-  const [isRecord, setIsRecord] = useState<boolean>(false);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [isResult, setIsResult] = useState<boolean>(false);
   const [videoIndex, setVideoIndex] = useState<number>(0);
 
@@ -119,108 +28,32 @@ const InterviewRecord = () => {
   const randomList = useSelector(
     (state: RootReducerType) => state.interViewQuestion.randomList,
   );
-  const [speechData, setSpeechData] = useState([
-    ...randomList.map(a => a.questions),
-    ...userList,
-  ]);
 
-  /**유저에게 권한을 요청함(캠여부판단) */
-  const getUserAccess = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true,
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-      return stream;
-    } catch (error) {
-      alert("유저의 권한을 획득하지 못했습니다.");
-      throw error;
-    }
-  };
+  const { setSpeechData, readingTheScript, speechData } = useWebSpeech(
+    2000,
+    [],
+  );
 
-  /**녹화촬영을 시작한다. */
-  const handleRecord = () => {
-    if (curIndex > speechData.length - 1) {
-      return;
-    }
-    getUserAccess().then(stream => {
-      mediaRecorderRef.current = new MediaRecorder(stream, {
-        mimeType: "video/webm",
-      });
-      mediaRecorderRef.current.start();
-      setIsRecord(true);
+  useEffect(() => {
+    setSpeechData([...randomList.map(a => a.questions), ...userList]);
+  }, [userList, randomList]);
 
-      mediaRecorderRef.current.addEventListener("dataavailable", e => {
-        if (e.data.size > 0) {
-          setRecordedChunks(pre => [...pre, e.data]);
-          console.log(recordedChunks);
-        }
-      });
-    });
-  };
-
-  /**녹화를 중지한다. */
-  const handleRecordRemove = () => {
-    if (mediaRecorderRef.current) {
-      console.log(mediaRecorderRef.current);
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current = null;
-      const stream = videoRef.current?.srcObject as MediaStream;
-      if (stream) {
-        stream.getAudioTracks().forEach(track => track.stop());
-        stream.getVideoTracks().forEach(track => track.stop());
-        setIsRecord(false);
-      }
-    }
-  };
-
-  /**녹화를 일시정지한다. */
-  const handlePauseRecord = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.pause();
-      setIsPaused(true);
-    }
-  };
-
-  /**녹화를 재개한다. */
-  const handleResumeRecord = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.resume();
-      setIsPaused(false);
-    }
-  };
-
-  /**딜레이 설정 */
-  const wait = (duration: number): Promise<void> => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, duration);
-    });
-  };
-
-  /**음성 대기 */
-  const waitSpeechEnd = (
-    utterance: SpeechSynthesisUtterance,
-  ): Promise<void> => {
-    return new Promise(resolve => {
-      utterance.onend = () => {
-        resolve();
-      };
-    });
-  };
+  const {
+    videoRef,
+    handleRecord,
+    handlePauseRecord,
+    handleResumeRecord,
+    handleRecordRemove,
+    isPaused,
+    isRecord,
+    recordedChunks,
+  } = useMediaRecord();
 
   const handleSpeak = async (): Promise<void> => {
     if (!isRecord) {
       setChangeImg(!changeImg);
       if (curIndex < speechData.length) {
-        const utterance = new SpeechSynthesisUtterance(speechData[curIndex]);
-        await wait(2000);
-        window.speechSynthesis.speak(utterance);
-        await waitSpeechEnd(utterance);
+        await readingTheScript(curIndex);
         setCurIndex(curIndex + 1);
       } else {
         setCurIndex(0);
@@ -231,29 +64,24 @@ const InterviewRecord = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(recordedChunks);
-  }, [recordedChunks]);
+  const RecordMainBtn = () => (
+    <button className={"record_btn"} onClick={handleSpeak}>
+      {!isRecord && "I'm ready to record"}
+    </button>
+  );
+  const RenderVideo = () => <video autoPlay muted ref={videoRef}></video>;
 
   return (
     <RecordStyle>
       <RecordContainer isResult={isResult}>
-        {changeImg ? (
-          <Image
-            className={"interView_img"}
-            src={interViewin}
-            alt="interView"
-          />
-        ) : (
-          <Image
-            className={"interView_img"}
-            src={interViewimg}
-            alt="interView"
-          />
-        )}
+        <Image
+          className={"interView_img"}
+          src={changeImg ? interViewin : interViewimg}
+          alt="interView"
+        />
         <Camera>
           {!isResult ? (
-            <video autoPlay muted ref={videoRef}></video>
+            <RenderVideo />
           ) : (
             recordedChunks.length > 0 && (
               <InterViewSlider
@@ -263,33 +91,25 @@ const InterviewRecord = () => {
               />
             )
           )}
+
           {isRecord ? (
-            <RecordSvgContainer>
-              {isPaused ? (
-                <MdPlayArrow onClick={handleResumeRecord} />
-              ) : (
-                <MdPause onClick={handlePauseRecord} />
-              )}
-              <MdStop onClick={handleSpeak}></MdStop>
-            </RecordSvgContainer>
+            <VideoController
+              isPaused={isPaused}
+              handleResumeRecord={handleResumeRecord}
+              handlePauseRecord={handlePauseRecord}
+              handleSpeak={handleSpeak}
+            />
           ) : (
-            !isResult && (
-              <button className={"record_btn"} onClick={handleSpeak}>
-                {!isRecord ? "I'm ready to record" : "Stop Recording"}
-              </button>
-            )
+            <RecordMainBtn />
           )}
         </Camera>
       </RecordContainer>
       <Result>
         {speechData.length > 0 && (
-          <InfoUserList>
-            <h2>{speechData.length}개의 질문이 대기중입니다.</h2>
-            <br />
-            <h2>
-              {curIndex}/{speechData.length} 진행중
-            </h2>
-          </InfoUserList>
+          <RenderVideoInfo
+            numQuestions={speechData.length}
+            curIndex={curIndex}
+          />
         )}
         {recordedChunks.length > 0 && (
           <ResultContainer>
@@ -324,3 +144,90 @@ const InterviewRecord = () => {
 };
 
 export default InterviewRecord;
+const RecordStyle = styled.div`
+  ${ColBox}
+  margin: 20px;
+  gap: 20px;
+  width: 90%;
+  height: 100%;
+  box-shadow: ${v.boxShadow2};
+`;
+
+const RecordContainer = styled.div<{ isResult: boolean }>`
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  width: ${v.lgItemWidth};
+  height: 60%;
+  border: ${({ isResult }) => !isResult && "2px solid #e0e0e0"};
+  border-radius: 15px;
+  overflow: hidden;
+
+  .interView_img {
+    display: ${({ isResult }) => (isResult ? "none" : "block")};
+    position: relative;
+    width: 120%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  video {
+    width: 100%;
+    height: ${({ isResult }) => (isResult ? "75%" : "100%")};
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: ${v.smItemWidth};
+    video {
+      height: ${({ isResult }) => (isResult ? "65%" : "100%")};
+    }
+  }
+`;
+
+const Camera = styled.div`
+  ${FlexBox}
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  .record_btn {
+    position: absolute;
+    bottom: 25px;
+    left: 35px;
+
+    border: none;
+    outline: none;
+
+    padding: 10px 20px;
+    background-image: linear-gradient(to right, #252427, #362f31);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      scale: 1.05;
+    }
+  }
+`;
+
+const Result = styled.div`
+  ${FlexBox}
+  align-items: flex-start;
+  gap: 15px;
+  width: 100%;
+  height: 35%;
+  padding: 10px 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+`;
+
+const ResultContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  gap: 10px;
+`;
+

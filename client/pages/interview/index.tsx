@@ -10,14 +10,13 @@ import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import Image from "next/image";
 import interViewimg from "@/assets/images/interView.svg";
 import { v } from "@/styles/variables";
-import { render } from "react-dom";
 
 
 const renderComponent = [
   { render: null, title: "면접영상촬영시작" },
   { render: <InterViewListView />, title: "나만의 질문 리스트 셋팅" },
   { render: <InterViewRandomSetting />, title: "랜덤 배치 리스트 셋팅" },
-  { render: <InterviewRecord />, title: "면접 시작" },
+  { render: <InterviewRecord />, title: "면접 준비 완료" },
 ];
 
 const START_SCREEN = 0;

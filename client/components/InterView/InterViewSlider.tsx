@@ -4,48 +4,6 @@ import CustomButton from "../UI/CustomButton";
 import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import { saveAs } from "file-saver";
 import { MdOutlineFileDownload } from "react-icons/md";
-const InterViewSliderStyle = styled.div`
-  ${ColBox}
-  width: 100%;
-  height: 100%;
-  overflow-x: auto;
-  ${ScrollBar}
-  gap: 12px;
-  font-size: 13px;
-  border: 3px solid black;
-  border-radius: 12px;
-  video {
-    width: 100%;
-    height: 100%;
-  }
-  svg{
-    font-size: 50px;
-  }
-  button {
-    ${FlexBox}
-    background-color: #777;
-    opacity: 0.5;
-    width: 100%;
-    height: 100%;
-    font-size: large;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  &:hover {
-    button {
-      background-color: #fff;
-      opacity: 1;
-    }
-  }
-`;
-
-const InterViewInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
 type InterViewSliderProps = {
   video: Blob[];
   question: string[];
@@ -78,3 +36,53 @@ const InterViewSlider = ({ video, question, idx }: InterViewSliderProps) => {
 };
 
 export default InterViewSlider;
+
+const InterViewSliderStyle = styled.div`
+  ${ColBox}
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  ${ScrollBar}
+  gap: 15px;
+  font-size: 13px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 10px;
+  video {
+    width: 100%;
+    height: 60%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  svg {
+    font-size: 24px;
+    margin-right: 8px;
+  }
+  button {
+    ${FlexBox}
+    align-items: center;
+    background-color: #777;
+    opacity: 0.7;
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+  &:hover {
+    button {
+      background-color: #3b3a3a;
+      opacity: 1;
+    }
+  }
+`;
+
+const InterViewInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  h2 {
+    margin-bottom: 10px;
+  }
+`;
