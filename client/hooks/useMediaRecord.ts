@@ -51,10 +51,8 @@ const useMediaRecord = () => {
   const handleRecordRemove = useCallback(() => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      if (videoRef.current?.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stopMediaTracks(stream);
-      }
+      const stream = videoRef.current?.srcObject as MediaStream;
+      stopMediaTracks(stream);
       setIsRecord(false);
       mediaRecorderRef.current = null;
     }
@@ -62,10 +60,8 @@ const useMediaRecord = () => {
 
   /**녹화를 일시정지한다. */
   const handlePauseRecord = useCallback(() => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.pause();
-      setIsPaused(true);
-    }
+    mediaRecorderRef.current?.pause();
+    setIsPaused(true);
   }, []);
 
   /**녹화를 재개한다. */
@@ -81,10 +77,8 @@ const useMediaRecord = () => {
     return () => {
       if (mediaRecorderRef.current) {
         mediaRecorderRef.current.stop();
-        if (videoRef.current?.srcObject) {
-          const stream = videoRef.current.srcObject as MediaStream;
-          stopMediaTracks(stream);
-        }
+        const stream = videoRef.current?.srcObject as MediaStream;
+        stopMediaTracks(stream);
       }
     };
   }, [stopMediaTracks]);
