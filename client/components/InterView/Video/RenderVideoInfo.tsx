@@ -1,3 +1,4 @@
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import React from "react";
 import styled from "styled-components";
 
@@ -12,7 +13,7 @@ const RenderVideoInfo = ({ numQuestions, curIndex }: RenderVideoInfoProps) => {
       <h2>{numQuestions}개의 질문이 대기중입니다.</h2>
       <br />
       <h2>
-        {curIndex}/{numQuestions} 진행중
+        {curIndex+1}/{numQuestions} 진행중
       </h2>
     </InfoUserList>
   );
@@ -21,8 +22,8 @@ const RenderVideoInfo = ({ numQuestions, curIndex }: RenderVideoInfoProps) => {
 export default RenderVideoInfo;
 
 const InfoUserList = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  ${ColBox}
   text-align: center;
   color: #555;
   h2 {

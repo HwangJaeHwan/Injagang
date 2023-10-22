@@ -8,7 +8,6 @@ import Image from "next/image";
 import interViewimg from "../../assets/images/interView.svg";
 import interViewin from "../../assets/images/interviewIn.svg";
 import { v } from "@/styles/variables";
-import { MdPlayArrow, MdPause, MdStop } from "react-icons/md";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import useMediaRecord from "@/hooks/useMediaRecord";
 import useWebSpeech from "@/hooks/useWebSpeech";
@@ -69,19 +68,18 @@ const InterviewRecord = () => {
       {!isRecord && "I'm ready to record"}
     </button>
   );
-  const RenderVideo = () => <video autoPlay muted ref={videoRef}></video>;
 
   return (
     <RecordStyle>
       <RecordContainer isResult={isResult}>
         <Image
           className={"interView_img"}
-          src={changeImg ? interViewin : interViewimg}
+          src={interViewin}
           alt="interView"
         />
         <Camera>
           {!isResult ? (
-            <RenderVideo />
+            <video autoPlay muted ref={videoRef}></video>
           ) : (
             recordedChunks.length > 0 && (
               <InterViewSlider
@@ -108,7 +106,7 @@ const InterviewRecord = () => {
         {speechData.length > 0 && (
           <RenderVideoInfo
             numQuestions={speechData.length}
-            curIndex={curIndex}
+            curIndex={videoIndex}
           />
         )}
         {recordedChunks.length > 0 && (
@@ -117,7 +115,7 @@ const InterviewRecord = () => {
               text="< 이전영상"
               onClick={() =>
                 setVideoIndex(prevIndex =>
-                  prevIndex <= 0 ? 0 : videoIndex - 1,
+                  prevIndex <= 1 ? 0 : videoIndex - 1,
                 )
               }
               Size={{ width: "150px", font: "15px" }}
@@ -166,8 +164,8 @@ const RecordContainer = styled.div<{ isResult: boolean }>`
   .interView_img {
     display: ${({ isResult }) => (isResult ? "none" : "block")};
     position: relative;
-    width: 120%;
-    height: 100%;
+    width: 100%;
+    height: 80%;
     object-fit: cover;
   }
 
@@ -214,7 +212,7 @@ const Camera = styled.div`
 `;
 
 const Result = styled.div`
-  ${FlexBox}
+  ${ColBox}
   align-items: flex-start;
   gap: 15px;
   width: 100%;
@@ -230,4 +228,3 @@ const ResultContainer = styled.div`
   width: 90%;
   gap: 10px;
 `;
-
