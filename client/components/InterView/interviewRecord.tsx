@@ -1,11 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "../redux/store";
 import InterViewSlider from "./InterViewSlider";
 import CustomButton from "../UI/CustomButton";
 import Image from "next/image";
-import interViewimg from "../../assets/images/interView.svg";
 import interViewin from "../../assets/images/interviewIn.svg";
 import { v } from "@/styles/variables";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
@@ -13,6 +10,8 @@ import useMediaRecord from "@/hooks/useMediaRecord";
 import useWebSpeech from "@/hooks/useWebSpeech";
 import VideoController from "./Video/VideoController";
 import RenderVideoInfo from "./Video/RenderVideoInfo";
+import useExpectedQuestionManager from "../InterViewQuestion/hooks/useExpectedQuestionManager";
+import userInterviewManager from "./hooks/userInterviewManager";
 
 const InterviewRecord = () => {
   const [curIndex, setCurIndex] = useState<number>(0);
@@ -20,13 +19,8 @@ const InterviewRecord = () => {
   const [isResult, setIsResult] = useState<boolean>(false);
   const [videoIndex, setVideoIndex] = useState<number>(0);
 
-  const userList = useSelector(
-    (state: RootReducerType) => state.userInterViewList.interViewList,
-  );
-
-  const randomList = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.randomList,
-  );
+  const { interViewList } = userInterviewManager();
+  const { randomList } = useExpectedQuestionManager();
 
   const { setSpeechData, readingTheScript, speechData } = useWebSpeech(
     2000,
@@ -34,8 +28,8 @@ const InterviewRecord = () => {
   );
 
   useEffect(() => {
-    setSpeechData([...randomList.map(a => a.questions), ...userList]);
-  }, [userList, randomList]);
+    setSpeechData([...randomList.map(a => a.questions), ...interViewList]);
+  }, [interViewList, randomList]);
 
   const {
     videoRef,
@@ -72,11 +66,7 @@ const InterviewRecord = () => {
   return (
     <RecordStyle>
       <RecordContainer isResult={isResult}>
-        <Image
-          className={"interView_img"}
-          src={interViewin}
-          alt="interView"
-        />
+        <Image className={"interView_img"} src={interViewin} alt="interView" />
         <Camera>
           {!isResult ? (
             <video autoPlay muted ref={videoRef}></video>
@@ -89,7 +79,6 @@ const InterviewRecord = () => {
               />
             )
           )}
-
           {isRecord ? (
             <VideoController
               isPaused={isPaused}
@@ -105,8 +94,9 @@ const InterviewRecord = () => {
       <Result>
         {speechData.length > 0 && (
           <RenderVideoInfo
+            videoIdx={videoIndex}
             numQuestions={speechData.length}
-            curIndex={videoIndex}
+            curIndex={curIndex}
           />
         )}
         {recordedChunks.length > 0 && (
@@ -147,8 +137,7 @@ const RecordStyle = styled.div`
   margin: 20px;
   gap: 20px;
   width: 90%;
-  height: 100%;
-  box-shadow: ${v.boxShadow2};
+  height: 90%;
 `;
 
 const RecordContainer = styled.div<{ isResult: boolean }>`
@@ -163,8 +152,11 @@ const RecordContainer = styled.div<{ isResult: boolean }>`
 
   .interView_img {
     display: ${({ isResult }) => (isResult ? "none" : "block")};
-    position: relative;
-    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
     height: 80%;
     object-fit: cover;
   }
@@ -216,9 +208,9 @@ const Result = styled.div`
   align-items: flex-start;
   gap: 15px;
   width: 100%;
-  height: 35%;
+  height: 20%;
   padding: 10px 0;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const ResultContainer = styled.div`

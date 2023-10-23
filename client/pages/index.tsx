@@ -1,3 +1,4 @@
+import Manual from "@/components/Manual/Manual";
 import Search from "@/components/Search";
 import { ColBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
@@ -20,14 +21,11 @@ const Card = styled.div`
   margin: 15px 15px;
 `;
 
-
 const Home = () => {
-  console.log(process.env.BACKEND_SERVER_API)
+  console.log(process.env.BACKEND_SERVER_API);
   return (
     <HomeStyle>
-      <Search />
-      {/* 자소서리스트 보여주기 */}
-      <Card> 안녕하세요</Card>
+      <Manual />
     </HomeStyle>
   );
 };

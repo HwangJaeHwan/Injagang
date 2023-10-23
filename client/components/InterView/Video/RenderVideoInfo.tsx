@@ -5,15 +5,19 @@ import styled from "styled-components";
 interface RenderVideoInfoProps {
   numQuestions: number;
   curIndex: number;
+  videoIdx: number;
 }
 
-const RenderVideoInfo = ({ numQuestions, curIndex }: RenderVideoInfoProps) => {
+const RenderVideoInfo = ({
+  numQuestions,
+  curIndex,
+}: RenderVideoInfoProps) => {
   return (
     <InfoUserList>
-      <h2>{numQuestions}개의 질문이 대기중입니다.</h2>
+      <h2>{numQuestions-curIndex}개의 질문이 대기중입니다.</h2>
       <br />
       <h2>
-        {curIndex+1}/{numQuestions} 진행중
+        {curIndex}/{numQuestions} 진행중
       </h2>
     </InfoUserList>
   );
@@ -25,7 +29,7 @@ const InfoUserList = styled.div`
   width: 100%;
   ${ColBox}
   text-align: center;
-  color: #555;
+  color: #ffffff;
   h2 {
     margin-bottom: 8px;
   }

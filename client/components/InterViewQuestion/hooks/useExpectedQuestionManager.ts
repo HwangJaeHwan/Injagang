@@ -15,7 +15,7 @@ import { addInterViewList } from "@/components/redux/InterViewList/action";
 
 const useExpectedQuestionManager = () => {
   const dispatch = useDispatch();
-  const { list } = useSelector(
+  const { list, randomList } = useSelector(
     (state: RootReducerType) => state.interViewQuestion,
   );
 
@@ -49,6 +49,7 @@ const useExpectedQuestionManager = () => {
     dispatchRemoveQuestions,
     dispatchAddQuestions,
     dispatchAddInterViewList,
+    randomList,
   };
 };
 
