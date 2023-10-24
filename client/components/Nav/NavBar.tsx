@@ -3,17 +3,14 @@ import styled from "styled-components";
 import { BiRocket, BiLogOut, BiLogIn, BiUser } from "react-icons/bi";
 import { GrUserAdmin } from "react-icons/gr";
 import Link from "next/link";
-import { RootReducerType } from "@/components/redux/store";
-import { useSelector } from "react-redux";
-import { InitiaState } from "../redux/Auth/reducer";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { checkOut } from "../redux/Auth/actions";
 
 import { ColBox } from "@/styles/GlobalStyle";
 import { navItems } from "@/constants";
 import SwitchSlider from "../UI/SwitchSlider";
 import useModal from "@/hooks/useModal";
+import useLoginManager from "../Auth/hooks/useLoginManager";
+import useMyProfileManager from "../MyProfile/hooks/useMyProfileManager";
 
 interface NavbarProps {
   toggleTheme: () => void;
@@ -22,19 +19,19 @@ interface NavbarProps {
 
 const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
   const { Modal, setModal } = useModal();
-  const dispatch = useDispatch();
   const router = useRouter();
-  const { role } = useSelector((state: RootReducerType) => state.profile);
+  const { role } = useMyProfileManager();
+  const { dispatchCheckOut } = useLoginManager();
 
   const handleCheckOut = () => {
-    dispatch(checkOut());
+    dispatchCheckOut();
     return;
   };
 
   return (
     <NavStyle>
       <NavTop>
-        <StyledLink href="/">
+        <StyledLink href="/" aria-label={"main"}>
           <NavLink>
             <NavContainer>
               <BiRocket className="navLogo" />
@@ -45,7 +42,11 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
         <NavMenu>
           {navItems.map(({ title, path, icon }) => (
             <NavItem key={title}>
-              <StyledLink href={path} style={{ textDecoration: "none" }}>
+              <StyledLink
+                href={path}
+                aria-label={title}
+                style={{ textDecoration: "none" }}
+              >
                 <NavLink>
                   <NavContainer>
                     <i className="navitem_icon">{icon}</i>
@@ -60,7 +61,7 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
 
       <NavBottom>
         {role === "ADMIN" && (
-          <StyledLink href="/admin">
+          <StyledLink href="/admin" aria-label={"ADMIN"}>
             <GrUserAdmin />
           </StyledLink>
         )}
@@ -94,7 +95,11 @@ const Navbar = ({ toggleTheme, mode }: NavbarProps) => {
           <SwitchSlider isToggle={mode} onClick={toggleTheme} />
         </NavContainer>
         <NavContainer>
-          <StyledLink href={"/myProfile"} style={{ textDecoration: "none" }}>
+          <StyledLink
+            href={"/myProfile"}
+            aria-label={"myProfile"}
+            style={{ textDecoration: "none" }}
+          >
             <NavLink>
               <NavContainer>
                 <BiUser></BiUser>
