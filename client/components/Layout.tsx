@@ -9,6 +9,7 @@ import { useState } from "react";
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
 import useThemeToggler from "@/hooks/useThemeToggler";
+import WithAuth from "./WithAuth";
 
 const LayoutStyle = styled.div`
   display: flex;
@@ -36,9 +37,6 @@ interface LayoutProps {
 /**컴포넌트와 navbar의 영역을 분할하고, 전체 컴포넌트의 렌더링을 통제하기 위한 역할*/
 const Layout = ({ children }: LayoutProps) => {
   const [isDarkMode, ChangeDarkMode] = useThemeToggler(false);
-  const router = useRouter();
-  const routes = ["/join", "/login"];
-  const isShowNav = routes.includes(router.asPath);
 
 
 
@@ -61,4 +59,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default WithAuth(Layout);

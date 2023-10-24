@@ -1,9 +1,7 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearAuthError,
-} from "@/components/redux/Auth/actions";
+import { clearAuthError } from "@/components/redux/Auth/actions";
 import { RootReducerType } from "@/components/redux/store";
 
 import { ERROR_MESSAGES } from "@/constants";
@@ -17,6 +15,10 @@ const useLoginManager = () => {
   );
   const router = useRouter();
 
+  const dispatchGetProfile = useCallback(() => {
+    dispatch(getProfile);
+  }, []);
+
   useEffect(() => {
     if (success) {
       dispatch(getProfile());
@@ -29,8 +31,7 @@ const useLoginManager = () => {
     }
   }, [error, success]);
 
-  
-  return { userMsg };
+  return { userMsg, dispatchGetProfile };
 };
 
 export default useLoginManager;

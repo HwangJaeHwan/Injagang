@@ -12,11 +12,9 @@ export const useAuth = () => {
 
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
-
     if (!accessToken) {
       return;
     }
-
     dispatch(getProfile());
   }, []);
 

@@ -9,7 +9,6 @@ const WithAuth = <P extends object>(Component: React.ComponentType<P>) => {
     const router = useRouter();
     const verified = useAuth();
     const isWhiteListed = whiteList.includes(router.asPath);
-    console.log(router.asPath);
 
     if (isWhiteListed || verified) {
       return <Component {...props} />;
