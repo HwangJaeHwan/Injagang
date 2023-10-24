@@ -11,7 +11,8 @@ import {
   getTemplateAPI,
 } from "@/api/TEMPLATE/templateAPI";
 import { IAddTemplate } from "@/types/template/TemplateType";
-
+import { showToastAction } from "../../Toast/actions";
+import { SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**최초 로딩시 템플릿리스트 반환 */
 export const getTemplate =
@@ -45,6 +46,9 @@ export const addTemplate =
     try {
       dispatch({ type: TEMPLATE_REQUEST });
       const request = await addTemplateAPI(listData);
+      dispatch(
+        showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_TEMPLATE),
+      );
       dispatch(getTemplate());
     } catch (error) {
       dispatch({
@@ -63,6 +67,9 @@ export const removeTemplate =
     try {
       dispatch({ type: TEMPLATE_REQUEST });
       const request = await deleteTemplateAPI(templateId);
+      dispatch(
+        showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.DELETED_TEMPLATE),
+      );
       dispatch(getTemplate());
     } catch (error) {
       dispatch({

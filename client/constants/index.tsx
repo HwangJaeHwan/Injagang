@@ -54,6 +54,8 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   CHANGE_NICK: "닉네임 변경을 완료하였습니다.",
   CHANGE_PASSWORD: "패스워드 변경을 완료하였습니다.",
+  DELETED_TEMPLATE: "템플릿이 성공적으로 삭제되었습니다.,",
+  ADDED_TEMPLATE: "템플릿이 추가되었습니다.",
 };
 
 export const MODAL_MESSAGES = {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { BiPlus } from "react-icons/bi";
-import {v} from "@/styles/variables"
+import { v } from "@/styles/variables";
 import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateTitleItem from "./TemplateTitleItem";
 import useUserTemplateManager from "../hooks/useUserTemplateManager";
@@ -10,7 +10,7 @@ import TemplateDetail from "./TemplateDetail";
 import AddTemplate from "./AddTemplate";
 
 const TemplateList = () => {
-  const { templateList, loading, error, getTemplateList } =
+  const { templateList, loading, error, getTemplateList, RenderToast } =
     useTemplateManager();
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
 
@@ -36,6 +36,7 @@ const TemplateList = () => {
           {isAddTemplate ? <AddTemplate /> : <TemplateDetail />}
         </TemplateViewController>
       </Card>
+      <RenderToast />
     </TemplateStlyed>
   );
 };
@@ -62,7 +63,7 @@ const Card = styled.div`
   @media screen and (max-width: 800px) {
     ${ColBox}
     flex-direction: column-reverse;
-    width: ${v.xsWidth}
+    width: ${v.xsWidth};
   }
 `;
 

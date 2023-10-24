@@ -6,12 +6,14 @@ import {
   removeTemplate,
 } from "@/components/redux/Template/server/actions";
 import { setCurTemplateList } from "@/components/redux/Template/user/actions";
+import useToast from "@/hooks/useToast";
 
 const useTemplateManager = () => {
   const dispatch = useDispatch();
   const { templateList, loading, error } = useSelector(
     (state: RootReducerType) => state.template,
   );
+  const [showToast, RenderToast] = useToast();
 
   const getTemplateList = () => {
     dispatch(getTemplate());
@@ -27,7 +29,14 @@ const useTemplateManager = () => {
     dispatch(setCurTemplateList(resetCurTemplate));
   }, []);
 
-  return { templateList, removeTemplateItem, getTemplateList, loading, error };
+  return {
+    templateList,
+    removeTemplateItem,
+    getTemplateList,
+    loading,
+    error,
+    RenderToast,
+  };
 };
 
 export default useTemplateManager;
