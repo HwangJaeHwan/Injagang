@@ -6,6 +6,10 @@ import {
   BiSearchAlt2,
 } from "react-icons/bi";
 
+export const BRAND = {
+  title: "INJAGANG",
+};
+
 type MenuItem = {
   title: string;
   path: string;

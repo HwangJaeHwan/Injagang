@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import CustomButton from "@/components/UI/CustomButton";
 
-interface ModalProps {
+export interface ModalProps {
   onAction?: (params?: any) => void | null;
   contents: {
     title: string;

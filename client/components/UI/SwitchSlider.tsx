@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const SwitchSliderStyle = styled.label.attrs({ htmlFor: "toogleBtn" })`
+const SwitchSliderStyle = styled.label`
   position: relative;
   display: inline-block;
   width: 60px;
@@ -46,12 +46,13 @@ const Slider = styled.span`
   }
 `;
 
-const Crater = styled.span`
+const Crater = styled.span<{ isToggle: boolean }>`
   position: absolute;
+  visibility: ${props => props.isToggle ? 'visible' : 'hidden'};
   background-color: rgba(0, 0, 0, 0.2); // Semi-transparent craters
   border-radius: 50%;
-  transition: opacity 200ms ease-in-out;
-
+  transition: visibility 0.5ms ease-in-out;
+  
   &.crater__1 {
     top: 6px;
     left: 42px;
@@ -102,9 +103,9 @@ const SwitchSlider = ({ isToggle, onClick }: SwitchSliderProps) => {
         aria-label="토글버튼"
       />
       <Slider>
-        <Crater className="crater__1" />
-        <Crater className="crater__2" />
-        <Crater className="crater__3" />
+        <Crater className="crater__1" isToggle={isToggle} />
+        <Crater className="crater__2" isToggle={isToggle} />
+        <Crater className="crater__3" isToggle={isToggle} />
       </Slider>
     </SwitchSliderStyle>
   );
