@@ -1,7 +1,12 @@
-import { Card, ColBox, ScrollBar, StyleButton } from "@/styles/GlobalStyle";
+import {
+  Card,
+  ColBox,
+  ScrollBar,
+  StyleButton,
+  StyleTextArea,
+} from "@/styles/GlobalStyle";
 import React, { useState } from "react";
 import styled from "styled-components";
-import TextArea from "@/components/UI/TextArea";
 import useModal from "@/hooks/useModal";
 
 type FeedBackItemsProps = {
@@ -45,10 +50,6 @@ const FeedBackItems = ({
       },
     });
   };
-
-  const handleChangeFeedBack = (feedback: string) => {
-    setText(feedback);
-  };
   return (
     <FeedBackItemsStyle>
       <Card size={{ width: "80%", height: "50vh", flex: "col" }}>
@@ -57,11 +58,11 @@ const FeedBackItems = ({
           <h4 className="correction_sentence">{target}</h4>
         </CorrectionContainer>
         <CommentTop>
-          <TextArea
-            handleChangeText={handleChangeFeedBack}
+          <StyleTextArea
+            value={text}
+            onChange={e => setText(e.target.value)}
             readOnly={isReadOnly}
-            originData={text}
-          ></TextArea>
+          ></StyleTextArea>
         </CommentTop>
         <CommentFooter>
           {owner && (

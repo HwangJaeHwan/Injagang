@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import CoverLetterDetail from "@/components/QNA/Question/CoverLetterDetail";
-import QuestionTitle from "@/components/UI/ListTitle";
 import ControlMenu from "@/components/UI/ControlMenu";
 import { writeBoard } from "@/components/redux/QnA/actions";
-import { Card, ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
+import {
+  Card,
+  ColBox,
+  FlexBox,
+  StyleButton,
+  StyleInput as QuestionTitle,
+  StyleTextArea,
+} from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import TextArea from "@/components/UI/TextArea";
 import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
 
 const QuestionComposer = () => {
@@ -38,26 +43,24 @@ const QuestionComposer = () => {
     navigateToList();
   };
 
-  const changeMainTitle = (title: string) => {
-    setTitle(title);
-  };
-
-  const changeContent = (text: string) => {
-    setContent(text);
-  };
-
   return (
     <Card size={{ width: "80%", height: "80%", flex: "row" }}>
       <SwitchContainer>
         <LeftContainer>
-          <QuestionTitle onChange={changeMainTitle}></QuestionTitle>
+          <QuestionTitle
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          ></QuestionTitle>
           <ControlMenu
             Size={{ width: "100%", height: "40px" }}
             value={coverLetterTitle}
             onChange={e => changeCoverLetter(e)}
             optionList={essayList}
           ></ControlMenu>
-          <TextArea handleChangeText={changeContent} />
+          <StyleTextArea
+            value={content}
+            onChange={e => setContent(e.target.value)}
+          />
           <StyleButton
             Size={{ width: "100%", font: "15px" }}
             onClick={handleSubmit}
