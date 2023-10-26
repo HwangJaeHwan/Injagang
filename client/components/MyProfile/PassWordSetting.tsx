@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "@/components/UI/CustomButton";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 import styled from "styled-components";
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic, { IPassWordInfo } from "./hooks/useMyProfileLogic";
@@ -47,11 +46,12 @@ const PassWordSetting = () => {
           onChange={handleInfoChange}
         />
       ))}
-      <CustomButton
+      <StyleButton
         Size={{ width: "95%", font: "15px" }}
         onClick={() => dispatchPasswordChange(passWordInfo)}
-        text="변경"
-      />
+      >
+        변경
+      </StyleButton>
       <RenderToast />
       <Modal />
     </PassWordContainer>

@@ -1,7 +1,6 @@
 import BoardListView from "@/components/Board/BoardListLayout";
 import PageNation from "@/components/QNA/PageNation";
-import CustomButton from "@/components/UI/CustomButton";
-import { ColBox } from "@/styles/GlobalStyle";
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -30,17 +29,14 @@ const list = () => {
   const router = useRouter();
   return (
     <ListStyle>
-      <CustomButton
+      <StyleButton
         className="edit_btn"
         Size={{ width: "600px", font: "15px" }}
-        text={
-          <>
-            <MdOutlineModeEditOutline />
-            {" 글쓰기"}
-          </>
-        }
         onClick={() => router.push("/qna/question")}
-      ></CustomButton>
+      >
+        <MdOutlineModeEditOutline />
+        {" 글쓰기"}
+      </StyleButton>
       <BoardListView />
       <PageNation />
     </ListStyle>

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import CustomButton from "@/components/UI/CustomButton";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 interface FeedBackFooterProps {
   handleClear: () => void;
@@ -25,11 +25,13 @@ const FeedBackFooter = ({
   const TextActionBtns = () => (
     <ControlRightButtons>
       {btnInfo.map((info, idx) => (
-        <CustomButton
+        <StyleButton
           key={idx}
-          {...info}
+          onClick={info.onClick}
           Size={{ width: "150px", font: "15px" }}
-        />
+        >
+          {info.text}
+        </StyleButton>
       ))}
     </ControlRightButtons>
   );
@@ -38,13 +40,12 @@ const FeedBackFooter = ({
     <CommentFooter>
       <FeedBackViewBtns>
         {qnaIdList.map((list, i) => (
-          <CustomButton
+          <StyleButton
             className={list === feedBackIndex ? "active_button" : " "}
             Size={{ width: "40px", font: "15px" }}
-            text={`${i + 1}`}
             onClick={() => handleFeedBackIndex(list)}
             key={list}
-          ></CustomButton>
+          >{`${i + 1}`}</StyleButton>
         ))}
       </FeedBackViewBtns>
       <TextActionBtns />

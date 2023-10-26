@@ -15,7 +15,7 @@ html {
     margin: 0;
     padding: 0;
     background-color: ${({ theme }) => (theme as any).colors.bodyColor};
-    color: ${({ theme }) =>(theme as any).colors.text};
+    color: ${({ theme }) => (theme as any).colors.text};
     font-family: 'Roboto', sans-serif;
   }
 `;
@@ -49,15 +49,6 @@ export const ScrollBar = css`
   }
 `;
 
-interface CardProps {
-  size: {
-    width: string;
-    height: string;
-    flex: string;
-  };
-}
-
-
 export const Card = styled.div<CardProps>`
   ${({ size }) => (size.flex === "row" ? FlexBox : ColBox)};
   padding: 15px 15px;
@@ -68,3 +59,46 @@ export const Card = styled.div<CardProps>`
   border-radius: 8px;
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
 `;
+
+
+export const StyleButton = styled.button<SelectProps>`
+  width: ${({ Size }) => Size.width || "100%"};
+  background-color: ${({ theme }) => theme.colors.button};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ Size }) => Size.font || "16px"};
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 1.5px 2px rgba(0, 0, 0, 09);
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #777;
+  }
+
+  &:active {
+    background-color: red;
+  }
+
+  &.active_button {
+    background-color: red;
+  }
+`;
+
+
+interface CardProps {
+  size: {
+    width: string;
+    height: string;
+    flex: string;
+  };
+}
+
+interface SelectProps {
+  Size: {
+    width: string;
+    font: string;
+  };
+}

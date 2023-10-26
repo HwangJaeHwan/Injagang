@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import CustomButton from "../UI/CustomButton";
 import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import { saveAs } from "file-saver";
 import { MdOutlineFileDownload } from "react-icons/md";

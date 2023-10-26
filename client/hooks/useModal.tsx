@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import CustomButton from "@/components/UI/CustomButton";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 export interface ModalProps {
   onAction?: (params?: any) => void | null;
@@ -53,24 +53,27 @@ const useModal = () => {
           </div>
           {modalState.modal.onAction ? (
             <div className="modal_Controller">
-              <CustomButton
+              <StyleButton
                 Size={{ width: "150px", font: "15px" }}
                 onClick={actionModal}
-                text={"예"}
-              />
-              <CustomButton
+              >
+                예
+              </StyleButton>
+              <StyleButton
                 Size={{ width: "150px", font: "15px" }}
                 onClick={closeModal}
-                text={"아니오"}
-              />
+              >
+                아니오
+              </StyleButton>
             </div>
           ) : (
             <div className="modal_center_btn">
-              <CustomButton
+              <StyleButton
                 Size={{ width: "250px", font: "15px" }}
                 onClick={closeModal}
-                text={"확인"}
-              />
+              >
+                확인
+              </StyleButton>
             </div>
           )}
         </ModalBox>

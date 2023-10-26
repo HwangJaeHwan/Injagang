@@ -28,10 +28,11 @@ export const MyProfileMenu = () => (
 
 export const AdminMenu = () => (
   <StyledLink href="/admin" aria-label={"ADMIN"}>
-    <GrUserAdmin />
+    <AdminStyle>
+      <GrUserAdmin />
+    </AdminStyle>
   </StyledLink>
 );
-
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -70,4 +71,11 @@ export const NavContainer = styled.div`
       font-size: 3rem;
     }
   }
+`;
+
+export const AdminStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 `;

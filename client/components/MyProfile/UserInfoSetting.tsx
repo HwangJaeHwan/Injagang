@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import CustomButton from "@/components/UI/CustomButton";
 import styled from "styled-components";
 import { RxAvatar } from "react-icons/rx";
 import { SessionStorageManager } from "@/util/sessionStorageManager";
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic from "./hooks/useMyProfileLogic";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 const UserInfoSetting = () => {
   const myInfo = new SessionStorageManager("info");
@@ -26,11 +26,12 @@ const UserInfoSetting = () => {
           name="changeNickname"
           onChange={e => setNickName(e.target.value)}
         ></Input>
-        <CustomButton
+        <StyleButton
           Size={{ width: "80%", font: "15px" }}
           onClick={() => dispatchNickNameChange(nickName)}
-          text="변경"
-        ></CustomButton>
+        >
+          변경
+        </StyleButton>
       </UserInfoContainer>
       <RxAvatar />
       <Modal />
@@ -39,7 +40,7 @@ const UserInfoSetting = () => {
   );
 };
 
-export default UserInfoSetting ;
+export default UserInfoSetting;
 
 const UserInfoStyle = styled.div`
   display: flex;

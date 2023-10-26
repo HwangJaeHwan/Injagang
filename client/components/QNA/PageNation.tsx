@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import CustomButton from "../UI/CustomButton";
 import useQnaManager from "./hooks/useQnaManager";
 import usePageNation from "@/hooks/usePageNation";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 const PageNation = () => {
   const { boardInFoList, isUpdated, dispatchGetBoardList } = useQnaManager();
@@ -46,12 +46,13 @@ const NavigationButton = ({
   isActive = false,
   onClick,
 }: NavigationButtonProps) => (
-  <CustomButton
+  <StyleButton
     Size={{ width: "40px", font: "15px" }}
     className={isActive ? "active_button" : ""}
     onClick={onClick}
-    text={text}
-  />
+  >
+    {text}
+  </StyleButton>
 );
 
 export default React.memo(PageNation);

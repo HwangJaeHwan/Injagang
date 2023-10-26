@@ -1,7 +1,6 @@
-import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
+import { Card, ColBox, ScrollBar, StyleButton } from "@/styles/GlobalStyle";
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomButton from "../../../UI/CustomButton";
 import TextArea from "@/components/UI/TextArea";
 import useModal from "@/hooks/useModal";
 
@@ -67,16 +66,18 @@ const FeedBackItems = ({
         <CommentFooter>
           {owner && (
             <ControlRightButtons>
-              <CustomButton
-                text={isReadOnly ? "편집" : "수정완료"}
+              <StyleButton
                 onClick={isReadOnly ? userEditConfirm : handleUpdate}
                 Size={{ width: "150px", font: "15px" }}
-              ></CustomButton>
-              <CustomButton
-                text="삭제"
+              >
+                {isReadOnly ? "편집" : "수정완료"}
+              </StyleButton>
+              <StyleButton
                 onClick={() => console.log("e")}
                 Size={{ width: "150px", font: "15px" }}
-              ></CustomButton>
+              >
+                삭제
+              </StyleButton>
             </ControlRightButtons>
           )}
         </CommentFooter>

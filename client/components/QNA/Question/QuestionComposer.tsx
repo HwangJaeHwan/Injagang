@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import CoverLetterDetail from "@/components/QNA/Question/CoverLetterDetail";
 import QuestionTitle from "@/components/UI/ListTitle";
 import ControlMenu from "@/components/UI/ControlMenu";
-import CustomButton from "@/components/UI/CustomButton";
 import { writeBoard } from "@/components/redux/QnA/actions";
-import { Card, ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { Card, ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -59,11 +58,12 @@ const QuestionComposer = () => {
             optionList={essayList}
           ></ControlMenu>
           <TextArea handleChangeText={changeContent} />
-          <CustomButton
+          <StyleButton
             Size={{ width: "100%", font: "15px" }}
-            text="작성완료"
             onClick={handleSubmit}
-          ></CustomButton>
+          >
+            작성완료
+          </StyleButton>
         </LeftContainer>
         <RigthContainer>
           <CoverLetterDetail essayId={essayId} />

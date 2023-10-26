@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import CustomButton from "../../UI/CustomButton";
 import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
 import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 interface ActionBtnProps {
   checkList: number[];
@@ -43,16 +43,18 @@ const ActionBtns = ({
 
   return (
     <div>
-      <CustomButton
+      <StyleButton
         onClick={onToggleAll}
-        text={isAllChecked ? "전체해제" : "전체선택"}
         Size={{ width: "100px", font: "15px" }}
-      />
-      <CustomButton
+      >
+        {isAllChecked ? "전체해제" : "전체선택"}
+      </StyleButton>
+      <StyleButton
         onClick={btnConfig[isAdmin].onClick}
-        text={btnConfig[isAdmin].text}
         Size={{ width: "100px", font: "15px" }}
-      />
+      >
+        {btnConfig[isAdmin].text}
+      </StyleButton>
     </div>
   );
 };

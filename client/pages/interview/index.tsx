@@ -4,13 +4,12 @@ import InterViewListView from "@/components/InterViewQuestion/ExpectedQuestionLa
 import styled from "styled-components";
 import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
-import CustomButton from "@/components/UI/CustomButton";
+import { StyleButton } from "@/styles/GlobalStyle";
 import { BiArrowBack } from "react-icons/bi";
 import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import Image from "next/image";
 import interViewimg from "@/assets/images/interView.svg";
 import { v } from "@/styles/variables";
-
 
 const renderComponent = [
   { render: null, title: "면접영상촬영시작" },
@@ -27,29 +26,35 @@ const Interview = () => {
   const [curIndex, setCurIndex] = useState<number>(START_SCREEN);
 
   const moveToNextPage = () => {
-    setCurIndex(prevIndex => (prevIndex >= END_SCREEN ? SECOND_SCREEN : prevIndex + 1));
+    setCurIndex(prevIndex =>
+      prevIndex >= END_SCREEN ? SECOND_SCREEN : prevIndex + 1,
+    );
   };
 
   const moveToPrevPage = () => {
-    setCurIndex(prevIndex => (prevIndex <= START_SCREEN ? START_SCREEN : prevIndex - 1));
+    setCurIndex(prevIndex =>
+      prevIndex <= START_SCREEN ? START_SCREEN : prevIndex - 1,
+    );
   };
 
   return (
     <InterViewStyle>
       <ControlBtn>
         {curIndex > SECOND_SCREEN && (
-          <CustomButton
+          <StyleButton
             onClick={moveToPrevPage}
-            text={<BiArrowBack />}
             Size={{ width: "50px", font: "22px" }}
-          ></CustomButton>
+          >
+            <BiArrowBack />
+          </StyleButton>
         )}
-        <CustomButton
+        <StyleButton
           className="Arrow_btn"
           onClick={moveToNextPage}
-          text={renderComponent[curIndex].title}
           Size={{ width: "90%", font: "20px" }}
-        ></CustomButton>
+        >
+          {renderComponent[curIndex].title}
+        </StyleButton>
       </ControlBtn>
       {curIndex === START_SCREEN && (
         <Menual>

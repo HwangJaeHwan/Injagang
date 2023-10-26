@@ -8,8 +8,7 @@ import { BiPlus } from "react-icons/bi";
 import styled from "styled-components";
 import { v4 as uuid4 } from "uuid";
 import { v } from "@/styles/variables";
-import CustomButton from "@/components/UI/CustomButton";
-import { ColBox } from "@/styles/GlobalStyle";
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
 import { useRouter } from "next/router";
 
 export const moveCoverLetterMainPage = "/coverLetter";
@@ -74,16 +73,16 @@ const CoverLetterCreator = () => {
       ))}
       <BiPlusStyled onClick={addQnAList}></BiPlusStyled>
       <ControllerBtns>
-        <CustomButton
+        <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => router.push(moveCoverLetterMainPage)}
-          text={"뒤로가기"}
         />
-        <CustomButton
+        뒤로가기
+        <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => handleDispatch()}
-          text={"작성완료"}
         />
+        작성완료
       </ControllerBtns>
     </CoverLetterCreatorContainer>
   );

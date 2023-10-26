@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import CustomButton from "../../UI/CustomButton";
-import { text } from "stream/consumers";
+import { StyleButton } from "@/styles/GlobalStyle";
 
 const AddTextInputStyle = styled.div`
   display: flex;
@@ -27,7 +26,7 @@ const QuestionAdder = ({
 }: AddTextInputProps) => {
   const [title, setTitle] = useState<string>("");
   const textRef = useRef<HTMLInputElement | null>(null);
-  const handleAddText = (target = null) => {
+  const handleAddText = () => {
     handleAddQuestion(title);
     setTitle("");
     textRef.current?.focus();
@@ -42,16 +41,18 @@ const QuestionAdder = ({
         onChange={e => setTitle(e.target.value)}
       ></Input>
       <div>
-        <CustomButton
+        <StyleButton
           Size={{ width: "63px", font: "15px" }}
           onClick={handleAddText}
-          text={"확인"}
-        />
-        <CustomButton
+        >
+          확인
+        </StyleButton>
+        <StyleButton
           Size={{ width: "63px", font: "15px" }}
           onClick={handleCancelQuestion}
-          text={"확정"}
-        />
+        >
+          확정
+        </StyleButton>
       </div>
     </AddTextInputStyle>
   );

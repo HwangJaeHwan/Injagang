@@ -1,11 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import InterViewSlider from "./InterViewSlider";
-import CustomButton from "../UI/CustomButton";
 import Image from "next/image";
 import interViewin from "../../assets/images/interviewIn.svg";
 import { v } from "@/styles/variables";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 import useMediaRecord from "@/hooks/useMediaRecord";
 import useWebSpeech from "@/hooks/useWebSpeech";
 import VideoController from "./Video/VideoController";
@@ -101,29 +100,32 @@ const InterviewRecord = () => {
         )}
         {recordedChunks.length > 0 && (
           <ResultContainer>
-            <CustomButton
-              text="< 이전영상"
+            <StyleButton
               onClick={() =>
                 setVideoIndex(prevIndex =>
                   prevIndex <= 1 ? 0 : videoIndex - 1,
                 )
               }
               Size={{ width: "150px", font: "15px" }}
-            />
-            <CustomButton
-              text="결과확인"
+            >
+              이전영상
+            </StyleButton>
+            <StyleButton
               onClick={() => setIsResult(!isResult)}
               Size={{ width: "150px", font: "15px" }}
-            ></CustomButton>
-            <CustomButton
-              text="다음영상>"
+            >
+              결과확인
+            </StyleButton>
+            <StyleButton
               onClick={() =>
                 setVideoIndex(prevIndex =>
                   prevIndex >= recordedChunks.length - 1 ? 0 : videoIndex + 1,
                 )
               }
               Size={{ width: "150px", font: "15px" }}
-            ></CustomButton>
+            >
+              다음영상
+            </StyleButton>
           </ResultContainer>
         )}
       </Result>
