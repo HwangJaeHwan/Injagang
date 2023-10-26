@@ -7,8 +7,7 @@ import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
 import { BiPlus } from "react-icons/bi";
 import styled from "styled-components";
 import { v } from "@/styles/variables";
-import CustomButton from "@/components/UI/CustomButton";
-import { ColBox } from "@/styles/GlobalStyle";
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
 
 const CoverLetterEdit = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
@@ -59,23 +58,26 @@ const CoverLetterEdit = () => {
       ))}
       <BiPlusStyled onClick={addQnAList}></BiPlusStyled>
       <ControllerBtns>
-        <CustomButton
+        <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => router.push(moveCoverLetterMainPage)}
-          text={"뒤로가기"}
-        />
-        <CustomButton
+        >
+          뒤로가기
+        </StyleButton>
+        <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => deleteCoverLetter(Number(id))}
-          text={"삭제하기"}
-        />
-        <CustomButton
+        >
+          삭제하기
+        </StyleButton>
+        <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() =>
             changeCoverLetter(Number(id), coverLetterTitle, qnaList)
           }
-          text={"수정완료"}
-        />
+        >
+          수정완료
+        </StyleButton>
       </ControllerBtns>
     </CoverLetterCreatorContainer>
   );

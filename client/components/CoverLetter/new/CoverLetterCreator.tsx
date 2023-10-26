@@ -3,7 +3,6 @@ import CoverLetterQuestionItems from "./CoverLetterQuestionItems";
 import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
 import ControlMenu from "@/components/UI/ControlMenu";
 import useControlTemplate from "../hooks/useControlTemplate";
-
 import { BiPlus } from "react-icons/bi";
 import styled from "styled-components";
 import { v4 as uuid4 } from "uuid";
@@ -76,13 +75,15 @@ const CoverLetterCreator = () => {
         <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => router.push(moveCoverLetterMainPage)}
-        />
-        뒤로가기
+        >
+          뒤로가기
+        </StyleButton>
         <StyleButton
           Size={{ width: "150px", font: "20px" }}
           onClick={() => handleDispatch()}
-        />
-        작성완료
+        >
+          작성완료
+        </StyleButton>
       </ControllerBtns>
     </CoverLetterCreatorContainer>
   );

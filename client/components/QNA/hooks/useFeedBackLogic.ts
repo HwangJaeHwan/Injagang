@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import useModal from "@/hooks/useModal";
 import userQnaManager from "../hooks/userQnaManager";
 import useFeedManager from "../hooks/useFeedManager";
@@ -7,6 +7,7 @@ const useFeedBackLogic = () => {
   const [correctionText, setCorrectionText] = useState<string>("");
   const [isFeedBackClear, setIsFeedBackClear] = useState<boolean>(false);
   const [isViolation, setIsViolation] = useState<boolean>(false);
+  const textRef = useRef<HTMLTextAreaElement>(null);
   const { setModal, Modal } = useModal();
   const { selectedCorrection, dispatchInitCorrection } = userQnaManager();
 
@@ -23,6 +24,16 @@ const useFeedBackLogic = () => {
       },
     });
   }, []);
+
+  useEffect(() => {
+    if (isFeedBackClear) {
+      setCorrectionText("");
+      textRef.current?.focus();
+    }
+    if (isViolation) {
+      textRef.current?.focus();
+    }
+  }, [isFeedBackClear, isViolation]);
 
   const focusTextArea = useCallback(() => {
     setIsViolation(true);
@@ -59,10 +70,10 @@ const useFeedBackLogic = () => {
   }, []);
 
   return {
+    textRef,
+    correctionText,
     selectedCorrection,
     handleChangeFeedBack,
-    isViolation,
-    isFeedBackClear,
     handleSubmit,
     handleClear,
     Modal,

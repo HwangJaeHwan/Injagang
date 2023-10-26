@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import styled, { css } from "styled-components";
+import { v } from "@/styles/variables";
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -87,6 +88,35 @@ export const StyleButton = styled.button<SelectProps>`
   }
 `;
 
+export const StyleTextArea = styled.textarea`
+  ${FlexBox}
+  resize: vertical;
+  box-sizing: border-box;
+  color: #22272e;
+  background-color: #ffffff;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  line-height: 1.5;
+  padding: 10px 15px;
+  border-radius: 5px;
+  overflow-y: auto;
+  margin: 15px auto;
+`;
+
+export const StyleInput = styled.input`
+  width: ${v.lgItemWidth};
+  height: 40px;
+  border-radius: 5px;
+  border-color: black;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
+  margin-bottom: 15px;
+  @media screen and (max-width: 900px) {
+      width: ${v.smItemWidth};
+  }
+`;
 
 interface CardProps {
   size: {
