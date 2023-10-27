@@ -35,7 +35,7 @@ const TemplateDetail = () => {
 export default TemplateDetail;
 const TemplateDetailStyled = styled.div`
   position: relative;
-  padding: 20px 12px;
+  padding: 12px 25px;
   width: 100%;
   height: 100%;
 `;
@@ -43,6 +43,7 @@ const TemplateDetailStyled = styled.div`
 const Container = styled.div`
   ${ScrollBar}
   overflow-y: auto;
+  height: 100%;
 `;
 
 const QuestionStyle = styled.div`

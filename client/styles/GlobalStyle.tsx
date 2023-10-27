@@ -57,7 +57,7 @@ export const Container = styled.div`
   padding: 0 50px;
 
   @media screen and(max-width: 960px) {
-    padding: 0 30p
+    padding: 0 30p;
   }
 `;
 
@@ -136,6 +136,38 @@ export const StyleInput = styled.input`
   margin-bottom: 15px;
   @media screen and (max-width: 900px) {
     width: ${v.smItemWidth};
+  }
+`;
+
+export const MainTitleContainer = styled.div`
+  text-align: center;
+  background-color:"#151618";
+  box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+  font-size: 1.8rem;
+  width: ${v.mdWidth};
+  border-radius: 8px;
+  padding: 8px 20px;
+  margin-bottom: 11px;
+`;
+
+export const StyledInput = styled.input`
+  width: 80%;
+  padding: 2px 8px;
+  border: 1px solid #e1e1e1;
+  background-color: #ffffff;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.2s ease-in-out;
+
+  &:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #aaa;
   }
 `;
 

@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { ColBox, Container, FlexBox, StyleCard } from "@/styles/GlobalStyle";
+import {
+  ColBox,
+  Container,
+  FlexBox,
+  StyleCard,
+  MainTitleContainer,
+} from "@/styles/GlobalStyle";
 import { BiPlus } from "react-icons/bi";
 import { v } from "@/styles/variables";
 import useTemplateManager from "../hooks/useTemplateManager";
@@ -23,6 +29,7 @@ const TemplateList = () => {
   return (
     <TemplateStlyed>
       <Container>
+        <MainTitleContainer>템플릿 만들기</MainTitleContainer>
         <Card size={{ width: `${v.mdWidth}`, height: "350px" }}>
           <TemplateTtileList>
             {templateList.map(item => (
@@ -34,7 +41,11 @@ const TemplateList = () => {
           </TemplateTtileList>
           <TemplateViewController>
             {loading && <p>로딩중</p>}
-            {isAddTemplate ? <AddTemplate onClose={setIsAddTemplate} /> : <TemplateDetail />}
+            {isAddTemplate ? (
+              <AddTemplate onClose={setIsAddTemplate} />
+            ) : (
+              <TemplateDetail />
+            )}
           </TemplateViewController>
         </Card>
       </Container>
@@ -59,6 +70,7 @@ const Card = styled(StyleCard)`
 const TemplateTtileList = styled.div`
   ${ColBox}
   justify-content: center;
+  gap: 8px;
   width: 50%;
   height: 100%;
   border-right: 1px solid white;
@@ -69,9 +81,6 @@ const TemplateTtileList = styled.div`
   }
   svg:hover {
     color: red;
-  }
-  .template_Item {
-    cursor: pointer;
   }
 
   @media screen and (max-width: 800px) {
