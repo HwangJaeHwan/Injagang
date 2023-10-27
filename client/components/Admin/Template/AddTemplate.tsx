@@ -1,10 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
-import { BiPlus, BiRedo, BiCheck } from "react-icons/bi";
+import { BiPlus, BiRedo, BiCheck, BiX } from "react-icons/bi";
 import { ColBox } from "@/styles/GlobalStyle";
 import useAddTemplateLogic from "../hooks/useAddTemplateLogic";
 
-const AddTemplate = () => {
+interface AddTemplateProps {
+  onClose: (isClose: boolean) => void;
+}
+
+const AddTemplate = ({ onClose }: AddTemplateProps) => {
   const {
     templateList,
     setTemplateList,
@@ -26,6 +30,9 @@ const AddTemplate = () => {
 
   return (
     <TemplateAddStyled>
+      <TopMenu>
+        <BiX onClick={() => onClose(false)} />
+      </TopMenu>
       <Input
         ref={titleRef}
         type="text"
@@ -70,8 +77,15 @@ const TemplateAddStyled = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
+  position: relative;
 `;
 
 const Input = styled.input`
   width: 70%;
+`;
+
+const TopMenu = styled.div`
+  position: absolute;
+  top: 0px;
+  right: 0px;
 `;

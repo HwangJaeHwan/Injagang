@@ -50,6 +50,17 @@ export const ScrollBar = css`
   }
 `;
 
+export const Container = styled.div`
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 0 50px;
+
+  @media screen and(max-width: 960px) {
+    padding: 0 30p
+  }
+`;
+
 export const Card = styled.div<CardProps>`
   ${({ size }) => (size.flex === "row" ? FlexBox : ColBox)};
   padding: 15px 15px;
@@ -61,6 +72,16 @@ export const Card = styled.div<CardProps>`
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
 `;
 
+export const StyleCard = styled.div<CardProps>`
+  ${FlexBox}
+  padding: 15px 15px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+  width: ${({ size }) => size.width || "100%"};
+  height: ${({ size }) => size.height || "100%"};
+  border-radius: 8px;
+  box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
+`;
 
 export const StyleButton = styled.button<SelectProps>`
   width: ${({ Size }) => Size.width || "100%"};
@@ -93,7 +114,7 @@ export const StyleTextArea = styled.textarea`
   resize: vertical;
   box-sizing: border-box;
   color: #22272e;
-  background-color: #ffffff;
+  background-color: white;
   font-weight: bold;
   width: 100%;
   height: 100%;
@@ -114,7 +135,7 @@ export const StyleInput = styled.input`
   box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 09);
   margin-bottom: 15px;
   @media screen and (max-width: 900px) {
-      width: ${v.smItemWidth};
+    width: ${v.smItemWidth};
   }
 `;
 
@@ -122,7 +143,7 @@ interface CardProps {
   size: {
     width: string;
     height: string;
-    flex: string;
+    flex?: string;
   };
 }
 

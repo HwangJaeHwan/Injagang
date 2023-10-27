@@ -10,11 +10,11 @@ const WithAuth = <P extends object>(Component: React.ComponentType<P>) => {
     const verified = useAuth();
     const isWhiteListed = whiteList.includes(router.asPath);
 
-    if (isWhiteListed || verified) {
+    if (isWhiteListed) {
       return <Component {...props} />;
-    } else {
-      return <AuthFailed/>;
     }
+
+    return verified ? <Component {...props} /> : <AuthFailed />;
   };
 };
 

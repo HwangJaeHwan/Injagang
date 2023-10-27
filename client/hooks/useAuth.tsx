@@ -6,9 +6,10 @@ import Cookies from "js-cookie";
 
 //인증을 위한 훅
 export const useAuth = () => {
-  const { success } = useSelector((state: RootReducerType) => state.profile);
+  const { success: verified } = useSelector(
+    (state: RootReducerType) => state.profile,
+  );
   const dispatch = useDispatch();
-  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
@@ -17,12 +18,6 @@ export const useAuth = () => {
     }
     dispatch(getProfile());
   }, []);
-
-  useEffect(() => {
-    if (success) {
-      setVerified(true);
-    }
-  }, [success]);
 
   return verified;
 };

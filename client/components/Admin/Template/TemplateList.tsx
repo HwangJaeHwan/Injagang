@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import { ColBox, Container, FlexBox, StyleCard } from "@/styles/GlobalStyle";
 import { BiPlus } from "react-icons/bi";
 import { v } from "@/styles/variables";
 import useTemplateManager from "../hooks/useTemplateManager";
@@ -22,20 +22,22 @@ const TemplateList = () => {
 
   return (
     <TemplateStlyed>
-      <Card>
-        <TemplateTtileList>
-          {templateList.map(item => (
-            <TemplateTitleItem key={item.templateId} list={item} />
-          ))}
-          {!isAddTemplate && (
-            <BiPlus onClick={() => setIsAddTemplate(true)}></BiPlus>
-          )}
-        </TemplateTtileList>
-        <TemplateViewController>
-          {loading && <p>로딩중</p>}
-          {isAddTemplate ? <AddTemplate /> : <TemplateDetail />}
-        </TemplateViewController>
-      </Card>
+      <Container>
+        <Card size={{ width: `${v.mdWidth}`, height: "350px" }}>
+          <TemplateTtileList>
+            {templateList.map(item => (
+              <TemplateTitleItem key={item.templateId} list={item} />
+            ))}
+            {!isAddTemplate && (
+              <BiPlus onClick={() => setIsAddTemplate(true)}></BiPlus>
+            )}
+          </TemplateTtileList>
+          <TemplateViewController>
+            {loading && <p>로딩중</p>}
+            {isAddTemplate ? <AddTemplate onClose={setIsAddTemplate} /> : <TemplateDetail />}
+          </TemplateViewController>
+        </Card>
+      </Container>
       <RenderToast />
     </TemplateStlyed>
   );
@@ -43,23 +45,10 @@ const TemplateList = () => {
 
 export default TemplateList;
 const TemplateStlyed = styled.div`
-  ${ColBox}
-  width: 100%;
-  background-color: green;
+  padding: 50px 0;
 `;
 
-const Card = styled.div`
-  ${FlexBox};
-  padding: 15px 15px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text};
-  width: ${v.mdWidth};
-  height: 350px;
-  border-radius: 8px;
-  box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.6);
-  text-align: center;
-  margin: 15px 15px;
-
+const Card = styled(StyleCard)`
   @media screen and (max-width: 800px) {
     ${ColBox}
     flex-direction: column-reverse;

@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import MemberTable from "@/components/Admin/MemberTable";
 import TemplateView from "@/components/Admin/Template/TemplateList";
 import { ColBox } from "@/styles/GlobalStyle";
 
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
-import { InitiaState } from "@/components/redux/Auth/reducer";
 import ExpectedQuestionView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
 const AdminPageStyle = styled.div`
   ${ColBox}
+  width:100%;
 `;
 
 const AdminPage = () => {

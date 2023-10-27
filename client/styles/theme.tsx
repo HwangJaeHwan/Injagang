@@ -14,7 +14,7 @@ interface Theme {
 
 const lightTheme: Theme = {
   colors: {
-    primary: "white",
+    primary: "#f7f8f9",
     secondary: "#3399FF",
     bodyColor: "#fff",
     button: "#f39214f2",
