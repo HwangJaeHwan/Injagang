@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addTemplate } from "@/components/redux/Template/server/actions";
 import useUserTemplateManager from "./useUserTemplateManager";
@@ -10,12 +10,14 @@ interface IAddTemplateList {
 
 const MAX_QUESTIONS = 7;
 const MIN_QUESTIONS = 1;
+const INITIAL_TEMPLATE = {
+  templateTitle: "",
+  templateQuestion: [],
+};
 
 const useAddTemplateLogic = () => {
-  const [templateList, setTemplateList] = useState<IAddTemplateList>({
-    templateTitle: " ",
-    templateQuestion: [],
-  });
+  const [templateList, setTemplateList] =
+    useState<IAddTemplateList>(INITIAL_TEMPLATE);
   const { setIsAddTemplate } = useUserTemplateManager();
   const dispatch = useDispatch();
   const templateMinLength =
@@ -23,43 +25,43 @@ const useAddTemplateLogic = () => {
   const templateMaxLength =
     templateList.templateQuestion.length >= MAX_QUESTIONS;
 
-  const handleQuestionChange = (index: number, value: string) => {
+  const handleQuestionChange = useCallback((index: number, value: string) => {
     setTemplateList(prev => ({
       ...prev,
       templateQuestion: prev.templateQuestion.map((q, i) =>
         i === index ? value : q,
       ),
     }));
-  };
+  }, []);
 
-  const addQuestion = () => {
+  const addQuestion = useCallback(() => {
     if (templateMaxLength) return;
     setTemplateList(prev => ({
       ...prev,
       templateQuestion: [...prev.templateQuestion, ""],
     }));
-  };
+  }, [templateMaxLength]);
 
-  const removeLastQuestion = () => {
+  const removeLastQuestion = useCallback(() => {
     setTemplateList(prev => ({
       ...prev,
       templateQuestion: prev.templateQuestion.slice(0, -1),
     }));
-  };
+  }, []);
 
-  const resetTemplateList = () => {
+  const resetTemplateList = useCallback(() => {
     if (templateMinLength) return;
-    setTemplateList({ templateTitle: "", templateQuestion: [] });
-  };
+    setTemplateList(INITIAL_TEMPLATE);
+  }, [templateMinLength]);
 
-  const confirmTemplateCreation = () => {
+  const confirmTemplateCreation = useCallback(() => {
     const { templateTitle, templateQuestion } = templateList;
     dispatch(
       addTemplate({ title: templateTitle, questions: templateQuestion }),
     );
     resetTemplateList();
     setIsAddTemplate(false);
-  };
+  }, [templateList, setIsAddTemplate]);
 
   return {
     templateList,
