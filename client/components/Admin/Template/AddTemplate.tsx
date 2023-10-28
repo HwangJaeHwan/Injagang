@@ -8,6 +8,7 @@ import {
   StyledInput,
 } from "@/styles/GlobalStyle";
 import useAddTemplateLogic from "../hooks/useAddTemplateLogic";
+import TQustionItem from "./TQustionItem";
 
 interface AddTemplateProps {
   onClose: (isClose: boolean) => void;
@@ -55,26 +56,27 @@ const AddTemplate = ({ onClose }: AddTemplateProps) => {
       <TopMenu>
         <BiX onClick={() => onClose(false)} />
       </TopMenu>
-      <StyledInput
+      <QuestionInput
         ref={titleRef}
         type="text"
         value={templateList.templateTitle}
         onChange={e =>
-          setTemplateList(prev => ({ ...prev, templateTitle: e.target.value }))
+          setTemplateList(prev => ({
+            ...prev,
+            templateTitle: e.target.value,
+          }))
         }
         placeholder="제목을 입력해주세요"
       />
       <QuestionContainer>
         {templateList.templateQuestion.map((question, index) => (
-          <QuestionItem key={`question-${index}`}>
-            {index + 1}. 질문:
-            <StyleTextArea
-              ref={questionRef}
-              value={question}
-              onChange={e => handleQuestionChange(index, e.target.value)}
-              placeholder="질문을 입력해주세요"
-            />
-          </QuestionItem>
+          <TQustionItem
+            key={`question-${index}`}
+            index={index}
+            question={question}
+            onChange={handleQuestionChange}
+            ref={questionRef}
+          />
         ))}
       </QuestionContainer>
       <ControllerBtns />
@@ -97,22 +99,25 @@ const TopMenu = styled.div`
   right: 0px;
 `;
 
+const QuestionInput = styled(StyledInput)`
+  position: absolute;
+  top: 0px;
+  margin-top: 15px;
+  width: 70%;
+`;
+
 const QuestionContainer = styled.div`
   ${ScrollBar}
   overflow-y: auto;
   justify-content: center;
   width: 100%;
-  margin: 40px auto;
+  height: 70%;
+  margin: 50px auto;
 `;
-
-const QuestionItem = styled.div`
-  width: 80%;
-  margin: 20px;
-`;
-
-
 
 const Controller = styled.div`
+  position: absolute;
+  bottom: 0px;
   display: flex;
   svg {
     font-size: 40px;

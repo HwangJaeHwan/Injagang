@@ -28,9 +28,9 @@ const TemplateList = () => {
 
   return (
     <TemplateStlyed>
-      <Container>
+      <TemplateContainer>
         <MainTitleContainer>템플릿 만들기</MainTitleContainer>
-        <Card size={{ width: `${v.mdWidth}`, height: "350px" }}>
+        <Card size={{ width: `${v.xlItemWidth}`, height: "350px" }}>
           <TemplateTtileList>
             {templateList.map(item => (
               <TemplateTitleItem key={item.templateId} list={item} />
@@ -48,7 +48,7 @@ const TemplateList = () => {
             )}
           </TemplateViewController>
         </Card>
-      </Container>
+      </TemplateContainer>
       <RenderToast />
     </TemplateStlyed>
   );
@@ -56,14 +56,25 @@ const TemplateList = () => {
 
 export default TemplateList;
 const TemplateStlyed = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   padding: 50px 0;
+  background-color: red;
 `;
+
+const TemplateContainer = styled(Container)`
+  display: flex;
+  flex-direction: column;;
+  align-items: center;
+`
 
 const Card = styled(StyleCard)`
   @media screen and (max-width: 800px) {
     ${ColBox}
     flex-direction: column-reverse;
-    width: ${v.xsWidth};
+    width: ${v.smItemWidth};
   }
 `;
 

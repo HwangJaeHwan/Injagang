@@ -141,18 +141,22 @@ export const StyleInput = styled.input`
 
 export const MainTitleContainer = styled.div`
   text-align: center;
-  background-color:"#151618";
+  background-color: "#151618";
   box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.4);
   font-weight: bold;
   font-size: 1.8rem;
-  width: ${v.mdWidth};
+  width: ${v.xlItemWidth};
   border-radius: 8px;
   padding: 8px 20px;
   margin-bottom: 11px;
+
+  @media screen and (max-width: 900px) {
+    width: ${v.smItemWidth};
+  }
 `;
 
 export const StyledInput = styled.input`
-  width: 80%;
+  width: 100%;
   padding: 2px 8px;
   border: 1px solid #e1e1e1;
   background-color: #ffffff;
@@ -162,7 +166,7 @@ export const StyledInput = styled.input`
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
-    border-color: #007BFF;
+    border-color: #007bff;
     outline: none;
   }
 

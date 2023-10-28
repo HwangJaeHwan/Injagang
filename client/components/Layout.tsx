@@ -1,6 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "../styles/theme";
-import { GlobalStyle } from "../styles/GlobalStyle";
+import { Container, GlobalStyle } from "../styles/GlobalStyle";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ReactNode, useEffect } from "react";
@@ -37,8 +37,6 @@ interface LayoutProps {
 /**컴포넌트와 navbar의 영역을 분할하고, 전체 컴포넌트의 렌더링을 통제하기 위한 역할*/
 const Layout = ({ children }: LayoutProps) => {
   const [isDarkMode, ChangeDarkMode] = useThemeToggler(false);
-
-
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
