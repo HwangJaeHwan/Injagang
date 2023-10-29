@@ -14,15 +14,15 @@ const CheckBox = styled.input`
   height: 0;
 `;
 
-const Slider = styled.span`
+const Slider = styled.span<{ isToggle: boolean }>`
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc; // Neutral color when switch is off
-  border-radius: 17px; // Half of the height for a perfect circle
+  background-color: ${props => (props.isToggle ? "#2196f3" : "#ccc")};
+  border-radius: 17px;
   transition: background-color 0.4s;
 
   &:before {
@@ -30,29 +30,22 @@ const Slider = styled.span`
     content: "";
     height: 26px;
     width: 26px;
-    left: 4px;
+    transform: ${props =>
+      props.isToggle ? "translateX(30px)" : "translateX(4px)"};
     bottom: 4px;
     background-color: white;
-    border-radius: 50%; // Perfect circle
+    border-radius: 50%;
     transition: 0.4s;
-  }
-
-  input:checked + &:before {
-    transform: translateX(26px);
-  }
-
-  input:checked + & {
-    background-color: #2196f3; // Blue color when switch is on
   }
 `;
 
 const Crater = styled.span<{ isToggle: boolean }>`
   position: absolute;
-  visibility: ${props => props.isToggle ? 'visible' : 'hidden'};
-  background-color: rgba(0, 0, 0, 0.2); // Semi-transparent craters
+  visibility: ${props => (props.isToggle ? "visible" : "hidden")};
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   transition: visibility 0.5ms ease-in-out;
-  
+
   &.crater__1 {
     top: 6px;
     left: 42px;
@@ -90,6 +83,11 @@ type SwitchSliderProps = {
 };
 
 const SwitchSlider = ({ isToggle, onClick }: SwitchSliderProps) => {
+  const Craters = [
+    { className: "crater__1", isToggle },
+    { className: "crater__2", isToggle },
+    { className: "crater__3", isToggle },
+  ];
   return (
     <SwitchSliderStyle>
       <VisuallyHidden>
@@ -102,10 +100,10 @@ const SwitchSlider = ({ isToggle, onClick }: SwitchSliderProps) => {
         defaultChecked={isToggle}
         aria-label="토글버튼"
       />
-      <Slider>
-        <Crater className="crater__1" isToggle={isToggle} />
-        <Crater className="crater__2" isToggle={isToggle} />
-        <Crater className="crater__3" isToggle={isToggle} />
+      <Slider isToggle={isToggle}>
+        {Craters.map((el, i) => (
+          <Crater key={i} {...el}></Crater>
+        ))}
       </Slider>
     </SwitchSliderStyle>
   );
