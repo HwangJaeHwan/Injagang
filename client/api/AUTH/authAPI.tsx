@@ -7,6 +7,7 @@ import {
   ChangeNick,
   IChangePw,
 } from "@/types/auth/AuthType";
+import Cookies from "js-cookie";
 
 export const authInfoAPI = async () => {
   return fetcher(METHOD.GET, AUTH_APIS.INFO_API);
@@ -30,4 +31,10 @@ export const passwordChangeAPI = async (changePwData: IChangePw) => {
 
 export const signupAPI = async (signupData: ISignup) => {
   return fetcher(METHOD.POST, AUTH_APIS.SIGNUP_API, signupData);
+};
+
+export const tokenReissueAPI = async () => {
+  return fetcher(METHOD.POST, AUTH_APIS.TOKKEN_REISSUE_API, {
+    refresh: Cookies.get("refreshToken"),
+  });
 };
