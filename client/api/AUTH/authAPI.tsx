@@ -35,6 +35,7 @@ export const signupAPI = async (signupData: ISignup) => {
 
 export const tokenReissueAPI = async () => {
   return fetcher(METHOD.POST, AUTH_APIS.TOKKEN_REISSUE_API, {
+    access: Cookies.get("accessToken"),
     refresh: Cookies.get("refreshToken"),
   });
 };

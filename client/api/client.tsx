@@ -30,7 +30,7 @@ API.interceptors.response.use(
     const originRequest = error.response;
     const errorMessage = originRequest.data.message;
     if (originRequest.status === 401) {
-      handleErrorMessage(errorMessage, originRequest);
+      handleErrorMessage(errorMessage, originRequest.config);
     }
     return Promise.reject(error);
   },
@@ -54,16 +54,23 @@ const jwtExpired = async (
   message: string,
   originRequest: AxiosRequestConfig,
 ) => {
-  const response = await tokenReissueAPI();
-  if (response) {
-    const { access } = response.data;
-    Cookies.set("accessToken", access);
-    reRequest(originRequest);
+  try {
+    console.log(message, "동작");
+    const response = await tokenReissueAPI();
+    if (response) {
+      const { access } = response.data;
+      Cookies.set("accessToken", access);
+      reRequest(originRequest);
+    }
+    return;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message;
+    errorMessage && unauthorized();
   }
 };
 
 const reRequest = async (originRequest: AxiosRequestConfig) => {
-  const request = await axios.request(originRequest);
+  return await API.request(originRequest);
 };
 
 export enum METHOD {
