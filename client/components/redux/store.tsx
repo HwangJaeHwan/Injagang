@@ -8,7 +8,7 @@ import type {} from 'redux-thunk/extend-redux';
 import refreshTokenMiddleWare from "./refreshTokenMiddleWare";
 
 
-const middleware = [logger, thunk, refreshTokenMiddleWare];
+const middleware = [logger, thunk];
 
 const makeStore =(context: Context) => createStore  (
   rootReducer,

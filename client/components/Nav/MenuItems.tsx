@@ -28,9 +28,10 @@ export const MyProfileMenu = () => (
 
 export const AdminMenu = () => (
   <StyledLink href="/admin" aria-label={"ADMIN"}>
-    <AdminStyle>
+    <NavContainer>
       <GrUserAdmin />
-    </AdminStyle>
+      <span className="navitem_title">관리자 메뉴</span>
+    </NavContainer>
   </StyledLink>
 );
 
@@ -73,9 +74,3 @@ export const NavContainer = styled.div`
   }
 `;
 
-export const AdminStyle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-`;

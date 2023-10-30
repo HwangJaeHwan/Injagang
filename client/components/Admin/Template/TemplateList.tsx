@@ -24,7 +24,7 @@ const TemplateList = () => {
     getTemplateList();
   }, []);
 
-  // if (error) return <p>Error발생</p>;
+  if (error) return <p>Error발생</p>;
 
   return (
     <TemplateStlyed>
@@ -61,7 +61,6 @@ const TemplateStlyed = styled.div`
   align-items: center;
   width: 100%;
   padding: 50px 0;
-  background-color: red;
 `;
 
 const TemplateContainer = styled(Container)`

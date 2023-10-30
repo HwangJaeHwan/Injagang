@@ -24,12 +24,12 @@ const PermissionsMenu = ({ setModal }: PermissionMenuProps) => {
       {role === "ADMIN" && <AdminMenu />}
       <NavContainer>
         {role === null ? (
-          <LoginMenu>
+          <LogMenu>
             <BiLogIn onClick={() => router.push("/login")} />
             <span className="navitem_title">Login</span>
-          </LoginMenu>
+          </LogMenu>
         ) : (
-          <LogoutMenu>
+          <LogMenu>
             <BiLogOut
               onClick={() =>
                 setModal({
@@ -42,7 +42,7 @@ const PermissionsMenu = ({ setModal }: PermissionMenuProps) => {
               }
             />
             <span className="navitem_title">LogOut</span>
-          </LogoutMenu>
+          </LogMenu>
         )}
       </NavContainer>
     </Container>
@@ -51,8 +51,7 @@ const PermissionsMenu = ({ setModal }: PermissionMenuProps) => {
 
 export default PermissionsMenu;
 const Container = styled.div``;
-const LoginMenu = styled.div``;
-const LogoutMenu = styled.div`
-  ${FlexBox};
+const LogMenu = styled.div`
+  ${FlexBox}
   gap: 30px;
 `;

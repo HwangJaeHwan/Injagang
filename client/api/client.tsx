@@ -1,7 +1,10 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { SERVER } from "./config";
 import Cookies from "js-cookie";
 import { error } from "console";
+import { ERROR_MESSAGES } from "@/constants";
+import Router from "next/router";
+import { tokenReissueAPI } from "./AUTH/authAPI";
 export const API = axios.create({
   baseURL: SERVER,
   headers: {
@@ -20,6 +23,48 @@ API.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+API.interceptors.response.use(
+  response => response,
+  async error => {
+    const originRequest = error.response;
+    const errorMessage = originRequest.data.message;
+    if (originRequest.status === 401) {
+      handleErrorMessage(errorMessage, originRequest);
+    }
+    return Promise.reject(error);
+  },
+);
+
+const handleErrorMessage = (
+  message: string,
+  originRequest: AxiosRequestConfig,
+) => {
+  message === ERROR_MESSAGES.JWT_EXPIRED
+    ? jwtExpired(message, originRequest)
+    : unauthorized();
+};
+
+const unauthorized = () => {
+  Router.replace("/login");
+  return;
+};
+
+const jwtExpired = async (
+  message: string,
+  originRequest: AxiosRequestConfig,
+) => {
+  const response = await tokenReissueAPI();
+  if (response) {
+    const { access } = response.data;
+    Cookies.set("accessToken", access);
+    reRequest(originRequest);
+  }
+};
+
+const reRequest = async (originRequest: AxiosRequestConfig) => {
+  const request = await axios.request(originRequest);
+};
 
 export enum METHOD {
   GET = "get",

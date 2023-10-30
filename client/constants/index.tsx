@@ -53,6 +53,10 @@ export const ERROR_MESSAGES = {
   DUPLICATION_TEXT: "선택한 문장이 존재합니다.",
   DOESN_T_MATCH_PASSWORD: "입력한 정보가 일치하지 않습니다.",
   DOESN_T_TYPE: "TYPE을 선택해주세요.",
+  USER_NOT_FOUND: "해당하는 유저를 찾을 수 없습니다.",
+  NO_AUTHORIZATION: "권한이 없습니다. ",
+  JWT_EXPIRED: "JWT가 만료되었습니다.",
+  REFRESH_TOKEN_EXPIRED: "Refresh 토큰이 만료되었습니다.",
 };
 
 export const SUCCESS_MESSAGES = {
