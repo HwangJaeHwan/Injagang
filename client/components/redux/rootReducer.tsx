@@ -14,6 +14,7 @@ import profileReducer from "./MyProfile/reducer";
 import toastReducer from "./Toast/reducer";
 import userInterViewQuestionsReducer from "./InterViewQuestion/user/reducer";
 import userBoardReducer from "./QnA/user/reducer";
+import errorReducer from "./Error/reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   toast: toastReducer,
   userInterViewQuestions: userInterViewQuestionsReducer,
   userBoard: userBoardReducer,
+  error: errorReducer,
 });
 
 export default rootReducer;
