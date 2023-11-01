@@ -27,6 +27,10 @@ API.interceptors.request.use(
 API.interceptors.response.use(
   response => response,
   async error => {
+    if (!error.response) {
+      console.log("내가 만든 오류",serverDisconnected(error.message))
+      throw serverDisconnected(error.message);
+    }
     const originRequest = error.response;
     const errorMessage = originRequest.data.message;
     if (originRequest.status === 401) {
@@ -46,16 +50,22 @@ const handleErrorMessage = (
 };
 
 const unauthorized = () => {
-  Router.replace("/login");
+  // Router.replace("/login");
   return;
 };
+
+const serverDisconnected = (message: string) => {
+  return message === "Network Error"
+    ? new Error("서버와 연결이 끊겼습니다. 잠시후 다시시도해주세요.")
+    : new Error("원인 파악이 불명한 에러가 발생했습니다.");
+};
+
 
 const jwtExpired = async (
   message: string,
   originRequest: AxiosRequestConfig,
 ) => {
   try {
-    console.log(message, "동작");
     const response = await tokenReissueAPI();
     if (response) {
       const { access } = response.data;
