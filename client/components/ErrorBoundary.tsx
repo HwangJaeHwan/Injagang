@@ -1,32 +1,19 @@
-// ErrorBoundary.tsx
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { setErrorAction } from './redux/Error/action'; 
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { RootReducerType } from "./redux/store";
+import { clearErrorAction } from "./redux/Error/action";
+import { AxiosError } from "axios";
+import { errorHandle } from "@/util/errorHandle";
+import ErrorMessage from "./ErrorMessage";
 
-interface ErrorBoundaryState {
-  hasError: boolean;
-}
-
-interface RootState {
-  error: {
-    error: Error | null;
-  };
-}
-
-const mapState = (state: RootState) => ({
-  error: state.error.error,
-});
-
-const mapDispatch = {
-  setError: setErrorAction,
+type ErrorBoundaryProps = {
+  children: React.ReactNode;
+  error: AxiosError | null;
+  clearErrorAction: () => void;
 };
 
-const connector = connect(mapState, mapDispatch);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type ErrorBoundaryProps = PropsFromRedux & {
-  children: ReactNode;
+type ErrorBoundaryState = {
+  hasError: boolean;
 };
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -35,21 +22,38 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
+  static getDerivedStateFromError(error: Error) {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
-    this.props.setError(error);
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    if (!prevProps.error && this.props.error) {
+      this.setState({ hasError: true });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearErrorAction();
   }
 
   render() {
-    if (this.state.hasError && this.props.error) {
-      return <div>An error occurred: {this.props.error.message}</div>;
+    errorHandle(this.props.error?.response?.status);
+    console.log("에러발생", this.props.error);
+    console.log(this.state.hasError);
+    if (this.props.error || this.state.hasError) {
+      return <ErrorMessage message={this.props.error?.message}></ErrorMessage>;
     }
+
     return this.props.children;
   }
 }
 
-export default connector(ErrorBoundary);
+const mapStateToProps = (state: RootReducerType) => ({
+  error: state.error.error,
+});
+
+const mapDispatchToProps = {
+  clearErrorAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorBoundary);
