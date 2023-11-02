@@ -38,8 +38,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     errorHandle(this.props.error?.response?.status);
-    console.log("에러발생", this.props.error);
-    console.log(this.state.hasError);
     if (this.props.error || this.state.hasError) {
       return <ErrorMessage message={this.props.error?.message}></ErrorMessage>;
     }

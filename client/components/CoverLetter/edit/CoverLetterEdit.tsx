@@ -8,6 +8,7 @@ import { BiPlus } from "react-icons/bi";
 import styled from "styled-components";
 import { v } from "@/styles/variables";
 import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const CoverLetterEdit = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
@@ -41,45 +42,47 @@ const CoverLetterEdit = () => {
   if (loading) return <p>로딩중...</p>;
 
   return (
-    <CoverLetterCreatorContainer>
-      <MainTitle>자소서 수정하기</MainTitle>
-      <CoverLetterTitle
-        value={coverLetterTitle}
-        onChange={e => setCoverLetterTitle(e.target.value)}
-        placeholder="자소서 제목"
-      ></CoverLetterTitle>
-      {qnaList.map((qna, i) => (
-        <CoverLetterQuestionItems
-          key={qna.qnaId}
-          item={qna}
-          onDelete={deleteQnAList}
-          onUpdate={changeQnAList}
-        ></CoverLetterQuestionItems>
-      ))}
-      <BiPlusStyled onClick={addQnAList}></BiPlusStyled>
-      <ControllerBtns>
-        <StyleButton
-          Size={{ width: "150px", font: "20px" }}
-          onClick={() => router.push(moveCoverLetterMainPage)}
-        >
-          뒤로가기
-        </StyleButton>
-        <StyleButton
-          Size={{ width: "150px", font: "20px" }}
-          onClick={() => deleteCoverLetter(Number(id))}
-        >
-          삭제하기
-        </StyleButton>
-        <StyleButton
-          Size={{ width: "150px", font: "20px" }}
-          onClick={() =>
-            changeCoverLetter(Number(id), coverLetterTitle, qnaList)
-          }
-        >
-          수정완료
-        </StyleButton>
-      </ControllerBtns>
-    </CoverLetterCreatorContainer>
+    <ErrorBoundary>
+      <CoverLetterCreatorContainer>
+        <MainTitle>자소서 수정하기</MainTitle>
+        <CoverLetterTitle
+          value={coverLetterTitle}
+          onChange={e => setCoverLetterTitle(e.target.value)}
+          placeholder="자소서 제목"
+        ></CoverLetterTitle>
+        {qnaList.map((qna, i) => (
+          <CoverLetterQuestionItems
+            key={qna.qnaId}
+            item={qna}
+            onDelete={deleteQnAList}
+            onUpdate={changeQnAList}
+          ></CoverLetterQuestionItems>
+        ))}
+        <BiPlusStyled onClick={addQnAList}></BiPlusStyled>
+        <ControllerBtns>
+          <StyleButton
+            Size={{ width: "150px", font: "20px" }}
+            onClick={() => router.push(moveCoverLetterMainPage)}
+          >
+            뒤로가기
+          </StyleButton>
+          <StyleButton
+            Size={{ width: "150px", font: "20px" }}
+            onClick={() => deleteCoverLetter(Number(id))}
+          >
+            삭제하기
+          </StyleButton>
+          <StyleButton
+            Size={{ width: "150px", font: "20px" }}
+            onClick={() =>
+              changeCoverLetter(Number(id), coverLetterTitle, qnaList)
+            }
+          >
+            수정완료
+          </StyleButton>
+        </ControllerBtns>
+      </CoverLetterCreatorContainer>
+    </ErrorBoundary>
   );
 };
 

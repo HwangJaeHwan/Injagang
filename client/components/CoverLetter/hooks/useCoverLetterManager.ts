@@ -14,7 +14,7 @@ import {
 import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
 
 const useCoverLetterManager = () => {
-  const { readEssayList, loading, essayList } = useSelector(
+  const { readEssayList, loading, essayList, error } = useSelector(
     (state: RootReducerType) => state.essay,
   );
   const { selectedEssayList } = useSelector(
@@ -85,6 +85,7 @@ const useCoverLetterManager = () => {
     targetQnAData,
     changeCoverLetter,
     deleteCoverLetter,
+    error,
   };
 };
 

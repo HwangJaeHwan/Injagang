@@ -1,67 +1,88 @@
 import styled from "styled-components";
 import Image from "next/image";
-import interViewin from "@/public/assets/interView3.png";
+import sorry from "@/public/assets/sorry.png";
+import { useRouter } from "next/router";
 import { fadeIn } from "@/styles/animations";
-
-interface ErrorMessageProps {
-  message: string | undefined;
-}
-
+import { ColBox } from "@/styles/GlobalStyle";
 
 const ErrorContainer = styled.div`
-  color: #fff;
-  border: none;
-  border-radius: 15px;
-  padding: 30px;
-  margin: 10px 0;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: #333;
+  border: 1px solid #e74c3c;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  animation: ${fadeIn} 0.7s ease;
-`;
-
-const ErrorBackgroundOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
+  justify-content: center;
+  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const ErrorIcon = styled.div`
-  background-color: #fff;
   color: #e74c3c;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 25px;
-  font-size: 28px;
-  z-index: 1;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 `;
 
 const ErrorMessageText = styled.div`
-  z-index: 1;
-  font-size: 16px;
+  text-align: center;
+  font-size: 1rem;
   font-weight: bold;
+  margin-bottom: 1rem;
 `;
 
-const ErrorMessage = ({ message }: ErrorMessageProps) => {
+const GoBackButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  &:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  &:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+`;
+
+const ErrorMessageStyle = styled.div`
+  position: relative;
+  ${ColBox}
+`;
+
+const ErrorMessage = ({ message }: { message?: string }) => {
+  const router = useRouter();
+  const goBack = () => {
+    router.back();
+  };
+
   return (
-    <>
+    <ErrorMessageStyle>
       <ErrorContainer>
-        <ErrorBackgroundOverlay />
-        <ErrorIcon>!</ErrorIcon>
-        <ErrorMessageText>{message}</ErrorMessageText>
+        <ErrorIcon>⚠️</ErrorIcon>
+        <ErrorMessageText>
+          {message || "잠시후 다시 시도 해주세요"}
+        </ErrorMessageText>
+        <GoBackButton onClick={goBack}>Go Back</GoBackButton>
       </ErrorContainer>
-      <Image src={interViewin} alt="Interview Image" />
-    </>
+      <Image
+        src={sorry}
+        alt="Interview Image"
+        width={500}
+        height={500}
+      />
+    </ErrorMessageStyle>
   );
 };
 
