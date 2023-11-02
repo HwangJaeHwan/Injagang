@@ -8,7 +8,7 @@ import { BiPlus } from "react-icons/bi";
 import styled from "styled-components";
 import { v } from "@/styles/variables";
 import { ColBox, StyleButton } from "@/styles/GlobalStyle";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import APIErrorBoundary from "@/components/APIErrorBoundary";
 
 const CoverLetterEdit = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
@@ -42,7 +42,7 @@ const CoverLetterEdit = () => {
   if (loading) return <p>로딩중...</p>;
 
   return (
-    <ErrorBoundary>
+    <APIErrorBoundary>
       <CoverLetterCreatorContainer>
         <MainTitle>자소서 수정하기</MainTitle>
         <CoverLetterTitle
@@ -82,7 +82,7 @@ const CoverLetterEdit = () => {
           </StyleButton>
         </ControllerBtns>
       </CoverLetterCreatorContainer>
-    </ErrorBoundary>
+    </APIErrorBoundary>
   );
 };
 

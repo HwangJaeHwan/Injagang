@@ -56,9 +56,23 @@ const GoBackButton = styled.button`
   }
 `;
 
+const ErrorBackgroundOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  justify-content: center;
+  animation: ${fadeIn} 0.5s ease-out;
+`;
+
 const ErrorMessageStyle = styled.div`
   position: relative;
   ${ColBox}
+  height: 100%;
+  justify-content: center;
 `;
 
 const ErrorMessage = ({ message }: { message?: string }) => {
@@ -68,21 +82,18 @@ const ErrorMessage = ({ message }: { message?: string }) => {
   };
 
   return (
-    <ErrorMessageStyle>
-      <ErrorContainer>
-        <ErrorIcon>⚠️</ErrorIcon>
-        <ErrorMessageText>
-          {message || "잠시후 다시 시도 해주세요"}
-        </ErrorMessageText>
-        <GoBackButton onClick={goBack}>Go Back</GoBackButton>
-      </ErrorContainer>
-      <Image
-        src={sorry}
-        alt="Interview Image"
-        width={500}
-        height={500}
-      />
-    </ErrorMessageStyle>
+    <ErrorBackgroundOverlay>
+      <ErrorMessageStyle>
+        <ErrorContainer>
+          <ErrorIcon>⚠️</ErrorIcon>
+          <ErrorMessageText>
+            {message || "데이터를 불러오는데 실패 하였습니다."}
+          </ErrorMessageText>
+          <GoBackButton onClick={goBack}>Go Back</GoBackButton>
+        </ErrorContainer>
+        <Image src={sorry} alt="Interview Image" width={500} height={500} />
+      </ErrorMessageStyle>
+    </ErrorBackgroundOverlay>
   );
 };
 

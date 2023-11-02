@@ -3,21 +3,20 @@ import { connect } from "react-redux";
 import { RootReducerType } from "./redux/store";
 import { clearErrorAction } from "./redux/Error/action";
 import { AxiosError } from "axios";
-import { errorHandle } from "@/util/errorHandle";
-import ErrorMessage from "./ErrorMessage";
+import { handleStatusError } from "@/util/handleStatusError";
 
-type ErrorBoundaryProps = {
+type APIErrorBoundaryProps = {
   children: React.ReactNode;
   error: AxiosError | null;
   clearErrorAction: () => void;
 };
 
-type ErrorBoundaryState = {
+type APIErrorBoundaryState = {
   hasError: boolean;
 };
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+class APIErrorBoundary extends Component<APIErrorBoundaryProps, APIErrorBoundaryState> {
+  constructor(props: APIErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -26,7 +25,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return { hasError: true };
   }
 
-  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+  componentDidUpdate(prevProps: APIErrorBoundaryProps) {
     if (!prevProps.error && this.props.error) {
       this.setState({ hasError: true });
     }
@@ -37,9 +36,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   render() {
-    errorHandle(this.props.error?.response?.status);
+    const ErrorPage = handleStatusError(this.props.error?.response?.status);
+    alert(this.state.hasError);
     if (this.props.error || this.state.hasError) {
-      return <ErrorMessage message={this.props.error?.message}></ErrorMessage>;
+      return this.props.error ? ErrorPage : <p>에러발생</p>;
     }
 
     return this.props.children;
@@ -54,4 +54,4 @@ const mapDispatchToProps = {
   clearErrorAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorBoundary);
+export default connect(mapStateToProps, mapDispatchToProps)(APIErrorBoundary);
