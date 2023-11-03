@@ -25,12 +25,6 @@ const initialState: InitiaState = {
   error: null,
   isUpdated: false,
   essayList: [
-    {
-      essayId: 0,
-      title: "",
-      owner: false,
-      questions: [],
-    },
   ],
   readEssayList: [
     {
