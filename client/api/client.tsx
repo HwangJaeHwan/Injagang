@@ -28,13 +28,13 @@ API.interceptors.response.use(
   response => response,
   async error => {
     if (!error.response) {
-      console.log("내가 만든 오류",serverDisconnected(error.message))
       throw serverDisconnected(error.message);
     }
     const originRequest = error.response;
+    const { status, config } = originRequest;
     const errorMessage = originRequest.data.message;
-    if (originRequest.status === 401) {
-      handleErrorMessage(errorMessage, originRequest.config);
+    if (status === 401) {
+      handleErrorMessage(errorMessage, config);
     }
     return Promise.reject(error);
   },
@@ -50,7 +50,7 @@ const handleErrorMessage = (
 };
 
 const unauthorized = () => {
-  // Router.replace("/login");
+  Router.replace("/login");
   return;
 };
 
@@ -59,7 +59,6 @@ const serverDisconnected = (message: string) => {
     ? new Error("서버와 연결이 끊겼습니다. 잠시후 다시시도해주세요.")
     : new Error("원인 파악이 불명한 에러가 발생했습니다.");
 };
-
 
 const jwtExpired = async (
   message: string,

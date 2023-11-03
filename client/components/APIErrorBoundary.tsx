@@ -15,7 +15,10 @@ type APIErrorBoundaryState = {
   hasError: boolean;
 };
 
-class APIErrorBoundary extends Component<APIErrorBoundaryProps, APIErrorBoundaryState> {
+class APIErrorBoundary extends Component<
+  APIErrorBoundaryProps,
+  APIErrorBoundaryState
+> {
   constructor(props: APIErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -36,8 +39,8 @@ class APIErrorBoundary extends Component<APIErrorBoundaryProps, APIErrorBoundary
   }
 
   render() {
-    const ErrorPage = handleStatusError(this.props.error?.response?.status);
-    alert(this.state.hasError);
+    const errorStatus = this.props.error?.response?.status;
+    const ErrorPage = handleStatusError(errorStatus);
     if (this.props.error || this.state.hasError) {
       return this.props.error ? ErrorPage : <p>에러발생</p>;
     }

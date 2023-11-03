@@ -5,6 +5,34 @@ import { useRouter } from "next/router";
 import { fadeIn } from "@/styles/animations";
 import { ColBox } from "@/styles/GlobalStyle";
 
+interface ErrorMessageProps {
+  message: string;
+  onAction: () => void;
+}
+const ErrorMessage = ({ message, onAction }: ErrorMessageProps) => {
+  const router = useRouter();
+  const goBack = () => {
+    onAction();
+  };
+
+  return (
+    <ErrorBackgroundOverlay>
+      <ErrorMessageStyle>
+        <ErrorContainer>
+          <ErrorIcon>⚠️</ErrorIcon>
+          <ErrorMessageText>
+            {message || "데이터를 불러오는데 실패 하였습니다."}
+          </ErrorMessageText>
+          <GoBackButton onClick={goBack}>Go Back</GoBackButton>
+        </ErrorContainer>
+        <Image src={sorry} alt="Interview Image" width={500} height={500} />
+      </ErrorMessageStyle>
+    </ErrorBackgroundOverlay>
+  );
+};
+
+export default ErrorMessage;
+
 const ErrorContainer = styled.div`
   background: #fff;
   color: #333;
@@ -74,27 +102,3 @@ const ErrorMessageStyle = styled.div`
   height: 100%;
   justify-content: center;
 `;
-
-const ErrorMessage = ({ message }: { message?: string }) => {
-  const router = useRouter();
-  const goBack = () => {
-    router.back();
-  };
-
-  return (
-    <ErrorBackgroundOverlay>
-      <ErrorMessageStyle>
-        <ErrorContainer>
-          <ErrorIcon>⚠️</ErrorIcon>
-          <ErrorMessageText>
-            {message || "데이터를 불러오는데 실패 하였습니다."}
-          </ErrorMessageText>
-          <GoBackButton onClick={goBack}>Go Back</GoBackButton>
-        </ErrorContainer>
-        <Image src={sorry} alt="Interview Image" width={500} height={500} />
-      </ErrorMessageStyle>
-    </ErrorBackgroundOverlay>
-  );
-};
-
-export default ErrorMessage;

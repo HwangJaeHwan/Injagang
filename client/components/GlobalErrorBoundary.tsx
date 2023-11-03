@@ -1,11 +1,17 @@
 import React, { Component } from "react";
-interface GlobalErrorBoundaryState {
+
+interface GlobalErrorBoundaryProps {
   children: React.ReactNode;
+}
+interface GlobalErrorBoundaryState {
   hasError: boolean;
 }
 
-class GlobalErrorBoundary extends Component<GlobalErrorBoundaryState> {
-  constructor(props: GlobalErrorBoundaryState) {
+class GlobalErrorBoundary extends Component<
+  GlobalErrorBoundaryProps,
+  GlobalErrorBoundaryState
+> {
+  constructor(props: GlobalErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -16,7 +22,12 @@ class GlobalErrorBoundary extends Component<GlobalErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {}
 
-  render() {}
+  render() {
+    if (this.state.hasError) {
+      return;
+    }
+    return this.props.children;
+  }
 }
 
 export default GlobalErrorBoundary;
