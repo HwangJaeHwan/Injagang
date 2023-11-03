@@ -24,8 +24,7 @@ const initialState: InitiaState = {
   loading: false,
   error: null,
   isUpdated: false,
-  essayList: [
-  ],
+  essayList: [],
   readEssayList: [
     {
       essayId: 0,
