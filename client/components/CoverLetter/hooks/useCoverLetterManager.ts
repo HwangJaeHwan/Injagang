@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurEssayList } from "../../redux/Essay/user/actions";
 import { useSelector } from "react-redux";
@@ -20,7 +20,7 @@ const useCoverLetterManager = () => {
   const { selectedEssayList } = useSelector(
     (state: RootReducerType) => state.userEssayList,
   );
-  const coverLetterMainTitle = readEssayList[0].title;
+  const coverLetterMainTitle = readEssayList[0]?.title;
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -53,26 +53,25 @@ const useCoverLetterManager = () => {
       : [];
   }, [readEssayList]);
 
-  const changeCoverLetter = (
-    essayId: number,
-    title: string,
-    qnaList: IReadQnaList[],
-  ) => {
-    const resetData = {
-      title,
-      qnaList: qnaList.map(qna => ({
-        question: qna.question,
-        answer: qna.answer,
-      })),
-    };
-    dispatch(updateEssay(essayId, resetData));
-    router.push(moveCoverLetterMainPage);
-  };
+  const changeCoverLetter = useCallback(
+    (essayId: number, title: string, qnaList: IReadQnaList[]) => {
+      const resetData = {
+        title,
+        qnaList: qnaList.map(qna => ({
+          question: qna.question,
+          answer: qna.answer,
+        })),
+      };
+      dispatch(updateEssay(essayId, resetData));
+      router.push(moveCoverLetterMainPage);
+    },
+    [],
+  );
 
-  const deleteCoverLetter = (targetID: number) => {
+  const deleteCoverLetter = useCallback((targetID: number) => {
     dispatch(deleteEssayList(targetID));
     router.push(moveCoverLetterMainPage);
-  };
+  }, []);
 
   return {
     changeSeleted,
@@ -85,6 +84,7 @@ const useCoverLetterManager = () => {
     targetQnAData,
     changeCoverLetter,
     deleteCoverLetter,
+    selectedEssayList,
     error,
   };
 };

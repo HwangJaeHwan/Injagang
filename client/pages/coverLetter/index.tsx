@@ -5,9 +5,9 @@ import CoverLetter from "@/components/CoverLetter/CoverLetter";
 
 const CoverLetterPage = () => {
   return (
-      <CoverLetterStyle>
-        <CoverLetter />
-      </CoverLetterStyle>
+    <CoverLetterStyle>
+      <CoverLetter />
+    </CoverLetterStyle>
   );
 };
 

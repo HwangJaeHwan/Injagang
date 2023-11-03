@@ -22,10 +22,6 @@ const CoverLetterQuestionItems = ({
   const [question, setQuestion] = useState(item.question);
   const [answer, setAnswer] = useState(item.answer);
 
-  useEffect(()=>{
-    throw Error("DSafas")
-  },[])
-
   return (
     <CoverLetterQuestionItemsContainer>
       <CLQHeader>

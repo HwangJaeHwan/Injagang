@@ -1,41 +1,37 @@
 import React, { useEffect, Suspense } from "react";
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import { RootReducerType } from "@/components/redux/store";
+import { v } from "@/styles/variables";
+import APIErrorBoundary from "../APIErrorBoundary";
+import useCoverLetterManager from "./hooks/useCoverLetterManager";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { getEssayList } from "../redux/Essay/server/actions";
 import Cookies from "js-cookie";
-import { v } from "@/styles/variables";
+
+const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
 
 const CoverLetterList = () => {
   const dispatch = useDispatch();
-  const { error, isUpdated, essayList } = useSelector(
-    (state: RootReducerType) => state.essay,
-  );
-  const { selectedEssayList } = useSelector(
-    (state: RootReducerType) => state.userEssayList,
-  );
-
+  const { essayList, selectedEssayList } = useCoverLetterManager();
   useEffect(() => {
     dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
-
-  const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
-
+ 
   return (
     <CoverLetterListContainer>
-      <Suspense
-        fallback={<SuspenseStyle>사용자 정보 로딩중....</SuspenseStyle>}
-      >
-        {essayList.map((item, idx) => (
-          <CoverLetterItems
-            key={item.essayId}
-            item={item}
-            selectedId={selectedEssayList.essayId}
-          />
-        ))}
-      </Suspense>
+      <APIErrorBoundary>
+        <Suspense
+          fallback={<SuspenseStyle>사용자 정보 로딩중....</SuspenseStyle>}
+        >
+          {essayList.map((item, idx) => (
+            <CoverLetterItems
+              key={item.essayId}
+              item={item}
+              selectedId={selectedEssayList.essayId}
+            />
+          ))}
+        </Suspense>
+      </APIErrorBoundary>
     </CoverLetterListContainer>
   );
 };
