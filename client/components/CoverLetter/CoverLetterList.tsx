@@ -7,6 +7,7 @@ import useCoverLetterManager from "./hooks/useCoverLetterManager";
 import { useDispatch } from "react-redux";
 import { getEssayList } from "../redux/Essay/server/actions";
 import Cookies from "js-cookie";
+import Spinner from "../Spinner";
 
 const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
 
@@ -16,13 +17,11 @@ const CoverLetterList = () => {
   useEffect(() => {
     dispatch(getEssayList(Number(Cookies.get("userId"))));
   }, []);
- 
+
   return (
     <CoverLetterListContainer>
       <APIErrorBoundary>
-        <Suspense
-          fallback={<SuspenseStyle>사용자 정보 로딩중....</SuspenseStyle>}
-        >
+        <Suspense fallback={<Spinner />}>
           {essayList.map((item, idx) => (
             <CoverLetterItems
               key={item.essayId}

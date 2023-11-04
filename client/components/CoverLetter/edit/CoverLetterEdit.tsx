@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/router";
 import useCoverLetterManager from "../hooks/useCoverLetterManager";
-import CoverLetterQuestionItems from "../new/CoverLetterQuestionItems";
 import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
 
 import { BiPlus } from "react-icons/bi";
@@ -9,7 +8,13 @@ import styled from "styled-components";
 import { v } from "@/styles/variables";
 import { ColBox, StyleButton } from "@/styles/GlobalStyle";
 import APIErrorBoundary from "@/components/APIErrorBoundary";
+import Spinner from "@/components/Spinner";
+import CoverLetterQuestionItems from "../new/CoverLetterQuestionItems";
 
+// 생각해보기
+// const CoverLetterQuestionItems = React.lazy(
+//   () => import("../new/CoverLetterQuestionItems"),
+// );
 const CoverLetterEdit = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
   const router = useRouter();
@@ -39,7 +44,7 @@ const CoverLetterEdit = () => {
     }
   }, [targetQnAData]);
 
-  if (loading) return <p>로딩중...</p>;
+  if (loading) return <Spinner></Spinner>;
 
   return (
     <APIErrorBoundary>
