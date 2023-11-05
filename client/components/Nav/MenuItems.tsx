@@ -41,8 +41,8 @@ const StyledLink = styled(Link)`
 
 export const NavContainer = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.colors.text};
   align-items: center;
+  color: ${({ theme }) => theme.colors.text};
   width: 230px;
   gap: 30px;
   font-size: 20px;

@@ -5,6 +5,7 @@ import { ColBox } from "@/styles/GlobalStyle";
 import { useSelector } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
 import ExpectedQuestionView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
+import TemplateListFetcher from "@/components/Admin/Template/TemplateListFetcher";
 const AdminPageStyle = styled.div`
   ${ColBox}
   width:100%;
@@ -14,7 +15,9 @@ const AdminPage = () => {
   const { role } = useSelector((state: RootReducerType) => state.profile);
   return role === "ADMIN" ? (
     <AdminPageStyle>
-      <TemplateView />
+      <TemplateListFetcher>
+        <TemplateView />
+      </TemplateListFetcher>
       <ExpectedQuestionView />
     </AdminPageStyle>
   ) : (

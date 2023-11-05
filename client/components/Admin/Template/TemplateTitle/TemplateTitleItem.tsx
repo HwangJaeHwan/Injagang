@@ -1,6 +1,6 @@
 import { IGetTemplate } from "@/types/template/TemplateType";
 import React from "react";
-import useUserTemplateManager from "../hooks/useUserTemplateManager";
+import useUserTemplateManager from "../../hooks/useUserTemplateManager";
 import styled from "styled-components";
 
 interface TemplateItemProps {

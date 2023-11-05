@@ -4,11 +4,10 @@ import { BiPlus, BiRedo, BiCheck, BiX } from "react-icons/bi";
 import {
   ColBox,
   ScrollBar,
-  StyleTextArea,
   StyledInput,
 } from "@/styles/GlobalStyle";
-import useAddTemplateLogic from "../hooks/useAddTemplateLogic";
-import TQustionItem from "./TQustionItem";
+import useAddTemplateLogic from "../../hooks/useAddTemplateLogic";
+import TQustionItem from "../TQustionItem";
 
 interface AddTemplateProps {
   onClose: (isClose: boolean) => void;
