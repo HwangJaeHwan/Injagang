@@ -1,9 +1,10 @@
 import { ColBox } from "@/styles/GlobalStyle";
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
 import AddTemplate from "./AddTemplate";
 import TemplateDetail from "./TemplateDetail";
 import useUserTemplateManager from "../../hooks/useUserTemplateManager";
+import Spinner from "@/components/Spinner";
 
 const TemplateViewController = () => {
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
@@ -12,7 +13,9 @@ const TemplateViewController = () => {
       {isAddTemplate ? (
         <AddTemplate onClose={setIsAddTemplate} />
       ) : (
-        <TemplateDetail />
+        <Suspense fallback={<Spinner />}>
+          <TemplateDetail />
+        </Suspense>
       )}
     </TemplateViewStyle>
   );

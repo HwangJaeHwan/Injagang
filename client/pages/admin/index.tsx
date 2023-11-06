@@ -15,9 +15,7 @@ const AdminPage = () => {
   const { role } = useSelector((state: RootReducerType) => state.profile);
   return role === "ADMIN" ? (
     <AdminPageStyle>
-      <TemplateListFetcher>
-        <TemplateView />
-      </TemplateListFetcher>
+      <TemplateView />
       <ExpectedQuestionView />
     </AdminPageStyle>
   ) : (

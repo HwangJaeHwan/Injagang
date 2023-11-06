@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
 import { ColBox, StyleCard, MainTitleContainer } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
 import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateTitleList from "./TemplateTitle/TemplateTitleList";
 import TemplateViewController from "./TemplateDetail/TemplateViewController";
+import TemplateListFetcher from "./TemplateListFetcher";
 
 const TemplateList = () => {
   const { RenderToast } = useTemplateManager();
@@ -14,7 +15,9 @@ const TemplateList = () => {
       <MainTitleContainer>템플릿 만들기</MainTitleContainer>
       <TemplateContainer>
         <Card size={{ width: `${v.xlItemWidth}`, height: "350px" }}>
-          <TemplateTitleList />
+          <TemplateListFetcher>
+            <TemplateTitleList />
+          </TemplateListFetcher>
         </Card>
         <Card size={{ width: `${v.xlItemWidth}`, height: "350px" }}>
           <TemplateViewController />
