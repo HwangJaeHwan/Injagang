@@ -21,6 +21,7 @@ export const getTemplate =
     try {
       dispatch({ type: TEMPLATE_REQUEST });
       const response = await getTemplateAPI();
+      console.log("응답", response)
       if (response) {
         dispatch({
           type: TEMPLATE_SUCCESS,

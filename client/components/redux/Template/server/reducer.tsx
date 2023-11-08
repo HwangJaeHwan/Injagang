@@ -5,10 +5,11 @@ import {
   TEMPLATE_SUCCESS,
   templateDispatchType,
 } from "./types";
+import { AxiosError } from "axios";
 
 export interface InitiaState {
   loading: boolean;
-  error: null;
+  error: AxiosError | null;
   templateList: IGetTemplate[];
 }
 
@@ -32,14 +33,14 @@ const templateReducer = (
     case TEMPLATE_REQUEST:
       return {
         ...state,
-        erorr: null,
+        error: null,
         loading: true,
       };
     case TEMPLATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        erorr: null,
+        error: null,
         templateList: action.payload.templateState.map(it => ({
           templateId: it.templateId,
           title: it.title,

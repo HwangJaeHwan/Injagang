@@ -11,10 +11,11 @@ import {
   essayDispatchType,
   ESSAY_UPDATED,
 } from "./types";
+import { AxiosError } from "axios";
 
 export interface InitiaState {
   loading: boolean;
-  error: null;
+  error: AxiosError | null;
   readEssayList: IEssayList[];
   essayList: IGetEssayList[];
   isUpdated: boolean;
