@@ -11,7 +11,7 @@ const TemplateTitleList = () => {
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();
   return (
     <TemplateTtileContainer>
-      {templateList?.map(item => (
+      {templateList.map(item => (
         <TemplateItem key={item.templateId} list={item} />
       ))}
       {!isAddTemplate && (

@@ -6,7 +6,6 @@ import APIErrorBoundary from "../APIErrorBoundary";
 import useCoverLetterManager from "./hooks/useCoverLetterManager";
 import { useDispatch } from "react-redux";
 import { getEssayList } from "../redux/Essay/server/actions";
-import Cookies from "js-cookie";
 import Spinner from "../Spinner";
 
 const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
@@ -15,7 +14,7 @@ const CoverLetterList = () => {
   const dispatch = useDispatch();
   const { essayList, selectedEssayList } = useCoverLetterManager();
   useEffect(() => {
-    dispatch(getEssayList(Number(Cookies.get("userId"))));
+    dispatch(getEssayList());
   }, []);
 
   return (

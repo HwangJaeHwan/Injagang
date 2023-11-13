@@ -28,6 +28,7 @@ export const addEssay =
       dispatch({ type: ESSAY_REQUEST });
       const request = await addEssayAPI(essayData);
       if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+      dispatch(getEssayList());
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -40,11 +41,13 @@ export const addEssay =
 
 /**자소서리스트 요청API*/
 export const getEssayList =
-  (userId: number) =>
-  async (dispatch: Dispatch<essayDispatchType|errorDispatchType>): Promise<void> => {
+  () =>
+  async (
+    dispatch: Dispatch<essayDispatchType | errorDispatchType>,
+  ): Promise<void> => {
     try {
       dispatch({ type: ESSAY_REQUEST });
-      const response = await getEssayListAPI(userId);
+      const response = await getEssayListAPI(Number(Cookies.get("userId")));
       if (response) {
         dispatch({
           type: ESSAY_SUCCESS,
@@ -76,7 +79,6 @@ export const getDetailEssay =
     dispatch: Dispatch<essayDispatchType | errorDispatchType>,
   ): Promise<void> => {
     try {
-      console.log("전송되었습니다.");
       dispatch({ type: ESSAY_REQUEST });
       const response = await readEssayListAPI(essayId);
       if (response) {
@@ -109,6 +111,7 @@ export const updateEssay =
     try {
       const request = await reviseEssayAPI(essayId, modifiedEssayData);
       if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+      dispatch(getEssayList());
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -126,6 +129,7 @@ export const deleteEssayList =
     try {
       const request = await deleteEssayAPI(essayId);
       if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+      dispatch(getEssayList());
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
