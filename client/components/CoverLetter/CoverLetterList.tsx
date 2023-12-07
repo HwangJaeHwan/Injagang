@@ -2,11 +2,9 @@ import React, { useEffect, Suspense } from "react";
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
-import APIErrorBoundary from "../APIErrorBoundary";
 import useCoverLetterManager from "./hooks/useCoverLetterManager";
 import { useDispatch } from "react-redux";
 import { getEssayList } from "../redux/Essay/server/actions";
-import Spinner from "../Spinner";
 
 const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
 
@@ -19,24 +17,20 @@ const CoverLetterList = () => {
 
   return (
     <CoverLetterListContainer>
-      <APIErrorBoundary>
-        <Suspense fallback={<Spinner />}>
-          {essayList.map((item, idx) => (
-            <CoverLetterItems
-              key={item.essayId}
-              item={item}
-              selectedId={selectedEssayList.essayId}
-            />
-          ))}
-        </Suspense>
-      </APIErrorBoundary>
+      {essayList.map(item => (
+        <CoverLetterItems
+          key={item.essayId}
+          item={item}
+          selectedId={selectedEssayList.essayId}
+        />
+      ))}
     </CoverLetterListContainer>
   );
 };
 
 export default CoverLetterList;
 
-const CoverLetterListContainer = styled.div`
+export const CoverLetterListContainer = styled.div`
   ${ColBox}
   ${ScrollBar}
   background-color: #302e2e;

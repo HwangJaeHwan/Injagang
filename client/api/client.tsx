@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { SERVER } from "./config";
 import Cookies from "js-cookie";
-import { error } from "console";
 import { ERROR_MESSAGES } from "@/constants";
 import Router from "next/router";
 import { tokenReissueAPI } from "./AUTH/authAPI";
@@ -44,9 +43,7 @@ const handleErrorMessage = (
   message: string,
   originRequest: AxiosRequestConfig,
 ) => {
-  message === ERROR_MESSAGES.JWT_EXPIRED
-    ? jwtExpired(message, originRequest)
-    : unauthorized();
+  message === ERROR_MESSAGES.JWT_EXPIRED && jwtExpired(message, originRequest)
 };
 
 const unauthorized = () => {
@@ -78,7 +75,7 @@ const jwtExpired = async (
   }
 };
 
-const reRequest = async (originRequest: AxiosRequestConfig) => {
+export const reRequest = async (originRequest: AxiosRequestConfig) => {
   return await API.request(originRequest);
 };
 

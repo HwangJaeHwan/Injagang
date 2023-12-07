@@ -3,9 +3,18 @@ import styled from "styled-components";
 import { ColBox, StyleCard, MainTitleContainer } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
 import useTemplateManager from "../hooks/useTemplateManager";
-import TemplateTitleList from "./TemplateTitle/TemplateTitleList";
 import TemplateViewController from "./TemplateDetail/TemplateViewController";
 import TemplateListFetcher from "./TemplateListFetcher";
+import dynamic from "next/dynamic";
+import Spinner from "@/components/Spinner";
+import APIErrorBoundary from "@/components/APIErrorBoundary";
+
+const TemplateTitleList = dynamic(
+  () => import("./TemplateTitle/TemplateTitleList"),
+  {
+    loading: () => <Spinner />,
+  },
+);
 
 const TemplateList = () => {
   const { RenderToast } = useTemplateManager();
@@ -15,9 +24,11 @@ const TemplateList = () => {
       <MainTitleContainer>템플릿 만들기</MainTitleContainer>
       <TemplateContainer>
         <Card size={{ width: `${v.xlItemWidth}`, height: "350px" }}>
-          <TemplateListFetcher>
-            <TemplateTitleList />
-          </TemplateListFetcher>
+          <APIErrorBoundary>
+            <TemplateListFetcher>
+              <TemplateTitleList />
+            </TemplateListFetcher>
+          </APIErrorBoundary>
         </Card>
         <Card size={{ width: `${v.xlItemWidth}`, height: "350px" }}>
           <TemplateViewController />

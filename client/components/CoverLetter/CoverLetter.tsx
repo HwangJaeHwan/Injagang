@@ -1,11 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
 import { v } from "@/styles/variables";
 import { ColBox } from "@/styles/GlobalStyle";
 import CoverLetterPreView from "./CoverLetterPreView";
-import CoverLetterList from "./CoverLetterList";
+import CoverLetterList, { CoverLetterListContainer } from "./CoverLetterList";
 import { useRouter } from "next/router";
 import { BiPlus } from "react-icons/bi";
+import Spinner from "../Spinner";
+import APIErrorBoundary from "../APIErrorBoundary";
 
 const CoverLetter = () => {
   const router = useRouter();
@@ -15,7 +17,11 @@ const CoverLetter = () => {
     <CoverLetterContainer>
       <CoverLetterPreView />
       <ListHeader>{headerTitle}</ListHeader>
-      <CoverLetterList />
+      <APIErrorBoundary>
+        <Suspense fallback={<Spinner />}>
+          <CoverLetterList />
+        </Suspense>
+      </APIErrorBoundary>
       <CoverLetterControllers>
         <BiPlus onClick={() => router.push(moveCreationPage)} />
       </CoverLetterControllers>
