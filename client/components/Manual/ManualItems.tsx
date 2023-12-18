@@ -31,8 +31,8 @@ const ManualItems = ({
             src={image}
             alt="Interview Image"
             width={700}
-            height={700}
-            loading="lazy"
+            height={600}
+            placeholder="blur"
           />
         </ImageContainer>
       ))}
@@ -41,7 +41,8 @@ const ManualItems = ({
   );
 };
 
-export default ManualItems;
+export default React.memo(ManualItems);
+
 const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -72,7 +73,6 @@ const BannerContainer = styled.div<{ isShow: boolean }>`
 `;
 
 const MainTitle = styled.h2<{ isShow: boolean }>`
-  margin-top: 15rem;
   font-size: 2.5rem;
   ${fadeInUpOpacity}
   animation-delay: 0.2s;

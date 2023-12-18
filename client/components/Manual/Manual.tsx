@@ -26,17 +26,15 @@ const Manual = () => {
   const lastSection = manualData.length - 1;
   return (
     <div>
-      <Suspense fallback={<p>로딩</p>}>
-        {manualData.map((item, index) => (
-          <ManualItems
-            key={index}
-            mainTitle={item.main}
-            subTitle={item.sub}
-            isArrow={index >= lastSection ? false : true}
-            imageList={item.imageList}
-          ></ManualItems>
-        ))}
-      </Suspense>
+      {manualData.map((item, index) => (
+        <ManualItems
+          key={index}
+          mainTitle={item.main}
+          subTitle={item.sub}
+          isArrow={index >= lastSection ? false : true}
+          imageList={item.imageList}
+        ></ManualItems>
+      ))}
     </div>
   );
 };
