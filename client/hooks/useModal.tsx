@@ -93,6 +93,7 @@ interface ModalStyleProps {
 }
 
 const ModalStyle = styled.div<ModalStyleProps>`
+  z-index: 1000;
   display: ${props => (props.isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;

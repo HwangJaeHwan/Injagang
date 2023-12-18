@@ -13,6 +13,7 @@ const LoginPage = () => {
 export default LoginPage;
 
 const LoginStyle = styled.div`
+  z-index: 1;
   ${FlexBox};
   position: absolute;
   top: 0;
