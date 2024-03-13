@@ -1,7 +1,10 @@
+import { useRouter } from "next/router";
+
 import styled from "styled-components";
+
 import Image from "next/image";
 import sorry from "@/public/assets/sorry.png";
-import { useRouter } from "next/router";
+
 import { fadeIn } from "@/styles/animations";
 import { ColBox } from "@/styles/GlobalStyle";
 

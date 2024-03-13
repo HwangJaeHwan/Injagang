@@ -5,8 +5,9 @@ import styled,{ ThemeProvider }  from "styled-components";
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
 
-import { lightTheme, darkTheme } from "../styles/theme";
 import { GlobalStyle } from "../styles/GlobalStyle";
+import defaultTheme from "@/styles/defaultTheme";
+import darkTheme from "@/styles/darkTheme";
 
 import useThemeToggler from "@/hooks/useThemeToggler";
 
@@ -37,9 +38,10 @@ interface LayoutProps {
 /**컴포넌트와 navbar의 영역을 분할하고, 전체 컴포넌트의 렌더링을 통제하기 위한 역할*/
 const Layout = ({ children }: LayoutProps) => {
   const [isDarkMode, ChangeDarkMode] = useThemeToggler(false);
+  const theme = isDarkMode ? darkTheme : defaultTheme
 
   return (
-      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Head>
           <title>인자강</title>

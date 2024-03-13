@@ -8,7 +8,6 @@ import { PROFILE_SUCCESS, PROFILE_FAILURE } from "./types";
 import { authInfoAPI, nickChangeAPI } from "@/api/AUTH/authAPI";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
-
 export const getProfile =
   () =>
   async (dispatch: Dispatch<profileDispatchType>): Promise<void> => {
