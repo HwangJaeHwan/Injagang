@@ -1,5 +1,6 @@
 import { BOARD_APIS } from "../config";
 import { fetcher, METHOD } from "../client";
+
 import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
 
 export const getQnaBoardListAPI = async (queryString: number) => {

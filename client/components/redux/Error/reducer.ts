@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+
 import { CLEAR_ERROR, SET_ERROR, errorDispatchType } from "./types";
 
 interface initialState {

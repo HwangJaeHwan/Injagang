@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
-import { ColBox } from "@/styles/GlobalStyle";
-import AnswerLayout from "@/components/QNA/Answer/AnswerLayout";
+
 import { useRouter } from "next/router";
+
+import styled from "styled-components";
+
 import { useDispatch } from "react-redux";
+
+import AnswerLayout from "@/components/QNA/Answer/AnswerLayout";
 import { getBoardDetail } from "@/components/redux/QnA/actions";
+
+import { ColBox } from "@/styles/GlobalStyle";
 
 const ViewStyle = styled.div`
   ${ColBox}

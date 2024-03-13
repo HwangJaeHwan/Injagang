@@ -1,14 +1,19 @@
 import React, { useState } from "react";
+
+import styled from "styled-components";
+
+import { BiArrowBack } from "react-icons/bi";
+
 import InterviewRecord from "@/components/InterView/interviewRecord";
 import InterViewListView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
-import styled from "styled-components";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+import ArrowAnimation from "@/components/InterView/InterViewMenual";
 import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
 import { StyleButton } from "@/styles/GlobalStyle";
-import { BiArrowBack } from "react-icons/bi";
-import ArrowAnimation from "@/components/InterView/InterViewMenual";
+
 import Image from "next/image";
 import interViewimg from "@/assets/images/interView.svg";
+
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
 
 const renderComponent = [

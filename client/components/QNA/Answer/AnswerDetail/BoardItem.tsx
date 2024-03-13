@@ -1,6 +1,8 @@
-import { ColBox } from "@/styles/GlobalStyle";
 import React from "react";
+
 import styled from "styled-components";
+
+import { ColBox } from "@/styles/GlobalStyle";
 
 interface BoardItemProps {
   title: string;

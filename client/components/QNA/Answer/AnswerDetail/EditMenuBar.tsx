@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import useModal from "@/hooks/useModal";
+
 import { useRouter } from "next/router";
-import { BiDotsHorizontal, BiTrash, BiMessageAltEdit } from "react-icons/bi";
+
 import styled from "styled-components";
+
+import { BiDotsHorizontal, BiTrash, BiMessageAltEdit } from "react-icons/bi";
+
 import useQnaManager from "../../hooks/useQnaManager";
+import useModal from "@/hooks/useModal";
 
 type EditMenuBarProps = {
   boardID: number;

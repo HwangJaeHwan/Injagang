@@ -1,13 +1,16 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import { CorrectionItem } from "../Answer/AnswerLayout";
+
+import { RootReducerType } from "@/components/redux/store";
 import {
   changeCorrection,
   changeTargetFeed,
   initCorrection,
 } from "@/components/redux/QnA/user/actions";
-import { RootReducerType } from "@/components/redux/store";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { CorrectionItem } from "../Answer/AnswerLayout";
+
 
 const userQnaManager = () => {
   const dispatch = useDispatch();

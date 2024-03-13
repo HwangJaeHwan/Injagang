@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
+import React from "react";
+
 import styled from "styled-components";
+
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic, { IPassWordInfo } from "./hooks/useMyProfileLogic";
+
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 
 interface PasswordInputProps {
   title: string;

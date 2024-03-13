@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 const useMediaRecord = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

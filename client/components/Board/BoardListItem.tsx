@@ -1,6 +1,9 @@
+import React from "react";
+
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+
 import styled from "styled-components";
+
 import { v4 as uuid4 } from "uuid";
 
 interface BoardListItemProps<T> {

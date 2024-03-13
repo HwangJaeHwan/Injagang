@@ -1,10 +1,15 @@
-import { ColBox } from "@/styles/GlobalStyle";
 import React, { Suspense } from "react";
+
 import styled from "styled-components";
+
+import { ColBox } from "@/styles/GlobalStyle";
+
 import AddTemplate from "./AddTemplate";
 import TemplateDetail from "./TemplateDetail";
-import useUserTemplateManager from "../../hooks/useUserTemplateManager";
 import Spinner from "@/components/Spinner";
+
+import useUserTemplateManager from "../../hooks/useUserTemplateManager";
+
 
 const TemplateViewController = () => {
   const { isAddTemplate, setIsAddTemplate } = useUserTemplateManager();

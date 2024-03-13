@@ -1,5 +1,8 @@
-import { AUTH_APIS } from "../config";
+import Cookies from "js-cookie";
+
 import { fetcher, METHOD } from "../client";
+import { AUTH_APIS } from "../config"; 
+
 import {
   ISignin,
   ISignup,
@@ -7,7 +10,7 @@ import {
   ChangeNick,
   IChangePw,
 } from "@/types/auth/AuthType";
-import Cookies from "js-cookie";
+
 
 export const authInfoAPI = async () => {
   return fetcher(METHOD.GET, AUTH_APIS.INFO_API);

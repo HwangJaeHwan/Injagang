@@ -1,5 +1,6 @@
 import { FEED_APIS } from "../config";
 import { fetcher, METHOD } from "../client";
+
 import { IReviseFeedBack, IWriteFeedBack } from "@/types/feedback/FeedBackType";
 
 export const getFeedBackListAPI = async (targetId: number) => {

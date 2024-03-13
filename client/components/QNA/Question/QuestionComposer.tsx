@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useRouter } from "next/router";
+
+import styled from "styled-components";
+
+import { useDispatch } from "react-redux";
+
 import CoverLetterDetail from "@/components/QNA/Question/CoverLetterDetail";
+import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
 import ControlMenu from "@/components/UI/ControlMenu";
-import { writeBoard } from "@/components/redux/QnA/actions";
 import {
   Card,
   ColBox,
@@ -10,10 +17,8 @@ import {
   StyleInput as QuestionTitle,
   StyleTextArea,
 } from "@/styles/GlobalStyle";
-import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
+
+import { writeBoard } from "@/components/redux/QnA/actions";
 
 const QuestionComposer = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");

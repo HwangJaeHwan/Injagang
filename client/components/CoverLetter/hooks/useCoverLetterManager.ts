@@ -1,17 +1,22 @@
-import React, { useCallback, useMemo, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setCurEssayList } from "../../redux/Essay/user/actions";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
+import { useCallback, useMemo} from "react";
 
 import { useRouter } from "next/router";
-import { IGetEssayList, IReadQnaList } from "@/types/essay/EssayType";
+
+import { useDispatch,useSelector } from "react-redux";
+
+import { RootReducerType } from "@/components/redux/store";
+
+import { setCurEssayList } from "../../redux/Essay/user/actions";
 import {
   deleteEssayList,
   getDetailEssay,
   updateEssay,
 } from "@/components/redux/Essay/server/actions";
+
+
 import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
+
+import { IGetEssayList, IReadQnaList } from "@/types/essay/EssayType";
 
 const useCoverLetterManager = () => {
   const { readEssayList, loading, essayList, error } = useSelector(

@@ -1,3 +1,9 @@
+import { Dispatch } from "redux";
+
+import Cookies from "js-cookie";
+
+import { showToastAction } from "../Toast/actions";
+
 import {
   AUTHENTICATE_REQUEST,
   AUTHENTICATE_SUCCESS,
@@ -6,14 +12,14 @@ import {
   authDispatchType,
   AUTH_INIT,
 } from "./types";
+import { PROFILE_INIT, profileDispatchType } from "../MyProfile/types";
+
 import { METHOD } from "@/util/fecher";
 import fetcher from "@/util/fecher";
-import { Dispatch } from "redux";
-import Cookies from "js-cookie";
+
 import { checkOutAPI, loginAPI } from "@/api/AUTH/authAPI";
-import { PROFILE_INIT, profileDispatchType } from "../MyProfile/types";
-import { showToastAction } from "../Toast/actions";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
+
 
 type AuthenTicate = {
   loginId: string;

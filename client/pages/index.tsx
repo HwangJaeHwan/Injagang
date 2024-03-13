@@ -1,20 +1,16 @@
-import { useRef } from "react";
-import Manual from "@/components/Manual/Manual";
-import useSectionObsever from "@/hooks/useSectionObsever";
-import { ColBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
+
+import Manual from "@/components/Manual/Manual";
 import Main from "@/components/Manual/Main";
+
+import { ColBox } from "@/styles/GlobalStyle";
 
 const HomeStyle = styled.div`
   ${ColBox}
   width: 80vw;
 `;
 
-
-// const Main = React.lazy(() => import("@/components/Manual/Main"))
-
 const Home = () => {
-  // const { targetItemRef } = useSectionObsever(() => {}, 1);
   return (
     <HomeStyle>
       <Main />

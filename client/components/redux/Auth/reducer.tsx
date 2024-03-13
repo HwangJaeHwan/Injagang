@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 import {
   AUTHENTICATE_REQUEST,
   AUTHENTICATE_SUCCESS,
@@ -6,7 +8,6 @@ import {
   authDispatchType,
   AUTH_INIT,
 } from "./types";
-import Cookies from "js-cookie";
 
 export interface InitiaState {
   loading: boolean;

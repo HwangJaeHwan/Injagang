@@ -1,7 +1,11 @@
 import React from "react";
+
 import styled, { keyframes, css } from "styled-components";
+
+import Image from "next/image";
+
 import ArrrowDown from "../UI/ArrrowDown";
-import Image, { StaticImageData } from "next/image";
+
 import goodInterView from "@/public/assets/main.jpg";
 
 const Main = () => {

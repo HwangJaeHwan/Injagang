@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
+
 import useModal from "@/hooks/useModal";
 import userQnaManager from "../hooks/userQnaManager";
 import useFeedManager from "../hooks/useFeedManager";

@@ -1,7 +1,11 @@
-import { FlexBox } from "@/styles/GlobalStyle";
 import React, { useState } from "react";
-import { BiSearchAlt2 } from "react-icons/bi";
+
 import styled from "styled-components";
+
+import { BiSearchAlt2 } from "react-icons/bi";
+
+import { FlexBox } from "@/styles/GlobalStyle";
+
 
 const SearchStyle = styled.div`
   ${FlexBox};

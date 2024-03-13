@@ -1,7 +1,10 @@
-import { TOAST_MODE } from "@/hooks/useToast";
 import { Dispatch } from "redux";
-import { HIDE_TOAST, SHOW_TOAST } from "./types";
+
 import { v4 as uuid4 } from "uuid";
+
+import { HIDE_TOAST, SHOW_TOAST } from "./types";
+
+import { TOAST_MODE } from "@/hooks/useToast";
 
 export const showToastAction =
   (mode: TOAST_MODE = "Info", message: string, duration: number = 3000) =>

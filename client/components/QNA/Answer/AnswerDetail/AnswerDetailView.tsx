@@ -1,10 +1,14 @@
 import React from "react";
+
 import AnswerDragView from "./AnswerDragView";
 import BoardItem from "./BoardItem";
 import EditMenuBar from "./EditMenuBar";
+
+import useQnaManager from "../../hooks/useQnaManager";
+
 import { Card, ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import styled from "styled-components";
-import useQnaManager from "../../hooks/useQnaManager";
+
 
 const AnswerDetailView = () => {
   const { boardList, isUpdated } = useQnaManager();

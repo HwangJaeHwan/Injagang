@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+
 import useQnaManager from "./hooks/useQnaManager";
 import usePageNation from "@/hooks/usePageNation";
+
 import { StyleButton } from "@/styles/GlobalStyle";
 
 const PageNation = () => {

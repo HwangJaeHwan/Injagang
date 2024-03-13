@@ -1,9 +1,15 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { SERVER } from "./config";
-import Cookies from "js-cookie";
-import { ERROR_MESSAGES } from "@/constants";
+
 import Router from "next/router";
+
+import Cookies from "js-cookie";
+
 import { tokenReissueAPI } from "./AUTH/authAPI";
+import { ERROR_MESSAGES } from "@/constants";
+import { SERVER } from "./config";
+
+
+
 export const API = axios.create({
   baseURL: SERVER,
   headers: {

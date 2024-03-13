@@ -1,6 +1,7 @@
-import React from "react";
-import { RootReducerType } from "@/components/redux/store";
 import { useSelector } from "react-redux";
+
+import { RootReducerType } from "@/components/redux/store";
+
 
 const userInterviewManager = () => {
   const { interViewList } = useSelector(

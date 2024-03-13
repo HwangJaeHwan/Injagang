@@ -1,3 +1,5 @@
+import { Dispatch } from "redux";
+
 import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
@@ -5,9 +7,10 @@ import {
   SIGNUP_CLEAR,
   signupDispatchType,
 } from "./types";
+
 import { METHOD } from "@/util/fecher";
 import fetcher from "@/util/fecher";
-import { Dispatch } from "redux";
+
 
 type MembershipRequest = {
   loginId: string;

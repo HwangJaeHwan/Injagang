@@ -1,4 +1,5 @@
-import React, { Suspense } from "react";
+import React from "react";
+
 import goodInterView from "@/public/assets/main.jpg";
 import interViewScreen from "@/public/assets/면접.png";
 import communityScreen from "@/public/assets/커뮤니티.png";

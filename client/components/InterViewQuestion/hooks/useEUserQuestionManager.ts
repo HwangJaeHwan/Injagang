@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
   setSelectedQuestionsAction,
   setTypeAction,
 } from "@/components/redux/InterViewQuestion/user/action";
 import { RootReducerType } from "@/components/redux/store";
-import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+
 import useExpectedQuestionManager from "./useExpectedQuestionManager";
+
+import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
 
 const useEUserQuestionManager = () => {

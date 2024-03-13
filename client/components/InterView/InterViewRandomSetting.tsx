@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+
 import styled from "styled-components";
+
+import { useDispatch ,useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
 import { getRandomList } from "../redux/InterViewQuestion/action";
+
 import { ColBox } from "@/styles/GlobalStyle";
+
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 const InterViewSettingStyle = styled.div`
   ${ColBox}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const useWebSpeech = (waitTime = 1000, speechList: string[]) => {
   const [speechData, setSpeechData] = useState<string[]>([...speechList]);

@@ -1,5 +1,7 @@
+import React from "react";
+
 import Link from "next/link";
-import React, { ReactElement } from "react";
+
 import styled from "styled-components";
 
 interface MainMenuItemProps {

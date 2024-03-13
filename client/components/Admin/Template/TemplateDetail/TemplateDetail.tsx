@@ -1,9 +1,12 @@
 import React from "react";
-import useUserTemplateManager from "../../hooks/useUserTemplateManager";
+
 import { BiTrash } from "react-icons/bi";
-import useTemplateManager from "../../hooks/useTemplateManager";
+
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
+
+import useTemplateManager from "../../hooks/useTemplateManager";
+import useUserTemplateManager from "../../hooks/useUserTemplateManager";
 
 const TemplateDetail = () => {
   const { removeTemplateItem } = useTemplateManager();

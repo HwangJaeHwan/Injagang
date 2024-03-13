@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
+
 import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
-import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
+
 import { StyleButton } from "@/styles/GlobalStyle";
+
+import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
+
 
 interface ActionBtnProps {
   checkList: number[];

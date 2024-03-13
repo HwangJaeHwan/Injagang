@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
 import ControlMenu from "@/components/UI/ControlMenu";
+
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 
 const InterViewSelectData = [

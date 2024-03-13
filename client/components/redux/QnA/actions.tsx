@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+
 import {
   boardDispatchType,
   BOARD_REQUEST,
@@ -7,6 +8,8 @@ import {
   BOARDINFO_SUCCESS,
   BOARD_UPDATED,
 } from "./types";
+import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
+
 import {
   deleteQnaBoardAPI,
   getDetailBoardAPI,
@@ -14,7 +17,6 @@ import {
   reviseQnaBoardAPI,
   writeQnaBoardAPI,
 } from "@/api/QnABoard/qnaBoardAPI";
-import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
 
 /**QNA리스트를 가져온다. */
 export const getBoardList = (page: number) => async (dispatch: Dispatch) => {

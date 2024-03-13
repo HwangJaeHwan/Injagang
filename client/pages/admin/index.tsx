@@ -1,11 +1,14 @@
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
+
 import TemplateView from "@/components/Admin/Template/TemplateList";
+import ExpectedQuestionView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
+
+import { RootReducerType } from "@/components/redux/store";
+
 import { ColBox } from "@/styles/GlobalStyle";
 
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
-import ExpectedQuestionView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
-import TemplateListFetcher from "@/components/Admin/Template/TemplateListFetcher";
 const AdminPageStyle = styled.div`
   ${ColBox}
   width:100%;

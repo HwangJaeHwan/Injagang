@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+
 import { RxAvatar } from "react-icons/rx";
-import { SessionStorageManager } from "@/util/sessionStorageManager";
+
+import styled from "styled-components";
+
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic from "./hooks/useMyProfileLogic";
 import { StyleButton } from "@/styles/GlobalStyle";
+
+import { SessionStorageManager } from "@/util/sessionStorageManager";
 
 const UserInfoSetting = () => {
   const myInfo = new SessionStorageManager("info");

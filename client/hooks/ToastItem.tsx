@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import React from "react";
+import styled from "styled-components";
+
 import { fadeIn, fadeOut, slideIn, progressBar } from "@/styles/animations";
 import { IToast } from "./useToast";
 import { TOAST_MODE } from "./useToast";

@@ -1,6 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+
 import { BiTrash } from "react-icons/bi";
+
+import styled from "styled-components";
+
 
 const AddQuestionItemStyle = styled.div`
   display: flex;

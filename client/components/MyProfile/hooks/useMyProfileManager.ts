@@ -1,15 +1,19 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import { passWordChange } from "@/components/redux/Auth/actions";
 import { nicknameChange } from "@/components/redux/MyProfile/actions";
+
+import useModal from "@/hooks/useModal";
+import useToast from "@/hooks/useToast";
+
+import { RootReducerType } from "@/components/redux/store";
 import { IPassWordInfo } from "./useMyProfileLogic";
+
 import { runValidationChecks } from "@/util/runValidationChecks";
 import { hasEmptyFields } from "@/util/hasEmpty";
 import { ERROR_MESSAGES, MODAL_MESSAGES } from "@/constants";
-import useModal from "@/hooks/useModal";
-import useToast from "@/hooks/useToast";
-import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
 
 const validation = {
   password: ({

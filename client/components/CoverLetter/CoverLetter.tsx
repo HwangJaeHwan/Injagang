@@ -1,13 +1,18 @@
 import React, { Suspense } from "react";
+
+import { useRouter } from "next/router";
+
+import { BiPlus } from "react-icons/bi";
+
 import styled from "styled-components";
 import { v } from "@/styles/variables";
 import { ColBox } from "@/styles/GlobalStyle";
+
 import CoverLetterPreView from "./CoverLetterPreView";
-import CoverLetterList, { CoverLetterListContainer } from "./CoverLetterList";
-import { useRouter } from "next/router";
-import { BiPlus } from "react-icons/bi";
-import Spinner from "../Spinner";
+import CoverLetterList from "./CoverLetterList";
 import APIErrorBoundary from "../APIErrorBoundary";
+import Spinner from "../Spinner";
+
 
 const CoverLetter = () => {
   const router = useRouter();

@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from "react";
-import CoverLetterQuestionItems from "./CoverLetterQuestionItems";
-import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
-import ControlMenu from "@/components/UI/ControlMenu";
-import useControlTemplate from "../hooks/useControlTemplate";
-import { BiPlus } from "react-icons/bi";
-import styled from "styled-components";
-import { v4 as uuid4 } from "uuid";
-import { v } from "@/styles/variables";
-import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+import React, { useEffect } from "react";
+
 import { useRouter } from "next/router";
+
+import { BiPlus } from "react-icons/bi";
+
+import styled from "styled-components";
+
+
+import { v4 as uuid4 } from "uuid";
+
+import CoverLetterQuestionItems from "./CoverLetterQuestionItems";
+import ControlMenu from "@/components/UI/ControlMenu";
+
+import useCoverLetterCreatorLogic from "../hooks/useCoverLetterCreatorLogic";
+import useControlTemplate from "../hooks/useControlTemplate";
+
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+import { v } from "@/styles/variables";
+
 
 export const moveCoverLetterMainPage = "/coverLetter";
 

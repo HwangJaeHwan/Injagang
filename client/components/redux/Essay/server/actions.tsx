@@ -1,7 +1,7 @@
-import { METHOD } from "@/util/fecher";
-import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
+
 import Cookies from "js-cookie";
+
 import {
   ESSAY_REQUEST,
   ESSAY_FAILURE,
@@ -11,6 +11,8 @@ import {
   ESSAY_UPDATED,
 } from "./types";
 import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
+import { SET_ERROR, errorDispatchType } from "../../Error/types";
+
 import {
   addEssayAPI,
   deleteEssayAPI,
@@ -18,7 +20,6 @@ import {
   reviseEssayAPI,
   readEssayListAPI,
 } from "@/api/ESSAY/essayAPI";
-import { SET_ERROR, errorDispatchType } from "../../Error/types";
 
 /**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =

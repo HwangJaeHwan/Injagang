@@ -1,13 +1,21 @@
-import React, { useState, useCallback } from "react";
-import { IReadQnaList } from "@/types/essay/EssayType";
+import { useState, useCallback } from "react";
+
+import { useRouter } from "next/router";
+
 import { v4 as uuid4 } from "uuid";
+
 import { useDispatch } from "react-redux";
 import { addEssay } from "@/components/redux/Essay/server/actions";
-import { runValidationChecks } from "@/util/runValidationChecks";
-import { useRouter } from "next/router";
-import useModal from "@/hooks/useModal";
-import { ERROR_MESSAGES } from "@/constants";
+
+
 import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
+
+import useModal from "@/hooks/useModal";
+
+import { IReadQnaList } from "@/types/essay/EssayType";
+
+import { runValidationChecks } from "@/util/runValidationChecks";
+import { ERROR_MESSAGES } from "@/constants";
 
 const useCoverLetterCreatorLogic = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");

@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+
 import {
   feedBackDispatchType,
   FEEDBACK_SUCCESS,
@@ -6,12 +7,14 @@ import {
   FEEDBACK_FAILURE,
   FEEDBACK_UPDATED,
 } from "./types";
+import { IReviseFeedBack, IWriteFeedBack } from "@/types/feedback/FeedBackType";
+
 import {
   getFeedBackListAPI,
   reviseFeedBackAPI,
   writeFeedBackAPI,
 } from "@/api/FEEDBACK/feedBackAPI";
-import { IReviseFeedBack, IWriteFeedBack } from "@/types/feedback/FeedBackType";
+
 
 export const getFeedbackList =
   (qnaId: number) => async (dispatch: Dispatch<feedBackDispatchType>) => {

@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+
 import styled from "styled-components";
+
 import { ScrollBar } from "@/styles/GlobalStyle";
-import useDragCorrection from "../../hooks/useDragCorrection";
 import AnswerDragItem from "./AnswerDragItem";
+
+import useDragCorrection from "../../hooks/useDragCorrection";
 import userQnaManager from "../../hooks/userQnaManager";
 import useQnaManager from "../../hooks/useQnaManager";
 

@@ -1,7 +1,6 @@
 import {
   IEssayList,
   IGetEssayList,
-  IReadEssayList,
 } from "@/types/essay/EssayType";
 
 export const ESSAY_REQUEST = "ESSAY_REQUEST";

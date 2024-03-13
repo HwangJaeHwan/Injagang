@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import axios, { AxiosError } from "axios";
+
 import MockAdapter from "axios-mock-adapter";
+
 import { API } from "@/api/client";
 import { deleteTemplateAPI } from "@/api/TEMPLATE/templateAPI";
+
 interface Data {
   message: string;
 }

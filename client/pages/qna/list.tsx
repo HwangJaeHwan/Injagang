@@ -1,11 +1,16 @@
-import BoardListView from "@/components/Board/BoardListLayout";
-import PageNation from "@/components/QNA/PageNation";
-import { ColBox, StyleButton } from "@/styles/GlobalStyle";
-import { useRouter } from "next/router";
 import React from "react";
 
+import { useRouter } from "next/router";
+
 import styled from "styled-components";
+
 import { MdOutlineModeEditOutline } from "react-icons/md";
+
+import BoardListView from "@/components/Board/BoardListLayout";
+import PageNation from "@/components/QNA/PageNation";
+
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+
 const ListStyle = styled.div`
   ${ColBox}
   width: 80vw;

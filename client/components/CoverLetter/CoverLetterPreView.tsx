@@ -1,8 +1,11 @@
 import React from "react";
+
 import styled from "styled-components";
-import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
+
 import { useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
+
+import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
 
 const CoverLetterPreViewItem = ({

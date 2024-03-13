@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+
 import styled from "styled-components";
 
-import { ISelectedText } from "../../hooks/useDragCorrection";
-import { qnaList } from "@/components/redux/QnA/types";
 import ColorPicker from "./ColorPicker";
+
+import { qnaList } from "@/components/redux/QnA/types";
+
+import { ISelectedText } from "../../hooks/useDragCorrection";
+
 
 interface AnswerDragItemProps {
   onSelect: (dragTitleId: number, targetId: number) => void;

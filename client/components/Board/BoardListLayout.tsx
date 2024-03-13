@@ -1,9 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
+
+import { RootReducerType } from "../redux/store";
+
+
 import BoardList from "./BoardList";
 import BoardListHead from "./BoardListHead";
-import { RootReducerType } from "../redux/store";
-import { useSelector } from "react-redux";
+
+
 
 const HEAD_ITEM = ["번호", "제목", "닉네임"];
 const ID_KEY = "id";

@@ -1,6 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+
 import { useDispatch } from "react-redux";
+
 import { addTemplate } from "@/components/redux/Template/server/actions";
+
 import useUserTemplateManager from "./useUserTemplateManager";
 
 interface IAddTemplateList {

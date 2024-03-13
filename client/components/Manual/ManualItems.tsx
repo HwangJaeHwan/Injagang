@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+
 import Image, { StaticImageData } from "next/image";
+
 import styled, { keyframes, css } from "styled-components";
-import useSectionObsever from "@/hooks/useSectionObsever";
+
 import ArrrowDown from "../UI/ArrrowDown";
+
+import useSectionObsever from "@/hooks/useSectionObsever";
+
 
 interface MnualItemsProps {
   mainTitle: string;

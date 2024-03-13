@@ -1,16 +1,22 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import styled from "styled-components";
-import InterViewSlider from "./InterViewSlider";
+
 import Image from "next/image";
-import interViewin from "../../assets/images/interviewIn.svg";
-import { v } from "@/styles/variables";
-import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
-import useMediaRecord from "@/hooks/useMediaRecord";
-import useWebSpeech from "@/hooks/useWebSpeech";
+
+import InterViewSlider from "./InterViewSlider";
 import VideoController from "./Video/VideoController";
 import RenderVideoInfo from "./Video/RenderVideoInfo";
 import useExpectedQuestionManager from "../InterViewQuestion/hooks/useExpectedQuestionManager";
 import userInterviewManager from "./hooks/userInterviewManager";
+
+import useMediaRecord from "@/hooks/useMediaRecord";
+import useWebSpeech from "@/hooks/useWebSpeech";
+
+import { v } from "@/styles/variables";
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
+
+import interViewin from "../../assets/images/interviewIn.svg";
 
 const InterviewRecord = () => {
   const [curIndex, setCurIndex] = useState<number>(0);

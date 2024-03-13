@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect } from "react";
-import { useRouter } from "next/router";
+
 import { useSelector, useDispatch } from "react-redux";
+
+import { useRouter } from "next/router";
+
 import { RootReducerType } from "@/components/redux/store";
 import { memberShipCleare } from "@/components/redux/Join/actions";
 import { clearAuthError } from "@/components/redux/Auth/actions";
 import { memberShipRequest } from "@/components/redux/Join/actions";
+
 import { ISignup } from "@/types/auth/AuthType";
 
 const useSignUpManager = () => {

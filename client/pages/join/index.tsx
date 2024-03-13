@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { FlexBox } from "@/styles/GlobalStyle";
+
 import SignUp from "@/components/Auth/SignUp";
+
+import { FlexBox } from "@/styles/GlobalStyle";
 
 const SignupPage = () => {
   return (

@@ -1,7 +1,8 @@
+import { AxiosError } from "axios";
+
 import {
   IEssayList,
   IGetEssayList,
-  IReadEssayList,
 } from "@/types/essay/EssayType";
 import {
   ESSAY_REQUEST,
@@ -11,7 +12,6 @@ import {
   essayDispatchType,
   ESSAY_UPDATED,
 } from "./types";
-import { AxiosError } from "axios";
 
 export interface InitiaState {
   loading: boolean;

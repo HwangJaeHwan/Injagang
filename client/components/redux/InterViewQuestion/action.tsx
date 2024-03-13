@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+
 import {
   QUESTIONRANDOM_SUCCESS,
   QUESTION_FAILURE,
@@ -7,13 +8,13 @@ import {
   QUESTION_UPDATED,
   questionDispatchType,
 } from "./types";
-
 import {
   IAddQuestions,
   IDeleteQuestions,
   IRandomQuestions,
   QuestionType,
 } from "@/types/InterViewQuestion/InterViewQuestionType";
+
 import {
   addInterViewQuestionAPI,
   deleteInterViewQuestionAPI,

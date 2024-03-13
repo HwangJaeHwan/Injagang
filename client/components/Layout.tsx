@@ -1,16 +1,14 @@
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "../styles/theme";
-import { Container, GlobalStyle } from "../styles/GlobalStyle";
-import { useRouter } from "next/router";
-import styled from "styled-components";
-import { ReactNode, useEffect } from "react";
-import { useState } from "react";
+import { ReactNode } from "react";
+
+import styled,{ ThemeProvider }  from "styled-components";
 
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
+
+import { lightTheme, darkTheme } from "../styles/theme";
+import { GlobalStyle } from "../styles/GlobalStyle";
+
 import useThemeToggler from "@/hooks/useThemeToggler";
-import WithAuth from "./WithAuth";
-import AuthProvider from "./provider/AuthProvider";
 
 const LayoutStyle = styled.div`
   display: flex;
@@ -41,7 +39,6 @@ const Layout = ({ children }: LayoutProps) => {
   const [isDarkMode, ChangeDarkMode] = useThemeToggler(false);
 
   return (
-    <AuthProvider>
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <GlobalStyle />
         <Head>
@@ -57,7 +54,6 @@ const Layout = ({ children }: LayoutProps) => {
           <Content>{children}</Content>
         </LayoutStyle>
       </ThemeProvider>
-    </AuthProvider>
   );
 };
 

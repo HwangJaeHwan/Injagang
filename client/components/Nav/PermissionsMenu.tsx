@@ -1,13 +1,17 @@
 import React from "react";
-import useMyProfileManager from "../MyProfile/hooks/useMyProfileManager";
+
 import styled from "styled-components";
-import Link from "next/link";
-import { GrUserAdmin } from "react-icons/gr";
-import { BiLogOut, BiLogIn } from "react-icons/bi";
-import { ModalProps } from "@/hooks/useModal";
+
 import { useRouter } from "next/router";
-import useLoginManager from "../Auth/hooks/useLoginManager";
+
+import { BiLogOut, BiLogIn } from "react-icons/bi";
+
 import { AdminMenu, NavContainer } from "./MenuItems";
+
+import { ModalProps } from "@/hooks/useModal";
+import useLoginManager from "../Auth/hooks/useLoginManager";
+import useMyProfileManager from "../MyProfile/hooks/useMyProfileManager";
+
 import { FlexBox } from "@/styles/GlobalStyle";
 
 interface PermissionMenuProps {

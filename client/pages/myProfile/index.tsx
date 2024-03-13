@@ -1,7 +1,12 @@
-import CheckMyInFo from "@/components/MyProfile/CheckMyInFo";
-import { ColBox } from "@/styles/GlobalStyle";
-import React, { useState } from "react";
+import React from "react";
+
 import styled from "styled-components";
+
+import CheckMyInFo from "@/components/MyProfile/CheckMyInFo";
+
+import { ColBox } from "@/styles/GlobalStyle";
+
+
 
 const myProfile = () => {
   return (

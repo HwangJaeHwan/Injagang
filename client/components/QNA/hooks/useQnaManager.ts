@@ -1,8 +1,10 @@
+import { useCallback } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
 import { deleteBoard, getBoardList } from "@/components/redux/QnA/actions";
 import { RootReducerType } from "@/components/redux/store";
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+
 
 const useQnaManager = () => {
   const dispatch = useDispatch();

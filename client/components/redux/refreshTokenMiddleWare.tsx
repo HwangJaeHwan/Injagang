@@ -1,8 +1,12 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import { Middleware } from "redux";
-import fetcher, { METHOD } from "@/util/fecher";;
 import Router from "next/router";
+
+import { Middleware } from "redux";
+
+import axios from "axios";
+
+import Cookies from "js-cookie";
+
+import fetcher, { METHOD } from "@/util/fecher";;
 
 const refreshTokenMiddleWare: Middleware =
   ({ dispatch, getState }) =>

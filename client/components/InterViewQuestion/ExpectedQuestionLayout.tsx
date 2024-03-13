@@ -1,8 +1,11 @@
 import React from "react";
+
 import styled from "styled-components";
-import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
+
 import UserQuestionPlayList from "./PlayList/UserQuestionPlayList";
 import ExpectedQuestionSelector from "./ExpectedQuestion/ExpectedQuestionSelector";
+
+import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 
 const ExplanationContent = () => {
   return (

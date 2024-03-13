@@ -1,12 +1,14 @@
 import React from "react";
-import styled from "styled-components";
-import { Card } from "@/styles/GlobalStyle";
-import useCheckList from "@/hooks/useCheckList";
-import useExpectedQuestionManager from "../hooks/useExpectedQuestionManager";
-import useEUserQuestionManager from "../hooks/useEUserQuestionManager";
+
 import QuestionSelector from "../ExpectedQuestion/QuestionSelector";
 import ExpectedQuestionList from "../ExpectedQuestion/ExpectedQuestionList";
 import ActionBtns from "../ExpectedQuestion/ActionBtns";
+
+import useEUserQuestionManager from "../hooks/useEUserQuestionManager";
+import useExpectedQuestionManager from "../hooks/useExpectedQuestionManager";
+import useCheckList from "@/hooks/useCheckList";
+
+import { Card } from "@/styles/GlobalStyle";
 
 const ExpectedQuestionSelector = () => {
   const { selectedType, dispatchSelectedType, dispatchSelectedQuestions } =

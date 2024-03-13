@@ -1,6 +1,8 @@
-import Login from "@/components/Auth/Login";
-import { FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
+
+import Login from "@/components/Auth/Login";
+
+import { FlexBox } from "@/styles/GlobalStyle";
 
 const LoginPage = () => {
   return (

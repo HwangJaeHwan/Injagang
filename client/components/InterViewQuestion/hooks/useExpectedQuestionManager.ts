@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { RootReducerType } from "../../redux/store";
-import {
-  IAddQuestions,
-  QuestionType,
-} from "@/types/InterViewQuestion/InterViewQuestionType";
+
 import {
   getInterViewQnaList,
   handleAddQuestion,
   handleDeleteInterViewQnaList,
 } from "@/components/redux/InterViewQuestion/action";
 import { addInterViewList } from "@/components/redux/InterViewList/action";
+
+import {
+  IAddQuestions,
+  QuestionType,
+} from "@/types/InterViewQuestion/InterViewQuestionType";
 
 const useExpectedQuestionManager = () => {
   const dispatch = useDispatch();
