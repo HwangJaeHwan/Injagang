@@ -1,3 +1,10 @@
+# InJaGang
+
+인터뷰와 자소서를 강하게 인자강
+
+# ERD
+![인자강 디비 구조도](https://github.com/HwangJaeHwan/Injagang/assets/58110333/769886ad-0006-484d-a6ad-c5b128a8ea55)
+
 # 주요 기능
 
 * __회원가입__
