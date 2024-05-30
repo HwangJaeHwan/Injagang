@@ -15,8 +15,8 @@ html {
   body {
     margin: 0;
     padding: 0;
-    background-color: ${({ theme }) => (theme as any).colors.bodyColor};
-    color: ${({ theme }) => (theme as any).colors.text};
+    background-color: ${({ theme }) => theme.colors.bodyColor};
+    color: ${({ theme }) => theme.colors.text};
     font-family: 'Roboto', sans-serif;
   }
 `;
