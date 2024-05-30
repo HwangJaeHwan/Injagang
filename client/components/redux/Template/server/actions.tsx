@@ -1,18 +1,22 @@
+import { Dispatch } from "redux";
+
+import {
+  addTemplateAPI,
+  deleteTemplateAPI,
+  getTemplateAPI,
+} from "@/api/TEMPLATE/templateAPI";
+
 import {
   TEMPLATE_REQUEST,
   TEMPLATE_SUCCESS,
   TEMPLATE_FAILURE,
   templateDispatchType,
 } from "./types";
-import { Dispatch } from "redux";
-import {
-  addTemplateAPI,
-  deleteTemplateAPI,
-  getTemplateAPI,
-} from "@/api/TEMPLATE/templateAPI";
 import { IAddTemplate } from "@/types/template/TemplateType";
+
 import { showToastAction } from "../../Toast/actions";
 import { SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
+
 
 /**최초 로딩시 템플릿리스트 반환 */
 export const getTemplate =
@@ -21,7 +25,6 @@ export const getTemplate =
     try {
       dispatch({ type: TEMPLATE_REQUEST });
       const response = await getTemplateAPI();
-      console.log("응답", response)
       if (response) {
         dispatch({
           type: TEMPLATE_SUCCESS,

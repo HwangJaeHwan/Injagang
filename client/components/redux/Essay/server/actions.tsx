@@ -20,6 +20,9 @@ import {
   reviseEssayAPI,
   readEssayListAPI,
 } from "@/api/ESSAY/essayAPI";
+import { showToastAction } from "../../Toast/actions";
+
+import { SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =
@@ -28,7 +31,12 @@ export const addEssay =
     try {
       dispatch({ type: ESSAY_REQUEST });
       const request = await addEssayAPI(essayData);
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+      if (request.status === 200) {
+        dispatch({ type: ESSAY_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_ESSAY),
+        );
+      }
       dispatch(getEssayList());
     } catch (error: any) {
       dispatch({
@@ -37,6 +45,7 @@ export const addEssay =
           error,
         },
       });
+      showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_ESSAY);
     }
   };
 
@@ -129,8 +138,10 @@ export const deleteEssayList =
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       const request = await deleteEssayAPI(essayId);
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
-      dispatch(getEssayList());
+      if (request.status === 200) {
+        dispatch({ type: ESSAY_UPDATED });
+        dispatch(getEssayList());
+      }
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,

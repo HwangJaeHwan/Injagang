@@ -13,7 +13,7 @@ import { SessionStorageManager } from "@/util/sessionStorageManager";
 const UserInfoSetting = () => {
   const myInfo = new SessionStorageManager("info");
   const { nickName, setNickName } = useMyProfileLogic();
-  const { dispatchNickNameChange, Modal, RenderToast } = useMyProfileManager();
+  const { dispatchNickNameChange, Modal } = useMyProfileManager();
   const mainTitle = "닉네임 변경";
 
   useEffect(() => {
@@ -39,7 +39,6 @@ const UserInfoSetting = () => {
       </UserInfoContainer>
       <RxAvatar />
       <Modal />
-      <RenderToast />
     </UserInfoStyle>
   );
 };

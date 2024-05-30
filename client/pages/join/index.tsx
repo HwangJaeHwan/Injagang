@@ -15,6 +15,7 @@ const SignupPage = () => {
 export default SignupPage;
 
 const JoinStyle = styled.div`
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;

@@ -44,7 +44,9 @@ const CheckMyInFoStyle = styled.div`
   }
 `;
 
-const MainTitle = styled.h2``;
+const MainTitle = styled.h2`
+  margin-bottom: 15px;
+`;
 
 const SwitchContainer = styled.div`
   ${FlexBox}

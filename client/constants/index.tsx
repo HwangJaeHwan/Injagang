@@ -58,13 +58,22 @@ export const ERROR_MESSAGES = {
   NO_AUTHORIZATION: "권한이 없습니다. ",
   JWT_EXPIRED: "JWT가 만료되었습니다.",
   REFRESH_TOKEN_EXPIRED: "Refresh 토큰이 만료되었습니다.",
+  
+  ADDED_ESSAY: "나의 자소서 목록 추가를 실패했습니다.",
+  DELETED_ESSAY: "나의 자소서 목록 삭제를 실패했습니다.",
 };
 
 export const SUCCESS_MESSAGES = {
+
   CHANGE_NICK: "닉네임 변경을 완료하였습니다.",
   CHANGE_PASSWORD: "패스워드 변경을 완료하였습니다.",
+
   DELETED_TEMPLATE: "템플릿이 성공적으로 삭제되었습니다.,",
   ADDED_TEMPLATE: "템플릿이 추가되었습니다.",
+
+  ADDED_ESSAY: '나의 자소서 목록이 추가되었습니다.',
+  DELETED_ESSAY: "나의 자소서 목록이 성공적으로 삭제되었습니다.,",
+
 };
 
 export const MODAL_MESSAGES = {
