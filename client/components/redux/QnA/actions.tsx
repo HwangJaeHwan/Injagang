@@ -85,6 +85,9 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
   try {
     const request = await deleteQnaBoardAPI(boardId);
     //TODO : 디스패치 누락? 확인 검토 해보기
+    if (request.status === 200) {
+      dispatch({ type: BOARD_UPDATED });
+    }
   } catch (error: any) {
     dispatch({
       type: BOARD_FAILURE,
@@ -100,6 +103,9 @@ export const updateBoard =
   (changeData: IReviseQnaBoard) => async (dispatch: Dispatch) => {
     try {
       const request = await reviseQnaBoardAPI(changeData);
+      if (request.status === 200) {
+        dispatch({ type: BOARD_UPDATED });
+      }
     } catch (error: any) {
       dispatch({
         type: BOARD_FAILURE,

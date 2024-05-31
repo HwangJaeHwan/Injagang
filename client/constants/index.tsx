@@ -61,6 +61,7 @@ export const ERROR_MESSAGES = {
   
   ADDED_ESSAY: "나의 자소서 목록 추가를 실패했습니다.",
   DELETED_ESSAY: "나의 자소서 목록 삭제를 실패했습니다.",
+  UPDATED_ESSAY: "나의 자소서 목록 수정을 실패했습니다.",
 };
 
 export const SUCCESS_MESSAGES = {
@@ -73,6 +74,7 @@ export const SUCCESS_MESSAGES = {
 
   ADDED_ESSAY: '나의 자소서 목록이 추가되었습니다.',
   DELETED_ESSAY: "나의 자소서 목록이 성공적으로 삭제되었습니다.,",
+  UPDATED_ESSAY: "나의 자소서 목록 수정을 하였습니다.",
 
 };
 

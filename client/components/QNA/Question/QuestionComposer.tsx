@@ -19,6 +19,7 @@ import {
 } from "@/styles/GlobalStyle";
 
 import { writeBoard } from "@/components/redux/QnA/actions";
+import { setClearReadEssay } from "@/components/redux/Essay/server/actions";
 
 const QuestionComposer = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
@@ -45,6 +46,7 @@ const QuestionComposer = () => {
     };
     //TOME :: QNA MANAGER 생성시 대처
     dispatch(writeBoard(data));
+    dispatch(setClearReadEssay());
     navigateToList();
   };
 

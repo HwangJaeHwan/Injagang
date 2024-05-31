@@ -11,6 +11,7 @@ import {
   ESSAY_READ_SUCCESS,
   essayDispatchType,
   ESSAY_UPDATED,
+  CLEAR_READ_ESSAY,
 } from "./types";
 
 export interface InitiaState {
@@ -68,6 +69,11 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
         ...state,
         isUpdated: true,
       };
+    case CLEAR_READ_ESSAY:
+      return {
+        ...state,
+        readEssayList: initialState.readEssayList,
+      }
     default:
       return state;
   }

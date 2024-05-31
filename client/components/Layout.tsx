@@ -12,6 +12,7 @@ import darkTheme from "@/styles/darkTheme";
 import useThemeToggler from "@/hooks/useThemeToggler";
 import { Reset } from "styled-reset";
 import useToast from "@/hooks/useToast";
+import WithAuth from "./WithAuth";
 
 const LayoutStyle = styled.div`
   display: flex;
@@ -64,4 +65,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default WithAuth(Layout);
