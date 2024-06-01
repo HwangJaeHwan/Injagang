@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import usePwCheck from "@/hooks/usePwCheck";
 import useSignUpManager from "../hooks/useSignUpManager";
@@ -25,7 +25,7 @@ const useSignUpLogic = () => {
   });
   const [userMsg, setUserMsg] = useState<string | null>("");
   const { isValid, errorMessage } = usePwCheck({ password: joinInfo.password });
-  const { confirmSignUp, error } = useSignUpManager();
+  const { confirmSignUp } = useSignUpManager();
 
   const validation = [
     {
@@ -67,12 +67,6 @@ const useSignUpLogic = () => {
     },
     [joinInfo],
   );
-
-  useEffect(() => {
-    if(error) {
-      setUserMsg(error);
-    }
-  },[error])
 
   const handleValueChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

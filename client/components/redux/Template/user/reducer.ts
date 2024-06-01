@@ -3,7 +3,6 @@ import {
   userTemplateDispatchType,
   SET_CUR_TEMPLATE_LIST,
   ADD_TEMPLATE_TOGGLE,
-  INIT_CUR_TEMPLATE_LIST,
 } from "./types";
 
 interface InitiaState {
@@ -36,11 +35,7 @@ const userTemplateReducer = (
         ...state,
         isAddTemplate: action.payload.isAddTemplate,
       };
-    case INIT_CUR_TEMPLATE_LIST:
-      return {
-        ...state,
-        selectedTemplateList: initialState.selectedTemplateList,
-      }
+
     default:
       return state;
   }
