@@ -32,9 +32,7 @@ const useLoginManager = () => {
       dispatch(getProfile());
       dispatch(clearAuthError());
       router.replace("/");
-      return () => {
-        setUserMsg('')
-      };
+      return;
     }
     if (error) {
       setUserMsg(ERROR_MESSAGES.DOESN_T_MATCH);

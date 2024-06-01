@@ -31,16 +31,7 @@ const useCoverLetterCreatorLogic = () => {
   const coverLetterMaxLength = qnaList.length >= MAX_QUESTIONS;
 
   const addQnAList = useCallback(() => {
-    if (coverLetterMaxLength) {
-      setModal({
-        contents: {
-          title: "Warring",
-          content: `질문문항은 최대 ${MAX_QUESTIONS}개 제한입니다.`,
-        },
-      });
-      return
-    }
-    ;
+    if (coverLetterMaxLength) return;
     const newID = uuid4();
     setQnAList(prev => [...prev, { question: "", answer: "", qnaId: newID }]);
   }, [qnaList]);
@@ -57,7 +48,7 @@ const useCoverLetterCreatorLogic = () => {
   const changeQnAList = useCallback(
     (targetID: string | number, newQuestion: string, newAnswer: string) => {
       setQnAList(prev =>
-        prev.map((qna) =>
+        prev.map((qna, idx) =>
           qna.qnaId === targetID
             ? { ...qna, question: newQuestion, answer: newAnswer }
             : { ...qna },
