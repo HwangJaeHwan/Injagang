@@ -51,7 +51,7 @@ const Login = () => {
       />
       {userLogicMsg || (userMsg && <ERROR> {userLogicMsg || userMsg} </ERROR>)}
       <Button type="submit">로그인</Button>
-      <Button onClick={() => router.replace("/join")}>회원가입</Button>
+      <Button type="button" onClick={() => router.replace("/join")}>회원가입</Button>
     </Form>
   );
 };
