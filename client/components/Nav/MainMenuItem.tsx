@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 interface MainMenuItemProps {
   title: string;
@@ -11,6 +12,9 @@ interface MainMenuItemProps {
 }
 
 const MainMenuItem = ({ title, path, icon }: MainMenuItemProps) => {
+  const router = useRouter();
+  const isSelected = router.asPath === path;
+
   return (
     <NavItem key={title}>
       <StyledLink
@@ -19,7 +23,7 @@ const MainMenuItem = ({ title, path, icon }: MainMenuItemProps) => {
         style={{ textDecoration: "none" }}
       >
         <NavLink>
-          <NavContainer>
+          <NavContainer $isSelected={isSelected}>
             <i className="navitem_icon">{icon}</i>
             <span className="navitem_title">{title}</span>
           </NavContainer>
@@ -44,7 +48,7 @@ const NavLink = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const NavContainer = styled.div`
+const NavContainer = styled.div<{$isSelected : boolean}>`
   display: flex;
   align-items: center;
   width: 230px;
@@ -62,6 +66,10 @@ const NavContainer = styled.div`
   .navLogo_title {
     font-size: 28px;
     color: RGB(255, 0, 0);
+  }
+
+  svg {
+    fill: ${props => props.$isSelected ? 'red' : 'white'};
   }
 
   @media screen and (max-width: 1200px) {

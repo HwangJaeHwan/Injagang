@@ -25,7 +25,7 @@ const useCoverLetterCreatorLogic = () => {
   const dispatch = useDispatch();
 
   const MIN_QUESTIONS = 1;
-  const MAX_QUESTIONS = 3;
+  const MAX_QUESTIONS = 5;
 
   const coverLetterMinLength = qnaList.length <= MIN_QUESTIONS;
   const coverLetterMaxLength = qnaList.length >= MAX_QUESTIONS;

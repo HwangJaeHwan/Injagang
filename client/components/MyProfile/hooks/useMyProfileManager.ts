@@ -6,7 +6,6 @@ import { passWordChange } from "@/components/redux/Auth/actions";
 import { nicknameChange } from "@/components/redux/MyProfile/actions";
 
 import useModal from "@/hooks/useModal";
-import useToast from "@/hooks/useToast";
 
 import { RootReducerType } from "@/components/redux/store";
 import { IPassWordInfo } from "./useMyProfileLogic";
@@ -43,7 +42,6 @@ const useMyProfileManager = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((state: RootReducerType) => state.profile);
   const { Modal, setModal } = useModal();
-  const [showToast, RenderToast] = useToast();
 
   //PASSWORD DOMAIN
   const dispatchPasswordChange = useCallback(
@@ -130,7 +128,6 @@ const useMyProfileManager = () => {
     dispatchPasswordChange,
     dispatchNickNameChange,
     Modal,
-    RenderToast,
     role,
   };
 };

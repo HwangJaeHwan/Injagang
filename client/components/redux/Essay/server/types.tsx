@@ -9,6 +9,7 @@ export const ESSAY_FAILURE = "ESSAY_FAILURE";
 export const ESSAY_UPDATED = "ESSAY_UPDATED";
 export const ESSAY_READ_SUCCESS = "ESSAY_READ_SUCCESS";
 export const ERROR_CLEAR = "ERROR_CLEAR";
+export const CLEAR_READ_ESSAY = 'CLEAR_READ_ESSAY'
 
 export interface essayRequest {
   type: typeof ESSAY_REQUEST;
@@ -43,9 +44,14 @@ export interface errorClear {
   type: typeof ERROR_CLEAR;
 }
 
+export interface clearReadEssay {
+  type: typeof CLEAR_READ_ESSAY;
+}
+
 export type essayDispatchType =
   | essayRequest
   | essayFailDispatch
   | essaySuccessDispatch
   | essayUpdatedDispatch
-  | essayReadSuccessDispatch;
+  | essayReadSuccessDispatch
+  | clearReadEssay;

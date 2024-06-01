@@ -39,6 +39,9 @@ const ControlMenu = ({
       value={value}
       onChange={e => onChange(e.target.value)}
     >
+      <option value="" disabled>
+        Please select
+      </option>
       {optionList.map((option, index) => (
         <option key={index} value={option.title}>
           {option.title}

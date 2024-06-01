@@ -29,7 +29,7 @@ const PasswordInputItem = ({
 };
 
 const PassWordSetting = () => {
-  const { dispatchPasswordChange, Modal, RenderToast } = useMyProfileManager();
+  const { dispatchPasswordChange, Modal } = useMyProfileManager();
   const { passWordInfo, handleInfoChange } = useMyProfileLogic();
 
   const labels = {
@@ -55,7 +55,6 @@ const PassWordSetting = () => {
       >
         변경
       </StyleButton>
-      <RenderToast />
       <Modal />
     </PassWordContainer>
   );
