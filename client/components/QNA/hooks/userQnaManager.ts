@@ -9,6 +9,7 @@ import {
   changeCorrection,
   changeTargetFeed,
   initCorrection,
+  initTargetFeed,
 } from "@/components/redux/QnA/user/actions";
 
 
@@ -30,12 +31,17 @@ const userQnaManager = () => {
     dispatch(changeTargetFeed(targetFeed));
   }, []);
 
+  const dispatchClearTargetFeed = useCallback(() => {
+    dispatch(initTargetFeed())
+  },[])
+
   return {
     dispatchChangeCorrection,
     selectedCorrection,
     dispatchInitCorrection,
     targetFeed,
     dispatchChangeFeed,
+    dispatchClearTargetFeed,
   };
 };
 

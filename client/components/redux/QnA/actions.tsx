@@ -17,6 +17,8 @@ import {
   reviseQnaBoardAPI,
   writeQnaBoardAPI,
 } from "@/api/QnABoard/qnaBoardAPI";
+import { showToastAction } from "../Toast/actions";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**QNA리스트를 가져온다. */
 export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
@@ -69,6 +71,9 @@ export const writeBoard =
       const request = await writeQnaBoardAPI(boardData);
       if (request.status === 200) {
         dispatch({ type: BOARD_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_QUESTION),
+        );
       }
     } catch (error: any) {
       dispatch({
@@ -86,6 +91,9 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
     const request = await deleteQnaBoardAPI(boardId);
     //TODO : 디스패치 누락? 확인 검토 해보기
     if (request.status === 200) {
+      dispatch(
+        showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.DELETED_QUESTION),
+      );
       dispatch({ type: BOARD_UPDATED });
     }
   } catch (error: any) {
@@ -95,6 +103,9 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
         error,
       },
     });
+    dispatch(
+      showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.DELETED_QUESTION),
+    );
   }
 };
 
@@ -104,6 +115,9 @@ export const updateBoard =
     try {
       const request = await reviseQnaBoardAPI(changeData);
       if (request.status === 200) {
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.UPDATED_QUESTION),
+        );
         dispatch({ type: BOARD_UPDATED });
       }
     } catch (error: any) {
@@ -113,5 +127,8 @@ export const updateBoard =
           error,
         },
       });
+      dispatch(
+        showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.UPDATED_QUESTION),
+      );
     }
   };

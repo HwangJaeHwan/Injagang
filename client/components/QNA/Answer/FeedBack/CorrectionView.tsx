@@ -40,5 +40,6 @@ const CorrectionContainer = styled.div`
     margin-top: 8px;
     color: white;
     word-break: break-all;
+    line-height: 1.6;
   }
 `;

@@ -1,4 +1,8 @@
-import { userEssayDispatchType, SET_CUR_ESSAY_LIST } from "./types";
+import {
+  userEssayDispatchType,
+  SET_CUR_ESSAY_LIST,
+  INIT_CUR_ESSAY,
+} from "./types";
 import { IGetEssayList } from "@/types/essay/EssayType";
 
 interface InitiaState {
@@ -23,6 +27,11 @@ const userEssayReducer = (
       return {
         ...state,
         selectedEssayList: action.payload.selectedEssayList,
+      };
+    case INIT_CUR_ESSAY:
+      return {
+        ...state,
+        selectedEssayList: initialState.selectedEssayList,
       };
     default:
       return state;

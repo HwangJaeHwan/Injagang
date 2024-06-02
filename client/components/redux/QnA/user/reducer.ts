@@ -5,6 +5,7 @@ import {
   SET_CORRECTION,
   INIT_CORRECITON,
   SET_TARGETFEED,
+  INIT_TARGETFEED,
 } from "./types";
 
 export interface InitialState {
@@ -45,6 +46,11 @@ const userBoardReducer = (
         ...state,
         targetFeed: action.payload.targetFeed,
       };
+    case INIT_TARGETFEED:
+      return {
+        ...state,
+        targetFeed: initialState.targetFeed,
+      }
     default:
       return state;
   }

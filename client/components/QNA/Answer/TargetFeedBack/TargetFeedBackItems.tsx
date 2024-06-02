@@ -74,7 +74,7 @@ const FeedBackItems = ({
                 {isReadOnly ? "편집" : "수정완료"}
               </StyleButton>
               <StyleButton
-                onClick={() => console.log("e")}
+                onClick={(e)=> console.log("e")}
                 Size={{ width: "150px", font: "15px" }}
               >
                 삭제
@@ -113,6 +113,7 @@ const CorrectionContainer = styled.div`
     margin-top: 8px;
     color: white;
     word-break: break-all;
+    line-height: 1.7;
   }
 `;
 

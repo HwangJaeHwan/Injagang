@@ -17,8 +17,8 @@ const PageNation = () => {
   } = usePageNation([totalPage, 8]);
 
   useEffect(() => {
-    dispatchGetBoardList(curPageNum);
-  }, [curPageNum, isUpdated]);
+    dispatchGetBoardList(totalPage+1-curPageNum);
+  }, [curPageNum, isUpdated,totalPage]);
 
   return (
     <div>

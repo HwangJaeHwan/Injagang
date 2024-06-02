@@ -17,7 +17,6 @@ const ID_KEY = "id";
 const ROUTE_TEMPLATE = "/qna/answer";
 
 const BoardListLayout = () => {
-  //TODO :: Manager위임 작업시 변경
   const { boardInfos } = useSelector(
     (state: RootReducerType) => state.board.boardInFoList,
   );
@@ -25,7 +24,7 @@ const BoardListLayout = () => {
     <BoardListViewStyle>
       <BoardListHead headItem={HEAD_ITEM} />
       <BoardList
-        boardInfos={boardInfos ?? []}
+        boardInfos={boardInfos.reverse() ?? []}
         idKey={ID_KEY}
         displayKeys={["id", "title", "nickname"]}
         route={ROUTE_TEMPLATE}

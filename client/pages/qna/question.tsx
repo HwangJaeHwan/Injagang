@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
-import { getEssayList } from "@/components/redux/Essay/server/actions";
+import { getEssayList, setClearReadEssay } from "@/components/redux/Essay/server/actions";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
@@ -19,6 +19,9 @@ const question = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getEssayList());
+    return () => {
+      dispatch(setClearReadEssay());
+    }
   }, []);
 
   return (

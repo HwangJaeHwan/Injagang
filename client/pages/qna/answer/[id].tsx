@@ -11,6 +11,10 @@ import { getBoardDetail } from "@/components/redux/QnA/actions";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
+import { initFeedBack } from "@/components/redux/FeedBack/action";
+import { initTargetFeed } from "@/components/redux/QnA/user/actions";
+
+
 const ViewStyle = styled.div`
   ${ColBox}
   width: 100%;
@@ -24,6 +28,10 @@ const answer = () => {
   useEffect(() => {
     if (!isNaN(Number(boardId.id))) {
       dispatch(getBoardDetail(Number(boardId.id)));
+    }
+    return () => {
+      dispatch(initFeedBack())
+      dispatch(initTargetFeed())
     }
   }, [router.query]);
 

@@ -1,5 +1,6 @@
 import {
   FEEDBACK_FAILURE,
+  FEEDBACK_INIT,
   FEEDBACK_REQUEST,
   FEEDBACK_SUCCESS,
   FEEDBACK_UPDATED,
@@ -45,6 +46,14 @@ const feedbackReducer = (state = InitalState, action: feedBackDispatchType) => {
         ...state,
         isUpdated: true,
       };
+    case FEEDBACK_INIT:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: false,
+        error: null,
+        feedbackList: [],
+      }
     default:
       return state;
   }

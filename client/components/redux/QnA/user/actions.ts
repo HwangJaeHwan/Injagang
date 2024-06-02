@@ -1,6 +1,6 @@
 import { CorrectionItem } from "@/components/QNA/Answer/AnswerLayout";
 
-import { INIT_CORRECITON, SET_CORRECTION, SET_TARGETFEED } from "./types";
+import { INIT_CORRECITON, INIT_TARGETFEED, SET_CORRECTION, SET_TARGETFEED } from "./types";
 
 export const changeCorrection = (correction: CorrectionItem) => ({
   type: SET_CORRECTION,
@@ -15,3 +15,7 @@ export const changeTargetFeed = (targetFeed: number) => ({
   type: SET_TARGETFEED,
   payload: { targetFeed },
 });
+
+export const initTargetFeed = () => ({
+  type: INIT_TARGETFEED,
+})

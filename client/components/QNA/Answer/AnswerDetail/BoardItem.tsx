@@ -39,5 +39,6 @@ const BoardItemContainer = styled.div`
     display: flex;
     font-weight: normal;
     justify-content: flex-start;
+    line-height: 1.8;
   }
 `;

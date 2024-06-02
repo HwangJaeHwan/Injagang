@@ -3,6 +3,7 @@ import { CorrectionItem } from "@/components/QNA/Answer/AnswerLayout";
 export const SET_CORRECTION = "SET_CORRECTION";
 export const INIT_CORRECITON = "INIT_CORRECTION";
 export const SET_TARGETFEED = "SET_TARGETFEED";
+export const INIT_TARGETFEED = "INIT_TARGETFEED";
 
 export interface IsetCorrection {
   type: typeof SET_CORRECTION;
@@ -22,7 +23,12 @@ export interface IsetTargetFeed {
   };
 }
 
+export interface InitTargetFeed {
+  type: typeof INIT_TARGETFEED;
+}
+
 export type userBoardDispatchType =
   | IsetCorrection
   | InitCorrection
-  | IsetTargetFeed;
+  | IsetTargetFeed
+  | InitTargetFeed;
