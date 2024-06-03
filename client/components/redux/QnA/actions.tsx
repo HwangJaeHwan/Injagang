@@ -21,22 +21,24 @@ import { showToastAction } from "../Toast/actions";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**QNA리스트를 가져온다. */
-export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
-  try {
-    dispatch({ type: BOARD_REQUEST });
-    const response = await getQnaBoardListAPI(page);
-    if (response) {
-      dispatch({
-        type: BOARDINFO_SUCCESS,
-        payload: {
-          boardInfoList: response.data,
-        },
-      });
+export const getBoardList =
+  (page: number, title?: string, content?: string) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: BOARD_REQUEST });
+      const response = await getQnaBoardListAPI(page, title, content);
+      if (response) {
+        dispatch({
+          type: BOARDINFO_SUCCESS,
+          payload: {
+            boardInfoList: response.data,
+          },
+        });
+      }
+    } catch (error: any) {
+      dispatch({ type: BOARD_FAILURE, payload: { error } });
     }
-  } catch (error: any) {
-    dispatch({ type: BOARD_FAILURE, payload: { error } });
-  }
-};
+  };
 
 /**해당하는 QNA의 세부내용을 불러온다. */
 export const getBoardDetail =
@@ -116,7 +118,10 @@ export const updateBoard =
       const request = await reviseQnaBoardAPI(changeData);
       if (request.status === 200) {
         dispatch(
-          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.UPDATED_QUESTION),
+          showToastAction(
+            TOAST_MODE.SUCCESS,
+            SUCCESS_MESSAGES.UPDATED_QUESTION,
+          ),
         );
         dispatch({ type: BOARD_UPDATED });
       }

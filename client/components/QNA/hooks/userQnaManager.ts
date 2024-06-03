@@ -6,18 +6,18 @@ import { CorrectionItem } from "../Answer/AnswerLayout";
 
 import { RootReducerType } from "@/components/redux/store";
 import {
+  changeBoardSearch,
+  changeBoardType,
   changeCorrection,
   changeTargetFeed,
   initCorrection,
   initTargetFeed,
 } from "@/components/redux/QnA/user/actions";
 
-
 const userQnaManager = () => {
   const dispatch = useDispatch();
-  const { selectedCorrection, targetFeed } = useSelector(
-    (state: RootReducerType) => state.userBoard,
-  );
+  const { selectedCorrection, targetFeed, boardSearch, boardType } =
+    useSelector((state: RootReducerType) => state.userBoard);
 
   const dispatchChangeCorrection = useCallback((correction: CorrectionItem) => {
     dispatch(changeCorrection(correction));
@@ -32,8 +32,16 @@ const userQnaManager = () => {
   }, []);
 
   const dispatchClearTargetFeed = useCallback(() => {
-    dispatch(initTargetFeed())
-  },[])
+    dispatch(initTargetFeed());
+  }, []);
+
+  const dispatchChangeSearch = useCallback((newSearch: string) => {
+    dispatch(changeBoardSearch(newSearch));
+  }, []);
+
+  const dispatchChangeType = useCallback((type: string) => {
+    dispatch(changeBoardType(type));
+  }, []);
 
   return {
     dispatchChangeCorrection,
@@ -42,6 +50,10 @@ const userQnaManager = () => {
     targetFeed,
     dispatchChangeFeed,
     dispatchClearTargetFeed,
+    dispatchChangeType,
+    dispatchChangeSearch,
+    boardSearch,
+    boardType,
   };
 };
 

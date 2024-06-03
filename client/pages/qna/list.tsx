@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useRouter } from "next/router";
 
@@ -10,6 +10,9 @@ import BoardListView from "@/components/Board/BoardListLayout";
 import PageNation from "@/components/QNA/PageNation";
 
 import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+import BoardSearch from "@/components/QNA/BoardSearch";
+import { useDispatch } from "react-redux";
+import { initBoardSearch } from "@/components/redux/QnA/user/actions";
 
 const ListStyle = styled.div`
   ${ColBox}
@@ -32,6 +35,13 @@ const ListStyle = styled.div`
 
 const list = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      dispatch(initBoardSearch());
+    };
+  }, []);
+
   return (
     <ListStyle>
       <StyleButton
@@ -44,6 +54,7 @@ const list = () => {
       </StyleButton>
       <BoardListView />
       <PageNation />
+      <BoardSearch />
     </ListStyle>
   );
 };

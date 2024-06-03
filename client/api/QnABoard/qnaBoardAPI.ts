@@ -3,8 +3,15 @@ import { fetcher, METHOD } from "../client";
 
 import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
 
-export const getQnaBoardListAPI = async (queryString: number) => {
-  return fetcher(METHOD.GET, `${BOARD_APIS.GET_API}?page=${queryString}`);
+export const getQnaBoardListAPI = async (
+  queryString: number,
+  type?: string,
+  search?: string,
+) => {
+  return fetcher(
+    METHOD.GET,
+    `${BOARD_APIS.GET_API}?page=${queryString}&type=${type}&content=${search}`,
+  );
 };
 
 export const getDetailBoardAPI = async (targetId: number) => {

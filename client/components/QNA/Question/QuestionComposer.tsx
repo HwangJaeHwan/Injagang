@@ -45,7 +45,7 @@ const QuestionComposer = () => {
     };
     //TOME :: QNA MANAGER 생성시 대처
     dispatch(writeBoard(data));
-    navigateToList();
+    // navigateToList();
   };
 
   return (
