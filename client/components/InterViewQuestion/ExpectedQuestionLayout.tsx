@@ -41,6 +41,7 @@ const InterViewListViewStyle = styled.div`
   ${ColBox}
   width: 100%;
   height: 90%;
+  margin-bottom: 40px;
   @media screen and (max-width: 1200px) {
     width: 90%;
   }

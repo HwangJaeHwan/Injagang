@@ -7,7 +7,16 @@ import styled from "styled-components";
 
 const AddQuestionItemStyle = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 15px;
+  line-height: 1.5;
+
+  svg {
+    cursor: pointer;
+    font-size: 25px;
+    margin-left: 30px;
+  }
 `;
 
 type AddQuestionItemProps = {

@@ -11,12 +11,14 @@ import useCheckList from "@/hooks/useCheckList";
 import { Card } from "@/styles/GlobalStyle";
 
 const ExpectedQuestionSelector = () => {
-  const { selectedType, dispatchSelectedType, dispatchSelectedQuestions } =
-    useEUserQuestionManager();
   const { interViewQuestionList, dispatchRemoveQuestions } =
     useExpectedQuestionManager();
   const { checkList, handleAllCheck, handleCheckList, isAllCheck } =
     useCheckList(interViewQuestionList);
+  const { selectedType, dispatchSelectedType, dispatchSelectedQuestions } =
+    useEUserQuestionManager({
+      typeCheckCallback: isAllCheck ? handleAllCheck : () => {},
+    });
 
   return (
     <Card size={{ height: "450px", width: "100%", flex: "Col" }}>

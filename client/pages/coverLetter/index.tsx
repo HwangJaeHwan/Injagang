@@ -7,6 +7,7 @@ import CoverLetter from "@/components/CoverLetter/CoverLetter";
 
 import { useDispatch } from "react-redux";
 import { setInitCurEssayList } from "@/components/redux/Essay/user/actions";
+import { setClearReadEssay } from "@/components/redux/Essay/server/actions";
 
 const CoverLetterPage = () => {
 
@@ -14,6 +15,7 @@ const CoverLetterPage = () => {
   useEffect(() => {
     return () => {
       dispatch(setInitCurEssayList());
+      dispatch(setClearReadEssay());
     };
   }, []);
   
