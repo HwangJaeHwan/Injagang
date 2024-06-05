@@ -31,6 +31,7 @@ const useEUserQuestionManager = ({
 
   const dispatchSelectedType = useCallback((type: QuestionType | string) => {
     dispatch(setTypeAction(type));
+    
     if (typeCheckCallback) {
       typeCheckCallback();
     }

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 
-import { useDispatch ,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "../redux/store";
 import { getRandomList } from "../redux/InterViewQuestion/action";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
+import useModal from "@/hooks/useModal";
 const InterViewSettingStyle = styled.div`
   ${ColBox}
   width: 100%;
@@ -23,7 +24,7 @@ const Form = styled.form`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
-  @media screen and (max-width: 800px){ 
+  @media screen and (max-width: 800px) {
     width: 90%;
   }
 `;
@@ -63,9 +64,7 @@ const InterViewRandomSetting = () => {
   const userInterViewList = useSelector(
     (state: RootReducerType) => state.userInterViewList.interViewList,
   );
-  const randomList = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.randomList,
-  );
+  const { setModal, Modal } = useModal();
 
   useEffect(() => {
     console.log("adsfasfasfas", userInterViewList);
@@ -92,6 +91,16 @@ const InterViewRandomSetting = () => {
     ];
 
     dispatch(getRandomList(data));
+    const sumAllQuestions = Object.values(rendomSetting).reduce(
+      (pre, cur) => pre + Number(cur),
+      0,
+    );
+    setModal({
+      contents: {
+        title: "Success",
+        content: `${sumAllQuestions}개의 랜덤 질문을 셋팅 하였습니다.`,
+      },
+    });
   };
 
   return (
@@ -127,6 +136,7 @@ const InterViewRandomSetting = () => {
         />
         <Button type="submit">셋팅완료</Button>
       </Form>
+      <Modal />
     </InterViewSettingStyle>
   );
 };

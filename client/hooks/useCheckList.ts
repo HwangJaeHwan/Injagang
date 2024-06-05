@@ -12,7 +12,7 @@ const useCheckList = <T extends { id: number }>(
 
   useEffect(() => {
     isAllCheck ? checkAllItems(targetList) : unCheckAllItems();
-  }, [isAllCheck]);
+  }, [isAllCheck, targetList]);
 
   const handleAllCheck = useCallback(() => {
     setIsAllCheck(prev => !prev);
@@ -30,18 +30,21 @@ const useCheckList = <T extends { id: number }>(
     setCheckList([]);
   }, []);
 
-  const handleCheckList = useCallback((id: number, isCheck: boolean) => {
-    isCheck ? removeCheckItem(id) : addCheckItem(id);
-  }, []);
+  const handleCheckList = useCallback(
+    (id: number, isCheck: boolean) => {
+      isCheck ? removeCheckItem(id) : addCheckItem(id);
+    },
+    [checkList],
+  );
 
   const addCheckItem = useCallback((id: number) => {
     setCheckList(prev => [...prev, id]);
-  }, []);
+  }, [checkList]);
 
   const removeCheckItem = useCallback((targetId: number) => {
     const removeItem = checkList.filter(id => id !== targetId);
     setCheckList(removeItem);
-  }, []);
+  }, [checkList]);
 
   return { handleCheckList, handleAllCheck, checkList, isAllCheck };
 };
