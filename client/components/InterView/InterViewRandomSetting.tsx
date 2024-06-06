@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "../redux/store";
+import { useDispatch } from "react-redux";
 import { getRandomList } from "../redux/InterViewQuestion/action";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
-import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 import useModal from "@/hooks/useModal";
+
+import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
+
 const InterViewSettingStyle = styled.div`
   ${ColBox}
   width: 100%;
@@ -61,14 +62,7 @@ const InterViewRandomSetting = () => {
     personality: 0,
   });
   const dispatch = useDispatch();
-  const userInterViewList = useSelector(
-    (state: RootReducerType) => state.userInterViewList.interViewList,
-  );
   const { setModal, Modal } = useModal();
-
-  useEffect(() => {
-    console.log("adsfasfasfas", userInterViewList);
-  }, [userInterViewList]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

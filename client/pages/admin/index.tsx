@@ -5,14 +5,9 @@ import styled from "styled-components";
 import TemplateView from "@/components/Admin/Template/TemplateList";
 import ExpectedQuestionView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
 
-import { RootReducerType } from "@/components/redux/store";
-
 import { ColBox } from "@/styles/GlobalStyle";
 
-const AdminPageStyle = styled.div`
-  ${ColBox}
-  width:100%;
-`;
+import { RootReducerType } from "@/components/redux/store";
 
 const AdminPage = () => {
   const { role } = useSelector((state: RootReducerType) => state.profile);
@@ -27,3 +22,8 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
+const AdminPageStyle = styled.div`
+  ${ColBox}
+  width:100%;
+`;

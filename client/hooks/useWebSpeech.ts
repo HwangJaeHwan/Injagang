@@ -26,7 +26,6 @@ const useWebSpeech = (waitTime = 1000, speechList: string[]) => {
       throw new Error("Invalid index provided");
     }
     const utterance = new SpeechSynthesisUtterance(speechData[curIndex]);
-    console.log(utterance);
     await wait(2000);
     window.speechSynthesis.speak(utterance);
     await waitSpeechEnd(utterance);

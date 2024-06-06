@@ -1,7 +1,6 @@
 import React from "react";
 
 import styled, { keyframes } from "styled-components";
-
 import { ColBox } from "@/styles/GlobalStyle";
 
 const Spinner = ({

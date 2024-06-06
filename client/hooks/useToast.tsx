@@ -1,13 +1,18 @@
 import React, { useCallback } from "react";
+
 import styled from "styled-components";
-import { TOAST_MODE } from "@/constants";
+
+
 import ToastItem from "./ToastItem";
+
 import { useSelector } from "react-redux";
-import { RootReducerType } from "@/components/redux/store";
 import { useDispatch } from "react-redux";
-import {
-  showToastAction,
-} from "@/components/redux/Toast/actions";
+import { showToastAction } from "@/components/redux/Toast/actions";
+
+import { TOAST_MODE } from "@/constants"; 
+
+import { RootReducerType } from "@/components/redux/store";
+
 
 export interface IToast {
   id: string;

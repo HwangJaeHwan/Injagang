@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /**관측대상 아이템을 부여하고 감시하는 훅 */
 const useSectionObsever = (callback: () => void, options: number) => {

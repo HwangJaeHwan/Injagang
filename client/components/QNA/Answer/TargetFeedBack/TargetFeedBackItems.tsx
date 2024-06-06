@@ -88,6 +88,8 @@ const FeedBackItems = ({
   );
 };
 
+//삭제 API가 없음
+
 export default FeedBackItems;
 
 const FeedBackItemsStyle = styled.div`

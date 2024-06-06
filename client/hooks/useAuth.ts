@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
+
 import { getProfile } from "@/components/redux/MyProfile/actions";
 import { RootReducerType } from "@/components/redux/store";
 

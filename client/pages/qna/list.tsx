@@ -4,34 +4,15 @@ import { useRouter } from "next/router";
 
 import styled from "styled-components";
 
-import { MdOutlineModeEditOutline } from "react-icons/md";
-
-import BoardListView from "@/components/Board/BoardListLayout";
-import PageNation from "@/components/QNA/PageNation";
-
-import { ColBox, StyleButton } from "@/styles/GlobalStyle";
-import BoardSearch from "@/components/QNA/BoardSearch";
 import { useDispatch } from "react-redux";
 import { initBoardSearch } from "@/components/redux/QnA/user/actions";
 
-const ListStyle = styled.div`
-  ${ColBox}
-  width: 80vw;
-  height: 1000vh;
+import BoardListView from "@/components/Board/BoardListLayout";
+import PageNation from "@/components/QNA/PageNation";
+import BoardSearch from "@/components/QNA/BoardSearch";
 
-  .edit_btn {
-    display: flex;
-    padding: 8px;
-    svg {
-      font-size: 20px;
-    }
-  }
-  @media screen and (max-width: 800px) {
-    .edit_btn {
-      width: 300px;
-    }
-  }
-`;
+import { ColBox, StyleButton } from "@/styles/GlobalStyle";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 const list = () => {
   const router = useRouter();
@@ -60,3 +41,22 @@ const list = () => {
 };
 
 export default list;
+
+const ListStyle = styled.div`
+  ${ColBox}
+  width: 80vw;
+  height: 1000vh;
+
+  .edit_btn {
+    display: flex;
+    padding: 8px;
+    svg {
+      font-size: 20px;
+    }
+  }
+  @media screen and (max-width: 800px) {
+    .edit_btn {
+      width: 300px;
+    }
+  }
+`;

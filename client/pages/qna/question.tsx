@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
-
 import styled from "styled-components";
+import { ColBox } from "@/styles/GlobalStyle";
 
-import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
+import { useDispatch } from "react-redux";
 import { getEssayList, setClearReadEssay } from "@/components/redux/Essay/server/actions";
 
-import { ColBox } from "@/styles/GlobalStyle";
+import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
+
+
 
 const WirteStyle = styled.div`
   ${ColBox}

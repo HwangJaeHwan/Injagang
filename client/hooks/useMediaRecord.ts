@@ -19,7 +19,6 @@ const useMediaRecord = () => {
       }
       return stream;
     } catch (error) {
-      console.error("유저의 권한을 획득하지 못했습니다.", error);
       throw error;
     }
   }, []);

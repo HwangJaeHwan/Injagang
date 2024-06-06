@@ -4,15 +4,15 @@ import { useRouter } from "next/router";
 
 import styled from "styled-components";
 
-import { useDispatch } from "react-redux";
-
 import AnswerLayout from "@/components/QNA/Answer/AnswerLayout";
-import { getBoardDetail } from "@/components/redux/QnA/actions";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
+import { useDispatch } from "react-redux";
+import { getBoardDetail } from "@/components/redux/QnA/actions";
 import { initFeedBack } from "@/components/redux/FeedBack/action";
 import { initTargetFeed } from "@/components/redux/QnA/user/actions";
+
 
 
 const ViewStyle = styled.div`

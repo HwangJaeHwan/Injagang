@@ -4,17 +4,18 @@ import styled from "styled-components";
 
 import { BiArrowBack } from "react-icons/bi";
 
-import InterviewRecord from "@/components/InterView/interviewRecord";
-import InterViewListView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
-import ArrowAnimation from "@/components/InterView/InterViewMenual";
-import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
-import { StyleButton } from "@/styles/GlobalStyle";
-
 import Image from "next/image";
 import interViewimg from "@/assets/images/interView.svg";
 
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+
+import InterViewListView from "@/components/InterViewQuestion/ExpectedQuestionLayout";
+import InterViewRandomSetting from "@/components/InterView/InterViewRandomSetting";
+import InterviewRecord from "@/components/InterView/interviewRecord";
+import ArrowAnimation from "@/components/InterView/InterViewMenual";
+
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
+
 
 const renderComponent = [
   { render: null, title: "면접영상촬영시작" },

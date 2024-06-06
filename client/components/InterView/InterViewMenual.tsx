@@ -40,7 +40,6 @@ const ArrowAnimation = ({ targetId }: ArrowAnimationProps) => {
   useEffect(() => {
     const updatePosition = () => {
       const targetElement = document.querySelector(`.${targetId}`);
-      console.log(targetElement);
       if (targetElement) {
         const rect = targetElement.getBoundingClientRect();
         setPosition({
