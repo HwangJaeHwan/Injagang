@@ -35,7 +35,7 @@ const list = () => {
       </StyleButton>
       <BoardListView />
       <PageNation />
-      <BoardSearch />
+      <BoardSearch /> 
     </ListStyle>
   );
 };
@@ -45,7 +45,7 @@ export default list;
 const ListStyle = styled.div`
   ${ColBox}
   width: 80vw;
-  height: 1000vh;
+  height: 100dvh;
 
   .edit_btn {
     display: flex;
