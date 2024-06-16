@@ -7,7 +7,7 @@ const darkTheme: Theme = {
       bodyColor: "#222529",
       button: "#f39214f2",
       logo: "#ffffff",
-      text: "#ffffff",
+      text: "#fff",
       highlight: "#b32eb3",
       black: "#000000",
       white: "#ffffff",

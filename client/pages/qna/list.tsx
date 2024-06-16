@@ -35,7 +35,7 @@ const list = () => {
       </StyleButton>
       <BoardListView />
       <PageNation />
-      <BoardSearch /> 
+      <BoardSearch />
     </ListStyle>
   );
 };

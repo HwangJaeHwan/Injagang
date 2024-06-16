@@ -34,20 +34,26 @@ const ControlMenu = ({
   Size,
 }: ControlMenuProps) => {
   return (
-    <ControlMenuSelect
-      Size={Size}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-    >
-      <option value="" disabled>
-        Please select
-      </option>
-      {optionList.map((option, index) => (
-        <option key={index} value={option.title}>
-          {option.title}
+    <div>
+      <label htmlFor="controlMenuSelect" className="sr-only">
+        옵션 선택 :
+      </label>
+      <ControlMenuSelect
+        id="controlMenuSelect"
+        Size={Size}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      >
+        <option value="" disabled>
+          Please select
         </option>
-      ))}
-    </ControlMenuSelect>
+        {optionList.map((option, index) => (
+          <option key={index} value={option.title}>
+            {option.title}
+          </option>
+        ))}
+      </ControlMenuSelect>
+    </div>
   );
 };
 

@@ -34,7 +34,7 @@ const BoardSearch = () => {
     setType(newType);
     if (findType) {
       dispatchChangeType(findType.en);
-      dispatchChangeSearch('');
+      dispatchChangeSearch("");
     }
     setSearch("");
   };
@@ -47,8 +47,10 @@ const BoardSearch = () => {
         optionList={typeList}
         onChange={changeType}
       />
+      <Label htmlFor="searchInput" className="sr-only">검색 :</Label>
       <InputStyle
         type="text"
+        id="searchInput"
         value={search}
         onChange={changeSearch}
       ></InputStyle>
@@ -63,9 +65,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   gap: 3px;
-`
+`;
 
 const InputStyle = styled(StyleInput)`
   width: 350px;
   margin-top: 16.4px;
+`;
+
+const Label = styled.label`
 `;

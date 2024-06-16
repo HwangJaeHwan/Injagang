@@ -38,6 +38,7 @@ const ManualItems = ({
             width={700}
             height={600}
             placeholder="blur"
+            style={{ objectFit: "cover" }}
           />
         </ImageContainer>
       ))}

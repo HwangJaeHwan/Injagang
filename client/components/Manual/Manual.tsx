@@ -1,5 +1,7 @@
 import React from "react";
 
+import ManualItems from "./ManualItems";
+
 import goodInterView from "@/public/assets/main.jpg";
 import interViewScreen from "@/public/assets/면접.png";
 import communityScreen from "@/public/assets/커뮤니티.png";
@@ -21,7 +23,6 @@ const manualData = [
     imageList: [interViewScreen],
   },
 ];
-const ManualItems = React.lazy(() => import("./ManualItems"));
 
 const Manual = () => {
   const lastSection = manualData.length - 1;

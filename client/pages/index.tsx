@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import Manual from "@/components/Manual/Manual";
-import Main from "@/components/Manual/Main";
 
 import { ColBox } from "@/styles/GlobalStyle";
 
@@ -13,7 +12,6 @@ const HomeStyle = styled.div`
 const Home = () => {
   return (
     <HomeStyle>
-      <Main />
       <Manual />
     </HomeStyle>
   );
