@@ -67,6 +67,11 @@ public class BoardController {
 
     }
 
+    @DeleteMapping("/feedback/{feedbackId}")
+    public void deleteFeedback(UserSession userSession, @PathVariable Long feedbackId) {
+        boardService.deleteFeedback(userSession.getUserId(),feedbackId);
+    }
+
     @GetMapping("/feedback/{qnaId}")
     public List<FeedbackList> feedbacksByQna(UserSession userSession, @PathVariable Long qnaId) {
 

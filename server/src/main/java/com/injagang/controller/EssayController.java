@@ -36,10 +36,10 @@ public class EssayController {
 
     }
 
-    @GetMapping("/{userId}")
-    public List<EssayList> myEssays(@PathVariable Long userId) {
+    @GetMapping("/list")
+    public List<EssayList> myEssays(UserSession userSession) {
 
-        return essayService.essays(userId);
+        return essayService.essays(userSession.getUserId());
     }
 
 

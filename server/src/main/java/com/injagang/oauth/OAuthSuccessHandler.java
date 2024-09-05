@@ -7,13 +7,16 @@ import com.injagang.request.Tokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.util.Map;
 
 @Component
@@ -36,8 +39,14 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         String json = objectMapper.writeValueAsString(tokens);
 
+        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
+                .queryParam("access", tokens.getAccess())
+                .queryParam("refresh", tokens.getRefresh())
+                .build().toUriString();
 
-        response.getWriter().write(json);
+        response.sendRedirect(redirect);
+
+//        response.getWriter().write(json);
 
     }
 }

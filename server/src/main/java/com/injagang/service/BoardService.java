@@ -178,10 +178,13 @@ public class BoardService {
     }
 
 
+    public void deleteFeedback(Long userId, Long feedbackId) {
 
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(FeedbackNotFoundException::new);
+        if (!feedback.getUser().getId().equals(userId)) {
+            throw new UnauthorizedException();
+        }
 
-
-
-
-
+        feedbackRepository.delete(feedback);
+    }
 }

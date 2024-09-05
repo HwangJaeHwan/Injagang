@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class EssayList {
@@ -16,17 +17,11 @@ public class EssayList {
 
     private String title;
 
-    private boolean owner = false;
-
     private List<String> questions = new ArrayList<>();
 
-    public EssayList(Essay essay,Long userId) {
+    public EssayList(Essay essay) {
         this.essayId = essay.getId();
         this.title = essay.getTitle();
-
-        if (essay.getUser().getId() == userId) {
-            owner = true;
-        }
 
         for (QnA qna : essay.getQnaList()) {
             questions.add(qna.getQuestion());

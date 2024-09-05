@@ -6,6 +6,8 @@ import com.injagang.domain.Feedback;
 import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.exception.DuplicateLoginIdException;
+import com.injagang.exception.UnauthorizedException;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
@@ -235,6 +237,60 @@ class BoardServiceTest {
 
     }
 
+    @Test
+    @DisplayName("게시글 수정 권한 없음")
+    void test3_1() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .role("USER")
+                .email("test2@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        board.addQnA(BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build());
+
+        board.addQnA(BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build());
+
+        boardRepository.save(board);
+
+        BoardRevise revise = BoardRevise.builder()
+                .boardId(board.getId())
+                .changeTitle("change title")
+                .changeContent("change content")
+                .build();
+
+        assertThrows(UnauthorizedException.class, () -> boardService.reviseBoard(user2.getId(), revise));
+
+    }
+
 
     @Test
     @DisplayName("피드백 쓰기")
@@ -350,6 +406,76 @@ class BoardServiceTest {
         Feedback reviseFeedback = feedbackRepository.findById(feedback.getId()).get();
 
         assertEquals("revise", reviseFeedback.getFeedbackContent());
+
+
+
+
+    }
+
+    @Test
+    @DisplayName("피드백 수정 권한 없음")
+    void test5_1() {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .role("USER")
+                .email("test2@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        boardRepository.save(board);
+
+        Feedback feedback = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target")
+                .feedbackContent("content")
+                .build();
+
+        feedbackRepository.save(feedback);
+
+        ReviseFeedback revise = ReviseFeedback.builder()
+                .feedbackId(feedback.getId())
+                .reviseContent("revise")
+                .build();
+
+        assertThrows(UnauthorizedException.class, () -> boardService.reviseFeedback(user2.getId(), revise));
+
 
 
 
@@ -710,6 +836,217 @@ class BoardServiceTest {
         assertEquals(0, feedbackRepository.count());
         assertEquals(0, qnARepository.count());
         assertEquals(0, boardRepository.count());
+
+
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 권한 없음")
+    void test9_1() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        Feedback feedback1 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target1")
+                .feedbackContent("content1")
+                .build();
+
+        Feedback feedback2 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target2")
+                .feedbackContent("content2")
+                .build();
+
+        Feedback feedback3 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna2)
+                .feedbackTarget("target3")
+                .feedbackContent("content3")
+                .build();
+
+        Feedback feedback4 = Feedback.builder()
+                .user(user)
+                .boardQnA(qna3)
+                .feedbackTarget("target4")
+                .feedbackContent("content4")
+                .build();
+
+        feedbackRepository.save(feedback1);
+        feedbackRepository.save(feedback2);
+        feedbackRepository.save(feedback3);
+        feedbackRepository.save(feedback4);
+
+
+        assertThrows(UnauthorizedException.class, () -> boardService.deleteBoard(user2.getId(), board.getId()));
+
+
+    }
+
+    @Test
+    @DisplayName("피드백 삭제")
+    void test10() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        boardRepository.save(board);
+
+        Feedback feedback = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target")
+                .feedbackContent("content")
+                .build();
+
+        feedbackRepository.save(feedback);
+
+        boardService.deleteFeedback(user.getId(), feedback.getId());
+
+
+        assertEquals(0,feedbackRepository.count());
+
+
+    }
+
+    @Test
+    @DisplayName("피드백 삭제 권한 없음")
+    void test10_1() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        boardRepository.save(board);
+
+        Feedback feedback = Feedback.builder()
+                .user(user)
+                .boardQnA(qna1)
+                .feedbackTarget("target")
+                .feedbackContent("content")
+                .build();
+
+        feedbackRepository.save(feedback);
+
+
+        assertThrows(UnauthorizedException.class, () -> boardService.deleteFeedback(user2.getId(), feedback.getId()));
 
 
     }

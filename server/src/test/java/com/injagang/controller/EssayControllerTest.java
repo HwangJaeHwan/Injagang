@@ -285,7 +285,7 @@ class EssayControllerTest {
     }
 
     @Test
-    @DisplayName("/{userId} 해당 ID를 가진 유저의 자기소개서 목록을 불러온다")
+    @DisplayName("/유저의 자기소개서 목록을 불러온다")
     void test3() throws Exception {
 
         User user = User.builder()
@@ -295,6 +295,8 @@ class EssayControllerTest {
                 .build();
 
         userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
 
         IntStream.rangeClosed(1,100).forEach(
 
@@ -325,7 +327,8 @@ class EssayControllerTest {
 
         );
 
-        mockMvc.perform(get("/essay/{userId}", user.getId()))
+        mockMvc.perform(get("/essay/list")
+                        .header("Authorization", jws))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(100L))
                 .andDo(print());

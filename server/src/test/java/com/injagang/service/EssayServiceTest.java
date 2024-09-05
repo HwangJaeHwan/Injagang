@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.User;
+import com.injagang.exception.UnauthorizedException;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.EssayWrite;
@@ -305,6 +306,81 @@ class EssayServiceTest {
     }
 
     @Test
+    @DisplayName("자소서 수정 권한 없음")
+    void test4_1() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+        Essay essay = Essay.builder()
+                .user(user)
+                .title("before")
+                .build();
+
+        EssayQnA qna1 = EssayQnA.builder()
+                .question("questionBefore1")
+                .answer("answerBefore1")
+                .build();
+
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("questionBefore2")
+                .answer("answerBefore2")
+                .build();
+
+        EssayQnA qna3 = EssayQnA.builder()
+                .question("questionBefore3")
+                .answer("answerBefore3")
+                .build();
+
+        essay.addQnA(qna1);
+        essay.addQnA(qna2);
+        essay.addQnA(qna3);
+
+        essayRepository.save(essay);
+
+
+        EssayWrite revise = EssayWrite.builder()
+                .title("after")
+                .build();
+
+        QnaRequest reviseQna1 = QnaRequest.builder()
+                .question("questionAfter1")
+                .answer("answerAfter1")
+                .build();
+
+        QnaRequest reviseQna2 = QnaRequest.builder()
+                .question("questionAfter2")
+                .answer("answerAfter2")
+                .build();
+
+        QnaRequest reviseQna3 = QnaRequest.builder()
+                .question("questionAfter3")
+                .answer("answerAfter3")
+                .build();
+
+        revise.addQna(reviseQna1);
+        revise.addQna(reviseQna2);
+        revise.addQna(reviseQna3);
+
+
+        assertThrows(UnauthorizedException.class, () -> essayService.reviseEssay(user2.getId(), essay.getId(), revise));
+
+
+    }
+
+    @Test
     @DisplayName("자소서 삭제")
     void test5() {
 
@@ -341,6 +417,50 @@ class EssayServiceTest {
 
         assertEquals(0, essayRepository.count());
         assertEquals(0, qnARepository.count());
+
+    }
+
+    @Test
+    @DisplayName("자소서 삭제 권한 없음")
+    void test5_1() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .build();
+
+        User user2 = User.builder()
+                .loginId("test2")
+                .password("test2")
+                .nickname("test2")
+                .build();
+
+        userRepository.save(user);
+        userRepository.save(user2);
+
+        Essay essay = Essay.builder()
+                .title("test title1")
+                .user(user)
+                .build();
+
+
+        EssayQnA qna1 = EssayQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        essay.addQnA(qna1);
+        essay.addQnA(qna2);
+        essayRepository.save(essay);
+
+        assertThrows(UnauthorizedException.class, () -> essayService.deleteEssay(user2.getId(), essay.getId()));
+
 
     }
 }

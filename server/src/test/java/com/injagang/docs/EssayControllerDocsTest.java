@@ -222,6 +222,8 @@ public class EssayControllerDocsTest {
 
         userRepository.save(user);
 
+        String jws = testHelper.makeAccessToken(user.getId());
+
         IntStream.rangeClosed(1,10).forEach(
 
                 i->{
@@ -247,13 +249,12 @@ public class EssayControllerDocsTest {
 
         );
 
-        mockMvc.perform(get("/essay/{userId}", user.getId()))
-                .andDo(document("essay-list",pathParameters(
-                        parameterWithName("userId").description("자소서 ID")
-                ),responseFields(
+        mockMvc.perform(get("/essay/list")
+                .header("Authorization", jws))
+                .andDo(document("essay-list"
+                        ,responseFields(
                         fieldWithPath("[].essayId").description("자소서 ID"),
                         fieldWithPath("[].title").description("자소서 제목"),
-                        fieldWithPath("[].owner").description("작성자 판별"),
                         fieldWithPath("[].questions").description("자소서 질문 목록")
                         )));
 

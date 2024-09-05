@@ -73,7 +73,7 @@ public class EssayService {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return essayRepository.findAllByUser(user).stream().map(e -> new EssayList(e, userId)).collect(Collectors.toList());
+        return essayRepository.findAllByUser(user).stream().map(EssayList::new).collect(Collectors.toList());
 
 
     }
