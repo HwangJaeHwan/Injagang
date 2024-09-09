@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.Cookie;
+
 import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -98,7 +100,7 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(user.getId()))
                 .andExpect(jsonPath("$.access").isNotEmpty())
-                .andExpect(jsonPath("$.refresh").isNotEmpty())
+                .andExpect(cookie().exists("refreshToken"))
                 .andDo(print());
 
 
@@ -142,6 +144,7 @@ class AuthControllerTest {
         userRepository.save(user);
 
         String jws = testHelper.makeAccessToken(user.getId());
+
 
         NicknameChange changeNickname = NicknameChange.builder()
                 .changeNickname("changeNickname")
@@ -200,18 +203,19 @@ class AuthControllerTest {
         String accessToken = testHelper.makeAccessToken(1L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        accessToken = accessToken.substring(7);
+
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
         String json = objectMapper.writeValueAsString(tokens);
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
 
         mockMvc.perform(post("/logout")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -226,18 +230,17 @@ class AuthControllerTest {
         String accessToken = testHelper.makeToken(1L, 0L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
         String json = objectMapper.writeValueAsString(tokens);
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
 
         mockMvc.perform(post("/reissue")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print());
 

@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /info HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.Kc7OQ_G4kamjphusRBR-WkCrJckBBHAmk32KtVS2_Ps
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzI1ODg4OTIxLCJleHAiOjE3MjU4OTA3MjF9.cJpWv0u4OWjx7x8u6DL3Std1KW7QJhAaCJy7oTeIg3Q
 Host: api.injagang.com</code></pre>
 </div>
 </div>
@@ -656,7 +656,7 @@ Host: api.injagang.com
 <h3 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"userId":2,"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.2yLMEeVBMyS4T5Cb_57kD_biKUnSCr5qzZ3d-gt0ey4","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU2MTI4NTZ9.Lq3joNNwefzctRv6qAt6xf2O_iDkrjxulnD483bDHZo"}</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"userId":2,"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzI1ODg4OTIwLCJleHAiOjE3MjU4OTA3MjB9.mlEd5BuEdkuR7cUQHPNA1Ms0pRdmQhiYcsuKk9Ft3rk"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -683,11 +683,6 @@ Host: api.injagang.com
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Access 토큰</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -702,10 +697,10 @@ Host: api.injagang.com
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 276
+Content-Length: 145
 Host: api.injagang.com
 
-{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.MY2XLREqynf2LN0sUobYIXJ2peJj9xY3PBzhaGio8C0","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU2MTI4NTZ9.ZW-mxLh5HbVRyP7tmOsqO2KKhfdiaaGhWdAbhvcoSbI"}</code></pre>
+{"access":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1ODg4OTIxLCJleHAiOjE3MjU4OTA3MjF9.AHSeaSdpQJDJ5tgb6GnOwhQn0eYTPb2PTjrIlBrqSNw"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -727,11 +722,6 @@ Host: api.injagang.com
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Access 토큰</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -746,10 +736,11 @@ Host: api.injagang.com
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /reissue HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 276
+Content-Length: 138
 Host: api.injagang.com
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1ODg4OTIxLCJleHAiOjE3MjU5NzUzMjF9.G5x5cyiE2f38J03mPVhze1ys6_I43oVII2fuNgjP3is
 
-{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjY0NTZ9.1UkwmZrYGOqA2q7rblvaS2w-hTjJo54WCg9wkF9I9EM","refresh":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU2MTI4NTZ9.ZW-mxLh5HbVRyP7tmOsqO2KKhfdiaaGhWdAbhvcoSbI"}</code></pre>
+{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1ODg4OTIxLCJleHAiOjE3MjU4ODg5MjF9.xeG4zV7sou5bCYVGzs-7L1MtUDlCHohx1WlwphylI1c"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -771,11 +762,6 @@ Host: api.injagang.com
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">만료된 Access 토큰</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refresh</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh 토큰</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -783,7 +769,7 @@ Host: api.injagang.com
 <h3 id="_응답_3"><a class="link" href="#_응답_3">응답</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.MY2XLREqynf2LN0sUobYIXJ2peJj9xY3PBzhaGio8C0"}</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"access":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1ODg4OTIxLCJleHAiOjE3MjU4OTA3MjF9.AHSeaSdpQJDJ5tgb6GnOwhQn0eYTPb2PTjrIlBrqSNw"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -819,7 +805,7 @@ Host: api.injagang.com
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /nicknameChange HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.eWnyxjzibMHF65Kea7jpJ1pDGrQm-AmtzAbzg9yBnLs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzI1ODg4OTIwLCJleHAiOjE3MjU4OTA3MjB9.yJXkSfXn2_Z593IwNB4x-0L7bvsP2WKT1hL7N0EKJy8
 Content-Length: 27
 Host: api.injagang.com
 
@@ -875,7 +861,7 @@ Host: api.injagang.com
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /passwordChange HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzI1NTI2NDU2LCJleHAiOjE3MjU1MjgyNTZ9.QStnaEBWOO_GY5r-SzzNKxFN7NpKTwhG5rzsICA8ivs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzI1ODg4OTIwLCJleHAiOjE3MjU4OTA3MjB9.PQ-GE96CDnTICDcqq1j8xyj4GRN8TK1tCmZf49MLgpg
 Content-Length: 80
 Host: api.injagang.com
 

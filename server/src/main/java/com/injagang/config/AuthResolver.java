@@ -33,11 +33,14 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String jws = webRequest.getHeader("Authorization");
+        String authorizationHeader = webRequest.getHeader("Authorization");
 
-        if (!StringUtils.hasText(jws)) {
+
+        if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
             throw new UnauthorizedException();
         }
+
+        String jws = authorizationHeader.substring(7);
 
         if (redisTemplate.opsForValue().get(jws) != null) {
             log.info("logout 됨");

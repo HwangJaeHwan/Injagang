@@ -20,6 +20,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.Cookie;
 import java.util.Map;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -143,11 +144,11 @@ public class AuthControllerDocTest {
                 .andDo(document("auth-login",
                         requestFields(fieldWithPath("loginId").description("로그인 아이디"),
                                 fieldWithPath("password").description("비밀번호")
+
                         ),
                         responseFields(
                                 fieldWithPath("userId").description("로그인 유저 ID"),
-                                fieldWithPath("access").description("Access 토큰"),
-                                fieldWithPath("refresh").description("Refresh 토큰")
+                                fieldWithPath("access").description("Access 토큰")
                         )));
 
 
@@ -236,10 +237,7 @@ public class AuthControllerDocTest {
         String accessToken = testHelper.makeAccessToken(1L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
@@ -250,8 +248,7 @@ public class AuthControllerDocTest {
                         .content(json))
                 .andDo(document("auth-logout",
                         requestFields(
-                                fieldWithPath("access").description("Access 토큰"),
-                                fieldWithPath("refresh").description("Refresh 토큰")
+                                fieldWithPath("access").description("Access 토큰")
                         ))
                 );
 
@@ -264,10 +261,7 @@ public class AuthControllerDocTest {
         String accessToken = testHelper.makeToken(1L, 0L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
@@ -275,11 +269,11 @@ public class AuthControllerDocTest {
 
         mockMvc.perform(post("/reissue")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        .cookie(new Cookie("refreshToken",refreshToken)))
                 .andDo(document("auth-reissue",
                         requestFields(
-                                fieldWithPath("access").description("만료된 Access 토큰"),
-                                fieldWithPath("refresh").description("Refresh 토큰")
+                                fieldWithPath("access").description("만료된 Access 토큰")
                         ),responseFields(
                                 fieldWithPath("access").description("재발급된 Access 토큰")
                         )

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,6 +31,16 @@ public class ExceptionController {
         }
 
         return error;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ErrorResponse CookieException(MissingRequestCookieException e) {
+
+        return ErrorResponse.builder()
+                .code("401")
+                .message("Cookie에 RefreshToken이 존재하지 않습니다.")
+                .build();
     }
 
     @ExceptionHandler

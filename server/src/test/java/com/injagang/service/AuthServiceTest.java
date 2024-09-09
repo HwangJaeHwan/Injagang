@@ -310,16 +310,14 @@ class AuthServiceTest {
         String accessToken = testHelper.makeAccessToken(1L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
+        accessToken = accessToken.substring(7);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
 
-        authService.logout(tokens);
+        authService.logout(tokens.getAccess(), refreshToken);
 
 
         assertNull(redisDao.getData(refreshToken));
@@ -337,14 +335,11 @@ class AuthServiceTest {
         String refreshToken = testHelper.makeRefreshToken(1L);
 
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String reissue = authService.reissue(tokens);
+        String reissue = authService.reissue(tokens.getAccess(),refreshToken);
 
         assertEquals(1L, jwtProvider.parseToken(reissue));
 
@@ -361,14 +356,11 @@ class AuthServiceTest {
         String refreshToken = testHelper.makeRefreshToken(1L);
 
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+        Tokens tokens = new Tokens(accessToken);
 
 //        redisDao.setData(refreshToken, "login", 6000L);
 
-        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens.getAccess(), refreshToken));
 
     }
 
@@ -380,15 +372,14 @@ class AuthServiceTest {
         String accessToken = testHelper.makeAccessToken(1L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
+        accessToken = accessToken.substring(7);
 
-        Tokens tokens = Tokens.builder()
-                .access(accessToken)
-                .refresh(refreshToken)
-                .build();
+
+        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens));
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens.getAccess(), refreshToken));
         assertEquals("logout", redisDao.getData(accessToken));
 
     }

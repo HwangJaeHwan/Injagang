@@ -31,34 +31,28 @@ public class TestHelper {
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
                 .compact();
 
-        return jws;
+        return "Bearer " + jws;
     }
 
     public String makeRefreshToken(Long userId) {
         SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
-        String jws = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefresh()))
                 .compact();
-
-        return jws;
     }
 
     public String makeToken(Long userId, Long mill) {
 
-        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
-
-        String jws = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(String.valueOf(userId))
-                .signWith(key)
+                .signWith(Keys.hmacShaKeyFor(appConfig.getJwtKey()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + mill))
                 .compact();
-
-        return jws;
 
 
     }

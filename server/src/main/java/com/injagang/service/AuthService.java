@@ -79,39 +79,36 @@ public class AuthService {
 
     }
 
-    public void logout(Tokens tokens) {
+    public void logout(String access, String refresh) {
 
-        if (!jwtProvider.validateToken(tokens.getAccess())) {
+        if (!jwtProvider.validateToken(access)) {
             throw new InjaGangJwtException();
         }
 
-        String check = redisDao.getData(tokens.getRefresh());
+        String check = redisDao.getData(refresh);
 
 
         if (check != null) {
-            redisTemplate.delete(tokens.getRefresh());
-            redisDao.setData(tokens.getAccess(), "logout", jwtProvider.expirationTime(tokens.getAccess()));
+            redisTemplate.delete(refresh);
+            redisDao.setData(access, "logout", jwtProvider.expirationTime(access));
 
         }
-
 
 
     }
 
-    public String reissue(Tokens tokens) {
+    public String reissue(String access,String refresh) {
 
-        if (redisDao.getData(tokens.getRefresh()) == null) {
+        if (redisDao.getData(refresh) == null) {
             throw new RefreshTokenExpiredException();
         }
 
-        if (!jwtProvider.refreshCheck(tokens.getAccess())) {
-            logout(tokens);
+        if (!jwtProvider.refreshCheck(access)) {
+            logout(access,refresh);
             throw new RefreshTokenExpiredException();
         }
 
-        String accessToken = jwtProvider.createAccessToken(jwtProvider.parseToken(tokens.getRefresh()));
-
-        return accessToken;
+        return jwtProvider.createAccessToken(jwtProvider.parseToken(refresh));
 
 
     }
