@@ -81,7 +81,7 @@ public class EssayService {
     public void reviseEssay(Long userId,Long essayId, EssayWrite essayWrite) {
         Essay essay = essayRepository.findById(essayId).orElseThrow(EssayNotFoundException::new);
 
-        if (userId != essay.getUser().getId()) {
+        if (!userId.equals(essay.getUser().getId())) {
             throw new UnauthorizedException();
         }
 
@@ -118,7 +118,7 @@ public class EssayService {
 
         Essay essay = essayRepository.findById(essayId).orElseThrow(EssayNotFoundException::new);
 
-        if (essay.getUser().getId() != userId) {
+        if (!essay.getUser().getId().equals(userId)) {
             throw new UnauthorizedException();
         }
 

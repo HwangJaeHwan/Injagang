@@ -2,5 +2,5 @@ package com.injagang.domain;
 
 public enum QuestionType {
 
-    CS, SITUATION, JOB, PERSONALITY;
+    CS, SITUATION, FRONT, BACK, COMMON, UNIVERSITY
 }

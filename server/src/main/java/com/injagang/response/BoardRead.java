@@ -43,7 +43,7 @@ public class BoardRead {
         this.userId = board.getUser().getId();
         this.nickname = board.getUser().getNickname();
 
-        if (userId == board.getUser().getId()) {
+        if (userId.equals(board.getUser().getId())) {
             owner = true;
         }
 

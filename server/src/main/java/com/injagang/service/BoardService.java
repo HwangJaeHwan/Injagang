@@ -105,7 +105,7 @@ public class BoardService {
 
         Board board = boardRepository.findById(boardRevise.getBoardId()).orElseThrow(BoardNotFoundException::new);
 
-        if (userId != board.getUser().getId()) {
+        if (!userId.equals(board.getUser().getId())) {
             throw new UnauthorizedException();
         }
 
@@ -135,7 +135,7 @@ public class BoardService {
 
         Feedback feedback = feedbackRepository.findById(reviseFeedback.getFeedbackId()).orElseThrow(FeedbackNotFoundException::new);
 
-        if (feedback.getUser().getId() != userId) {
+        if (!feedback.getUser().getId().equals(userId)) {
             throw new UnauthorizedException();
         }
 
@@ -163,7 +163,7 @@ public class BoardService {
 
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
 
-        if (board.getUser().getId() != userId) {
+        if (!board.getUser().getId().equals(userId)) {
             throw new UnauthorizedException();
         }
 
