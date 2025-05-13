@@ -24,6 +24,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.restdocs.request.RequestDocumentation;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
+@ActiveProfiles("test")
 public class QuestionControllerDocsTest {
 
     @Autowired
@@ -110,7 +112,7 @@ public class QuestionControllerDocsTest {
                         headerWithName("Authorization").description("ADMIN 인증")
                 ), requestFields(
                         fieldWithPath("questions[]").description("질문 리스트"),
-                        fieldWithPath("questionType").description("질문의 타입(CS, SITUATION, JOB, PERSONALITY)")
+                        fieldWithPath("questionType").description("질문의 타입(CS, SITUATION, FRONT, BACK, COMMON, UNIVERSITY)")
                         )
                 ));
 
@@ -129,9 +131,9 @@ public class QuestionControllerDocsTest {
                 .questionType(QuestionType.CS)
                 .build();
 
-        RandomRequest jobRequest = RandomRequest.builder()
+        RandomRequest commonRequest = RandomRequest.builder()
                 .size(6)
-                .questionType(QuestionType.JOB)
+                .questionType(QuestionType.COMMON)
                 .build();
 
         RandomRequest situationRequest = RandomRequest.builder()
@@ -139,15 +141,27 @@ public class QuestionControllerDocsTest {
                 .questionType(QuestionType.SITUATION)
                 .build();
 
-        RandomRequest personalityRequest = RandomRequest.builder()
+        RandomRequest frontRequest = RandomRequest.builder()
                 .size(8)
-                .questionType(QuestionType.PERSONALITY)
+                .questionType(QuestionType.FRONT)
+                .build();
+
+        RandomRequest backRequest = RandomRequest.builder()
+                .size(9)
+                .questionType(QuestionType.BACK)
+                .build();
+
+        RandomRequest universityRequest = RandomRequest.builder()
+                .size(10)
+                .questionType(QuestionType.UNIVERSITY)
                 .build();
 
         requests.add(csRequest);
-        requests.add(jobRequest);
+        requests.add(commonRequest);
         requests.add(situationRequest);
-        requests.add(personalityRequest);
+        requests.add(frontRequest);
+        requests.add(backRequest);
+        requests.add(universityRequest);
 
         String json = objectMapper.writeValueAsString(requests);
 
@@ -159,7 +173,7 @@ public class QuestionControllerDocsTest {
 
                 requestFields(
                         fieldWithPath("[].size").description("가져올 질문의 수"),
-                        fieldWithPath("[].questionType").description("질문의 타입(CS, SITUATION, JOB, PERSONALITY)")
+                        fieldWithPath("[].questionType").description("질문의 타입(CS, SITUATION, PERSONALITY, FRONT, BACK, COMMON, UNIVERSITY)")
                 ),
 
                 responseFields(
@@ -229,11 +243,10 @@ public class QuestionControllerDocsTest {
     }
 
     private void saveQuestions() {
-//        CS, SITUATION, JOB, PERSONALITY;
 
         List<ExpectedQuestion> save = new ArrayList<>();
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
@@ -248,7 +261,7 @@ public class QuestionControllerDocsTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
@@ -263,13 +276,13 @@ public class QuestionControllerDocsTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("JOB" + i)
-                                            .questionType(QuestionType.JOB)
+                                            .question("FRONT" + i)
+                                            .questionType(QuestionType.FRONT)
                                             .build()
                             );
 
@@ -278,13 +291,43 @@ public class QuestionControllerDocsTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("PERSONALITY" + i)
-                                            .questionType(QuestionType.PERSONALITY)
+                                            .question("BACK" + i)
+                                            .questionType(QuestionType.BACK)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("COMMON" + i)
+                                            .questionType(QuestionType.COMMON)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("UNIVERSITY" + i)
+                                            .questionType(QuestionType.UNIVERSITY)
                                             .build()
                             );
 

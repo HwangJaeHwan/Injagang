@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class QuestionControllerTest {
 
     @Autowired
@@ -117,9 +119,9 @@ class QuestionControllerTest {
                 .questionType(QuestionType.CS)
                 .build();
 
-        RandomRequest jobRequest = RandomRequest.builder()
+        RandomRequest commonRequest = RandomRequest.builder()
                 .size(6)
-                .questionType(QuestionType.JOB)
+                .questionType(QuestionType.COMMON)
                 .build();
 
         RandomRequest situationRequest = RandomRequest.builder()
@@ -127,22 +129,34 @@ class QuestionControllerTest {
                 .questionType(QuestionType.SITUATION)
                 .build();
 
-        RandomRequest personalityRequest = RandomRequest.builder()
+        RandomRequest frontRequest = RandomRequest.builder()
                 .size(8)
-                .questionType(QuestionType.PERSONALITY)
+                .questionType(QuestionType.FRONT)
+                .build();
+
+        RandomRequest backRequest = RandomRequest.builder()
+                .size(9)
+                .questionType(QuestionType.BACK)
+                .build();
+
+        RandomRequest universityRequest = RandomRequest.builder()
+                .size(10)
+                .questionType(QuestionType.UNIVERSITY)
                 .build();
 
         requests.add(csRequest);
-        requests.add(jobRequest);
+        requests.add(commonRequest);
         requests.add(situationRequest);
-        requests.add(personalityRequest);
+        requests.add(frontRequest);
+        requests.add(backRequest);
+        requests.add(universityRequest);
 
         String json = objectMapper.writeValueAsString(requests);
 
         mockMvc.perform(post("/questions/random")
                         .contentType(APPLICATION_JSON)
                         .content(json))
-                .andExpect(jsonPath("$.length()").value(26L))
+                .andExpect(jsonPath("$.length()").value(45L))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -155,7 +169,7 @@ class QuestionControllerTest {
 
         mockMvc.perform(get("/questions")
                         .param("questionType", "CS"))
-                .andExpect(jsonPath("$.length()").value(10L));
+                .andExpect(jsonPath("$.length()").value(11L));
 
     }
 
@@ -166,29 +180,51 @@ class QuestionControllerTest {
 
         mockMvc.perform(get("/questions")
                         .param("questionType", "SITUATION"))
-                .andExpect(jsonPath("$.length()").value(10L));
+                .andExpect(jsonPath("$.length()").value(11L));
 
     }
 
     @Test
-    @DisplayName("/questions 질문리스트 JOB")
+    @DisplayName("/questions 질문리스트 FRONT")
     void test5() throws Exception{
         saveQuestions();
 
         mockMvc.perform(get("/questions")
-                        .param("questionType", "JOB"))
-                .andExpect(jsonPath("$.length()").value(10L));
+                        .param("questionType", "FRONT"))
+                .andExpect(jsonPath("$.length()").value(11L));
 
     }
 
     @Test
-    @DisplayName("/questions 질문리스트 PERSONALITY")
+    @DisplayName("/questions 질문리스트 BACK")
     void test6() throws Exception{
         saveQuestions();
 
         mockMvc.perform(get("/questions")
-                        .param("questionType", "PERSONALITY"))
-                .andExpect(jsonPath("$.length()").value(10L));
+                        .param("questionType", "BACK"))
+                .andExpect(jsonPath("$.length()").value(11L));
+
+    }
+
+    @Test
+    @DisplayName("/questions 질문리스트 COMMON")
+    void test10() throws Exception{
+        saveQuestions();
+
+        mockMvc.perform(get("/questions")
+                        .param("questionType", "COMMON"))
+                .andExpect(jsonPath("$.length()").value(11L));
+
+    }
+
+    @Test
+    @DisplayName("/questions 질문리스트 UNIVERSITY")
+    void test11() throws Exception{
+        saveQuestions();
+
+        mockMvc.perform(get("/questions")
+                        .param("questionType", "UNIVERSITY"))
+                .andExpect(jsonPath("$.length()").value(11L));
 
     }
 
@@ -198,7 +234,7 @@ class QuestionControllerTest {
         saveQuestions();
 
         mockMvc.perform(get("/questions"))
-                .andExpect(jsonPath("$.length()").value(40L));
+                .andExpect(jsonPath("$.length()").value(66L));
 
     }
 
@@ -241,11 +277,10 @@ class QuestionControllerTest {
 
 
     private void saveQuestions() {
-//        CS, SITUATION, JOB, PERSONALITY;
 
         List<ExpectedQuestion> save = new ArrayList<>();
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
@@ -260,7 +295,7 @@ class QuestionControllerTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
@@ -275,13 +310,13 @@ class QuestionControllerTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("JOB" + i)
-                                            .questionType(QuestionType.JOB)
+                                            .question("FRONT" + i)
+                                            .questionType(QuestionType.FRONT)
                                             .build()
                             );
 
@@ -290,13 +325,43 @@ class QuestionControllerTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("PERSONALITY" + i)
-                                            .questionType(QuestionType.PERSONALITY)
+                                            .question("BACK" + i)
+                                            .questionType(QuestionType.BACK)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("COMMON" + i)
+                                            .questionType(QuestionType.COMMON)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("UNIVERSITY" + i)
+                                            .questionType(QuestionType.UNIVERSITY)
                                             .build()
                             );
 

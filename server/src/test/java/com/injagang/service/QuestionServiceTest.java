@@ -11,6 +11,7 @@ import com.injagang.request.RandomRequest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QuestionServiceTest {
 
@@ -54,7 +56,7 @@ class QuestionServiceTest {
         List<QuestionResponse> response = questionService.questionsByType(null);
 
 
-        assertEquals(40, response.size());
+        assertEquals(66, response.size());
 
     }
 
@@ -65,14 +67,18 @@ class QuestionServiceTest {
 
         List<QuestionResponse> cs = questionService.questionsByType(QuestionType.CS);
         List<QuestionResponse> situation = questionService.questionsByType(QuestionType.SITUATION);
-        List<QuestionResponse> job = questionService.questionsByType(QuestionType.JOB);
-        List<QuestionResponse> personality = questionService.questionsByType(QuestionType.PERSONALITY);
+        List<QuestionResponse> front = questionService.questionsByType(QuestionType.FRONT);
+        List<QuestionResponse> back = questionService.questionsByType(QuestionType.BACK);
+        List<QuestionResponse> common = questionService.questionsByType(QuestionType.COMMON);
+        List<QuestionResponse> university = questionService.questionsByType(QuestionType.UNIVERSITY);
 
 
-        assertEquals(10, cs.size());
-        assertEquals(10, situation.size());
-        assertEquals(10, job.size());
-        assertEquals(10, personality.size());
+        assertEquals(11, cs.size());
+        assertEquals(11, situation.size());
+        assertEquals(11, front.size());
+        assertEquals(11, back.size());
+        assertEquals(11, common.size());
+        assertEquals(11, university.size());
 
 
     }
@@ -102,34 +108,57 @@ class QuestionServiceTest {
         situation.addQuestion("situation3");
         situation.addQuestion("situation4");
 
-        QuestionWrite job = new QuestionWrite(QuestionType.JOB);
-        job.addQuestion("job1");
-        job.addQuestion("job2");
-        job.addQuestion("job3");
-        job.addQuestion("job4");
-        job.addQuestion("job5");
+        QuestionWrite front = new QuestionWrite(QuestionType.FRONT);
+        front.addQuestion("front1");
+        front.addQuestion("front2");
+        front.addQuestion("front3");
+        front.addQuestion("front4");
+        front.addQuestion("front5");
 
-        QuestionWrite personality = new QuestionWrite(QuestionType.PERSONALITY);
-        personality.addQuestion("personality1");
-        personality.addQuestion("personality2");
-        personality.addQuestion("personality3");
-        personality.addQuestion("personality4");
-        personality.addQuestion("personality5");
-        personality.addQuestion("personality6");
+        QuestionWrite back = new QuestionWrite(QuestionType.BACK);
+        back.addQuestion("back1");
+        back.addQuestion("back2");
+        back.addQuestion("back3");
+        back.addQuestion("back4");
+        back.addQuestion("back5");
+        back.addQuestion("back6");
+
+        QuestionWrite common = new QuestionWrite(QuestionType.COMMON);
+        common.addQuestion("common1");
+        common.addQuestion("common2");
+        common.addQuestion("common3");
+        common.addQuestion("common4");
+        common.addQuestion("common5");
+        common.addQuestion("common6");
+        common.addQuestion("common7");
+
+        QuestionWrite university = new QuestionWrite(QuestionType.UNIVERSITY);
+        university.addQuestion("university1");
+        university.addQuestion("university2");
+        university.addQuestion("university3");
+        university.addQuestion("university4");
+        university.addQuestion("university5");
+        university.addQuestion("university6");
+        university.addQuestion("university7");
+        university.addQuestion("university8");
 
         questionService.addQuestions(user.getId(),cs);
         questionService.addQuestions(user.getId(),situation);
-        questionService.addQuestions(user.getId(),job);
-        questionService.addQuestions(user.getId(),personality);
+        questionService.addQuestions(user.getId(),front);
+        questionService.addQuestions(user.getId(),back);
+        questionService.addQuestions(user.getId(),common);
+        questionService.addQuestions(user.getId(),university);
 
 
 
-        assertEquals(18, questionRepository.count());
+        assertEquals(33, questionRepository.count());
 
         assertEquals(3,questionRepository.findAllByQuestionType(QuestionType.CS).size());
         assertEquals(4,questionRepository.findAllByQuestionType(QuestionType.SITUATION).size());
-        assertEquals(5,questionRepository.findAllByQuestionType(QuestionType.JOB).size());
-        assertEquals(6,questionRepository.findAllByQuestionType(QuestionType.PERSONALITY).size());
+        assertEquals(5,questionRepository.findAllByQuestionType(QuestionType.FRONT).size());
+        assertEquals(6,questionRepository.findAllByQuestionType(QuestionType.BACK).size());
+        assertEquals(7,questionRepository.findAllByQuestionType(QuestionType.COMMON).size());
+        assertEquals(8,questionRepository.findAllByQuestionType(QuestionType.UNIVERSITY).size());
 
 
     }
@@ -148,9 +177,9 @@ class QuestionServiceTest {
                 .questionType(QuestionType.CS)
                 .build();
 
-        RandomRequest jobRequest = RandomRequest.builder()
+        RandomRequest frontRequest = RandomRequest.builder()
                 .size(6)
-                .questionType(QuestionType.JOB)
+                .questionType(QuestionType.FRONT)
                 .build();
 
         RandomRequest situationRequest = RandomRequest.builder()
@@ -158,20 +187,32 @@ class QuestionServiceTest {
                 .questionType(QuestionType.SITUATION)
                 .build();
 
-        RandomRequest personalityRequest = RandomRequest.builder()
+        RandomRequest backRequest = RandomRequest.builder()
                 .size(8)
-                .questionType(QuestionType.PERSONALITY)
+                .questionType(QuestionType.BACK)
+                .build();
+
+        RandomRequest commonRequest = RandomRequest.builder()
+                .size(9)
+                .questionType(QuestionType.COMMON)
+                .build();
+
+        RandomRequest universityRequest = RandomRequest.builder()
+                .size(10)
+                .questionType(QuestionType.UNIVERSITY)
                 .build();
 
         requests.add(csRequest);
-        requests.add(jobRequest);
+        requests.add(frontRequest);
         requests.add(situationRequest);
-        requests.add(personalityRequest);
+        requests.add(backRequest);
+        requests.add(commonRequest);
+        requests.add(universityRequest);
 
         List<QuestionResponse> questions = questionService.randomQuestions(requests);
 
 
-        assertEquals(26, questions.size());
+        assertEquals(45, questions.size());
 
 
 
@@ -194,36 +235,53 @@ class QuestionServiceTest {
         saveQuestions();
 
         List<ExpectedQuestion> cs = questionRepository.findAllByQuestionType(QuestionType.CS);
-        List<ExpectedQuestion> job = questionRepository.findAllByQuestionType(QuestionType.JOB);
+        List<ExpectedQuestion> front = questionRepository.findAllByQuestionType(QuestionType.FRONT);
         List<ExpectedQuestion> situation = questionRepository.findAllByQuestionType(QuestionType.SITUATION);
-        List<ExpectedQuestion> personality = questionRepository.findAllByQuestionType(QuestionType.PERSONALITY);
+        List<ExpectedQuestion> back = questionRepository.findAllByQuestionType(QuestionType.BACK);
+        List<ExpectedQuestion> common = questionRepository.findAllByQuestionType(QuestionType.COMMON);
+        List<ExpectedQuestion> university = questionRepository.findAllByQuestionType(QuestionType.UNIVERSITY);
 
         List<Long> ids = new ArrayList<>();
 
         ids.add(cs.get(0).getId());
 
-        ids.add(job.get(0).getId());
-        ids.add(job.get(1).getId());
+        ids.add(front.get(0).getId());
+        ids.add(front.get(1).getId());
 
         ids.add(situation.get(0).getId());
         ids.add(situation.get(1).getId());
         ids.add(situation.get(2).getId());
 
-        ids.add(personality.get(0).getId());
-        ids.add(personality.get(1).getId());
-        ids.add(personality.get(2).getId());
-        ids.add(personality.get(3).getId());
+        ids.add(back.get(0).getId());
+        ids.add(back.get(1).getId());
+        ids.add(back.get(2).getId());
+        ids.add(back.get(3).getId());
+
+        ids.add(common.get(0).getId());
+        ids.add(common.get(1).getId());
+        ids.add(common.get(2).getId());
+        ids.add(common.get(3).getId());
+        ids.add(common.get(4).getId());
+
+        ids.add(university.get(0).getId());
+        ids.add(university.get(1).getId());
+        ids.add(university.get(2).getId());
+        ids.add(university.get(3).getId());
+        ids.add(university.get(4).getId());
+        ids.add(university.get(5).getId());
 
 
 
 
         questionService.delete(user.getId(), ids);
 
-        assertEquals(30, questionRepository.count());
-        assertEquals(9, questionRepository.findAllByQuestionType(QuestionType.CS).size());
-        assertEquals(8, questionRepository.findAllByQuestionType(QuestionType.JOB).size());
-        assertEquals(7, questionRepository.findAllByQuestionType(QuestionType.SITUATION).size());
-        assertEquals(6, questionRepository.findAllByQuestionType(QuestionType.PERSONALITY).size());
+        assertEquals(45, questionRepository.count());
+        assertEquals(10, questionRepository.findAllByQuestionType(QuestionType.CS).size());
+        assertEquals(9, questionRepository.findAllByQuestionType(QuestionType.FRONT).size());
+        assertEquals(8, questionRepository.findAllByQuestionType(QuestionType.SITUATION).size());
+        assertEquals(7, questionRepository.findAllByQuestionType(QuestionType.BACK).size());
+        assertEquals(6, questionRepository.findAllByQuestionType(QuestionType.COMMON).size());
+        assertEquals(5, questionRepository.findAllByQuestionType(QuestionType.UNIVERSITY).size());
 
 
 
@@ -233,26 +291,25 @@ class QuestionServiceTest {
 
 
     private void saveQuestions() {
-//        CS, SITUATION, JOB, PERSONALITY;
 
         List<ExpectedQuestion> save = new ArrayList<>();
 
-        IntStream.rangeClosed(0,9)
-                        .forEach(
-                                i->{
-                                    save.add(
-                                            ExpectedQuestion.builder()
-                                                    .question("CS" + i)
-                                                    .questionType(QuestionType.CS)
-                                                    .build()
-                                    );
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("CS" + i)
+                                            .questionType(QuestionType.CS)
+                                            .build()
+                            );
 
 
-                                }
+                        }
 
-                        );
+                );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
@@ -267,13 +324,13 @@ class QuestionServiceTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("JOB" + i)
-                                            .questionType(QuestionType.JOB)
+                                            .question("FRONT" + i)
+                                            .questionType(QuestionType.FRONT)
                                             .build()
                             );
 
@@ -282,13 +339,43 @@ class QuestionServiceTest {
 
                 );
 
-        IntStream.rangeClosed(0,9)
+        IntStream.rangeClosed(0,10)
                 .forEach(
                         i->{
                             save.add(
                                     ExpectedQuestion.builder()
-                                            .question("PERSONALITY" + i)
-                                            .questionType(QuestionType.PERSONALITY)
+                                            .question("BACK" + i)
+                                            .questionType(QuestionType.BACK)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("COMMON" + i)
+                                            .questionType(QuestionType.COMMON)
+                                            .build()
+                            );
+
+
+                        }
+
+                );
+
+        IntStream.rangeClosed(0,10)
+                .forEach(
+                        i->{
+                            save.add(
+                                    ExpectedQuestion.builder()
+                                            .question("UNIVERSITY" + i)
+                                            .questionType(QuestionType.UNIVERSITY)
                                             .build()
                             );
 

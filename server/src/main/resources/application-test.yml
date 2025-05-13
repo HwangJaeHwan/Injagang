@@ -10,6 +10,8 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+
+
   jpa:
     properties:
       hibernate:
@@ -69,6 +71,7 @@ jwt:
 expiration-time:
   access: 1800000
   refresh: 86400000
+
 
 
 
