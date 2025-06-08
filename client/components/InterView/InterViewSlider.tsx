@@ -1,8 +1,12 @@
 import React from "react";
+
 import styled from "styled-components";
+
+import { MdOutlineFileDownload } from "react-icons/md";
+
 import { ColBox, FlexBox, ScrollBar } from "@/styles/GlobalStyle";
 import { saveAs } from "file-saver";
-import { MdOutlineFileDownload } from "react-icons/md";
+
 type InterViewSliderProps = {
   video: Blob[];
   question: string[];

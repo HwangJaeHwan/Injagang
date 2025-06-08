@@ -1,11 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/router";
+
 import { useSelector, useDispatch } from "react-redux";
+
+import { useRouter } from "next/router";
+
 import { checkOut, clearAuthError } from "@/components/redux/Auth/actions";
+import { getProfile } from "@/components/redux/MyProfile/actions";
+
 import { RootReducerType } from "@/components/redux/store";
 
 import { ERROR_MESSAGES } from "@/constants";
-import { getProfile } from "@/components/redux/MyProfile/actions";
 
 const useLoginManager = () => {
   const dispatch = useDispatch();
@@ -28,7 +32,9 @@ const useLoginManager = () => {
       dispatch(getProfile());
       dispatch(clearAuthError());
       router.replace("/");
-      return;
+      return () => {
+        setUserMsg('')
+      };
     }
     if (error) {
       setUserMsg(ERROR_MESSAGES.DOESN_T_MATCH);

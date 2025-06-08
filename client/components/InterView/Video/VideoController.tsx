@@ -1,6 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+
 import { MdPlayArrow, MdPause, MdStop } from "react-icons/md";
+
+import styled from "styled-components";
+
 
 interface VideoControllerProps {
   isPaused: boolean;

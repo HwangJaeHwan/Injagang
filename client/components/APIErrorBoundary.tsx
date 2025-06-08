@@ -1,6 +1,6 @@
 import React from "react";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { API, reRequest } from "@/api/client";
+import axios, { AxiosError } from "axios";
+import { reRequest } from "@/api/client";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;

@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+
 import {
   boardDispatchType,
   BOARD_REQUEST,
@@ -7,6 +8,8 @@ import {
   BOARDINFO_SUCCESS,
   BOARD_UPDATED,
 } from "./types";
+import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
+
 import {
   deleteQnaBoardAPI,
   getDetailBoardAPI,
@@ -14,25 +17,28 @@ import {
   reviseQnaBoardAPI,
   writeQnaBoardAPI,
 } from "@/api/QnABoard/qnaBoardAPI";
-import { IReviseQnaBoard, IWriteQnaBoard } from "@/types/qnaBoard/QnaBoardType";
+import { showToastAction } from "../Toast/actions";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**QNA리스트를 가져온다. */
-export const getBoardList = (page: number) => async (dispatch: Dispatch) => {
-  try {
-    dispatch({ type: BOARD_REQUEST });
-    const response = await getQnaBoardListAPI(page);
-    if (response) {
-      dispatch({
-        type: BOARDINFO_SUCCESS,
-        payload: {
-          boardInfoList: response.data,
-        },
-      });
+export const getBoardList =
+  (page: number, title?: string, content?: string) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: BOARD_REQUEST });
+      const response = await getQnaBoardListAPI(page, title, content);
+      if (response) {
+        dispatch({
+          type: BOARDINFO_SUCCESS,
+          payload: {
+            boardInfoList: response.data,
+          },
+        });
+      }
+    } catch (error: any) {
+      dispatch({ type: BOARD_FAILURE, payload: { error } });
     }
-  } catch (error: any) {
-    dispatch({ type: BOARD_FAILURE, payload: { error } });
-  }
-};
+  };
 
 /**해당하는 QNA의 세부내용을 불러온다. */
 export const getBoardDetail =
@@ -67,6 +73,9 @@ export const writeBoard =
       const request = await writeQnaBoardAPI(boardData);
       if (request.status === 200) {
         dispatch({ type: BOARD_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_QUESTION),
+        );
       }
     } catch (error: any) {
       dispatch({
@@ -83,6 +92,12 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
   try {
     const request = await deleteQnaBoardAPI(boardId);
     //TODO : 디스패치 누락? 확인 검토 해보기
+    if (request.status === 200) {
+      dispatch(
+        showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.DELETED_QUESTION),
+      );
+      dispatch({ type: BOARD_UPDATED });
+    }
   } catch (error: any) {
     dispatch({
       type: BOARD_FAILURE,
@@ -90,6 +105,9 @@ export const deleteBoard = (boardId: number) => async (dispatch: Dispatch) => {
         error,
       },
     });
+    dispatch(
+      showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.DELETED_QUESTION),
+    );
   }
 };
 
@@ -98,6 +116,15 @@ export const updateBoard =
   (changeData: IReviseQnaBoard) => async (dispatch: Dispatch) => {
     try {
       const request = await reviseQnaBoardAPI(changeData);
+      if (request.status === 200) {
+        dispatch(
+          showToastAction(
+            TOAST_MODE.SUCCESS,
+            SUCCESS_MESSAGES.UPDATED_QUESTION,
+          ),
+        );
+        dispatch({ type: BOARD_UPDATED });
+      }
     } catch (error: any) {
       dispatch({
         type: BOARD_FAILURE,
@@ -105,5 +132,8 @@ export const updateBoard =
           error,
         },
       });
+      dispatch(
+        showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.UPDATED_QUESTION),
+      );
     }
   };

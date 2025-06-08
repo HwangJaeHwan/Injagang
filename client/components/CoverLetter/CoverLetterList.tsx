@@ -1,10 +1,14 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect } from "react";
+
 import styled from "styled-components";
 import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
-import useCoverLetterManager from "./hooks/useCoverLetterManager";
+
 import { useDispatch } from "react-redux";
 import { getEssayList } from "../redux/Essay/server/actions";
+
+import useCoverLetterManager from "./hooks/useCoverLetterManager";
+
 
 const CoverLetterItems = React.lazy(() => import("./CoverLetterItems"));
 

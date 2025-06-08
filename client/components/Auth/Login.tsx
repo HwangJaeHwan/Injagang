@@ -1,7 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
+
 import { useRouter } from "next/router";
+
 import styled, { css, keyframes } from "styled-components";
+
 import InputField from "@/components/UI/InputField";
+
 import useLoginManager from "./hooks/useLoginManager";
 import useLoginLogic from "./hooks/useLoginLogic";
 
@@ -47,7 +51,7 @@ const Login = () => {
       />
       {userLogicMsg || (userMsg && <ERROR> {userLogicMsg || userMsg} </ERROR>)}
       <Button type="submit">로그인</Button>
-      <Button onClick={() => router.replace("/join")}>회원가입</Button>
+      <Button type="button" onClick={() => router.replace("/join")}>회원가입</Button>
     </Form>
   );
 };

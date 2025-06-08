@@ -2,6 +2,7 @@ import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 
 export const SET_TYPE = "SET_TYPE";
 export const SET_SELECTED_QUESTIONS = "SET_SELECTED_QUESTIONS";
+export const INIT_SELECTED_QUESTIONS = "INIT_SELETED_QUESTIONS";
 
 export interface ISetType {
   type: typeof SET_TYPE;
@@ -17,6 +18,11 @@ export interface ISetSelectedQuestionList {
   };
 }
 
+export interface InitSelectedQuestionList {
+  type: typeof INIT_SELECTED_QUESTIONS;
+}
+
 export type userIVQuestionDispatchType =
   | ISetType
-  | ISetSelectedQuestionList;
+  | ISetSelectedQuestionList
+  | InitSelectedQuestionList;

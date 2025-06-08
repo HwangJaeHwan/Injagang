@@ -1,8 +1,12 @@
-import { ScrollBar } from "@/styles/GlobalStyle";
 import React from "react";
+
 import styled from "styled-components";
+
 import ExpectedQuestionListItem from "./ExpectedQuestionListItem";
+
 import { InterviewQuestionList } from "@/components/redux/InterViewQuestion/types";
+
+import { ScrollBar } from "@/styles/GlobalStyle";
 
 interface ExpectedQuestionListProps {
   questions: InterviewQuestionList[];

@@ -1,6 +1,9 @@
+import React from "react";
+
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+
 import styled from "styled-components";
+
 import { v4 as uuid4 } from "uuid";
 
 interface BoardListItemProps<T> {
@@ -16,7 +19,7 @@ const BoardListItem = <T,>({
   displayKeys,
   route,
 }: BoardListItemProps<T>) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const navigateToDetail = () => {
     if (route) router.push(`${route}/${item[idKey]}`);
@@ -36,6 +39,7 @@ export default BoardListItem;
 const BoardListItemRow = styled.tr`
   text-align: center;
   td {
+    padding-block: 12px;
     border: 1px solid #0a0a0a;
     height: 35px;
   }

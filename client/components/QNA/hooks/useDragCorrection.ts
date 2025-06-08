@@ -1,6 +1,8 @@
 import { ERROR_MESSAGES, MODAL_MESSAGES } from "@/constants";
+
 import useModal from "@/hooks/useModal";
-import React, { useEffect, useState } from "react";
+
+import { useState } from "react";
 
 export interface ISelectedText {
   dragTitleId: number;

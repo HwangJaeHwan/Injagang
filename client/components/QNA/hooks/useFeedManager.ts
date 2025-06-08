@@ -1,13 +1,15 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
+
 import {
   getFeedbackList,
   updateFeedback,
   writeFeedback,
 } from "@/components/redux/FeedBack/action";
-import { IWriteFeedBack } from "@/types/feedback/FeedBackType";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
 import { RootReducerType } from "@/components/redux/store";
+
+import { IWriteFeedBack } from "@/types/feedback/FeedBackType";
 
 const useFeedManager = () => {
   const dispatch = useDispatch();

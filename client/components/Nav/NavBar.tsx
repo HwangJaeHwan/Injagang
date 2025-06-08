@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import Link from "next/link";
-import { ColBox } from "@/styles/GlobalStyle";
-import { navItems } from "@/constants";
 
-import SwitchSlider from "../UI/SwitchSlider";
-import useModal from "@/hooks/useModal";
+
 import MainMenuItem from "./MainMenuItem";
-import PermissionsMenu from "./PermissionsMenu";
 import { BrandLogo, MyProfileMenu } from "./MenuItems";
+import PermissionsMenu from "./PermissionsMenu";
+import SwitchSlider from "../UI/SwitchSlider";
+import { ColBox } from "@/styles/GlobalStyle";
+
+import useModal from "@/hooks/useModal";
+
+import { navItems } from "@/constants";
 
 interface NavbarProps {
   toggleTheme: () => void;

@@ -1,5 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
+
 import { LocalStorageManager } from "@/util/localStorageManager";
-import React, { useCallback, useEffect, useState } from "react";
 
 const useThemeToggler = (defaultValue: boolean): [boolean, () => void] => {
   const [toggle, setToggle] = useState<boolean>(defaultValue);

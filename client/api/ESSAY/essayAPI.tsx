@@ -1,5 +1,6 @@
 import { ESSAY_APIS } from "../config";
 import { fetcher, METHOD } from "../client";
+
 import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
 
 export const readEssayListAPI = async (targetId: number) => {

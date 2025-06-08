@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { FlexBox } from "@/styles/GlobalStyle";
+
 import SignUp from "@/components/Auth/SignUp";
+
+import { FlexBox } from "@/styles/GlobalStyle";
 
 const SignupPage = () => {
   return (
@@ -13,6 +15,7 @@ const SignupPage = () => {
 export default SignupPage;
 
 const JoinStyle = styled.div`
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;

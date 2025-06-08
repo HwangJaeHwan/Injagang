@@ -1,16 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
+
+import { RootReducerType } from "../redux/store";
+
+
 import BoardList from "./BoardList";
 import BoardListHead from "./BoardListHead";
-import { RootReducerType } from "../redux/store";
-import { useSelector } from "react-redux";
+
+
 
 const HEAD_ITEM = ["번호", "제목", "닉네임"];
 const ID_KEY = "id";
 const ROUTE_TEMPLATE = "/qna/answer";
 
 const BoardListLayout = () => {
-  //TODO :: Manager위임 작업시 변경
   const { boardInfos } = useSelector(
     (state: RootReducerType) => state.board.boardInFoList,
   );
@@ -18,7 +24,7 @@ const BoardListLayout = () => {
     <BoardListViewStyle>
       <BoardListHead headItem={HEAD_ITEM} />
       <BoardList
-        boardInfos={boardInfos ?? []}
+        boardInfos={boardInfos.reverse() ?? []}
         idKey={ID_KEY}
         displayKeys={["id", "title", "nickname"]}
         route={ROUTE_TEMPLATE}

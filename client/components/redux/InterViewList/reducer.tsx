@@ -14,7 +14,6 @@ const userInterViewListReducer = (
 ) => {
   switch (action.type) {
     case ADD_INTERVIEWLIST:
-        console.log(action.payload.interViewList)
       return {
         ...state,
         interViewList: action.payload.interViewList,

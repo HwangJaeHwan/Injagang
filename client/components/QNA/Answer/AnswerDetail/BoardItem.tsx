@@ -1,6 +1,8 @@
-import { ColBox } from "@/styles/GlobalStyle";
 import React from "react";
+
 import styled from "styled-components";
+
+import { ColBox } from "@/styles/GlobalStyle";
 
 interface BoardItemProps {
   title: string;
@@ -37,5 +39,6 @@ const BoardItemContainer = styled.div`
     display: flex;
     font-weight: normal;
     justify-content: flex-start;
+    line-height: 1.8;
   }
 `;

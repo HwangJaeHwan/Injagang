@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+
 import styled from "styled-components";
-import { RootReducerType } from "../redux/store";
+
+import { useDispatch } from "react-redux";
 import { getRandomList } from "../redux/InterViewQuestion/action";
+
 import { ColBox } from "@/styles/GlobalStyle";
+
+import useModal from "@/hooks/useModal";
+
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
+
 const InterViewSettingStyle = styled.div`
   ${ColBox}
   width: 100%;
@@ -20,7 +25,7 @@ const Form = styled.form`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.primary};
   box-shadow: 0 4px 8px rgba(14, 13, 13, 0.2);
-  @media screen and (max-width: 800px){ 
+  @media screen and (max-width: 800px) {
     width: 90%;
   }
 `;
@@ -57,16 +62,7 @@ const InterViewRandomSetting = () => {
     personality: 0,
   });
   const dispatch = useDispatch();
-  const userInterViewList = useSelector(
-    (state: RootReducerType) => state.userInterViewList.interViewList,
-  );
-  const randomList = useSelector(
-    (state: RootReducerType) => state.interViewQuestion.randomList,
-  );
-
-  useEffect(() => {
-    console.log("adsfasfasfas", userInterViewList);
-  }, [userInterViewList]);
+  const { setModal, Modal } = useModal();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -89,6 +85,16 @@ const InterViewRandomSetting = () => {
     ];
 
     dispatch(getRandomList(data));
+    const sumAllQuestions = Object.values(rendomSetting).reduce(
+      (pre, cur) => pre + Number(cur),
+      0,
+    );
+    setModal({
+      contents: {
+        title: "Success",
+        content: `${sumAllQuestions}개의 랜덤 질문을 셋팅 하였습니다.`,
+      },
+    });
   };
 
   return (
@@ -124,6 +130,7 @@ const InterViewRandomSetting = () => {
         />
         <Button type="submit">셋팅완료</Button>
       </Form>
+      <Modal />
     </InterViewSettingStyle>
   );
 };

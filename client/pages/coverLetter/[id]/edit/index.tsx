@@ -1,8 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
+
 import styled from "styled-components";
-import { ColBox } from "@/styles/GlobalStyle";
+
 import CoverLetterEdit from "@/components/CoverLetter/edit/CoverLetterEdit";
+
+import { ColBox } from "@/styles/GlobalStyle";
+
 
 const CoverLetterEditorPage = () => {
   return (

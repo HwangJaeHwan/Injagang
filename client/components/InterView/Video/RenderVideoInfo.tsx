@@ -1,6 +1,8 @@
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import React from "react";
+
 import styled from "styled-components";
+
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 
 interface RenderVideoInfoProps {
   numQuestions: number;

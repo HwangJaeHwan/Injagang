@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
+
 import styled from "styled-components";
+
 import { ScrollBar } from "@/styles/GlobalStyle";
 import CoverLetterItem from "./CoverLetterItem";
+
 import useCoverLetterManager from "@/components/CoverLetter/hooks/useCoverLetterManager";
 
 interface CoverLetterProps {

@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 
-import React from "react";
-
 interface useCheckProps {
   password: string;
 }
 
-const usePwCheck = ({password}: useCheckProps) => {
+const usePwCheck = ({ password }: useCheckProps) => {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -15,7 +13,7 @@ const usePwCheck = ({password}: useCheckProps) => {
       const uppercaseRegex = /[A-Z]/;
       const lowercaseRegex = /[a-z]/;
       const numberRegex = /[0-9]/;
-      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; 
+      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
       if (password.length < 10) {
         setIsValid(false);

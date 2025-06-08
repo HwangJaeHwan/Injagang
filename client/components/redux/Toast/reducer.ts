@@ -1,5 +1,7 @@
-import { IToast } from "@/hooks/useToast";
 import { HIDE_TOAST, SHOW_TOAST, toastDispatchType } from "./types";
+
+import { IToast } from "@/hooks/useToast";
+
 
 interface InitialState {
   toastList: IToast[];

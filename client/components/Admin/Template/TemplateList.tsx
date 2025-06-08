@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import styled from "styled-components";
 import { ColBox, StyleCard, MainTitleContainer } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
-import useTemplateManager from "../hooks/useTemplateManager";
 import TemplateViewController from "./TemplateDetail/TemplateViewController";
 import TemplateListFetcher from "./TemplateListFetcher";
 import dynamic from "next/dynamic";
@@ -17,7 +16,6 @@ const TemplateTitleList = dynamic(
 );
 
 const TemplateList = () => {
-  const { RenderToast } = useTemplateManager();
 
   return (
     <TemplateStlyed>
@@ -34,7 +32,6 @@ const TemplateList = () => {
           <TemplateViewController />
         </Card>
       </TemplateContainer>
-      <RenderToast />
     </TemplateStlyed>
   );
 };

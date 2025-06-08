@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
+import React from "react";
+
 import styled from "styled-components";
+
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic, { IPassWordInfo } from "./hooks/useMyProfileLogic";
+
+import { ColBox, FlexBox, StyleButton } from "@/styles/GlobalStyle";
 
 interface PasswordInputProps {
   title: string;
@@ -26,7 +29,7 @@ const PasswordInputItem = ({
 };
 
 const PassWordSetting = () => {
-  const { dispatchPasswordChange, Modal, RenderToast } = useMyProfileManager();
+  const { dispatchPasswordChange, Modal } = useMyProfileManager();
   const { passWordInfo, handleInfoChange } = useMyProfileLogic();
 
   const labels = {
@@ -52,7 +55,6 @@ const PassWordSetting = () => {
       >
         변경
       </StyleButton>
-      <RenderToast />
       <Modal />
     </PassWordContainer>
   );

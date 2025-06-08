@@ -1,5 +1,3 @@
-import { css } from "styled-components";
-
 export const v = {
   // Widths
   xsWidth: "20rem",

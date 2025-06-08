@@ -1,15 +1,19 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+
 import { RxAvatar } from "react-icons/rx";
-import { SessionStorageManager } from "@/util/sessionStorageManager";
+
+import styled from "styled-components";
+
 import useMyProfileManager from "./hooks/useMyProfileManager";
 import useMyProfileLogic from "./hooks/useMyProfileLogic";
 import { StyleButton } from "@/styles/GlobalStyle";
 
+import { SessionStorageManager } from "@/util/sessionStorageManager";
+
 const UserInfoSetting = () => {
   const myInfo = new SessionStorageManager("info");
   const { nickName, setNickName } = useMyProfileLogic();
-  const { dispatchNickNameChange, Modal, RenderToast } = useMyProfileManager();
+  const { dispatchNickNameChange, Modal } = useMyProfileManager();
   const mainTitle = "닉네임 변경";
 
   useEffect(() => {
@@ -35,7 +39,6 @@ const UserInfoSetting = () => {
       </UserInfoContainer>
       <RxAvatar />
       <Modal />
-      <RenderToast />
     </UserInfoStyle>
   );
 };

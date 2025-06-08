@@ -1,6 +1,8 @@
-import Login from "@/components/Auth/Login";
-import { FlexBox } from "@/styles/GlobalStyle";
 import styled from "styled-components";
+
+import Login from "@/components/Auth/Login";
+
+import { FlexBox } from "@/styles/GlobalStyle";
 
 const LoginPage = () => {
   return (
@@ -13,6 +15,7 @@ const LoginPage = () => {
 export default LoginPage;
 
 const LoginStyle = styled.div`
+  z-index: 1;
   ${FlexBox};
   position: absolute;
   top: 0;

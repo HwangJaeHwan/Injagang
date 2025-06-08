@@ -2,6 +2,7 @@ import { IGetTemplate } from "@/types/template/TemplateType";
 
 export const SET_CUR_TEMPLATE_LIST = "SET_CUR_TEMPLATE_LIST";
 export const ADD_TEMPLATE_TOGGLE = "ADD_TEMPLAETE_TOGGLE";
+export const INIT_CUR_TEMPLATE_LIST = "INIT_CUR_TEMPLATE_LIST";
 
 export interface IsetCurTemplaetList {
   type: typeof SET_CUR_TEMPLATE_LIST;
@@ -15,4 +16,11 @@ export interface IaddTemplateToggle {
   payload: { isAddTemplate: boolean };
 }
 
-export type userTemplateDispatchType = IsetCurTemplaetList | IaddTemplateToggle;
+export interface InitCurTemplateList {
+  type: typeof INIT_CUR_TEMPLATE_LIST;
+}
+
+export type userTemplateDispatchType =
+  | IsetCurTemplaetList
+  | IaddTemplateToggle
+  | InitCurTemplateList;

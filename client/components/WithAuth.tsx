@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
+
 import { useRouter } from "next/router";
+
 import { useAuth } from "@/hooks/useAuth";
+
 import { whiteList } from "@/util/whiteList";
 import AuthFailed from "@/util/AuthFailed";
 

@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
+import useExpectedQuestionManager from "../hooks/useExpectedQuestionManager";
 import useEUserQuestionManager from "../hooks/useEUserQuestionManager";
 import useModal from "@/hooks/useModal";
-import useExpectedQuestionManager from "../hooks/useExpectedQuestionManager";
-import useMyProfileManager from "@/components/MyProfile/hooks/useMyProfileManager";
+
 import { ERROR_MESSAGES, MODAL_MESSAGES } from "@/constants";
 
 const useExpetedPlayListLogic = () => {
-  const { selectedType, selectedQuestions } = useEUserQuestionManager();
+  const { selectedType, selectedQuestions, dispatchClearSelectedQuestions } =
+    useEUserQuestionManager({ typeCheckCallback: () => {} });
   const { dispatchAddQuestions, dispatchAddInterViewList } =
     useExpectedQuestionManager();
   const { role } = useMyProfileManager();
@@ -63,6 +66,7 @@ const useExpetedPlayListLogic = () => {
       questionType: selectedType,
     };
     dispatchAddQuestions(addList);
+    dispatchClearSelectedQuestions();
     setUserQuestion([]);
   }, [setModal, userQuestion, selectedType]);
 
@@ -78,6 +82,7 @@ const useExpetedPlayListLogic = () => {
       return;
     }
     dispatchAddInterViewList(userQuestion);
+    dispatchClearSelectedQuestions();
     setModal({
       contents: {
         title: MODAL_MESSAGES.MSG,

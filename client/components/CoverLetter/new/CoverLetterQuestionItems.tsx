@@ -1,9 +1,14 @@
-import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
-import { IReadQnaList } from "@/types/essay/EssayType";
-import { BiX } from "react-icons/bi";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
 import styled from "styled-components";
+
+import { BiX } from "react-icons/bi";
+
+import { ColBox, ScrollBar } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
+
+import { IReadQnaList } from "@/types/essay/EssayType";
+
 interface CoverLetterQuestionItemsProps {
   item: IReadQnaList;
   onDelete: (targetID: string | number) => void;

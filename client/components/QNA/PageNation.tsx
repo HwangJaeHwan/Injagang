@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+
 import useQnaManager from "./hooks/useQnaManager";
 import usePageNation from "@/hooks/usePageNation";
+
 import { StyleButton } from "@/styles/GlobalStyle";
+import userQnaManager from "./hooks/userQnaManager";
 
 const PageNation = () => {
   const { boardInFoList, isUpdated, dispatchGetBoardList } = useQnaManager();
+  const { boardSearch, boardType } = userQnaManager();
   const totalPage = boardInFoList.totalPage;
   const {
     curPageNum,
@@ -15,8 +19,10 @@ const PageNation = () => {
   } = usePageNation([totalPage, 8]);
 
   useEffect(() => {
-    dispatchGetBoardList(curPageNum);
-  }, [curPageNum, isUpdated]);
+    //API가 오랜순 정렬
+    const revercePage = totalPage + 1 - curPageNum;
+    dispatchGetBoardList(revercePage, boardType, boardSearch);
+  }, [curPageNum, isUpdated, totalPage, boardSearch]);
 
   return (
     <div>

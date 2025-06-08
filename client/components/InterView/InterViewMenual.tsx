@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+
 import { MdCallMade } from "react-icons/md";
+
+import styled, { keyframes } from "styled-components";
+
 
 const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% {
@@ -37,7 +40,6 @@ const ArrowAnimation = ({ targetId }: ArrowAnimationProps) => {
   useEffect(() => {
     const updatePosition = () => {
       const targetElement = document.querySelector(`.${targetId}`);
-      console.log(targetElement);
       if (targetElement) {
         const rect = targetElement.getBoundingClientRect();
         setPosition({

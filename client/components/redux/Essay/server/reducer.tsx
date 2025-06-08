@@ -1,7 +1,8 @@
+import { AxiosError } from "axios";
+
 import {
   IEssayList,
   IGetEssayList,
-  IReadEssayList,
 } from "@/types/essay/EssayType";
 import {
   ESSAY_REQUEST,
@@ -10,8 +11,8 @@ import {
   ESSAY_READ_SUCCESS,
   essayDispatchType,
   ESSAY_UPDATED,
+  CLEAR_READ_ESSAY,
 } from "./types";
-import { AxiosError } from "axios";
 
 export interface InitiaState {
   loading: boolean;
@@ -68,6 +69,11 @@ const essayReducer = (state = initialState, action: essayDispatchType) => {
         ...state,
         isUpdated: true,
       };
+    case CLEAR_READ_ESSAY:
+      return {
+        ...state,
+        readEssayList: initialState.readEssayList,
+      }
     default:
       return state;
   }

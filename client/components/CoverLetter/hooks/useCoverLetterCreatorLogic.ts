@@ -1,13 +1,21 @@
-import React, { useState, useCallback } from "react";
-import { IReadQnaList } from "@/types/essay/EssayType";
+import { useState, useCallback } from "react";
+
+import { useRouter } from "next/router";
+
 import { v4 as uuid4 } from "uuid";
+
 import { useDispatch } from "react-redux";
 import { addEssay } from "@/components/redux/Essay/server/actions";
-import { runValidationChecks } from "@/util/runValidationChecks";
-import { useRouter } from "next/router";
-import useModal from "@/hooks/useModal";
-import { ERROR_MESSAGES } from "@/constants";
+
+
 import { moveCoverLetterMainPage } from "../new/CoverLetterCreator";
+
+import useModal from "@/hooks/useModal";
+
+import { IReadQnaList } from "@/types/essay/EssayType";
+
+import { runValidationChecks } from "@/util/runValidationChecks";
+import { ERROR_MESSAGES } from "@/constants";
 
 const useCoverLetterCreatorLogic = () => {
   const [coverLetterTitle, setCoverLetterTitle] = useState<string>("");
@@ -17,13 +25,21 @@ const useCoverLetterCreatorLogic = () => {
   const dispatch = useDispatch();
 
   const MIN_QUESTIONS = 1;
-  const MAX_QUESTIONS = 3;
+  const MAX_QUESTIONS = 5;
 
   const coverLetterMinLength = qnaList.length <= MIN_QUESTIONS;
   const coverLetterMaxLength = qnaList.length >= MAX_QUESTIONS;
 
   const addQnAList = useCallback(() => {
-    if (coverLetterMaxLength) return;
+    if (coverLetterMaxLength) {
+      setModal({
+        contents: {
+          title: "Warring",
+          content: `질문문항은 최대 ${MAX_QUESTIONS}개 제한입니다.`,
+        },
+      });
+      return
+    }
     const newID = uuid4();
     setQnAList(prev => [...prev, { question: "", answer: "", qnaId: newID }]);
   }, [qnaList]);
@@ -40,7 +56,7 @@ const useCoverLetterCreatorLogic = () => {
   const changeQnAList = useCallback(
     (targetID: string | number, newQuestion: string, newAnswer: string) => {
       setQnAList(prev =>
-        prev.map((qna, idx) =>
+        prev.map((qna) =>
           qna.qnaId === targetID
             ? { ...qna, question: newQuestion, answer: newAnswer }
             : { ...qna },

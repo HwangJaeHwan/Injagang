@@ -1,11 +1,14 @@
-import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
+import React, { useEffect } from "react";
+
+import styled from "styled-components";
 import { ColBox } from "@/styles/GlobalStyle";
 
-import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { getEssayList } from "@/components/redux/Essay/server/actions";
-import Cookies from "js-cookie";
+import { getEssayList, setClearReadEssay } from "@/components/redux/Essay/server/actions";
+
+import QuestionComposer from "@/components/QNA/Question/QuestionComposer";
+
+
 
 const WirteStyle = styled.div`
   ${ColBox}
@@ -16,7 +19,10 @@ const WirteStyle = styled.div`
 const question = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getEssayList(Number(Cookies.get("userId"))));
+    dispatch(getEssayList());
+    return () => {
+      dispatch(setClearReadEssay());
+    }
   }, []);
 
   return (

@@ -1,9 +1,14 @@
 import React from "react";
-import { IGetEssayList } from "@/types/essay/EssayType";
+
 import { BiEdit } from "react-icons/bi";
+
 import styled from "styled-components";
 import { FlexBox } from "@/styles/GlobalStyle";
+
 import useUserCoverLetterManager from "./hooks/useCoverLetterManager";
+
+import { IGetEssayList } from "@/types/essay/EssayType";
+
 
 interface CoverLetterItemsProps {
   item: IGetEssayList;

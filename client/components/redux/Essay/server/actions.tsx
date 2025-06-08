@@ -1,7 +1,7 @@
-import { METHOD } from "@/util/fecher";
-import fetcher from "@/util/fecher";
 import { Dispatch } from "redux";
+
 import Cookies from "js-cookie";
+
 import {
   ESSAY_REQUEST,
   ESSAY_FAILURE,
@@ -9,8 +9,11 @@ import {
   ESSAY_READ_SUCCESS,
   essayDispatchType,
   ESSAY_UPDATED,
+  CLEAR_READ_ESSAY,
 } from "./types";
 import { IReviseEssayList, IWriteEssayList } from "@/types/essay/EssayType";
+import { SET_ERROR, errorDispatchType } from "../../Error/types";
+
 import {
   addEssayAPI,
   deleteEssayAPI,
@@ -18,7 +21,9 @@ import {
   reviseEssayAPI,
   readEssayListAPI,
 } from "@/api/ESSAY/essayAPI";
-import { SET_ERROR, errorDispatchType } from "../../Error/types";
+import { showToastAction } from "../../Toast/actions";
+
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, TOAST_MODE } from "@/constants";
 
 /**자소서 추가 요청후 반영된 자소서 요청API */
 export const addEssay =
@@ -27,7 +32,12 @@ export const addEssay =
     try {
       dispatch({ type: ESSAY_REQUEST });
       const request = await addEssayAPI(essayData);
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
+      if (request.status === 200) {
+        dispatch({ type: ESSAY_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.ADDED_ESSAY),
+        );
+      }
       dispatch(getEssayList());
     } catch (error: any) {
       dispatch({
@@ -36,6 +46,7 @@ export const addEssay =
           error,
         },
       });
+      showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.ADDED_ESSAY);
     }
   };
 
@@ -110,8 +121,13 @@ export const updateEssay =
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       const request = await reviseEssayAPI(essayId, modifiedEssayData);
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
-      dispatch(getEssayList());
+      if (request.status === 200) {
+        dispatch({ type: ESSAY_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.UPDATED_ESSAY),
+        );
+        dispatch(getEssayList());
+      }
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -119,6 +135,7 @@ export const updateEssay =
           error,
         },
       });
+      dispatch(showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.UPDATED_ESSAY));
     }
   };
 
@@ -128,8 +145,13 @@ export const deleteEssayList =
   async (dispatch: Dispatch<essayDispatchType>): Promise<void> => {
     try {
       const request = await deleteEssayAPI(essayId);
-      if (request.status === 200) dispatch({ type: ESSAY_UPDATED });
-      dispatch(getEssayList());
+      if (request.status === 200) {
+        dispatch({ type: ESSAY_UPDATED });
+        dispatch(
+          showToastAction(TOAST_MODE.SUCCESS, SUCCESS_MESSAGES.DELETED_ESSAY),
+        );
+        dispatch(getEssayList());
+      }
     } catch (error: any) {
       dispatch({
         type: ESSAY_FAILURE,
@@ -137,5 +159,10 @@ export const deleteEssayList =
           error,
         },
       });
+      dispatch(showToastAction(TOAST_MODE.ERROR, ERROR_MESSAGES.DELETED_ESSAY));
     }
   };
+
+export const setClearReadEssay = () => ({
+  type: CLEAR_READ_ESSAY
+})

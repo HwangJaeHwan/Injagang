@@ -1,7 +1,10 @@
-import { ColBox } from "@/styles/GlobalStyle";
 import { NextPage } from "next";
-import Link from "next/link";
+
 import styled from "styled-components";
+
+import Link from "next/link";
+
+import { ColBox } from "@/styles/GlobalStyle";
 
 const Custom404: NextPage = () => {
   const TITLE = {

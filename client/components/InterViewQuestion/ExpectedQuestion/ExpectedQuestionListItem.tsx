@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import styled from "styled-components";
 
 type InterViewListItemProps = {
@@ -39,7 +40,7 @@ export default React.memo(ExpectedQuestionListItem);
 const InterViewListItemStyle = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 3px;
+  margin-bottom: 12px;
   input {
     margin-right: 15px;
   }

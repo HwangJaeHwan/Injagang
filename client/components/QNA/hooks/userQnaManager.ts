@@ -1,19 +1,23 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import { CorrectionItem } from "../Answer/AnswerLayout";
+
+import { RootReducerType } from "@/components/redux/store";
 import {
+  changeBoardSearch,
+  changeBoardType,
   changeCorrection,
   changeTargetFeed,
   initCorrection,
+  initTargetFeed,
 } from "@/components/redux/QnA/user/actions";
-import { RootReducerType } from "@/components/redux/store";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { CorrectionItem } from "../Answer/AnswerLayout";
 
 const userQnaManager = () => {
   const dispatch = useDispatch();
-  const { selectedCorrection, targetFeed } = useSelector(
-    (state: RootReducerType) => state.userBoard,
-  );
+  const { selectedCorrection, targetFeed, boardSearch, boardType } =
+    useSelector((state: RootReducerType) => state.userBoard);
 
   const dispatchChangeCorrection = useCallback((correction: CorrectionItem) => {
     dispatch(changeCorrection(correction));
@@ -27,12 +31,29 @@ const userQnaManager = () => {
     dispatch(changeTargetFeed(targetFeed));
   }, []);
 
+  const dispatchClearTargetFeed = useCallback(() => {
+    dispatch(initTargetFeed());
+  }, []);
+
+  const dispatchChangeSearch = useCallback((newSearch: string) => {
+    dispatch(changeBoardSearch(newSearch));
+  }, []);
+
+  const dispatchChangeType = useCallback((type: string) => {
+    dispatch(changeBoardType(type));
+  }, []);
+
   return {
     dispatchChangeCorrection,
     selectedCorrection,
     dispatchInitCorrection,
     targetFeed,
     dispatchChangeFeed,
+    dispatchClearTargetFeed,
+    dispatchChangeType,
+    dispatchChangeSearch,
+    boardSearch,
+    boardType,
   };
 };
 

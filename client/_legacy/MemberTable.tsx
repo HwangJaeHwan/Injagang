@@ -1,6 +1,8 @@
 import styled from "styled-components";
+
 import { BiChevronUp, BiChevronDown } from "react-icons/bi";
-import react, {useState} from 'react';
+
+import {useState} from 'react';
 
 const Table = styled.table`
   border-collapse: collapse;

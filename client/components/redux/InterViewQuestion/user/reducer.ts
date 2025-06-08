@@ -1,5 +1,6 @@
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 import {
+  INIT_SELECTED_QUESTIONS,
   SET_SELECTED_QUESTIONS,
   SET_TYPE,
   userIVQuestionDispatchType,
@@ -31,6 +32,12 @@ const userInterViewQuestionsReducer = (
         ...state,
         selectedType: action.payload.selectedType,
       };
+  
+    case INIT_SELECTED_QUESTIONS:
+      return {
+        ...state,
+        selectedQuestions: initialState.selectedQuestions,
+      }
     default:
       return state;
   }

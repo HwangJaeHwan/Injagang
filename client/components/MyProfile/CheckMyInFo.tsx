@@ -1,8 +1,11 @@
 import React from "react";
-import { ColBox, FlexBox } from "@/styles/GlobalStyle";
+
 import styled from "styled-components";
+
 import UserInFo from "./UserInfoSetting";
 import PassWordInfo from "./PassWordSetting";
+
+import { ColBox, FlexBox } from "@/styles/GlobalStyle";
 import { v } from "@/styles/variables";
 
 const CheckMyInFo = () => {
@@ -41,7 +44,9 @@ const CheckMyInFoStyle = styled.div`
   }
 `;
 
-const MainTitle = styled.h2``;
+const MainTitle = styled.h2`
+  margin-bottom: 15px;
+`;
 
 const SwitchContainer = styled.div`
   ${FlexBox}

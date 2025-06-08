@@ -1,7 +1,7 @@
 import { TEMPLATE_APIS } from "../config";
 import { fetcher, METHOD } from "../client";
-import {} from "@/types/auth/AuthType";
-import { IAddTemplate, IDeleteTemplate } from "@/types/template/TemplateType";
+
+import { IAddTemplate } from "@/types/template/TemplateType";
 
 export const getTemplateAPI = async () => {
   return fetcher(METHOD.GET, TEMPLATE_APIS.GET_API);

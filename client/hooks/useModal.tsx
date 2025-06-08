@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+
 import styled from "styled-components";
 import { StyleButton } from "@/styles/GlobalStyle";
 
@@ -88,11 +89,14 @@ const useModal = () => {
   };
 };
 
+export default useModal;
+
 interface ModalStyleProps {
   isOpen: boolean;
 }
 
 const ModalStyle = styled.div<ModalStyleProps>`
+  z-index: 1000;
   display: ${props => (props.isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
@@ -138,5 +142,3 @@ const ModalBox = styled.div`
     padding: 10px;
   }
 `;
-
-export default useModal;

@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import styled from "styled-components";
+
 import ControlMenu from "@/components/UI/ControlMenu";
+
 import { QuestionType } from "@/types/InterViewQuestion/InterViewQuestionType";
 
 const InterViewSelectData = [
@@ -20,15 +24,19 @@ const QuestionSelector = ({
   onChange,
 }: IQuestionSelectorProps) => {
   return (
-    <div>
+    <Container>
       <ControlMenu
         value={selectedType}
         optionList={InterViewSelectData}
         onChange={onChange}
         Size={{ width: "100%", height: "30px" }}
       ></ControlMenu>
-    </div>
+    </Container>
   );
 };
 
 export default React.memo(QuestionSelector);
+
+const Container = styled.div`
+  margin-bottom: 15px;
+`;
