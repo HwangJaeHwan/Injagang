@@ -13,6 +13,7 @@ import com.injagang.request.EssayWrite;
 import com.injagang.request.QnaRequest;
 import com.injagang.response.EssayList;
 import com.injagang.response.EssayRead;
+import io.micrometer.core.annotation.Counted;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class EssayService {
     private final QnARepository qnARepository;
 
 
+    @Counted("essay")
     @Transactional
     public Long writeMyEssay(Long userId, EssayWrite essayWrite) {
 
@@ -112,7 +114,7 @@ public class EssayService {
 
     }
 
-
+    @Counted("essay")
     @Transactional
     public void deleteEssay(Long userId,Long essayId) {
 

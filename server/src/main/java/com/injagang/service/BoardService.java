@@ -12,6 +12,7 @@ import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
 import com.injagang.response.*;
+import io.micrometer.core.annotation.Counted;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -67,11 +68,11 @@ public class BoardService {
 
     }
 
+    @Counted("post")
     public Long writeBoard(Long userId, BoardWrite boardWrite) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Essay essay = essayRepository.findById(boardWrite.getEssayId()).orElseThrow(EssayNotFoundException::new);
-
 
 
         Board board = Board.builder()
@@ -114,7 +115,7 @@ public class BoardService {
 
 
     }
-
+    @Counted("feedback")
     public void writeFeedback(Long userId, FeedbackWrite feedbackWrite) {
 
         BoardQnA boardQnA = qnARepository.findBoardQnaById(feedbackWrite.getQnaId()).orElseThrow(QnaNotFoundException::new);
@@ -159,6 +160,7 @@ public class BoardService {
 
     }
 
+    @Counted("post")
     public void deleteBoard(Long userId, Long boardId){
 
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
@@ -177,7 +179,7 @@ public class BoardService {
 
     }
 
-
+    @Counted("feedback")
     public void deleteFeedback(Long userId, Long feedbackId) {
 
         Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(FeedbackNotFoundException::new);

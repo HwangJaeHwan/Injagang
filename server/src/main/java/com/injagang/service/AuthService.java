@@ -7,6 +7,7 @@ import com.injagang.exception.*;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.*;
 import com.injagang.response.UserInfo;
+import io.micrometer.core.annotation.Counted;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -57,6 +58,7 @@ public class AuthService {
 
     }
 
+    @Counted("signup")
     public void signUp(SignUp signUp) {
 
         if (userRepository.findUserByLoginId(signUp.getLoginId()).isPresent()) {
