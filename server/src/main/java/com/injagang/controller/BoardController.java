@@ -32,9 +32,13 @@ public class BoardController {
 
 
     @GetMapping("/{boardId}")
-    public BoardRead readBoard(UserSession userSession, @PathVariable Long boardId) {
+    public BoardRead readBoard(UserSession userSession,
+                               @RequestParam(value = "password", required = false) String password
+            ,@PathVariable Long boardId) {
 
-        return boardService.readBoard(userSession.getUserId(), boardId);
+        log.info("비밀번호 = {}", password);
+
+        return boardService.readBoard(userSession.getUserId(), boardId, password);
 
 
     }

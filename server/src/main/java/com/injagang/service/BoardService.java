@@ -13,11 +13,14 @@ import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
 import com.injagang.response.*;
 import io.micrometer.core.annotation.Counted;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +38,7 @@ public class BoardService {
     private final EssayRepository essayRepository;
 
     private final FeedbackRepository feedbackRepository;
+    private final PasswordEncoder encoder;
 
 
     public BoardList boardList(PageDTO pageDTO, SearchDTO searchDTO) {
@@ -56,15 +60,24 @@ public class BoardService {
     }
 
 
-
-    public BoardRead readBoard(Long userId,Long boardId) {
+    public BoardRead readBoard(Long userId, Long boardId, String password) {
 
         Board board = boardRepository.findByIdWithUser(boardId).orElseThrow(BoardNotFoundException::new);
+
+        if (board.getPassword() != null) {
+
+            if (!StringUtils.hasText(password) || !encoder.matches(password, board.getPassword())) {
+                log.info("비밀번호2 = {}", password);
+                throw new InvalidBoardPasswordException();
+
+            }
+
+        }
 
 
         List<BoardQnA> boardQnAList = qnARepository.findAllByBoard(board);
 
-        return new BoardRead(userId,board, boardQnAList);
+        return new BoardRead(userId, board, boardQnAList);
 
     }
 
@@ -73,14 +86,21 @@ public class BoardService {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Essay essay = essayRepository.findById(boardWrite.getEssayId()).orElseThrow(EssayNotFoundException::new);
+        String password = null;
 
+
+        if (StringUtils.hasText(boardWrite.getPassword())) {
+            password = encoder.encode(boardWrite.getPassword());
+        }
 
         Board board = Board.builder()
                 .user(user)
                 .title(boardWrite.getTitle())
                 .content(boardWrite.getContent())
                 .essayTitle(essay.getTitle())
+                .password(password)
                 .build();
+
 
 
         List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);

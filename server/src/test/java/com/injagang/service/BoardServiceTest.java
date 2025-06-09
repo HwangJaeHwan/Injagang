@@ -7,6 +7,7 @@ import com.injagang.domain.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.exception.DuplicateLoginIdException;
+import com.injagang.exception.InvalidBoardPasswordException;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -15,6 +16,7 @@ import com.injagang.response.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -46,6 +48,9 @@ class BoardServiceTest {
 
     @Autowired
     BoardService boardService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @AfterAll
     void after() {
@@ -136,6 +141,78 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("게시글 작성 패스워드")
+    void test_password() {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        Essay essay = Essay.builder()
+                .title("test essay")
+                .user(user)
+                .build();
+
+
+        EssayQnA qna1 = EssayQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        essay.addQnA(qna1);
+
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        essay.addQnA(qna2);
+
+        EssayQnA qna3 = EssayQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        essay.addQnA(qna3);
+
+        essayRepository.save(essay);
+
+
+        BoardWrite boardWrite = BoardWrite.builder()
+                .title("test board")
+                .content("test board")
+                .essayId(essay.getId())
+                .password("test")
+                .build();
+
+        Long boardId = boardService.writeBoard(user.getId(), boardWrite);
+        Board board = boardRepository.findById(boardId).get();
+        List<BoardQnA> qnAList = qnARepository.findAllByBoard(board);
+
+
+        assertEquals(board.getTitle(),"test board");
+        assertEquals(board.getContent(),"test board");
+        assertEquals(board.getEssayTitle(), "test essay");
+        assertEquals(3, qnAList.size());
+        assertEquals("question1",qnAList.get(0).getQuestion());
+        assertEquals("answer1",qnAList.get(0).getAnswer());
+        assertEquals("question2",qnAList.get(1).getQuestion());
+        assertEquals("answer2",qnAList.get(1).getAnswer());
+        assertEquals("question3",qnAList.get(2).getQuestion());
+        assertEquals("answer3",qnAList.get(2).getAnswer());
+        assertTrue(passwordEncoder.matches("test", board.getPassword()));
+
+    }
+
+
+    @Test
     @DisplayName("게시글 읽기")
     void test2() {
 
@@ -178,7 +255,7 @@ class BoardServiceTest {
 
         boardRepository.save(board);
 
-        BoardRead read = boardService.readBoard(user.getId(), board.getId());
+        BoardRead read = boardService.readBoard(user.getId(), board.getId(),null);
 
         assertEquals(board.getId(),read.getBoardId());
         assertEquals(board.getTitle(), read.getTitle());
@@ -187,6 +264,111 @@ class BoardServiceTest {
         assertTrue(read.isOwner());
         assertEquals(3, read.getQnaList().size());
 
+
+    }
+
+
+    @Test
+    @DisplayName("게시글 읽기 패스워드")
+    void test_password_read() {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .essayTitle("test essay")
+                .user(user)
+                .password(passwordEncoder.encode("test"))
+                .build();
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna1);
+        board.addQnA(qna2);
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        BoardRead read = boardService.readBoard(user.getId(), board.getId(),"test");
+
+        assertEquals(board.getId(),read.getBoardId());
+        assertEquals(board.getTitle(), read.getTitle());
+        assertEquals(board.getContent(), read.getContent());
+        assertEquals(board.getEssayTitle(),read.getEssayTitle());
+        assertTrue(read.isOwner());
+        assertEquals(3, read.getQnaList().size());
+
+
+    }
+
+    @Test
+    @DisplayName("게시글 읽기 패스워드 다름")
+    void test_password_read_diff() {
+
+
+        User user = User.builder()
+                .loginId("test")
+                .password("test")
+                .nickname("test")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .essayTitle("test essay")
+                .user(user)
+                .password(passwordEncoder.encode("test"))
+                .build();
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        BoardQnA qna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(qna1);
+        board.addQnA(qna2);
+        board.addQnA(qna3);
+
+        boardRepository.save(board);
+
+        assertThrows(InvalidBoardPasswordException.class, () -> boardService.readBoard(user.getId(), board.getId(), "zz"));
 
     }
 

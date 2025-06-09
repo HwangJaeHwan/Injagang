@@ -12,10 +12,13 @@ public class BoardListInfo {
 
     private String nickname;
 
+    private Boolean isLock;
+
 
     public BoardListInfo(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.nickname = board.getUser().getNickname();
+        this.isLock = board.getPassword() != null;
     }
 }

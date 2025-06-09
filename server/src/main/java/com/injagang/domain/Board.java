@@ -7,6 +7,7 @@ import com.injagang.domain.qna.QnA;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = PROTECTED)
 public class Board extends Timestamp {
 
@@ -37,17 +39,20 @@ public class Board extends Timestamp {
 
     private String essayTitle;
 
+    private String password;
+
     @OneToMany(mappedBy = "board",cascade = CascadeType.PERSIST)
     private List<BoardQnA> qnaList = new ArrayList<>();
 
 
 
     @Builder
-    public Board(String title, String content, User user, String essayTitle) {
+    public Board(String title, String content, User user, String essayTitle,String password) {
         this.title = title;
         this.content = content;
         this.user = user;
         this.essayTitle = essayTitle;
+        this.password = password;
     }
 
 
@@ -65,4 +70,5 @@ public class Board extends Timestamp {
 
         this.content = changeContent;
     }
+
 }

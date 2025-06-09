@@ -36,6 +36,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -147,6 +148,7 @@ public class BoardControllerDocTest {
                 .title("test board")
                 .content("test board")
                 .essayId(essay.getId())
+                .password("test")
                 .build();
 
 
@@ -161,8 +163,10 @@ public class BoardControllerDocTest {
                 ), requestFields(
                         fieldWithPath("title").description("게시물 제목"),
                         fieldWithPath("content").description("게시물 내용"),
-                        fieldWithPath("essayId").description("불러올 자소서 ID")
+                        fieldWithPath("essayId").description("불러올 자소서 ID"),
+                        fieldWithPath("password").description("게시물 비밀번호(선택사항)").optional()
                 )));
+
     }
 
     @Test
@@ -215,6 +219,10 @@ public class BoardControllerDocTest {
                         headerWithName("Authorization").description("로그인 인증")
                 ), pathParameters(
                         parameterWithName("boardId").description("게시글 ID")
+                ), requestParameters(
+                        parameterWithName("password")
+                                .description("게시글 비밀번호 (선택사항)")
+                                .optional()
                 ), responseFields(
                         fieldWithPath("boardId").description("게시글 ID"),
                         fieldWithPath("title").description("게시글 제목"),
@@ -559,6 +567,7 @@ public class BoardControllerDocTest {
                         fieldWithPath("boardInfos[].id").description("게시글 ID"),
                         fieldWithPath("boardInfos[].title").description("게시글 제목"),
                         fieldWithPath("boardInfos[].nickname").description("작성자 닉네임"),
+                        fieldWithPath("boardInfos[].isLock").description("비밀번호 여부"),
                         fieldWithPath("isFirst").description("첫 페이지 확인"),
                         fieldWithPath("isLast").description("마지막 페이지 확인")
                 )));
