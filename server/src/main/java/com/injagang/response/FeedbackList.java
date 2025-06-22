@@ -1,7 +1,7 @@
 package com.injagang.response;
 
 import com.injagang.domain.Feedback;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Board;
 import com.injagang.domain.Essay;
 import com.injagang.domain.Feedback;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.helper.TestHelper;

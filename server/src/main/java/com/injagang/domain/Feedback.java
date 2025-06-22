@@ -1,6 +1,7 @@
 package com.injagang.domain;
 
 import com.injagang.domain.qna.BoardQnA;
+import com.injagang.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class Feedback {
 
 
     @Builder
-    public Feedback(String feedbackTarget, String feedbackContent, BoardQnA boardQnA,User user) {
+    public Feedback(String feedbackTarget, String feedbackContent, BoardQnA boardQnA, User user) {
         this.feedbackTarget = feedbackTarget;
         this.feedbackContent = feedbackContent;
         this.boardQnA = boardQnA;

@@ -1,6 +1,6 @@
 package com.injagang.repository;
 
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

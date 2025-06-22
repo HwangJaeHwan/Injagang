@@ -2,7 +2,7 @@ package com.injagang.service;
 
 import com.injagang.domain.ExpectedQuestion;
 import com.injagang.domain.QuestionType;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.exception.UserNotFoundException;
 import com.injagang.repository.ExpectedQuestionRepository;
@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @Slf4j

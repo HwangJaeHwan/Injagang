@@ -1,8 +1,7 @@
 package com.injagang.repository;
 
 import com.injagang.domain.Essay;
-import com.injagang.domain.User;
-import org.springframework.data.jpa.repository.EntityGraph;
+import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

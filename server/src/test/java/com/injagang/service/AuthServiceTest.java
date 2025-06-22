@@ -2,7 +2,7 @@ package com.injagang.service;
 
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.exception.*;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;

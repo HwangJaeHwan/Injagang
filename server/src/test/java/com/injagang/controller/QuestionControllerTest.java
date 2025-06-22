@@ -3,7 +3,7 @@ package com.injagang.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.ExpectedQuestion;
 import com.injagang.domain.QuestionType;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.ExpectedQuestionRepository;
 import com.injagang.repository.UserRepository;
@@ -15,19 +15,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.JsonPath;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;

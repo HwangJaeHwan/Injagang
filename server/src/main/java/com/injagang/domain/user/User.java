@@ -1,4 +1,4 @@
-package com.injagang.domain;
+package com.injagang.domain.user;
 
 import com.injagang.domain.base.Timestamp;
 import lombok.Builder;

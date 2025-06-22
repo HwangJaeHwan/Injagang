@@ -3,7 +3,7 @@ package com.injagang.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;

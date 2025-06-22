@@ -2,6 +2,7 @@ package com.injagang.domain;
 
 import com.injagang.domain.base.Timestamp;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

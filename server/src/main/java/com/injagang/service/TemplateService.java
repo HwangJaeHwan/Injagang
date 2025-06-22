@@ -2,14 +2,12 @@ package com.injagang.service;
 
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
-import com.injagang.domain.User;
-import com.injagang.exception.TemplateNotExistException;
+import com.injagang.domain.user.User;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.exception.UserNotFoundException;
 import com.injagang.repository.TemplateRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.request.TemplateCreate;
-import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

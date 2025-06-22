@@ -1,12 +1,9 @@
 package com.injagang.oauth.user;
 
-import com.injagang.domain.User;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 

@@ -2,7 +2,7 @@ package com.injagang.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.redis.RedisDao;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;

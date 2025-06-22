@@ -2,7 +2,7 @@ package com.injagang.service;
 
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.exception.EssayNotFoundException;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.exception.UserNotFoundException;

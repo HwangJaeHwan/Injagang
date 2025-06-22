@@ -1,7 +1,6 @@
 package com.injagang.oauth;
 
-import com.injagang.config.jwt.JwtProvider;
-import com.injagang.domain.User;
+import com.injagang.domain.user.User;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.oauth.user.*;
 import com.injagang.repository.UserRepository;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Slf4j
 @RequiredArgsConstructor
