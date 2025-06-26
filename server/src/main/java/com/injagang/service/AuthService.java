@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.*;
 import com.injagang.repository.EssayRepository;
 import com.injagang.repository.FeedbackRepository;
@@ -45,7 +46,7 @@ public class AuthService {
 
         return UserInfo.builder()
                 .nickname(user.getNickname())
-                .role(user.getRole())
+                .role(user.getType().name())
                 .build();
 
 
@@ -82,7 +83,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .nickname(signUp.getNickname())
                 .email(signUp.getEmail())
-                .role("USER")
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);

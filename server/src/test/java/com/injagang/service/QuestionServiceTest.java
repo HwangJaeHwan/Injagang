@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.ExpectedQuestion;
 import com.injagang.domain.QuestionType;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.repository.ExpectedQuestionRepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.response.QuestionResponse;
@@ -92,7 +93,7 @@ class QuestionServiceTest {
                 .nickname("test")
                 .password("test")
                 .email("test@test.com")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);
@@ -227,7 +228,7 @@ class QuestionServiceTest {
                 .nickname("test")
                 .password("test")
                 .email("test@test.com")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);

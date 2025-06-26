@@ -1,5 +1,6 @@
 package com.injagang.config;
 
+import com.injagang.annotation.OptionalSession;
 import com.injagang.config.data.UserSession;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.exception.InjaGangJwtException;
@@ -36,7 +37,14 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
         String authorizationHeader = webRequest.getHeader("Authorization");
 
 
+        boolean optional = parameter.hasParameterAnnotation(OptionalSession.class);
+
         if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+
+            if (optional) {
+                return null;
+            }
+
             throw new UnauthorizedException();
         }
 

@@ -1,5 +1,6 @@
 package com.injagang.controller;
 
+import com.injagang.annotation.OptionalSession;
 import com.injagang.config.data.UserSession;
 import com.injagang.request.*;
 import com.injagang.response.BoardList;
@@ -32,13 +33,15 @@ public class BoardController {
 
 
     @GetMapping("/{boardId}")
-    public BoardRead readBoard(UserSession userSession,
+    public BoardRead readBoard(@OptionalSession UserSession userSession,
                                @RequestParam(value = "password", required = false) String password
             ,@PathVariable Long boardId) {
 
         log.info("비밀번호 = {}", password);
 
-        return boardService.readBoard(userSession.getUserId(), boardId, password);
+        Long userId = (userSession != null) ? userSession.getUserId() : null;
+
+        return boardService.readBoard(userId, boardId, password);
 
 
     }

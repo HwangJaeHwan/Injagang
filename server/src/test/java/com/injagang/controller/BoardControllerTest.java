@@ -7,6 +7,7 @@ import com.injagang.domain.Feedback;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -93,7 +94,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -159,7 +160,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -228,7 +229,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -293,7 +294,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -358,7 +359,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -412,7 +413,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -462,7 +463,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -523,7 +524,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -533,7 +534,7 @@ class BoardControllerTest {
                 .loginId("test2")
                 .password("test2")
                 .nickname("test2")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -617,7 +618,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -668,7 +669,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -720,7 +721,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -730,7 +731,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("writer")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -806,7 +807,7 @@ class BoardControllerTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
