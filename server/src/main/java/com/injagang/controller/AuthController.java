@@ -104,4 +104,11 @@ public class AuthController {
         authService.nicknameChange(userSession.getUserId(), nicknameChange);
     }
 
+    @DeleteMapping("/delete")
+    public void deleteUser(UserSession userSession) {
+
+        authService.delete(userSession.getUserId());
+
+    }
+
 }

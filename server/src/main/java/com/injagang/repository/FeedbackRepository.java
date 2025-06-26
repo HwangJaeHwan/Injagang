@@ -3,6 +3,7 @@ package com.injagang.repository;
 import com.injagang.domain.Feedback;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.QnA;
+import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @Modifying
     @Query("delete from Feedback f where f.boardQnA in :qnas")
     void deleteFeedbacksInQnAs(@Param("qnas") List<BoardQnA> qnAList);
+
+    void deleteAllByUser(User user);
 }

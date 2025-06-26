@@ -5,6 +5,7 @@ import com.injagang.domain.Essay;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
+import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

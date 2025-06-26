@@ -4,7 +4,11 @@ import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.user.User;
 import com.injagang.exception.*;
+import com.injagang.repository.EssayRepository;
+import com.injagang.repository.FeedbackRepository;
+import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
+import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
 import com.injagang.response.UserInfo;
 import io.micrometer.core.annotation.Counted;
@@ -25,6 +29,10 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final BoardRepository boardRepository;
+    private final EssayRepository essayRepository;
+    private final FeedbackRepository feedbackRepository;
+    private final QnARepository qnARepository;
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -147,4 +155,15 @@ public class AuthService {
     }
 
 
+    public void delete(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        feedbackRepository.deleteAllByUser(user);
+        boardRepository.deleteAllByUser(user);
+        essayRepository.deleteAllByUser(user);
+        userRepository.delete(user);
+
+
+
+    }
 }

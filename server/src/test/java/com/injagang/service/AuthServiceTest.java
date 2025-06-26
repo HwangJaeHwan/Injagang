@@ -2,6 +2,11 @@ package com.injagang.service;
 
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
+import com.injagang.domain.Board;
+import com.injagang.domain.Essay;
+import com.injagang.domain.Feedback;
+import com.injagang.domain.qna.BoardQnA;
+import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.user.User;
 import com.injagang.exception.*;
 import com.injagang.helper.TestHelper;
@@ -54,12 +59,16 @@ class AuthServiceTest {
     @Autowired
     BoardRepository boardRepository;
 
+
     @Autowired
     FeedbackRepository feedbackRepository;
 
 
     @AfterAll
     void after() {
+        feedbackRepository.deleteAll();
+        essayRepository.deleteAll();
+        boardRepository.deleteAll();
         userRepository.deleteAll();
         redisDao.clear();
     }
@@ -67,6 +76,9 @@ class AuthServiceTest {
 
     @BeforeEach
     void clean() {
+        feedbackRepository.deleteAll();
+        essayRepository.deleteAll();
+        boardRepository.deleteAll();
         userRepository.deleteAll();
         redisDao.clear();
     }
@@ -404,5 +416,95 @@ class AuthServiceTest {
 
         assertEquals("nickname", info.getNickname());
         assertEquals("USER", info.getRole());
+    }
+
+    @Test
+    @DisplayName("유저 삭제")
+    void test9() {
+
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .role("USER")
+                .email("test@gmail.com")
+                .build();
+
+        userRepository.save(user);
+
+        Essay essay = Essay.builder()
+                .title("test essay")
+                .user(user)
+                .build();
+
+
+        EssayQnA qna1 = EssayQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        essay.addQnA(qna1);
+
+        EssayQnA qna2 = EssayQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        essay.addQnA(qna2);
+
+        EssayQnA qna3 = EssayQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        essay.addQnA(qna3);
+
+        essayRepository.save(essay);
+
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .essayTitle("test essay")
+                .user(user)
+                .build();
+
+        BoardQnA bQna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        BoardQnA bQna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        BoardQnA bQna3 = BoardQnA.builder()
+                .question("question3")
+                .answer("answer3")
+                .build();
+
+        board.addQnA(bQna1);
+        board.addQnA(bQna2);
+        board.addQnA(bQna3);
+
+        boardRepository.save(board);
+
+        Feedback feedback = Feedback.builder()
+                .user(user)
+                .boardQnA(bQna1)
+                .feedbackTarget("target")
+                .feedbackContent("content")
+                .build();
+
+        feedbackRepository.save(feedback);
+
+        authService.delete(user.getId());
+
+        assertEquals(0L, userRepository.count());
+        assertEquals(0L, feedbackRepository.count());
+        assertEquals(0L, boardRepository.count());
+        assertEquals(0L, essayRepository.count());
+
     }
 }

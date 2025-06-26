@@ -17,7 +17,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 
 import static com.injagang.domain.QBoard.*;
-import static com.injagang.domain.QUser.*;
+import static com.injagang.domain.user.QUser.user;
 import static org.springframework.util.StringUtils.*;
 
 @Slf4j

@@ -41,7 +41,7 @@ public class Board extends Timestamp {
 
     private String password;
 
-    @OneToMany(mappedBy = "board",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
     private List<BoardQnA> qnaList = new ArrayList<>();
 
 

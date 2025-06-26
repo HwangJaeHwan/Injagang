@@ -29,7 +29,7 @@ public class Essay extends Timestamp {
 
     private String title;
 
-    @OneToMany(mappedBy = "essay",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "essay",cascade = CascadeType.ALL)
     private List<EssayQnA> qnaList = new ArrayList<>();
 
     @Builder
