@@ -24,7 +24,7 @@ public class PageDTO {
     }
 
     public long getOffset(){
-        return (long) (Math.max(1, page) - 1) * 15;
+        return (long) (getPage() - 1) * 15;
     }
 
 }

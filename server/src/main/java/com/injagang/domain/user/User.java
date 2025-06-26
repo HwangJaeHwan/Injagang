@@ -28,19 +28,21 @@ public class User extends Timestamp {
 
     private String email;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserType type;
 
     private String provider;
 
     private String providerId;
 
     @Builder
-    public User(String loginId, String password, String nickname, String email, String role, String provider, String providerId) {
+    public User(String loginId, String password, String nickname, String email,
+                UserType type, String provider, String providerId) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
-        this.role = role;
+        this.type = type;
         this.provider = provider;
         this.providerId = providerId;
     }

@@ -8,6 +8,7 @@ import com.injagang.domain.Feedback;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -104,7 +105,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -174,7 +175,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -245,7 +246,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -304,7 +305,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -360,7 +361,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -423,7 +424,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -433,7 +434,7 @@ public class BoardControllerDocTest {
                 .loginId("test2")
                 .password("test2")
                 .nickname("test2")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -523,7 +524,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 
@@ -565,6 +566,7 @@ public class BoardControllerDocTest {
                         fieldWithPath("boardInfos[].title").description("게시글 제목"),
                         fieldWithPath("boardInfos[].nickname").description("작성자 닉네임"),
                         fieldWithPath("boardInfos[].isLock").description("비밀번호 여부"),
+                        fieldWithPath("boardInfos[].isNotice").description("공지사항 판별"),
                         fieldWithPath("isFirst").description("첫 페이지 확인"),
                         fieldWithPath("isLast").description("마지막 페이지 확인")
                 )));
@@ -578,7 +580,7 @@ public class BoardControllerDocTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

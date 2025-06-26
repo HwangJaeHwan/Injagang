@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.*;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
@@ -394,7 +395,7 @@ class AuthServiceTest {
                 .loginId("test")
                 .password(passwordEncoder.encode("12345"))
                 .nickname("nickname")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

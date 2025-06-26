@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.TemplateCreate;
@@ -67,7 +68,7 @@ class TemplateServiceTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);
@@ -102,7 +103,7 @@ class TemplateServiceTest {
 //                .loginId("test")
 //                .password("test")
 //                .nickname("test")
-//                .role("ADMIN")
+//                .type(UserType.ADMIN)
 //                .build();
 //
 //        userRepository.save(user);
@@ -188,7 +189,7 @@ class TemplateServiceTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);

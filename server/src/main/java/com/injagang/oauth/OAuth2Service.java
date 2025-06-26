@@ -1,6 +1,7 @@
 package com.injagang.oauth;
 
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.oauth.user.*;
 import com.injagang.repository.UserRepository;
@@ -50,7 +51,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         String loginId = provider + "_" + providerId;
         String password = encoder.encode(UUID.randomUUID().toString().substring(0, 10));
         String email = oAuth2UserInfo.getEmail();
-        String role = "USER";
+        UserType type = UserType.USER;
         String nickname = oAuth2UserInfo.getName();
         Optional<User> optional = userRepository.findUserByLoginId(loginId);
 
@@ -63,7 +64,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                     .password(password)
                     .nickname(nickname)
                     .email(email)
-                    .role(role)
+                    .type(type)
                     .provider(provider)
                     .providerId(providerId)
                     .build();

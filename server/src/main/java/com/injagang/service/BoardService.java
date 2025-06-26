@@ -7,6 +7,7 @@ import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.*;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -62,6 +63,10 @@ public class BoardService {
     public BoardRead readBoard(Long userId, Long boardId, String password) {
 
         Board board = boardRepository.findByIdWithUser(boardId).orElseThrow(BoardNotFoundException::new);
+
+        if (userId == null && !board.getUser().getType().equals(UserType.ADMIN)) {
+            throw new UnauthorizedException();
+        }
 
         if (board.getPassword() != null) {
 

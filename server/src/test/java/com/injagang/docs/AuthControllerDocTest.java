@@ -3,6 +3,7 @@ package com.injagang.docs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -290,7 +291,7 @@ public class AuthControllerDocTest {
                 .loginId("test")
                 .password(passwordEncoder.encode("12345"))
                 .nickname("nickname")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

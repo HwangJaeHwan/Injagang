@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Template;
 import com.injagang.domain.TemplateQuestion;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -85,7 +86,7 @@ public class TemplateControllerDocsTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);
@@ -199,7 +200,7 @@ public class TemplateControllerDocsTest {
                 .loginId("test")
                 .password("test")
                 .nickname("test")
-                .role("ADMIN")
+                .type(UserType.ADMIN)
                 .build();
 
         userRepository.save(user);

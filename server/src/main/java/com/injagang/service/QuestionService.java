@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.ExpectedQuestion;
 import com.injagang.domain.QuestionType;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.exception.UserNotFoundException;
 import com.injagang.repository.ExpectedQuestionRepository;
@@ -135,7 +136,7 @@ public class QuestionService {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        if (!user.getRole().equals("ADMIN")) {
+        if (!user.getType().equals(UserType.ADMIN)) {
             throw new UnauthorizedException();
         }
 
