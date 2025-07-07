@@ -13,6 +13,8 @@ import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.Tokens;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -208,21 +210,24 @@ class AuthControllerTest {
     @DisplayName("/logout 로그아웃")
     void test5() throws Exception {
 
-        String accessToken = testHelper.makeAccessToken(1L);
-        String refreshToken = testHelper.makeRefreshToken(1L);
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
 
-        accessToken = accessToken.substring(7);
+        userRepository.save(user);
 
-        Tokens tokens = new Tokens(accessToken);
+        String jws = testHelper.makeAccessToken(user.getId());
+        String refreshToken = testHelper.makeRefreshToken(user.getId());
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String json = objectMapper.writeValueAsString(tokens);
         Cookie cookie = new Cookie("refreshToken", refreshToken);
 
         mockMvc.perform(post("/logout")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
+                        .header("Authorization", jws)
                         .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -234,20 +239,13 @@ class AuthControllerTest {
     @DisplayName("/reissue 토큰 재발급")
     void test6() throws Exception {
 
-
-        String accessToken = testHelper.makeToken(1L, 0L);
         String refreshToken = testHelper.makeRefreshToken(1L);
-
-        Tokens tokens = new Tokens(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String json = objectMapper.writeValueAsString(tokens);
         Cookie cookie = new Cookie("refreshToken", refreshToken);
 
         mockMvc.perform(post("/reissue")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
                         .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -288,7 +286,7 @@ class AuthControllerTest {
                 .loginId("test")
                 .password(passwordEncoder.encode("12345"))
                 .nickname("nickname")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

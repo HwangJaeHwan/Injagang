@@ -1,5 +1,6 @@
 package com.injagang.service;
 
+import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.user.User;
@@ -11,6 +12,7 @@ import com.injagang.repository.QnARepository;
 import com.injagang.repository.UserRepository;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
+import com.injagang.resolver.data.Tokens;
 import com.injagang.response.UserInfo;
 import io.micrometer.core.annotation.Counted;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class AuthService {
     private final BoardRepository boardRepository;
     private final EssayRepository essayRepository;
     private final FeedbackRepository feedbackRepository;
-    private final QnARepository qnARepository;
+    private final JwtConfig jwtConfig;
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -52,10 +54,11 @@ public class AuthService {
 
     }
 
-    public Long login(Login login) {
+    public Tokens login(Login login) {
 
 
         User user = userRepository.findUserByLoginId(login.getLoginId()).orElseThrow(InvalidLoginInfoException::new);
+
 
         boolean matches = passwordEncoder.matches(login.getPassword(), user.getPassword());
 
@@ -63,7 +66,16 @@ public class AuthService {
             throw new InvalidLoginInfoException();
         }
 
-        return user.getId();
+        String access = jwtProvider.createAccessToken(user.getId());
+        String refresh = jwtProvider.createRefreshToken(user.getId());
+
+        redisDao.setData(refresh, "login", jwtConfig.getRefresh());
+
+        return Tokens.builder()
+                .userId(user.getId())
+                .access(access)
+                .refresh(refresh)
+                .build();
 
     }
 
@@ -108,15 +120,13 @@ public class AuthService {
 
     }
 
-    public String reissue(String access,String refresh) {
+    public String reissue(String refresh) {
 
         if (redisDao.getData(refresh) == null) {
             throw new RefreshTokenExpiredException();
         }
-
-        if (!jwtProvider.refreshCheck(access)) {
-            logout(access,refresh);
-            throw new RefreshTokenExpiredException();
+        if (!jwtProvider.validateToken(refresh)) {
+            throw new InvalidRefreshTokenException();
         }
 
         return jwtProvider.createAccessToken(jwtProvider.parseToken(refresh));

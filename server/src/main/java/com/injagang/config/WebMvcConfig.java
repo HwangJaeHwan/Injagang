@@ -1,6 +1,8 @@
 package com.injagang.config;
 
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.resolver.AuthResolver;
+import com.injagang.resolver.TokenResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new AuthResolver(jwtProvider, redisTemplate));
+        resolvers.add(new TokenResolver(jwtProvider, redisTemplate));
     }
 
     @Bean

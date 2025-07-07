@@ -15,7 +15,8 @@ import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
-import com.injagang.request.Tokens;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.Tokens;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -245,21 +245,25 @@ public class AuthControllerDocTest {
     void test5() throws Exception {
 
 
-        String accessToken = testHelper.makeAccessToken(1L);
-        String refreshToken = testHelper.makeRefreshToken(1L);
+        User user = User.builder()
+                .loginId("test")
+                .password(passwordEncoder.encode("12345"))
+                .nickname("nickname")
+                .email("test@gmail.com")
+                .build();
 
-        Tokens tokens = new Tokens(accessToken);
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+        String refreshToken = testHelper.makeRefreshToken(user.getId());
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String json = objectMapper.writeValueAsString(tokens);
-
         mockMvc.perform(post("/logout")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .header("Authorization", jws))
                 .andDo(document("auth-logout",
-                        requestFields(
-                                fieldWithPath("access").description("Access 토큰")
+                        requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
                         ))
                 );
 
@@ -269,23 +273,16 @@ public class AuthControllerDocTest {
     @DisplayName("토큰 재발급")
     void test6() throws Exception {
 
-        String accessToken = testHelper.makeToken(1L, 0L);
-        String refreshToken = testHelper.makeRefreshToken(1L);
 
-        Tokens tokens = new Tokens(accessToken);
+        String refreshToken = testHelper.makeRefreshToken(1L);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String json = objectMapper.writeValueAsString(tokens);
 
         mockMvc.perform(post("/reissue")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
                         .cookie(new Cookie("refreshToken",refreshToken)))
-                .andDo(document("auth-reissue",
-                        requestFields(
-                                fieldWithPath("access").description("만료된 Access 토큰")
-                        ),responseFields(
+                .andDo(document("auth-reissue"
+                        ,responseFields(
                                 fieldWithPath("access").description("재발급된 Access 토큰")
                         )
                 ));
@@ -326,7 +323,7 @@ public class AuthControllerDocTest {
                 .loginId("test")
                 .password(passwordEncoder.encode("12345"))
                 .nickname("nickname")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

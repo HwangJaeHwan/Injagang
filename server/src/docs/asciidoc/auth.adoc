@@ -37,10 +37,11 @@ include::{snippets}/auth-login/response-fields.adoc[]
 
 == 로그아웃
 
+
 === 요청
 
 include::{snippets}/auth-logout/http-request.adoc[]
-include::{snippets}/auth-logout/request-fields.adoc[]
+include::{snippets}/auth-logout/request-headers.adoc[]
 
 
 == 토큰 재발급
@@ -49,7 +50,6 @@ include::{snippets}/auth-logout/request-fields.adoc[]
 === 요청
 
 include::{snippets}/auth-reissue/http-request.adoc[]
-include::{snippets}/auth-reissue/request-fields.adoc[]
 
 === 응답
 include::{snippets}/auth-reissue/response-body.adoc[]
@@ -69,10 +69,18 @@ include::{snippets}/auth-nicknameChange/request-fields.adoc[]
 
 == 비밀번호 변경
 
+=== 요청
+
 include::{snippets}/auth-passwordChange/http-request.adoc[]
 include::{snippets}/auth-passwordChange/request-headers.adoc[]
 include::{snippets}/auth-passwordChange/request-fields.adoc[]
 
+== 회원 삭제
+
+=== 요청
+
+include::{snippets}/auth-delete/http-request.adoc[]
+include::{snippets}/auth-delete/request-headers.adoc[]
 
 
 

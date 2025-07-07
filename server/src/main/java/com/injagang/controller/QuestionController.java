@@ -1,6 +1,6 @@
 package com.injagang.controller;
 
-import com.injagang.config.data.UserSession;
+import com.injagang.resolver.data.UserSession;
 import com.injagang.domain.QuestionType;
 import com.injagang.request.DeleteIds;
 import com.injagang.response.QuestionResponse;

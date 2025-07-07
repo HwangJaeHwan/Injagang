@@ -14,6 +14,8 @@ import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.Tokens;
 import com.injagang.response.UserInfo;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,9 +157,9 @@ class AuthServiceTest {
                 .build();
 
 
-        Long userId = authService.login(login);
+        Tokens tokens = authService.login(login);
 
-        assertEquals(userId, user.getId());
+        assertEquals(tokens.getUserId(), user.getId());
 
 
     }
@@ -327,12 +329,12 @@ class AuthServiceTest {
 
         accessToken = accessToken.substring(7);
 
-        Tokens tokens = new Tokens(accessToken);
+        AccessToken access = new AccessToken(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
 
-        authService.logout(tokens.getAccess(), refreshToken);
+        authService.logout(access.getAccess(), refreshToken);
 
 
         assertNull(redisDao.getData(refreshToken));
@@ -350,11 +352,11 @@ class AuthServiceTest {
         String refreshToken = testHelper.makeRefreshToken(1L);
 
 
-        Tokens tokens = new Tokens(accessToken);
+        AccessToken access = new AccessToken(accessToken);
 
         redisDao.setData(refreshToken, "login", 6000L);
 
-        String reissue = authService.reissue(tokens.getAccess(),refreshToken);
+        String reissue = authService.reissue(refreshToken);
 
         assertEquals(1L, jwtProvider.parseToken(reissue));
 
@@ -371,33 +373,10 @@ class AuthServiceTest {
         String refreshToken = testHelper.makeRefreshToken(1L);
 
 
-        Tokens tokens = new Tokens(accessToken);
-
-//        redisDao.setData(refreshToken, "login", 6000L);
-
-        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens.getAccess(), refreshToken));
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(refreshToken));
 
     }
 
-    @Test
-    @DisplayName("Access 토큰이 만료되지 않았는데 재발급을 요청한 경우")
-    void testValid6() {
-
-
-        String accessToken = testHelper.makeAccessToken(1L);
-        String refreshToken = testHelper.makeRefreshToken(1L);
-
-        accessToken = accessToken.substring(7);
-
-
-        Tokens tokens = new Tokens(accessToken);
-
-        redisDao.setData(refreshToken, "login", 6000L);
-
-        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(tokens.getAccess(), refreshToken));
-        assertEquals("logout", redisDao.getData(accessToken));
-
-    }
 
     @Test
     @DisplayName("유저 정보")
@@ -427,7 +406,7 @@ class AuthServiceTest {
                 .loginId("test")
                 .password(passwordEncoder.encode("12345"))
                 .nickname("nickname")
-                .role("USER")
+                .type(UserType.USER)
                 .email("test@gmail.com")
                 .build();
 

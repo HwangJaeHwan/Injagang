@@ -1,10 +1,11 @@
 package com.injagang.controller;
 
-import com.injagang.config.data.UserSession;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.Tokens;
+import com.injagang.resolver.data.UserSession;
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
-import com.injagang.exception.RefreshTokenExpiredException;
 import com.injagang.request.*;
 import com.injagang.response.AccessTokenResponse;
 import com.injagang.response.LoginResponse;
@@ -12,14 +13,14 @@ import com.injagang.response.UserInfo;
 import com.injagang.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.concurrent.TimeUnit;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Slf4j
 @RestController
@@ -27,11 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class AuthController {
 
     private final AuthService authService;
-    private final JwtProvider jwtProvider;
 
     private final JwtConfig jwtConfig;
-
-    private final RedisDao redisDao;
 
 
     @GetMapping("/info")
@@ -44,43 +42,48 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Valid Login login, HttpServletResponse response) {
 
-        Long userId = authService.login(login);
+        Tokens tokens = authService.login(login);
 
-        String accessToken = jwtProvider.createAccessToken(userId);
-        String refreshToken = jwtProvider.createRefreshToken(userId);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokens.getRefresh())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(jwtConfig.getRefresh() / 1000)
+                .sameSite("None")
+                .build();
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setMaxAge(Math.toIntExact(jwtConfig.getRefresh()/1000));
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        response.addHeader(SET_COOKIE, cookie.toString());
 
-        redisDao.setData(refreshToken, "login", jwtConfig.getRefresh());
-
-        return new LoginResponse(userId, accessToken);
+        return new LoginResponse(tokens.getUserId(), tokens.getAccess());
 
 
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody @Valid Tokens tokens,
+    public void logout(AccessToken accessToken,
                        @CookieValue(name = "refreshToken") String refreshToken,
                        HttpServletResponse response) {
 
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .build();
 
 
-        authService.logout(tokens.getAccess(),refreshToken);
+        response.addHeader(SET_COOKIE, deleteCookie.toString());
+
+        authService.logout(accessToken.getAccess(),refreshToken);
 
     }
 
     @PostMapping("/reissue")
-    public AccessTokenResponse refresh(@RequestBody @Valid Tokens tokens,
-                                       @CookieValue(name = "refreshToken") String refreshToken) {
+    public AccessTokenResponse refresh(
+            @CookieValue(name = "refreshToken") String refreshToken) {
 
-        return new AccessTokenResponse(authService.reissue(tokens.getAccess(),refreshToken));
+        return new AccessTokenResponse(authService.reissue(refreshToken));
 
     }
 

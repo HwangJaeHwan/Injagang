@@ -1,8 +1,7 @@
 package com.injagang.controller;
 
-import com.injagang.config.data.UserSession;
+import com.injagang.resolver.data.UserSession;
 import com.injagang.request.TemplateCreate;
-import com.injagang.response.TemplateInfo;
 import com.injagang.response.TemplateList;
 import com.injagang.service.TemplateService;
 import lombok.RequiredArgsConstructor;

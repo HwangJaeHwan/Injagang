@@ -1,4 +1,4 @@
-package com.injagang.config.data;
+package com.injagang.resolver.data;
 
 import lombok.Getter;
 

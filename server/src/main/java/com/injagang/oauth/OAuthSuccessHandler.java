@@ -1,25 +1,24 @@
 package com.injagang.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.oauth.user.UserInfo;
-import com.injagang.request.Tokens;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.Tokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpClient;
-import java.util.Map;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Component
 @Slf4j
@@ -34,17 +33,21 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
 
-        Tokens tokens = new Tokens(jwtProvider.createAccessToken(userInfo.getUserId()));
+        AccessToken token = new AccessToken(jwtProvider.createAccessToken(userInfo.getUserId()));
 
         String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
-                .queryParam("access", tokens.getAccess())
+                .queryParam("access", token.getAccess())
                 .build().toUriString();
 
-        Cookie cookie = new Cookie("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()));
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()))
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(jwtConfig.getRefresh() / 1000)
+                .sameSite("None")
+                .build();
 
-        cookie.setMaxAge(Math.toIntExact(jwtConfig.getRefresh()));
-        response.addCookie(cookie);
-        cookie.setHttpOnly(true);
+        response.addHeader(SET_COOKIE, cookie.toString());
         response.sendRedirect(redirect);
 
 //        response.getWriter().write(json);

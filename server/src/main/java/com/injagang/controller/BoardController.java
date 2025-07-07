@@ -1,7 +1,7 @@
 package com.injagang.controller;
 
 import com.injagang.annotation.OptionalSession;
-import com.injagang.config.data.UserSession;
+import com.injagang.resolver.data.UserSession;
 import com.injagang.request.*;
 import com.injagang.response.BoardList;
 import com.injagang.response.BoardRead;

@@ -1,7 +1,7 @@
-package com.injagang.config;
+package com.injagang.resolver;
 
-import com.injagang.annotation.OptionalSession;
-import com.injagang.config.data.UserSession;
+import com.injagang.resolver.data.AccessToken;
+import com.injagang.resolver.data.UserSession;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.exception.InjaGangJwtException;
 import com.injagang.exception.JwtExpiredException;
@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -20,33 +21,28 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AuthResolver implements HandlerMethodArgumentResolver {
+public class TokenResolver implements HandlerMethodArgumentResolver {
 
     private final JwtProvider jwtProvider;
 
     private final RedisTemplate<String, String> redisTemplate;
 
-
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(UserSession.class);
+        return parameter.getParameterType().equals(AccessToken.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+
+
         String authorizationHeader = webRequest.getHeader("Authorization");
-
-
-        boolean optional = parameter.hasParameterAnnotation(OptionalSession.class);
 
         if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
 
-            if (optional) {
-                return null;
-            }
-
             throw new UnauthorizedException();
         }
+
 
         String jws = authorizationHeader.substring(7);
 
@@ -57,11 +53,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
         try {
 
-            Long userId = jwtProvider.parseToken(jws);
+            jwtProvider.validateToken(jws);
 
-            //OK, we can trust this JWT
-
-            return new UserSession(userId);
+            return new AccessToken(jws);
 
         } catch (ExpiredJwtException e) {
 
