@@ -64,20 +64,12 @@ public class AuthController {
                        @CookieValue(name = "refreshToken") String refreshToken,
                        HttpServletResponse response) {
 
-        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(0)
-                .sameSite("None")
-                .build();
-
-
-        response.addHeader(SET_COOKIE, deleteCookie.toString());
+        deleteCookie(response);
 
         authService.logout(accessToken.getAccess(),refreshToken);
 
     }
+
 
     @PostMapping("/reissue")
     public AccessTokenResponse refresh(
@@ -108,10 +100,27 @@ public class AuthController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteUser(UserSession userSession) {
+    public void deleteUser(UserSession userSession,
+                           @CookieValue(name = "refreshToken") String refreshToken,
+                           HttpServletResponse response) {
 
+        deleteCookie(response);
         authService.delete(userSession.getUserId());
 
+
+    }
+
+    private void deleteCookie(HttpServletResponse response) {
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .build();
+
+
+        response.addHeader(SET_COOKIE, deleteCookie.toString());
     }
 
 }

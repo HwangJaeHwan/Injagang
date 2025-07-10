@@ -20,6 +20,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @Modifying
     @Query("delete from Feedback f where f.boardQnA in :qnas")
     void deleteFeedbacksInQnAs(@Param("qnas") List<BoardQnA> qnAList);
-
+    @Modifying
     void deleteAllByUser(User user);
 }

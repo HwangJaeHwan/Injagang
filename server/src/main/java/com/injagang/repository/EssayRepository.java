@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface EssayRepository extends JpaRepository<Essay, Long> {
-
+//수정하기
+//    @Query("select distinct e from Essay e join fetch e.qnaList where e.user.id =:userId")
     @Query("select distinct e from Essay e join fetch e.qnaList where e.user =:user")
     List<Essay> findAllByUser(@Param("user") User user);
     @Modifying

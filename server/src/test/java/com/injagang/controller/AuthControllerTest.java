@@ -360,9 +360,15 @@ class AuthControllerTest {
         feedbackRepository.save(feedback);
 
         String jws = testHelper.makeAccessToken(user.getId());
+        String refreshToken = testHelper.makeRefreshToken(user.getId());
+
+        redisDao.setData(refreshToken, "login", 6000L);
+
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
 
         mockMvc.perform(delete("/delete")
-                        .header("Authorization", jws))
+                        .header("Authorization", jws)
+                        .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

@@ -34,4 +34,5 @@ public interface QnARepository extends JpaRepository<QnA, Long> {
     @Modifying
     @Query("delete from BoardQnA q where q in :qnas")
     void deleteBoardQnAsIn(@Param("qnas") List<BoardQnA> qnaList);
+
 }
