@@ -28,13 +28,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins(
+                        "https://www.relaymentor.com",
+                        "http://192.168.0.178:3000"
+                )
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PATCH.name(),
                         HttpMethod.DELETE.name(),
-                        HttpMethod.PUT.name());
+                        HttpMethod.PUT.name()
+                )
+                .allowCredentials(true);
     }
 
     @Override

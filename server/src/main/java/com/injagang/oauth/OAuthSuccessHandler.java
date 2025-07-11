@@ -32,14 +32,21 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-
-        AccessToken token = new AccessToken(jwtProvider.createAccessToken(userInfo.getUserId()));
-
-        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
-                .queryParam("access", token.getAccess())
+        
+        String redirect = UriComponentsBuilder.fromUriString("https://www.relaymentor.com/")
                 .build().toUriString();
 
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()))
+        ResponseCookie oauthCookie = ResponseCookie.from("oauthToken", jwtProvider.createAccessToken(userInfo.getUserId()))
+                .domain(".relaymentor.com")
+                .httpOnly(false)
+                .secure(true)
+                .path("/")
+                .maxAge(jwtConfig.getAccess() / 1000)
+                .sameSite("None")
+                .build();
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()))
+                .domain(".relaymentor.com")
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
@@ -47,7 +54,9 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .sameSite("None")
                 .build();
 
-        response.addHeader(SET_COOKIE, cookie.toString());
+        response.addHeader(SET_COOKIE, oauthCookie.toString());
+        response.addHeader(SET_COOKIE, refreshCookie.toString());
+
         response.sendRedirect(redirect);
 
 //        response.getWriter().write(json);
