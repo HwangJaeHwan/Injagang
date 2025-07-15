@@ -2,9 +2,9 @@
 <configuration>
 
     <include resource="console-appender.xml"/>
-    <include resource="file-app-appender.xml"/>
-    <include resource="file-app-appender.xml"/>
-    <include resource="file-app-appender.xml"/>
+    <include resource="file-info-appender.xml"/>
+    <include resource="file-warn-appender.xml"/>
+    <include resource="file-error-appender.xml"/>
 
     <root level="INFO">
         <appender-ref ref="FILE_INFO"/>

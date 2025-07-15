@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${LOG_PATH|/.info.log</file>
+    <file>${LOG_PATH}/info.log</file>
 
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
-        <fileNamePattern>${LOG_PATH}/.info.log.%d{yyyy-MM-dd}</fileNamePattern>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/info.log.%d{yyyy-MM-dd}</fileNamePattern>
         <maxHistory>7</maxHistory>
     </rollingPolicy>
     <encoder>
