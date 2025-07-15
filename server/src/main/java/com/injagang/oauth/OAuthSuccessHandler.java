@@ -32,7 +32,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-        
+
         String redirect = UriComponentsBuilder.fromUriString("https://www.relaymentor.com/")
                 .build().toUriString();
 
@@ -41,7 +41,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .httpOnly(false)
                 .secure(true)
                 .path("/")
-                .maxAge(jwtConfig.getAccess() / 1000)
+                .maxAge(jwtConfig.getAccess())
                 .sameSite("None")
                 .build();
 
@@ -50,7 +50,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(jwtConfig.getRefresh() / 1000)
+                .maxAge(jwtConfig.getRefresh())
                 .sameSite("None")
                 .build();
 

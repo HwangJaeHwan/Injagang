@@ -28,7 +28,7 @@ public class TestHelper {
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccess()))
+                .setExpiration(new Date(System.currentTimeMillis() + (jwtConfig.getAccess() * 1000)))
                 .compact();
 
         return "Bearer " + jws;
@@ -41,7 +41,7 @@ public class TestHelper {
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefresh()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefresh() * 1000))
                 .compact();
     }
 

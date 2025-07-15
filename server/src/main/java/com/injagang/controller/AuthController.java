@@ -48,7 +48,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(jwtConfig.getRefresh() / 1000)
+                .maxAge(jwtConfig.getRefresh())
                 .sameSite("None")
                 .build();
 

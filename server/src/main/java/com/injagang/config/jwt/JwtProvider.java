@@ -23,13 +23,13 @@ public class JwtProvider {
 
     public String createAccessToken(Long userId) {
 
-        return getToken(userId, jwtConfig.getAccess());
+        return getToken(userId, jwtConfig.getAccess() * 1000);
 
     }
 
     public String createRefreshToken(Long userId) {
 
-        return getToken(userId, jwtConfig.getRefresh());
+        return getToken(userId, jwtConfig.getRefresh() * 1000);
 
     }
 
@@ -39,14 +39,12 @@ public class JwtProvider {
 
         SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + timeout))
                 .compact();
-
-        return token;
     }
 
     public Long parseToken(String token) {
