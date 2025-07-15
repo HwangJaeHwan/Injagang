@@ -25,7 +25,7 @@ public class EssayRead {
         this.essayId = essay.getId();
         this.title = essay.getTitle();
 
-        if (essay.getUser().getId() == userId) {
+        if (essay.getUser().getId().equals(userId)) {
             owner = true;
         }
 

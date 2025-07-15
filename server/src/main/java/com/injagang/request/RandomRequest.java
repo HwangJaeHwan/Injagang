@@ -1,15 +1,13 @@
 package com.injagang.request;
 
 import com.injagang.domain.QuestionType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class RandomRequest {
 
     @NotNull(message = "질문의 수를 입력해 주세요.")

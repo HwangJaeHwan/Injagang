@@ -30,7 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "https://www.relaymentor.com",
-                        "http://192.168.0.178:3000"
+                        "http://localhost:10005"
                 )
                 .allowedMethods(
                         HttpMethod.GET.name(),
@@ -40,6 +40,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         HttpMethod.PUT.name()
                 )
                 .allowCredentials(true);
+
     }
 
     @Override
