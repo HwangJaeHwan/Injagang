@@ -1,9 +1,11 @@
 package com.injagang.controller;
 
 import com.injagang.exception.InJaGangException;
+import com.injagang.exception.InvalidRefreshTokenException;
 import com.injagang.response.ErrorResponse;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @RestControllerAdvice
 public class ExceptionController {
@@ -62,12 +68,33 @@ public class ExceptionController {
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public ErrorResponse JwtException(JwtException e) {
 
-        ErrorResponse error = ErrorResponse.builder()
+        return ErrorResponse.builder()
                 .message(e.getMessage())
                 .code("401")
                 .build();
+    }
 
-        return error;
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ErrorResponse refreshTokenException(InvalidRefreshTokenException e,
+                                               HttpServletResponse response) {
+
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .build();
+
+
+        response.addHeader(SET_COOKIE, deleteCookie.toString());
+
+
+        return ErrorResponse.builder()
+                .code("401")
+                .message(e.getMessage())
+                .build();
     }
 
 
