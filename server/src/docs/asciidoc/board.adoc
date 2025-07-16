@@ -85,6 +85,19 @@ include::{snippets}/feedback-list/path-parameters.adoc[]
 include::{snippets}/feedback-list/http-response.adoc[]
 include::{snippets}/feedback-list/response-fields.adoc[]
 
+== 내 게시물 리스트
+
+=== 요청
+
+include::{snippets}/board-my/http-request.adoc[]
+include::{snippets}/board-my/request-headers.adoc[]
+
+=== 응답
+
+include::{snippets}/board-my/http-response.adoc[]
+include::{snippets}/board-my/response-fields.adoc[]
+
+
 
 
 

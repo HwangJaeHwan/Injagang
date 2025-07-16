@@ -23,11 +23,14 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -38,6 +41,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -680,6 +684,70 @@ public class BoardControllerDocTest {
                 ),pathParameters(
                         parameterWithName("boardId").description("삭제할 게시글 ID")
                 )));
+
+    }
+
+    @Test
+    @DisplayName("내 게시물 리스트")
+    void test11() throws Exception {
+
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+        List<Board> boards = new ArrayList<>();
+
+        IntStream.rangeClosed(1, 3).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boards.add(board);
+                }
+
+        );
+
+        boardRepository.saveAll(boards);
+
+        mockMvc.perform(get("/board/me")
+                        .header("Authorization", jws))
+                .andExpect(status().isOk())
+                .andDo(document("board-my"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").description("게시글 ID"),
+                                fieldWithPath("[].title").description("게시글 제목"),
+                                fieldWithPath("[].nickname").description("작성자 닉네임"),
+                                fieldWithPath("[].isLock").description("비밀번호 여부"),
+                                fieldWithPath("[].isNotice").description("공지사항 판별"))
+                ));
+
 
     }
 }

@@ -277,4 +277,18 @@ public class BoardService {
 
         log.info("피드백 삭제 성공 → feedbackId={}", feedbackId);
     }
+
+    public List<BoardListInfo> myBoardList(Long userId) {
+
+        log.info("내가 쓴 게시글 조회 → userId={}", userId);
+
+        List<Board> boards = boardRepository.findAllByUserId(userId);
+
+        List<BoardListInfo> infos = boards.stream().map(BoardListInfo::new).collect(Collectors.toList());
+
+        log.info("내가 쓴 게시글 조회 완료 → 게시글 수 ={}", infos.size());
+
+        return infos;
+
+    }
 }

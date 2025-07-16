@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -1278,6 +1279,56 @@ class BoardServiceTest {
 
 
         assertThrows(UnauthorizedException.class, () -> boardService.deleteFeedback(user2.getId(), feedback.getId()));
+
+
+    }
+
+    @Test
+    @DisplayName("내 게시글 가져오기")
+    void test11() {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+
+        userRepository.save(user);
+
+        List<Board> boards = new ArrayList<>();
+
+        IntStream.rangeClosed(1, 100).forEach(
+                i -> {
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+                    boards.add(board);
+
+                });
+
+        boardRepository.saveAll(boards);
+
+
+        List<BoardListInfo> list = boardService.myBoardList(user.getId());
+
+        assertEquals(100L, list.size());
 
 
     }

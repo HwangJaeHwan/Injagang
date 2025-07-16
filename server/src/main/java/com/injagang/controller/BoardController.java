@@ -3,10 +3,7 @@ package com.injagang.controller;
 import com.injagang.annotation.OptionalSession;
 import com.injagang.resolver.data.UserSession;
 import com.injagang.request.*;
-import com.injagang.response.BoardList;
-import com.injagang.response.BoardRead;
-import com.injagang.response.BoardRevise;
-import com.injagang.response.FeedbackList;
+import com.injagang.response.*;
 import com.injagang.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,4 +88,12 @@ public class BoardController {
 
         boardService.deleteBoard(userSession.getUserId(), boardId);
     }
+
+    @GetMapping("/me")
+    public List<BoardListInfo> myBoards(UserSession userSession) {
+
+        return boardService.myBoardList(userSession.getUserId());
+
+    }
+
 }

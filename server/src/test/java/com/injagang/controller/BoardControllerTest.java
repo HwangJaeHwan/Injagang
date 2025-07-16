@@ -24,6 +24,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -676,9 +678,6 @@ class BoardControllerTest {
                 .andDo(print());
 
 
-
-
-
     }
 
     @Test
@@ -910,6 +909,60 @@ class BoardControllerTest {
 
 
         mockMvc.perform(delete("/board/{boardId}", board.getId())
+                        .header("Authorization", jws))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+    }
+
+    @Test
+    @DisplayName("내 게시물 리스트")
+    void test11() throws Exception {
+
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+        List<Board> boards = new ArrayList<>();
+
+        IntStream.rangeClosed(1, 10).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+
+                    boards.add(board);
+                }
+
+        );
+
+        boardRepository.saveAll(boards);
+
+        mockMvc.perform(get("/board/me")
                         .header("Authorization", jws))
                 .andExpect(status().isOk())
                 .andDo(print());

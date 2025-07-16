@@ -411,7 +411,7 @@ class AuthControllerTest {
         userRepository.save(user);
 
 
-        DuplicateRequest request = new DuplicateRequest("newLoginId", "newNickname");
+        DuplicateRequest request = new DuplicateRequest("change", "change");
 
         String json = objectMapper.writeValueAsString(request);
 

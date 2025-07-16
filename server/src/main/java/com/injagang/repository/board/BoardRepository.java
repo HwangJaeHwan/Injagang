@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
@@ -16,4 +17,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardReposi
     Optional<Board> findByIdWithUser(Long boardId);
     @Modifying
     void deleteAllByUser(User user);
+
+    @Query("select b from Board b where b.user.id = :userId")
+    List<Board> findAllByUserId(@Param("userId") Long userId);
+
 }

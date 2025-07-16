@@ -60,7 +60,7 @@ public class AuthController {
     }
 
     @PostMapping("/check-duplicate")
-    public void nicknameAndLoginIdCheck(@RequestBody DuplicateRequest request) {
+    public void nicknameAndLoginIdCheck(@RequestBody @Valid DuplicateRequest request) {
 
         authService.check(request.getNickname(), request.getLoginId());
 
