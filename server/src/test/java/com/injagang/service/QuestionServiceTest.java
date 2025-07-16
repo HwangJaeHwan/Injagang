@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -89,11 +90,13 @@ class QuestionServiceTest {
     @DisplayName("질문 추가하기")
     void test3() {
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .nickname("test")
                 .password("test")
-                .email("test@test.com")
+                .birthday(LocalDate.now())
                 .type(UserType.ADMIN)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -224,11 +227,13 @@ class QuestionServiceTest {
     void test5() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .nickname("test")
                 .password("test")
-                .email("test@test.com")
+                .birthday(LocalDate.now())
                 .type(UserType.ADMIN)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);

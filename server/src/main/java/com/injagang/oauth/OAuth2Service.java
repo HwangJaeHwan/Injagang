@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,10 +64,12 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                     .loginId(loginId)
                     .password(password)
                     .nickname(nickname)
-                    .email(email)
+                    .birthday(LocalDate.now())
                     .type(type)
                     .provider(provider)
                     .providerId(providerId)
+                    .policy(true)
+                    .terms(true)
                     .build();
 
             userRepository.save(user);

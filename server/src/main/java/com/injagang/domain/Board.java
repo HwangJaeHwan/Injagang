@@ -28,15 +28,17 @@ public class Board extends Timestamp {
     @Column(name = "board_id")
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @Lob
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne
     private User user;
 
-
+    @Column(nullable = false)
     private String essayTitle;
 
     private String password;

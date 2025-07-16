@@ -20,9 +20,11 @@ public class ExpectedQuestion {
     @Column(name = "expected_question_id")
     private Long id;
 
+    @Column(nullable = false)
     private String question;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private QuestionType questionType;
 
 

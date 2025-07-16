@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -21,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.time.LocalDate;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -95,9 +97,13 @@ public class EssayControllerDocsTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -155,9 +161,13 @@ public class EssayControllerDocsTest {
     void test2() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -217,9 +227,13 @@ public class EssayControllerDocsTest {
     void test3() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -268,9 +282,13 @@ public class EssayControllerDocsTest {
     void test4() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -308,9 +326,13 @@ public class EssayControllerDocsTest {
     void test6() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -20,31 +22,44 @@ public class User extends Timestamp {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String loginId;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, unique = true)
     private String nickname;
 
-    private String email;
+    @Column(nullable = false)
+    private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserType type;
 
     private String provider;
 
     private String providerId;
 
+    @Column(nullable = false)
+    private Boolean terms = false;
+
+    @Column(nullable = false)
+    private Boolean policy = false;
+
     @Builder
-    public User(String loginId, String password, String nickname, String email,
-                UserType type, String provider, String providerId) {
+    public User(String loginId, String password, String nickname, LocalDate birthday, UserType type, String provider,
+                String providerId, Boolean terms, Boolean policy) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
-        this.email = email;
+        this.birthday = birthday;
         this.type = type;
         this.provider = provider;
         this.providerId = providerId;
+        this.terms = terms;
+        this.policy = policy;
     }
 
     public void changeNickname(String nickname) {

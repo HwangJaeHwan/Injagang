@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -71,11 +72,13 @@ class QuestionControllerTest {
     void test() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .nickname("test")
                 .password("test")
-                .email("test@test.com")
+                .birthday(LocalDate.now())
                 .type(UserType.ADMIN)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -238,11 +241,13 @@ class QuestionControllerTest {
     void test8() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .nickname("test")
                 .password("test")
-                .email("test@test.com")
+                .birthday(LocalDate.now())
                 .type(UserType.ADMIN)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);

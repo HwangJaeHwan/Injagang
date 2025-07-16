@@ -59,6 +59,14 @@ public class AuthController {
 
     }
 
+    @PostMapping("/check-duplicate")
+    public void nicknameAndLoginIdCheck(@RequestBody DuplicateRequest request) {
+
+        authService.check(request.getNickname(), request.getLoginId());
+
+
+    }
+
     @PostMapping("/logout")
     public void logout(AccessToken accessToken,
                        @CookieValue(name = "refreshToken") String refreshToken,
@@ -66,7 +74,7 @@ public class AuthController {
 
         deleteCookie(response);
 
-        authService.logout(accessToken.getAccess(),refreshToken);
+        authService.logout(accessToken.getAccess(), refreshToken);
 
     }
 
@@ -86,14 +94,14 @@ public class AuthController {
 
     }
 
-    @PatchMapping("/passwordChange")
+    @PatchMapping("/password-change")
     public void passwordChange(UserSession userSession, @RequestBody @Valid PasswordChange passwordChange) {
 
         authService.changePassword(userSession.getUserId(), passwordChange);
 
     }
 
-    @PatchMapping("/nicknameChange")
+    @PatchMapping("/nickname-change")
     public void nicknameChange(UserSession userSession, @RequestBody @Valid NicknameChange nicknameChange) {
 
         authService.nicknameChange(userSession.getUserId(), nicknameChange);

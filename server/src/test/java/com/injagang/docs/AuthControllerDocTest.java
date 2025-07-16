@@ -12,6 +12,7 @@ import com.injagang.domain.user.UserType;
 import com.injagang.helper.TestHelper;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
+import com.injagang.request.DuplicateRequest;
 import com.injagang.request.Login;
 import com.injagang.request.PasswordChange;
 import com.injagang.request.SignUp;
@@ -29,6 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.Cookie;
+import java.time.LocalDate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -38,7 +40,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -99,11 +103,13 @@ public class AuthControllerDocTest {
     void test() throws Exception {
 
         SignUp signUp = SignUp.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("1234")
                 .passwordCheck("1234")
-                .email("test@gmail.com")
+                .birthday("2025-01-01")
                 .nickname("nickname")
+                .policy(true)
+                .terms(true)
                 .build();
 
         String json = objectMapper.writeValueAsString(signUp);
@@ -115,8 +121,10 @@ public class AuthControllerDocTest {
                         requestFields(fieldWithPath("loginId").description("로그인 아이디"),
                                 fieldWithPath("password").description("비밀번호"),
                                 fieldWithPath("passwordCheck").description("비밀번호 확인"),
-                                fieldWithPath("email").description("이메일"),
-                                fieldWithPath("nickname").description("닉네임")
+                                fieldWithPath("birthday").description("생년월일"),
+                                fieldWithPath("nickname").description("닉네임"),
+                                fieldWithPath("terms").description("이용약관"),
+                                fieldWithPath("policy").description("정책")
                         )));
 
 
@@ -133,18 +141,21 @@ public class AuthControllerDocTest {
 
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("1234"))
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
 
 
         Login login = Login.builder()
-                .loginId("test")
-                .password("1234")
+                .loginId("loginId")
+                .password("test")
                 .build();
 
         String json = objectMapper.writeValueAsString(login);
@@ -171,10 +182,13 @@ public class AuthControllerDocTest {
     void test3() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -185,7 +199,7 @@ public class AuthControllerDocTest {
 
         String json = objectMapper.writeValueAsString(map);
 
-        mockMvc.perform(patch("/nicknameChange")
+        mockMvc.perform(patch("/nickname-hange")
                         .header("Authorization", jws)
                         .contentType(APPLICATION_JSON)
                         .content(json))
@@ -207,10 +221,13 @@ public class AuthControllerDocTest {
     void test4() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -224,7 +241,7 @@ public class AuthControllerDocTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(passwordChange);
-        mockMvc.perform(patch("/passwordChange")
+        mockMvc.perform(patch("/password-change")
                         .header("Authorization", jws)
                         .contentType(APPLICATION_JSON)
                         .content(json))
@@ -246,10 +263,13 @@ public class AuthControllerDocTest {
 
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -293,11 +313,13 @@ public class AuthControllerDocTest {
     void test7() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.USER)
-                .email("test@gmail.com")
                 .build();
 
         userRepository.save(user);
@@ -320,11 +342,13 @@ public class AuthControllerDocTest {
     void test8() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.USER)
-                .email("test@gmail.com")
                 .build();
 
         userRepository.save(user);
@@ -409,6 +433,38 @@ public class AuthControllerDocTest {
                 .andDo(document("auth-delete", requestHeaders(
                         headerWithName("Authorization").description("로그인 인증")
                 )));
+    }
+
+    @Test
+    @DisplayName("/check-duplicate 중복검사")
+    void test9() throws Exception {
+
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+
+        DuplicateRequest request = new DuplicateRequest("newLoginId", "newNickname");
+
+        String json = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(post("/check-duplicate")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andDo(document("auth-check",
+                        requestFields(fieldWithPath("loginId").description("체크할 로그인 아이디"),
+                                fieldWithPath("nickname").description("체크할 닉네임"))));
+
+
     }
 
 }

@@ -2,7 +2,7 @@ package com.injagang.exception;
 
 public class DuplicateNicknameException extends InJaGangException{
 
-    private static final String MESSAGE = "닉네임이 중복됩니다. ";
+    private static final String MESSAGE = "중복된 닉네임입니다.";
 
 
 

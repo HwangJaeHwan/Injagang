@@ -21,8 +21,10 @@ public abstract class QnA {
     private Long id;
 
     @Lob
+    @Column(nullable = false)
     private String question;
     @Lob
+    @Column(nullable = false)
     private String answer;
 
 

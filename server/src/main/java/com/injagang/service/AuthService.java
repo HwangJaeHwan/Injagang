@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 @Transactional
@@ -83,7 +85,7 @@ public class AuthService {
         String access  = jwtProvider.createAccessToken(user.getId());
         String refresh = jwtProvider.createRefreshToken(user.getId());
 
-        redisDao.setData(refresh, "login", jwtConfig.getRefresh());
+        redisDao.setData(refresh, "login", jwtConfig.getRefresh() * 1000);
 
         log.info("로그인 성공 → userId={}", user.getId());
 
@@ -95,30 +97,40 @@ public class AuthService {
 
     }
 
-    @Counted("signup")
-    public void signUp(SignUp signUp) {
+    public void check(String nickname, String loginId) {
 
-        log.info("회원가입 시도 → loginId={}, nickname={}, email={}",
-                signUp.getLoginId(),
-                signUp.getNickname(),
-                signUp.getEmail());
+        log.info("loginId ={}, nickname={} 중복 체크",loginId,nickname);
 
-        if (userRepository.findUserByLoginId(signUp.getLoginId()).isPresent()) {
-            log.warn("회원가입 실패(중복 loginId) → loginId={}", signUp.getLoginId());
+        if (userRepository.findUserByLoginId(loginId).isPresent()) {
+            log.warn("login Id 중복 → loginId={}", loginId);
             throw new DuplicateLoginIdException();
         }
 
-        if (userRepository.findUserByNickname(signUp.getNickname()).isPresent()) {
-            log.warn("회원가입 실패(중복 nickname) → nickname={}", signUp.getNickname());
+        if (userRepository.findUserByNickname(nickname).isPresent()) {
+            log.warn("nickname 중복 → nickname={}", nickname);
             throw new DuplicateNicknameException();
         }
+
+    }
+
+    @Counted("signup")
+    public void signUp(SignUp signUp) {
+
+        log.info("회원가입 시도 → loginId={}, nickname={}, birthday={}",
+                signUp.getLoginId(),
+                signUp.getNickname(),
+                signUp.getBirthday());
+
+        check(signUp.getNickname(), signUp.getLoginId());
 
         User user = User.builder()
                 .loginId(signUp.getLoginId())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .nickname(signUp.getNickname())
-                .email(signUp.getEmail())
+                .birthday(LocalDate.parse(signUp.getBirthday()))
                 .type(UserType.USER)
+                .terms(signUp.getTerms())
+                .policy(signUp.getPolicy())
                 .build();
 
         userRepository.save(user);
@@ -133,22 +145,13 @@ public class AuthService {
 
         log.info("로그아웃 시도");
 
-        String check = redisDao.getData(refresh);
-
         redisTemplate.delete(refresh);
 
-        if (!jwtProvider.validateToken(access)) {
-            log.warn("로그아웃 실패(유효하지 않은 access token)");
-            throw new InjaGangJwtException();
-        }
+        log.debug("리프레시 토큰 삭제 시도 → refresh={}", refresh);
 
-        if (check != null) {
-            long expiresInMillis = jwtProvider.expirationTime(access);
-            redisDao.setData(access, "logout", expiresInMillis);
-            log.info("로그아웃 성공 → refresh token 삭제, access token 블랙리스트 등록 (유효시간={}ms)", expiresInMillis);
-        } else {
-            log.info("대기 중인 refresh token 없음");
-        }
+        redisDao.setData(access, "logout", jwtConfig.getAccess() * 1000);
+
+        log.info("로그아웃 완료 → access token 블랙리스트 등록");
     }
 
 

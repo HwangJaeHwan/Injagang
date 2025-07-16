@@ -3,6 +3,7 @@ package com.injagang.service;
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.user.User;
+import com.injagang.domain.user.UserType;
 import com.injagang.exception.UnauthorizedException;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -64,9 +66,13 @@ class EssayServiceTest {
     void test() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -116,9 +122,13 @@ class EssayServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -166,9 +176,13 @@ class EssayServiceTest {
     void test3() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -234,9 +248,13 @@ class EssayServiceTest {
     void test4() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -312,15 +330,23 @@ class EssayServiceTest {
     void test4_1() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -387,9 +413,13 @@ class EssayServiceTest {
     void test5() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -427,15 +457,23 @@ class EssayServiceTest {
     void test5_1() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);

@@ -27,6 +27,7 @@ public class Essay extends Timestamp {
     @ManyToOne(fetch = LAZY)
     private User user;
 
+    @Column(nullable = false)
     private String title;
 
     @OneToMany(mappedBy = "essay",cascade = CascadeType.ALL)

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -65,9 +66,12 @@ class TemplateServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.ADMIN)
                 .build();
 
@@ -100,7 +104,7 @@ class TemplateServiceTest {
 //    void test2() {
 //
 //        User user = User.builder()
-//                .loginId("test")
+//                .loginId("loginId")
 //                .password("test")
 //                .nickname("test")
 //                .type(UserType.ADMIN)
@@ -186,9 +190,12 @@ class TemplateServiceTest {
     void test4() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.ADMIN)
                 .build();
 

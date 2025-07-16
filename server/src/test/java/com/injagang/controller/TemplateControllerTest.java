@@ -17,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -78,9 +80,12 @@ class TemplateControllerTest {
     void test() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.ADMIN)
                 .build();
 
@@ -183,9 +188,12 @@ class TemplateControllerTest {
     void test4() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.ADMIN)
                 .build();
 

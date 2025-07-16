@@ -72,6 +72,10 @@ expiration-time:
   access: 1800000
   refresh: 86400000
 
+logging:
+  file:
+    path: /logs
+
 
 
 

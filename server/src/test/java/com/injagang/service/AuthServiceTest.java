@@ -24,6 +24,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.*;
 
@@ -91,20 +93,24 @@ class AuthServiceTest {
     void test() {
 
         SignUp signUp = SignUp.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("1234")
                 .passwordCheck("1234")
-                .email("test@gmail.com")
+                .birthday("2025-01-01")
                 .nickname("nickname")
+                .policy(true)
+                .terms(true)
                 .build();
 
         authService.signUp(signUp);
 
         User user = userRepository.findAll().get(0);
         assertEquals(1, userRepository.count());
-        assertEquals("test", user.getLoginId());
-        assertEquals("test@gmail.com", user.getEmail());
+        assertEquals("loginId", user.getLoginId());
+        assertEquals(LocalDate.of(2025,1,1), user.getBirthday());
         assertEquals("nickname", user.getNickname());
+        assertEquals(Boolean.TRUE,user.getPolicy());
+        assertEquals(Boolean.TRUE,user.getTerms());
         assertTrue(passwordEncoder.matches("1234", user.getPassword()));
 
     }
@@ -115,21 +121,26 @@ class AuthServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("1234")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
 
 
         SignUp signUp = SignUp.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("1234")
                 .passwordCheck("1234")
-                .email("test@gmail.com")
+                .birthday("2025-01-01")
                 .nickname("nickname")
+                .terms(true)
+                .policy(true)
                 .build();
 
         assertThrows(DuplicateLoginIdException.class, () -> authService.signUp(signUp));
@@ -143,17 +154,20 @@ class AuthServiceTest {
     void test2() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("1234"))
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
 
         Login login = Login.builder()
-                .loginId("test")
-                .password("1234")
+                .loginId("loginId")
+                .password("test")
                 .build();
 
 
@@ -169,16 +183,19 @@ class AuthServiceTest {
     void test3() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
 
         Login login = Login.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("1234")
                 .build();
 
@@ -193,10 +210,13 @@ class AuthServiceTest {
     void test4() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -220,26 +240,32 @@ class AuthServiceTest {
     void testValid2() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
 
         User user2 = User.builder()
-                .loginId("test1")
-                .password(passwordEncoder.encode("12345"))
-                .nickname("test")
-                .email("test@gmail.com")
+                .loginId("loginId2")
+                .password(passwordEncoder.encode("test"))
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
         userRepository.save(user2);
 
         NicknameChange changeNickname = NicknameChange.builder()
-                .changeNickname("test")
+                .changeNickname("nickname")
                 .build();
 
 
@@ -253,15 +279,18 @@ class AuthServiceTest {
     void test5() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
         PasswordChange passwordChange = PasswordChange.builder()
-                .nowPassword("12345")
+                .nowPassword("test")
                 .changePassword("change")
                 .changePasswordCheck("change")
                 .build();
@@ -278,10 +307,13 @@ class AuthServiceTest {
     void testValid3() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -301,16 +333,19 @@ class AuthServiceTest {
     void testValid4() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password(passwordEncoder.encode("test"))
                 .nickname("nickname")
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
 
         PasswordChange passwordChange = PasswordChange.builder()
-                .nowPassword("12345")
+                .nowPassword("test")
                 .changePassword("change")
                 .changePasswordCheck("diff")
                 .build();
@@ -369,11 +404,10 @@ class AuthServiceTest {
     void testValid5() {
 
 
-        String accessToken = testHelper.makeToken(1L, 0L);
         String refreshToken = testHelper.makeRefreshToken(1L);
 
 
-        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissue(refreshToken));
+        assertThrows(InvalidRefreshTokenException.class, () -> authService.reissue(refreshToken));
 
     }
 
@@ -383,11 +417,13 @@ class AuthServiceTest {
     void test8() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.USER)
-                .email("test@gmail.com")
                 .build();
 
         userRepository.save(user);
@@ -403,11 +439,13 @@ class AuthServiceTest {
     void test9() {
 
         User user = User.builder()
-                .loginId("test")
-                .password(passwordEncoder.encode("12345"))
+                .loginId("loginId")
+                .password("test")
                 .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .type(UserType.USER)
-                .email("test@gmail.com")
                 .build();
 
         userRepository.save(user);
@@ -487,4 +525,30 @@ class AuthServiceTest {
         assertEquals(0L, essayRepository.count());
 
     }
+
+    @Test
+    @DisplayName("중복 검사")
+    void test10() {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
+                .build();
+
+        userRepository.save(user);
+
+        assertThrows(DuplicateLoginIdException.class, () -> authService.check("zzzzz", "loginId"));
+
+        assertThrows(DuplicateNicknameException.class, () -> authService.check("nickname", "zzzzzzz"));
+
+
+
+
+    }
+
 }

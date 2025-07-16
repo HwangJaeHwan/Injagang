@@ -19,6 +19,8 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.TestInstance.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
@@ -83,10 +85,13 @@ public class TemplateControllerDocsTest {
     void test() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
-                .type(UserType.ADMIN)
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);
@@ -197,10 +202,13 @@ public class TemplateControllerDocsTest {
     void test4() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
-                .type(UserType.ADMIN)
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
                 .build();
 
         userRepository.save(user);

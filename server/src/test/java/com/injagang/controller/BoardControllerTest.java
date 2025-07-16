@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -91,11 +92,13 @@ class BoardControllerTest {
     void test() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -157,11 +160,13 @@ class BoardControllerTest {
     void test_password() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -226,11 +231,13 @@ class BoardControllerTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -291,11 +298,13 @@ class BoardControllerTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -356,11 +365,13 @@ class BoardControllerTest {
     void test3() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -410,11 +421,13 @@ class BoardControllerTest {
     void test4() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -460,11 +473,13 @@ class BoardControllerTest {
     void test5() throws Exception {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -521,21 +536,25 @@ class BoardControllerTest {
     void test6() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -615,11 +634,13 @@ class BoardControllerTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -666,11 +687,13 @@ class BoardControllerTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -718,21 +741,24 @@ class BoardControllerTest {
 
 
         User user1 = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("writer")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
-
         userRepository.save(user1);
 
         User user2 = User.builder()
-                .loginId("test")
+                .loginId("loginId2")
                 .password("test")
-                .nickname("writer")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user2);
@@ -804,11 +830,13 @@ class BoardControllerTest {
     void test10() throws Exception{
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);

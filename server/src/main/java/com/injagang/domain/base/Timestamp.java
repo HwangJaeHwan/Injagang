@@ -16,11 +16,12 @@ public class Timestamp {
 
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdTime;
 
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime lastModifiedTime;
 
 }

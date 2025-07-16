@@ -82,5 +82,9 @@ include::{snippets}/auth-passwordChange/request-fields.adoc[]
 include::{snippets}/auth-delete/http-request.adoc[]
 include::{snippets}/auth-delete/request-headers.adoc[]
 
+== 아이디/닉네임 체크
 
+=== 요청
+include::{snippets}/auth-check/http-request.adoc[]
+include::{snippets}/auth-check/request-fields.adoc[]
 

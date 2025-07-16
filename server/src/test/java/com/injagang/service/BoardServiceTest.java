@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -78,11 +79,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -146,11 +149,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -218,11 +223,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -274,11 +281,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -330,11 +339,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -344,7 +355,7 @@ class BoardServiceTest {
                 .content("test content")
                 .essayTitle("test essay")
                 .user(user)
-                .password(passwordEncoder.encode("test"))
+                .password("test")
                 .build();
 
         BoardQnA qna1 = BoardQnA.builder()
@@ -377,11 +388,13 @@ class BoardServiceTest {
     void test3() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -426,19 +439,23 @@ class BoardServiceTest {
     void test3_1() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test2@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -481,11 +498,13 @@ class BoardServiceTest {
     void test4() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -538,11 +557,13 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -602,19 +623,23 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test2@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -672,21 +697,25 @@ class BoardServiceTest {
 
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -780,11 +809,13 @@ class BoardServiceTest {
     void test7() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -837,21 +868,25 @@ class BoardServiceTest {
     void test8() {
 
         User user1 = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user1);
 
         User user2 = User.builder()
-                .loginId("test")
+                .loginId("loginId2")
                 .password("test")
                 .nickname("writer")
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user2);
@@ -910,7 +945,7 @@ class BoardServiceTest {
                 .build();
         SearchDTO searchDTO1 = SearchDTO.builder()
                 .type("writer")
-                .content("test")
+                .content("nickname")
                 .build();
 
         SearchDTO searchDTO2 = SearchDTO.builder()
@@ -925,7 +960,7 @@ class BoardServiceTest {
         assertEquals(15, boardList1.getBoardInfos().size());
         assertTrue(boardList1.getIsFirst());
         assertFalse(boardList1.getIsLast());
-        assertEquals("test",boardList1.getBoardInfos().get(0).getNickname());
+        assertEquals("nickname",boardList1.getBoardInfos().get(0).getNickname());
 
         assertEquals(2, boardList2.getTotalPage());
         assertEquals(15, boardList2.getBoardInfos().size());
@@ -940,11 +975,13 @@ class BoardServiceTest {
     void test9() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -1029,19 +1066,23 @@ class BoardServiceTest {
     void test9_1() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -1123,11 +1164,13 @@ class BoardServiceTest {
     void test10() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);
@@ -1178,19 +1221,23 @@ class BoardServiceTest {
     void test10_1() {
 
         User user = User.builder()
-                .loginId("test")
+                .loginId("loginId")
                 .password("test")
-                .nickname("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
                 .type(UserType.USER)
-                .email("test@gmail.com")
+                .terms(true)
+                .policy(true)
                 .build();
 
         userRepository.save(user);

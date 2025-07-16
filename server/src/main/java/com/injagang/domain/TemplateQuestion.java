@@ -18,6 +18,7 @@ public class TemplateQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String question;
 
 

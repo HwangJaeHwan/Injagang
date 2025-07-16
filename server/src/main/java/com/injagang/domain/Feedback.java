@@ -22,8 +22,11 @@ public class Feedback {
     @Column(name = "feedback_id")
     private Long id;
 
+    @Column(nullable = false)
     private String feedbackTarget;
+
     @Lob
+    @Column(nullable = false)
     private String feedbackContent;
 
     @ManyToOne(fetch = LAZY)
