@@ -22,6 +22,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
+@AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.relaymentor.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
+@Transactional
 @ActiveProfiles("test")
 public class QuestionControllerDocsTest {
 

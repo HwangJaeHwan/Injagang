@@ -1,7 +1,6 @@
 package com.injagang.repository;
 
 import com.injagang.domain.Feedback;
-import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.QnA;
 import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,8 +17,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findAllByQna(QnA qnA);
 
     @Modifying
-    @Query("delete from Feedback f where f.boardQnA in :qnas")
-    void deleteFeedbacksInQnAs(@Param("qnas") List<BoardQnA> qnAList);
+    @Query("update from Feedback f set f.deletedTime = current_timestamp where f.boardQnA.id in :ids")
+    void softDeleteFeedbacksInQnAs(@Param("ids") List<Long> ids);
+
     @Modifying
-    void deleteAllByUser(User user);
+    @Query("update from Feedback f set f.deletedTime = current_timestamp where f.user.id = :userId")
+    void softDeleteAllByUserId(@Param("userId") Long userId);
 }

@@ -1,9 +1,12 @@
 package com.injagang.domain.user;
 
+import com.injagang.domain.base.SoftDelete;
 import com.injagang.domain.base.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -14,8 +17,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @Table(name ="users")
+@SQLDelete(sql = "UPDATE users SET deleted_time = NOW() WHERE user_id = ?")
+@Where(clause = "deleted_time IS NULL")
 @NoArgsConstructor(access = PROTECTED)
-public class User extends Timestamp {
+public class User extends SoftDelete{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

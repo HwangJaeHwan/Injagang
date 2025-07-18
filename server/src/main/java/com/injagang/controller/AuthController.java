@@ -17,6 +17,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -40,9 +41,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Valid Login login, HttpServletResponse response) {
+    public LoginResponse login(@RequestBody @Valid Login login,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
 
-        Tokens tokens = authService.login(login);
+
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        String userAgent = request.getHeader("User-Agent");
+
+
+
+        Tokens tokens = authService.login(login,ipAddress,userAgent);
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", tokens.getRefresh())
                 .httpOnly(true)

@@ -1,10 +1,13 @@
 package com.injagang.domain;
 
+import com.injagang.domain.base.SoftDelete;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -15,7 +18,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Feedback {
+@SQLDelete(sql = "UPDATE feedback SET deleted_time = NOW() WHERE feedback_id = ?")
+@Where(clause = "deleted_time IS NULL")
+public class Feedback extends SoftDelete {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

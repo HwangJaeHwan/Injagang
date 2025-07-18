@@ -3,13 +3,11 @@ package com.injagang.service;
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
 import com.injagang.config.redis.RedisDao;
+import com.injagang.domain.LoginHistory;
 import com.injagang.domain.user.User;
 import com.injagang.domain.user.UserType;
 import com.injagang.exception.*;
-import com.injagang.repository.EssayRepository;
-import com.injagang.repository.FeedbackRepository;
-import com.injagang.repository.QnARepository;
-import com.injagang.repository.UserRepository;
+import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
 import com.injagang.request.*;
 import com.injagang.resolver.data.Tokens;
@@ -37,6 +35,7 @@ public class AuthService {
     private final BoardRepository boardRepository;
     private final EssayRepository essayRepository;
     private final FeedbackRepository feedbackRepository;
+    private final LoginHistoryRepository loginHistoryRepository;
     private final JwtConfig jwtConfig;
 
     private final RedisTemplate<String, String> redisTemplate;
@@ -66,10 +65,12 @@ public class AuthService {
 
     }
 
-    public Tokens login(Login login) {
+    public Tokens login(Login login, String ipAddress,String userAgent) {
 
-
-        log.info("로그인 시도 → loginId={}", login.getLoginId());
+        log.info("로그인 시도 → loginId={} ipAddress = {} user-agent = {}",
+                login.getLoginId(),
+                ipAddress,
+                userAgent);
 
         User user = userRepository.findUserByLoginId(login.getLoginId())
                 .orElseThrow(() -> {
@@ -87,6 +88,19 @@ public class AuthService {
 
         redisDao.setData(refresh, "login", jwtConfig.getRefresh() * 1000);
 
+        log.info("로그인 기록 생성 시도");
+
+        LoginHistory history = LoginHistory.builder()
+                .userId(user.getId())
+                .eventType("LOGIN")
+                .ipAddress(ipAddress)
+                .userAgent(userAgent)
+                .build();
+        loginHistoryRepository.save(history);
+
+        log.info("로그인 기록 생성 historyId = {}", history.getId());
+
+
         log.info("로그인 성공 → userId={}", user.getId());
 
         return Tokens.builder()
@@ -101,12 +115,12 @@ public class AuthService {
 
         log.info("loginId ={}, nickname={} 중복 체크",loginId,nickname);
 
-        if (userRepository.findUserByLoginId(loginId).isPresent()) {
+        if (userRepository.existsByLoginId(loginId)) {
             log.warn("login Id 중복 → loginId={}", loginId);
             throw new DuplicateLoginIdException();
         }
 
-        if (userRepository.findUserByNickname(nickname).isPresent()) {
+        if (userRepository.existsByNickname(nickname)) {
             log.warn("nickname 중복 → nickname={}", nickname);
             throw new DuplicateNicknameException();
         }
@@ -203,7 +217,14 @@ public class AuthService {
                     return new UserNotFoundException();
                 });
 
-        if (userRepository.findUserByNickname(nicknameChange.getChangeNickname()).isPresent()) {
+        if (user.getNickname().equals(nicknameChange.getChangeNickname())) {
+            log.warn("닉네임 변경 실패(원본과 같음) → nickname={}, change={}",
+                    user.getNickname(), nicknameChange.getChangeNickname());
+            throw new DuplicateNicknameException();
+
+        }
+
+        if (userRepository.existsByNickname(nicknameChange.getChangeNickname())) {
             log.warn("닉네임 변경 실패(중복 닉네임) → userId={}, nickname={}",
                     userId, nicknameChange.getChangeNickname());
             throw new DuplicateNicknameException();
@@ -223,9 +244,9 @@ public class AuthService {
                     return new UserNotFoundException();
                 });
 
-        feedbackRepository.deleteAllByUser(user);
-        boardRepository.deleteAllByUser(user);
-        essayRepository.deleteAllByUser(user);
+        feedbackRepository.softDeleteAllByUserId(userId);
+        boardRepository.softDeleteAllByUser(userId);
+        essayRepository.deleteAllByUserId(userId);
         userRepository.delete(user);
 
         log.info("회원 탈퇴 성공 → userId={}", userId);

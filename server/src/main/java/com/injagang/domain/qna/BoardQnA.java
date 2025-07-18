@@ -5,6 +5,7 @@ import com.injagang.domain.Board;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorValue("BOARD")
+@Where(clause = "deleted_time IS NULL")
 public class BoardQnA extends QnA {
 
 

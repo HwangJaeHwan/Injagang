@@ -5,7 +5,6 @@ import com.injagang.domain.Essay;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
-import com.injagang.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,17 +21,19 @@ public interface QnARepository extends JpaRepository<QnA, Long> {
 
     List<BoardQnA> findAllByBoard(Board board);
     Optional<BoardQnA> findBoardQnaById(Long boardQnaId);
+    @Query("SELECT count(bq) FROM BoardQnA bq WHERE bq.deletedTime is null")
+    long countBoardQnA();
 
-    @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("delete from EssayQnA q where q in :qnas")
-    void deleteEssayQnAsIn(@Param("qnas") List<EssayQnA> qnaList);
+    @Query("select count(eq) from EssayQnA eq")
+    long countEssayQnA();
 
-    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Modifying
     @Query("delete from EssayQnA q where q.essay = :essay")
     void deleteEssayQnAByEssay(@Param("essay") Essay essay);
 
     @Modifying
-    @Query("delete from BoardQnA q where q in :qnas")
-    void deleteBoardQnAsIn(@Param("qnas") List<BoardQnA> qnaList);
+    @Query("update from BoardQnA q set q.deletedTime=current_timestamp where q.id in :ids")
+    void softDeleteBoardQnAsIn(@Param("ids") List<Long> ids);
+
 
 }

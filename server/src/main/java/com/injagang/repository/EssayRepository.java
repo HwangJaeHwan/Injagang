@@ -17,5 +17,5 @@ public interface EssayRepository extends JpaRepository<Essay, Long> {
     @Query("select distinct e from Essay e join fetch e.qnaList where e.user =:user")
     List<Essay> findAllByUser(@Param("user") User user);
     @Modifying
-    void deleteAllByUser(User user);
+    void deleteAllByUserId(Long userId);
 }

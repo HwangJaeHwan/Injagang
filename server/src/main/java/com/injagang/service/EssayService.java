@@ -2,6 +2,7 @@ package com.injagang.service;
 
 import com.injagang.domain.Essay;
 import com.injagang.domain.qna.EssayQnA;
+import com.injagang.domain.qna.QnA;
 import com.injagang.domain.user.User;
 import com.injagang.exception.EssayNotFoundException;
 import com.injagang.exception.UnauthorizedException;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
+
 @Slf4j
 @Service
 @Transactional(readOnly = true)
@@ -37,20 +40,20 @@ public class EssayService {
     @Counted("essay")
     @Transactional
     public Long writeMyEssay(Long userId, EssayWrite essayWrite) {
-        // 1) 시작 로그: 요청한 userId, 제목, QnA 개수
+
         log.info("에세이 작성 시도 → userId={}, title={}, qnaCount={}",
                 userId,
                 essayWrite.getTitle(),
                 essayWrite.getQnaList() != null ? essayWrite.getQnaList().size() : 0);
 
-        // 2) 사용자 조회 실패 시 로그
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.warn("에세이 작성 실패(사용자 없음) → userId={}", userId);
                     return new UserNotFoundException();
                 });
 
-        // 3) 에세이 엔티티 생성 및 QnA 추가
+
         Essay essay = Essay.builder()
                 .user(user)
                 .title(essayWrite.getTitle())
@@ -65,10 +68,8 @@ public class EssayService {
             }
         }
 
-        // 4) 저장
         Essay saveEssay = essayRepository.save(essay);
 
-        // 5) 성공 로그: 생성된 에세이 ID, 실제 저장된 QnA 개수
         int savedQnaCount = saveEssay.getQnaList().size();
 
         log.info("에세이 작성 성공 → essayId={}, savedQnaCount={}",
@@ -111,7 +112,7 @@ public class EssayService {
 
         return essays.stream()
                 .map(EssayList::new)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
     @Transactional
     public void reviseEssay(Long userId, Long essayId, EssayWrite essayWrite) {
@@ -164,7 +165,6 @@ public class EssayService {
             throw new UnauthorizedException();
         }
 
-        qnARepository.deleteEssayQnAsIn(qnARepository.findAllByEssay(essay));
         essayRepository.delete(essay);
 
         log.info("에세이 삭제 성공 → essayId={}", essayId);

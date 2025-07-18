@@ -1,6 +1,7 @@
 package com.injagang.domain.qna;
 
 import com.injagang.domain.Essay;
+import com.injagang.domain.base.SoftDelete;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = PROTECTED)
-public abstract class QnA {
+public abstract class QnA extends SoftDelete {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

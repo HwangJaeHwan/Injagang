@@ -249,9 +249,14 @@ public class BoardService {
         }
 
         List<BoardQnA> qnAList = qnARepository.findAllByBoard(board);
-        feedbackRepository.deleteFeedbacksInQnAs(qnAList);
-        qnARepository.deleteBoardQnAsIn(qnAList);
+        List<Long> ids = qnAList.stream().map(QnA::getId).collect(Collectors.toList());
+
+        feedbackRepository.softDeleteFeedbacksInQnAs(ids);
+
+        qnARepository.softDeleteBoardQnAsIn(ids);
+
         boardRepository.delete(board);
+
 
         log.info("게시글 삭제 성공 → boardId={}", boardId);
     }

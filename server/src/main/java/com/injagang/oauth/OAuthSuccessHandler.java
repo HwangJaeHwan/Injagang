@@ -2,7 +2,9 @@ package com.injagang.oauth;
 
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.domain.LoginHistory;
 import com.injagang.oauth.user.UserInfo;
+import com.injagang.repository.LoginHistoryRepository;
 import com.injagang.resolver.data.AccessToken;
 import com.injagang.resolver.data.Tokens;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
@@ -27,11 +30,33 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
     private final JwtConfig jwtConfig;
+    private final LoginHistoryRepository loginHistoryRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
+
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        String userAgent = request.getHeader("User-Agent");
+
+        log.info("oauth 로그인 성공 ipAddress={}, userAgent={}", ipAddress, userAgent);
+
+
+        log.info("oauth 로그인 기록 생성 시도");
+
+
+        LoginHistory history = LoginHistory.builder()
+                .userId(userInfo.getUserId())
+                .eventType("LOGIN")
+                .ipAddress(ipAddress)
+                .userAgent(userAgent)
+                .build();
+        loginHistoryRepository.save(history);
+
+        log.info("oauth 로그인 기록 생성 historyId = {}", history.getId());
+
+
 
         String redirect = UriComponentsBuilder.fromUriString("https://www.relaymentor.com/")
                 .build().toUriString();

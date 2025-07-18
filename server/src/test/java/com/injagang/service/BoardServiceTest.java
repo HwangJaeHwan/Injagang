@@ -19,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,9 @@ import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 @TestInstance(Lifecycle.PER_CLASS)
 class BoardServiceTest {
-
 
     @Autowired
     UserRepository userRepository;
@@ -1055,8 +1057,9 @@ class BoardServiceTest {
 
         boardService.deleteBoard(user.getId(), board.getId());
 
+
         assertEquals(0, feedbackRepository.count());
-        assertEquals(0, qnARepository.count());
+        assertEquals(0, qnARepository.countBoardQnA());
         assertEquals(0, boardRepository.count());
 
 

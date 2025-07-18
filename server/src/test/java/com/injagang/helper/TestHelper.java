@@ -15,6 +15,10 @@ public class TestHelper {
     private final AppConfig appConfig;
     private final JwtConfig jwtConfig;
 
+    public static final String USERAGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.5790.102 Safari/537.36";
+    public static final String IPADDRESS = "127.0.0.1";
+
     public TestHelper(AppConfig appConfig, JwtConfig jwtConfig) {
         this.appConfig = appConfig;
         this.jwtConfig = jwtConfig;

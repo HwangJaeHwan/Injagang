@@ -24,16 +24,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.Cookie;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.TestInstance.*;
+import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -48,8 +51,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
-@AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.injagang.com",uriPort = 443)
+@AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.relaymentor.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
+@Transactional
 @ActiveProfiles("test")
 public class AuthControllerDocTest {
 
@@ -162,8 +166,13 @@ public class AuthControllerDocTest {
 
         mockMvc.perform(post("/login")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
-                .andDo(document("auth-login",
+                        .content(json)
+                        .header(USER_AGENT, "JUnit-Test-Agent")
+                        .header("X-Forwarded-For", "127.0.0.1"))
+                .andDo(document("auth-login",requestHeaders(
+                                headerWithName("X-Forwarded-For").description("ipAddress"),
+                                headerWithName(USER_AGENT).description("user-agent")
+                        ),
                         requestFields(fieldWithPath("loginId").description("로그인 아이디"),
                                 fieldWithPath("password").description("비밀번호")
 

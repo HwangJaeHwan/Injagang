@@ -1,6 +1,7 @@
 package com.injagang.domain;
 
 
+import com.injagang.domain.base.SoftDelete;
 import com.injagang.domain.base.Timestamp;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.user.User;
@@ -8,19 +9,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@ToString
+@SQLDelete(sql = "UPDATE board SET deleted_time = NOW() WHERE board_id = ?")
+@Where(clause = "deleted_time IS NULL")
 @NoArgsConstructor(access = PROTECTED)
-public class Board extends Timestamp {
+public class Board extends SoftDelete {
 
 
     @Id
@@ -36,6 +41,7 @@ public class Board extends Timestamp {
     private String content;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
@@ -43,7 +49,7 @@ public class Board extends Timestamp {
 
     private String password;
 
-    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board",cascade = PERSIST)
     private List<BoardQnA> qnaList = new ArrayList<>();
 
 

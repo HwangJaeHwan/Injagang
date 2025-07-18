@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 @TestInstance(Lifecycle.PER_CLASS)
 class EssayServiceTest {
 

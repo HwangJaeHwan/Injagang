@@ -19,11 +19,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.Cookie;
+import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 
@@ -36,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
+@Transactional
 @ActiveProfiles("test")
 class AuthControllerTest {
 
@@ -77,7 +80,7 @@ class AuthControllerTest {
     }
 
     @BeforeEach
-    void clean() {
+    void beforeClean() {
 
         userRepository.deleteAll();
         redisDao.clear();
@@ -111,7 +114,11 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/login")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        // ② User-Agent 헤더 추가
+                        .header(HttpHeaders.USER_AGENT, "JUnit-Test-Agent")
+                        .header("X-Forwarded-For", "127.0.0.1")
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(user.getId()))
                 .andExpect(jsonPath("$.access").isNotEmpty())

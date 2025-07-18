@@ -24,13 +24,17 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
+import static com.injagang.helper.TestHelper.IPADDRESS;
+import static com.injagang.helper.TestHelper.USERAGENT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 @TestInstance(Lifecycle.PER_CLASS)
 class AuthServiceTest {
 
@@ -67,6 +71,7 @@ class AuthServiceTest {
 
     @Autowired
     FeedbackRepository feedbackRepository;
+
 
 
     @AfterAll
@@ -171,7 +176,7 @@ class AuthServiceTest {
                 .build();
 
 
-        Tokens tokens = authService.login(login);
+        Tokens tokens = authService.login(login, IPADDRESS, USERAGENT);
 
         assertEquals(tokens.getUserId(), user.getId());
 
@@ -200,7 +205,7 @@ class AuthServiceTest {
                 .build();
 
 
-        assertThrows(InvalidLoginInfoException.class, () -> authService.login(login));
+        assertThrows(InvalidLoginInfoException.class, () -> authService.login(login, IPADDRESS, USERAGENT));
 
 
     }
@@ -541,6 +546,33 @@ class AuthServiceTest {
                 .build();
 
         userRepository.save(user);
+
+        assertThrows(DuplicateLoginIdException.class, () -> authService.check("zzzzz", "loginId"));
+
+        assertThrows(DuplicateNicknameException.class, () -> authService.check("nickname", "zzzzzzz"));
+
+
+
+
+    }
+
+    @Test
+    @DisplayName("삭제된 유저 중복 검사")
+    void test11() {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .terms(true)
+                .policy(true)
+                .type(UserType.USER)
+                .build();
+
+        userRepository.save(user);
+
+        userRepository.delete(user);
 
         assertThrows(DuplicateLoginIdException.class, () -> authService.check("zzzzz", "loginId"));
 
