@@ -1,24 +1,10 @@
-# InJaGang (인터뷰와 자소서를 강하게 인자강)
-<br/>
-
-![Untitled](https://github.com/Minsoek96/Injagang/assets/125581005/b1d08a5d-842a-4b27-9f74-ac4046816a0a)
-
+# InJaGang(RelayMetor)
 
 <br/>
 
-## 목차
-1. [팀원 소개](#팀원-소개)
-2. [사이트 특징](#사이트-특징)
-3. [서비스 가치 & 가설](#서비스-가치--가설)
-4. [ERD](#erd)
-5. [주요 기능](#주요-기능)
-   - [접근 권한 인증](#접근-권한-인증)
-   - [유저 자소서 관리](#유저-자소서-관리-특정-유저)
-   - [자소서 템플릿](#자소서-템플릿-관리자)
-   - [자소서 첨삭 게시판](#자소서-첨삭-게시판-모든-유저)
-   - [피드백](#피드백-모든-유저)
-   - [모의 면접](#모의-면접-특정-유저)
-6. [Tech Stack](#기술-스택)
+## 배포 주소
+https://www.relaymentor.com/
+
 
 <br/>
 
@@ -78,102 +64,4 @@
   - 가설 : 반복 학습은 지속적인 발전과 높은 성공률을 가져온다.  
 
 <br/>
-
----
-
-
-## ERD
-
----
-
-![인자강 디비 구조도](https://github.com/HwangJaeHwan/Injagang/assets/58110333/769886ad-0006-484d-a6ad-c5b128a8ea55)
-
-## 주요 기능
----
-
-### 접근 권한 인증
-  - 토큰 검증을 통한 인증 처리
-  - AccessToken + RefreshToken
-  - 권한별 서비스 이용 제어
-  - 잘못된 정보 검증
-    
-![접근권한](https://github.com/Minsoek96/Injagang/assets/125581005/ecaaced2-2c70-4c9f-8ef4-14283f201978)
-
-
-### 유저 자소서 관리 ( 특정 유저 )
- - 자소서 작성하기
- - 자소서 삭제하기
- - 자소서 수정하기
- - ADMIN 기업별 자소서 질문 문항 템플릿 제공(커스텀가능)
-
-![자소서](https://github.com/Minsoek96/Injagang/assets/125581005/a822a103-5728-4c35-a39c-e9501b1de38b)
-
-    
-### 자소서 템플릿( 관리자 )
- - 기업별 자소서 질문 문항 작성하기
- - 질문 문항 삭제하기
-   
-![템플릿](https://github.com/Minsoek96/Injagang/assets/125581005/7575344e-dd23-4c32-860a-f9b929e06683)
-
-
-### 자소서 첨삭 게시판 ( 모든 유저 ) 
- - 게시글 자소서 첨부 하기
- - 게시글 자소서 삭제 하기
- - 게시글 자소서 수정 하기
- - 제목별, 닉네임별 자소서 내용 탐색하기
- 
-
-### 피드백 ( 모든 유저 )
- - 첨부 자소서 문항별 첨삭하기
- - 문항별 피드백 작성하기
- - 피드백 삭제하기
- - 피드백 수정하기
-
-![게시판](https://github.com/Minsoek96/Injagang/assets/125581005/0da76966-98dc-4860-aaa0-34f0ec3265e1)
-
-
-### 모의 면접 ( 특정 유저 )
- - 모의 면접 질문 관리자 제공 
- - 자신만의 모의 면접 질문 설정
- - 관리자 랜덤 면접 질문 설정 (타입 별 갯수지정)
- - 면접 질문 문항별 스피칭
- - 면접 질문 문항별 녹화
- - 면접 질문 문항별 저장
-
-![면접](https://github.com/Minsoek96/Injagang/assets/125581005/f1400b82-39a6-46fa-986a-3a243feab6b1)
-
-![랜덤면접](https://github.com/Minsoek96/Injagang/assets/125581005/3f011e6d-96ed-4dec-bf28-7aae0f7f9570)
-
-## 🛠Tech Stack
-
-<div>
-
-| Area | Tech Stack |
-|:----:|:----------:|
-| **Frontend** | <img src="https://img.shields.io/badge/next.js-000000.svg?&style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js"> <img src="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"> <img src="https://img.shields.io/badge/styled--components-DB7093.svg?&style=for-the-badge&logo=styled-components&logoColor=white" alt="Styled Components"> <img src="https://img.shields.io/badge/redux-764ABC.svg?&style=for-the-badge&logo=Redux&logoColor=white" alt="Redux"> <img src="https://img.shields.io/badge/redux--thunk-764ABC.svg?&style=for-the-badge&logo=redux&logoColor=white" alt="Redux Thunk"> |
-| **Backend** | <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Spring"> <img src="https://img.shields.io/badge/h2-4479A1?style=for-the-badge&logo=h2&logoColor=white" alt="H2"> <img src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" alt="JWT"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"> |
-
-</div>
-
-## 문제 해결
-
-### Spring Rest Docs를 활용한 API 문서화
-
-* 문제
-   * API를 개발하는 과정에서 클라이언트와 서버 간의 명세가 명확하지 않아, 요청/응답의 데이터 구조나 필드에 대한 오해가 발생했습니다. 이로 인해, 잘못된 요청을 처리하거나, 추가적인 커뮤니케이션 비용이 증가하는 문제가 발생했습니다.
-* 해결
-   * Spring Rest Docs를 사용해 테스트에 기반한 API 문서를 생성해 신뢰할 수 있는 API 문서를 작성했습니다. 
-* 결과
-   * 개발자 간 불필요한 커뮤니케이션이 줄어들었고, API 사용에 대한 오해가 사라졌습니다.
-
-### N+1 문제 해결을 위한 패치 조인 사용
-
-* 문제
-   * 유저의 자기소개서 리스트를 가져오는 과정에서 N+1 문제가 나타났습니다. 이로 인해 쿼리 호출 횟수가 증가해 성능 저하와 데이터베이스 부하가 발생했습니다.
-* 해결
-   * Fetch Join을 사용하여 문제를 해결했습니다
-* 결과
-   * N+1 문제로 인해 발생하던 불필요한 다중 쿼리를 한 번의 조인으로 처리하여 성능을 대폭 개선했습니다.
-   * 쿼리 호출 횟수가 줄어들어 안정적인 성능을 유지할 수 있었습니다.
-   * 유저의 자기소개서 리스트를 조회하는 응답 시간이 크게 단축되어 사용자 경험이 개선되었습니다.
 
