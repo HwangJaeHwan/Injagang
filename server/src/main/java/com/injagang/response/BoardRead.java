@@ -2,12 +2,11 @@ package com.injagang.response;
 
 
 import com.injagang.domain.Board;
-import com.injagang.domain.Essay;
 import com.injagang.domain.qna.BoardQnA;
-import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +28,20 @@ public class BoardRead {
 
     private boolean owner = false;
 
+    private long viewCount;
+
+    private long likes;
+
+    private boolean liked;
+
+    private LocalDateTime createdAt;
 
     private List<QnAInfo> qnaList = new ArrayList<>();
 
+    private List<String> hashtags = new ArrayList<>();
 
 
-    public BoardRead(Long userId,Board board, List<BoardQnA> qna) {
+    public BoardRead(Long userId, Board board, long likes, boolean liked,List<BoardQnA> qna, List<String> hashtags) {
 
         this.boardId = board.getId();
         this.title = board.getTitle();
@@ -42,6 +49,12 @@ public class BoardRead {
         this.essayTitle = board.getEssayTitle();
         this.userId = board.getUser().getId();
         this.nickname = board.getUser().getNickname();
+        this.viewCount = board.getViewCount();
+        this.likes = likes;
+        this.liked = liked;
+        this.createdAt = board.getCreatedTime();
+
+                getHashtags().addAll(hashtags);
 
 
         if (userId != null && userId.equals(board.getUser().getId())) {

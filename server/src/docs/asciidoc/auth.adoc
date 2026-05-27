@@ -1,4 +1,4 @@
-= 인자강 API
+= RELAYMENTOR API
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs

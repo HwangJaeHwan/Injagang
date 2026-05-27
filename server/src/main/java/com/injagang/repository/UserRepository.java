@@ -13,15 +13,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByLoginId(String loginId);
     @Query(
-            value = "SELECT EXISTS(SELECT 1 FROM users WHERE login_id = :loginId)",
+            value = "SELECT COUNT(*) FROM users WHERE login_id = :loginId",
             nativeQuery = true
     )
-    Boolean existsByLoginId(String loginId);
+    Integer existsByLoginId(String loginId);
 
     Optional<User> findUserByNickname(String nickname);
     @Query(
-            value = "SELECT EXISTS(SELECT 1 FROM users WHERE nickname = :nickname)",
+            value = "SELECT COUNT(*) FROM users WHERE nickname = :nickname",
             nativeQuery = true
     )
-    Boolean existsByNickname(String nickname);
+    Integer existsByNickname(String nickname);
 }

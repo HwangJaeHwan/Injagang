@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 
+
     <include resource="console-appender.xml"/>
     <include resource="file-info-appender.xml"/>
     <include resource="file-warn-appender.xml"/>
     <include resource="file-error-appender.xml"/>
+    <include resource="logstash-appender.xml"/>
 
     <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE_INFO"/>
         <appender-ref ref="FILE_WARN"/>
         <appender-ref ref="FILE_ERROR"/>
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGSTASH"/>
     </root>
 </configuration>

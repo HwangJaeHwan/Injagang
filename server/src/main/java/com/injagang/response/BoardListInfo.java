@@ -1,8 +1,12 @@
 package com.injagang.response;
 
-import com.injagang.domain.Board;
-import com.injagang.domain.user.UserType;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class BoardListInfo {
@@ -17,12 +21,31 @@ public class BoardListInfo {
 
     private Boolean isNotice;
 
+    private String content;
 
-    public BoardListInfo(Board board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.nickname = board.getUser().getNickname();
-        this.isLock = board.getPassword() != null;
-        this.isNotice = board.getUser().getType().equals(UserType.ADMIN);
+    private long viewCount;
+
+    private LocalDateTime createdAt;
+
+    private Integer qnaCount;
+
+    private long likes;
+
+    private List<String> hashtags = new ArrayList<>();
+
+    @Builder
+    public BoardListInfo(Long id, String title, String nickname, Boolean isLock, Boolean isNotice, String content,
+                         long viewCount, LocalDateTime createdAt, Integer qnaCount, long likes, List<String> hashtags) {
+        this.id = id;
+        this.title = title;
+        this.nickname = nickname;
+        this.isLock = isLock;
+        this.isNotice = isNotice;
+        this.content = content;
+        this.viewCount = viewCount;
+        this.createdAt = createdAt;
+        this.qnaCount = qnaCount;
+        this.likes = likes;
+        this.hashtags = hashtags;
     }
 }

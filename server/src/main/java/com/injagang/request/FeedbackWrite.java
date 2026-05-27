@@ -14,13 +14,18 @@ public class FeedbackWrite {
 
     @NotNull
     private Long qnaId;
+
+    @NotNull
+    private Long boardId;
+
     @NotBlank(message = "피드백할 타겟을 입력해주세요.")
     private String feedbackTarget;
     @NotBlank(message = "피드백 내용을 입력해주세요.")
     private String feedbackContent;
     @Builder
-    public FeedbackWrite(Long qnaId, String feedbackTarget, String feedbackContent) {
+    public FeedbackWrite(Long qnaId, Long boardId, String feedbackTarget, String feedbackContent) {
         this.qnaId = qnaId;
+        this.boardId = boardId;
         this.feedbackTarget = feedbackTarget;
         this.feedbackContent = feedbackContent;
     }

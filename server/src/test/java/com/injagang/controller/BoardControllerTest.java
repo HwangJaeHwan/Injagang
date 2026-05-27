@@ -1,9 +1,7 @@
 package com.injagang.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.injagang.domain.Board;
-import com.injagang.domain.Essay;
-import com.injagang.domain.Feedback;
+import com.injagang.domain.*;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
@@ -15,6 +13,7 @@ import com.injagang.request.BoardWrite;
 import com.injagang.request.FeedbackWrite;
 import com.injagang.request.ReviseFeedback;
 import com.injagang.response.BoardRevise;
+import com.injagang.response.QnAInfo;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +26,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.*;
@@ -63,6 +63,15 @@ class BoardControllerTest {
     FeedbackRepository feedbackRepository;
 
     @Autowired
+    HashtagRepository hashtagRepository;
+
+    @Autowired
+    BoardHashtagRepository boardHashtagRepository;
+
+    @Autowired
+    LikeRepository likeRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
@@ -74,6 +83,7 @@ class BoardControllerTest {
 
     @AfterAll
     void after() {
+        likeRepository.deleteAll();
         feedbackRepository.deleteAll();
         qnARepository.deleteAll();
         essayRepository.deleteAll();
@@ -83,6 +93,7 @@ class BoardControllerTest {
 
     @BeforeEach
     void clean() {
+        likeRepository.deleteAll();
         feedbackRepository.deleteAll();
         qnARepository.deleteAll();
         essayRepository.deleteAll();
@@ -253,6 +264,7 @@ class BoardControllerTest {
                 .content("test content")
                 .essayTitle("test essay")
                 .user(user)
+                .viewCount(0L)
                 .build();
 
         BoardQnA qna1 = BoardQnA.builder()
@@ -313,6 +325,10 @@ class BoardControllerTest {
 
         userRepository.save(user);
 
+        Hashtag hashtag = new Hashtag("백엔드");
+
+        hashtagRepository.save(hashtag);
+
         String jws = testHelper.makeAccessToken(user.getId());
 
         Board board = Board.builder()
@@ -321,6 +337,7 @@ class BoardControllerTest {
                 .essayTitle("test essay")
                 .user(user)
                 .password(encoder.encode("test"))
+                .viewCount(0L)
                 .build();
 
         BoardQnA qna1 = BoardQnA.builder()
@@ -344,6 +361,8 @@ class BoardControllerTest {
 
         boardRepository.save(board);
 
+        boardHashtagRepository.save(new BoardHashtag(board, hashtag));
+
 
         mockMvc.perform(get("/board/{boardId}", board.getId())
                         .header("Authorization", jws).queryParam("password", "test"))
@@ -352,12 +371,16 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.title").value("test board"))
                 .andExpect(jsonPath("$.content").value("test content"))
                 .andExpect(jsonPath("$.essayTitle").value("test essay"))
+                .andExpect(jsonPath("$.userId").value(user.getId()))
+                .andExpect(jsonPath("$.owner").value(true))
+                .andExpect(jsonPath("$.viewCount").value(1L))
                 .andExpect(jsonPath("$.qnaList[0].question").value("question1"))
                 .andExpect(jsonPath("$.qnaList[0].answer").value("answer1"))
                 .andExpect(jsonPath("$.qnaList[1].question").value("question2"))
                 .andExpect(jsonPath("$.qnaList[1].answer").value("answer2"))
                 .andExpect(jsonPath("$.qnaList[2].question").value("question3"))
                 .andExpect(jsonPath("$.qnaList[2].answer").value("answer3"))
+                .andExpect(jsonPath("$.hashtags[0]").value("백엔드"))
                 .andDo(print());
 
 
@@ -400,6 +423,11 @@ class BoardControllerTest {
                 .answer("answer2")
                 .build());
 
+        Hashtag 백엔드 = hashtagRepository.save(new Hashtag("백엔드"));
+
+        board.getBoardHashtags().add(new BoardHashtag(board, 백엔드));
+
+
         boardRepository.save(board);
 
         BoardRevise revise = BoardRevise.builder()
@@ -407,6 +435,11 @@ class BoardControllerTest {
                 .changeTitle("change title")
                 .changeContent("change content")
                 .build();
+
+        revise.getHashtags().add("백엔드");
+        revise.getHashtags().add("스프링");
+        revise.getHashtags().add("신입");
+
 
         String json = objectMapper.writeValueAsString(revise);
 
@@ -418,219 +451,9 @@ class BoardControllerTest {
                 .andDo(print());
 
 
-    }
-
-    @Test
-    @DisplayName("/feedback 피드백 쓰기")
-    void test4() throws Exception {
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        boardRepository.save(board);
-
-        FeedbackWrite write = FeedbackWrite.builder()
-                .qnaId(qna1.getId())
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        String json = objectMapper.writeValueAsString(write);
-
-        mockMvc.perform(post("/board/feedback")
-                        .header("Authorization", jws)
-                        .content(json)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
 
     }
 
-    @Test
-    @DisplayName("/board/feedback/revise 피드백 수정")
-    void test5() throws Exception {
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        boardRepository.save(board);
-
-
-        Feedback feedback = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        feedbackRepository.save(feedback);
-
-
-        ReviseFeedback revise = ReviseFeedback.builder()
-                .feedbackId(feedback.getId())
-                .reviseContent("revise")
-                .build();
-
-        String json = objectMapper.writeValueAsString(revise);
-
-        mockMvc.perform(patch("/board/feedback/revise")
-                        .header("Authorization", jws)
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-
-    }
-
-    @Test
-    @DisplayName("/feedback/{qnaId} 피드백 리스트")
-    void test6() throws Exception{
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        User user2 = User.builder()
-                .loginId("loginId2")
-                .password("test")
-                .nickname("nickname2")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-        userRepository.save(user2);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-
-        Feedback feedback1 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target1")
-                .feedbackContent("content1")
-                .build();
-
-        Feedback feedback2 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target2")
-                .feedbackContent("content2")
-                .build();
-
-        Feedback feedback3 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target3")
-                .feedbackContent("content3")
-                .build();
-
-        Feedback feedback4 = Feedback.builder()
-                .user(user2)
-                .boardQnA(qna1)
-                .feedbackTarget("target4")
-                .feedbackContent("content4")
-                .build();
-
-        feedbackRepository.save(feedback1);
-        feedbackRepository.save(feedback2);
-        feedbackRepository.save(feedback3);
-        feedbackRepository.save(feedback4);
-
-        mockMvc.perform(get("/board/feedback/{qnaId}", qna1.getId())
-                        .header("Authorization", jws))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(4))
-                .andDo(print());
-
-
-    }
 
     @Test
     @DisplayName("게시물 리스트")
@@ -649,7 +472,12 @@ class BoardControllerTest {
 
         userRepository.save(user);
 
-        IntStream.rangeClosed(1, 100).forEach(
+        Hashtag 테스트 = new Hashtag("테스트");
+        Hashtag 백엔드 = new Hashtag("백엔드");
+        hashtagRepository.save(테스트);
+        hashtagRepository.save(백엔드);
+
+        IntStream.rangeClosed(1, 107).forEach(
                 i->{
                     Board board = Board.builder()
                             .title("test board " + i)
@@ -665,6 +493,8 @@ class BoardControllerTest {
                             .build();
 
                     board.addQnA(qna1);
+                    board.addHashtag(테스트);
+                    board.addHashtag(백엔드);
 
 
                     boardRepository.save(board);
@@ -675,8 +505,8 @@ class BoardControllerTest {
 
         mockMvc.perform(get("/board"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalPage").value(7L))
-                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andExpect(jsonPath("$.totalPage").value(9L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(12L))
                 .andDo(print());
 
 
@@ -728,7 +558,7 @@ class BoardControllerTest {
                         .param("content","1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalPage").value(2L))
-                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(12L))
                 .andExpect(jsonPath("$.isFirst").value(true))
                 .andExpect(jsonPath("$.isLast").value(false))
                 .andDo(print());
@@ -816,11 +646,84 @@ class BoardControllerTest {
                         .param("type","writer")
                         .param("content","writer"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalPage").value(2L))
-                .andExpect(jsonPath("$.boardInfos.length()").value(15L))
+                .andExpect(jsonPath("$.totalPage").value(3L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(12L))
                 .andExpect(jsonPath("$.isFirst").value(true))
                 .andExpect(jsonPath("$.isLast").value(false))
                 .andExpect(jsonPath("$.boardInfos[0].nickname").value("writer"))
+                .andDo(print());
+
+
+    }
+
+    @Test
+    @DisplayName("게시물 리스트 hashtag")
+    void test13() throws Exception {
+
+
+        User user1 = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("writer")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+        userRepository.save(user1);
+
+        User user2 = User.builder()
+                .loginId("loginId2")
+                .password("test")
+                .nickname("nickname2")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user2);
+
+        Hashtag 백엔드 = hashtagRepository.save(new Hashtag("백엔드"));
+
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user1)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+                    if (i % 2 == 0) {
+                        board.getBoardHashtags().add(new BoardHashtag(board, 백엔드));
+                    }
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+
+        mockMvc.perform(get("/board")
+                        .param("type","hashtag")
+                        .param("content","백엔드"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(2L))
+                .andExpect(jsonPath("$.boardInfos.length()").value(12L))
+                .andExpect(jsonPath("$.isFirst").value(true))
+                .andExpect(jsonPath("$.isLast").value(false))
                 .andDo(print());
 
 
@@ -965,10 +868,61 @@ class BoardControllerTest {
         boardRepository.saveAll(boards);
 
         mockMvc.perform(get("/board/me")
+                        .param("page","2")
                         .header("Authorization", jws))
                 .andExpect(status().isOk())
                 .andDo(print());
 
+
+    }
+
+    @Test
+    @DisplayName("게시글 좋아요")
+    void test12() throws Exception {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        boardRepository.save(board);
+
+
+        mockMvc.perform(post("/board/{boardId}/like", board.getId())
+                        .header("Authorization", jws))
+                .andExpect(status().isOk())
+                .andDo(print());
 
     }
 

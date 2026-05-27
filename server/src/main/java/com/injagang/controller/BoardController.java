@@ -5,6 +5,7 @@ import com.injagang.resolver.data.UserSession;
 import com.injagang.request.*;
 import com.injagang.response.*;
 import com.injagang.service.BoardService;
+import com.injagang.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final LikeService likeService;
 
 
     @GetMapping
@@ -58,31 +60,31 @@ public class BoardController {
 
     }
 
-    @PostMapping("/feedback")
-    public void writeFeedback(UserSession userSession,  @RequestBody @Valid FeedbackWrite feedbackWrite) {
+//    @PostMapping("/feedback")
+//    public void writeFeedback(UserSession userSession,  @RequestBody @Valid FeedbackWrite feedbackWrite) {
+//
+//        boardService.writeFeedback(userSession.getUserId(), feedbackWrite);
+//    }
 
-        boardService.writeFeedback(userSession.getUserId(), feedbackWrite);
-    }
-
-    @PatchMapping("/feedback/revise")
-    public void reviseFeedback(UserSession userSession, @RequestBody @Valid ReviseFeedback reviseFeedback) {
-
-        boardService.reviseFeedback(userSession.getUserId(), reviseFeedback);
-
-    }
-
-    @DeleteMapping("/feedback/{feedbackId}")
-    public void deleteFeedback(UserSession userSession, @PathVariable Long feedbackId) {
-        boardService.deleteFeedback(userSession.getUserId(),feedbackId);
-    }
-
-    @GetMapping("/feedback/{qnaId}")
-    public List<FeedbackList> feedbacksByQna(UserSession userSession, @PathVariable Long qnaId) {
-
-        return boardService.feedbacksByQna(userSession.getUserId(), qnaId);
-
-    }
-
+//    @PatchMapping("/feedback/revise")
+//    public void reviseFeedback(UserSession userSession, @RequestBody @Valid ReviseFeedback reviseFeedback) {
+//
+//        boardService.reviseFeedback(userSession.getUserId(), reviseFeedback);
+//
+//    }
+//
+//    @DeleteMapping("/feedback/{feedbackId}")
+//    public void deleteFeedback(UserSession userSession, @PathVariable Long feedbackId) {
+//        boardService.deleteFeedback(userSession.getUserId(),feedbackId);
+//    }
+//
+//    @GetMapping("/feedback/{qnaId}")
+//    public List<FeedbackList> feedbacksByQna(UserSession userSession, @PathVariable Long qnaId) {
+//
+//        return boardService.feedbacksByQna(userSession.getUserId(), qnaId);
+//
+//    }
+//
     @DeleteMapping("/{boardId}")
     public void deleteBoard(UserSession userSession, @PathVariable Long boardId) {
 
@@ -90,10 +92,16 @@ public class BoardController {
     }
 
     @GetMapping("/me")
-    public List<BoardListInfo> myBoards(UserSession userSession) {
+    public BoardList myBoards(UserSession userSession,PageDTO pageDTO) {
 
-        return boardService.myBoardList(userSession.getUserId());
+        return boardService.myBoardList(userSession.getUserId(),pageDTO);
 
+    }
+
+    @PostMapping("/{boardId}/like")
+    public boolean boardLike(UserSession userSession,@PathVariable Long boardId) {
+
+        return likeService.toggleBoardLike(boardId, userSession.getUserId());
     }
 
 }

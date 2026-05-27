@@ -1,8 +1,6 @@
 package com.injagang.service;
 
-import com.injagang.domain.Board;
-import com.injagang.domain.Essay;
-import com.injagang.domain.Feedback;
+import com.injagang.domain.*;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
@@ -19,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,6 +49,9 @@ class BoardServiceTest {
 
     @Autowired
     BoardService boardService;
+
+    @Autowired
+    HashtagRepository hashtagRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -242,6 +242,7 @@ class BoardServiceTest {
                 .content("test content")
                 .essayTitle("test essay")
                 .user(user)
+                .viewCount(0L)
                 .build();
 
         BoardQnA qna1 = BoardQnA.builder()
@@ -301,6 +302,7 @@ class BoardServiceTest {
                 .essayTitle("test essay")
                 .user(user)
                 .password(passwordEncoder.encode("test"))
+                .viewCount(0L)
                 .build();
 
         BoardQnA qna1 = BoardQnA.builder()
@@ -410,6 +412,10 @@ class BoardServiceTest {
                 .essayTitle("test essay title")
                 .build();
 
+        Hashtag 백엔드 = hashtagRepository.save(new Hashtag("백엔드"));
+
+        board.getBoardHashtags().add(new BoardHashtag(board, 백엔드));
+
 
         board.addQnA(BoardQnA.builder()
                 .question("question1")
@@ -423,17 +429,29 @@ class BoardServiceTest {
 
         boardRepository.save(board);
 
+        System.out.println("시팔1 =" + board);
+
+
         BoardRevise revise = BoardRevise.builder()
                 .boardId(board.getId())
                 .changeTitle("change title")
                 .changeContent("change content")
                 .build();
 
+        revise.getHashtags().add("백엔드");
+        revise.getHashtags().add("스프링");
+        revise.getHashtags().add("신입");
+
+        System.out.println("----------------------------------");
         boardService.reviseBoard(user.getId(), revise);
+        System.out.println("----------------------------------");
 
         Board changeBoard = boardRepository.findById(board.getId()).get();
         assertEquals("change title", changeBoard.getTitle());
         assertEquals("change content", changeBoard.getContent());
+        assertEquals(3L, hashtagRepository.count());
+
+        System.out.println("시팔2 =" + board);
 
     }
 
@@ -497,317 +515,6 @@ class BoardServiceTest {
 
 
     @Test
-    @DisplayName("피드백 쓰기")
-    void test4() {
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-        FeedbackWrite feedbackWrite = FeedbackWrite.builder()
-                .qnaId(qna1.getId())
-                .feedbackTarget("feedback target")
-                .feedbackContent("feedback content")
-                .build();
-
-        boardService.writeFeedback(user.getId(),feedbackWrite);
-
-        List<Feedback> feedbacks = feedbackRepository.findAllByQna(qna1);
-
-        assertEquals(1, feedbacks.size());
-        assertEquals("feedback target", feedbacks.get(0).getFeedbackTarget());
-        assertEquals("feedback content", feedbacks.get(0).getFeedbackContent());
-
-
-
-    }
-
-    @Test
-    @DisplayName("피드백 수정")
-    void test5() {
-
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-        Feedback feedback = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        feedbackRepository.save(feedback);
-
-        ReviseFeedback revise = ReviseFeedback.builder()
-                .feedbackId(feedback.getId())
-                .reviseContent("revise")
-                .build();
-
-        boardService.reviseFeedback(user.getId(), revise);
-
-        Feedback reviseFeedback = feedbackRepository.findById(feedback.getId()).get();
-
-        assertEquals("revise", reviseFeedback.getFeedbackContent());
-
-
-
-
-    }
-
-    @Test
-    @DisplayName("피드백 수정 권한 없음")
-    void test5_1() {
-
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        User user2 = User.builder()
-                .loginId("loginId2")
-                .password("test")
-                .nickname("nickname2")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-        userRepository.save(user2);
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-        Feedback feedback = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        feedbackRepository.save(feedback);
-
-        ReviseFeedback revise = ReviseFeedback.builder()
-                .feedbackId(feedback.getId())
-                .reviseContent("revise")
-                .build();
-
-        assertThrows(UnauthorizedException.class, () -> boardService.reviseFeedback(user2.getId(), revise));
-
-
-
-
-
-    }
-
-    @Test
-    @DisplayName("피드백 리스트")
-    void test6() {
-
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        User user2 = User.builder()
-                .loginId("loginId2")
-                .password("test")
-                .nickname("nickname2")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-        userRepository.save(user2);
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-
-        Feedback feedback1 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target1")
-                .feedbackContent("content1")
-                .build();
-
-        Feedback feedback2 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target2")
-                .feedbackContent("content2")
-                .build();
-
-        Feedback feedback3 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target3")
-                .feedbackContent("content3")
-                .build();
-
-        Feedback feedback4 = Feedback.builder()
-                .user(user2)
-                .boardQnA(qna1)
-                .feedbackTarget("target4")
-                .feedbackContent("content4")
-                .build();
-
-        feedbackRepository.save(feedback1);
-        feedbackRepository.save(feedback2);
-        feedbackRepository.save(feedback3);
-        feedbackRepository.save(feedback4);
-
-        List<FeedbackList> feedbackList = boardService.feedbacksByQna(user.getId(), qna1.getId());
-
-        assertEquals(4, feedbackList.size());
-        assertEquals(feedback1.getId(),feedbackList.get(0).getFeedbackId());
-        assertEquals("target1", feedbackList.get(0).getTarget());
-        assertEquals("content1", feedbackList.get(0).getContent());
-        assertTrue(feedbackList.get(0).isOwner());
-
-        assertEquals(feedback2.getId(),feedbackList.get(1).getFeedbackId());
-        assertEquals("target2", feedbackList.get(1).getTarget());
-        assertEquals("content2", feedbackList.get(1).getContent());
-        assertTrue(feedbackList.get(1).isOwner());
-
-        assertEquals(feedback3.getId(),feedbackList.get(2).getFeedbackId());
-        assertEquals("target3", feedbackList.get(2).getTarget());
-        assertEquals("content3", feedbackList.get(2).getContent());
-        assertTrue(feedbackList.get(2).isOwner());
-
-        assertEquals(feedback4.getId(),feedbackList.get(3).getFeedbackId());
-        assertEquals("target4", feedbackList.get(3).getTarget());
-        assertEquals("content4", feedbackList.get(3).getContent());
-        assertFalse(feedbackList.get(3).isOwner());
-
-    }
-
-    @Test
     @DisplayName("게시글 리스트 title")
     void test7() {
 
@@ -859,7 +566,7 @@ class BoardServiceTest {
         BoardList boardList = boardService.boardList(pageDTO, searchDTO);
 
         assertEquals(2, boardList.getTotalPage());
-        assertEquals(15, boardList.getBoardInfos().size());
+        assertEquals(12, boardList.getBoardInfos().size());
         assertTrue(boardList.getIsFirst());
         assertFalse(boardList.getIsLast());
 
@@ -959,19 +666,85 @@ class BoardServiceTest {
         BoardList boardList1 = boardService.boardList(pageDTO, searchDTO1);
         BoardList boardList2 = boardService.boardList(pageDTO, searchDTO2);
 
-        assertEquals(2, boardList1.getTotalPage());
-        assertEquals(15, boardList1.getBoardInfos().size());
+        assertEquals(3, boardList1.getTotalPage());
+        assertEquals(12, boardList1.getBoardInfos().size());
         assertTrue(boardList1.getIsFirst());
         assertFalse(boardList1.getIsLast());
         assertEquals("nickname",boardList1.getBoardInfos().get(0).getNickname());
 
-        assertEquals(2, boardList2.getTotalPage());
-        assertEquals(15, boardList2.getBoardInfos().size());
+        assertEquals(3, boardList2.getTotalPage());
+        assertEquals(12, boardList2.getBoardInfos().size());
         assertTrue(boardList2.getIsFirst());
         assertFalse(boardList2.getIsLast());
         assertEquals("writer",boardList2.getBoardInfos().get(0).getNickname());
 
     }
+
+
+    @Test
+    @DisplayName("게시글 리스트 hashtag")
+    void test12() {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+        Hashtag test = hashtagRepository.save(new Hashtag("test"));
+
+
+        IntStream.rangeClosed(1, 30).forEach(
+                i->{
+                    Board board = Board.builder()
+                            .title("test board " + i)
+                            .content("test content")
+                            .user(user)
+                            .essayTitle("test essay title")
+                            .build();
+
+
+                    BoardQnA qna1 = BoardQnA.builder()
+                            .question("question1")
+                            .answer("answer1")
+                            .build();
+
+                    board.addQnA(qna1);
+
+                    board.getBoardHashtags().add(new BoardHashtag(board, test));
+
+
+                    boardRepository.save(board);
+                }
+
+
+        );
+
+
+        PageDTO pageDTO = PageDTO.builder()
+                .page(1)
+                .build();
+        SearchDTO searchDTO = SearchDTO.builder()
+                .type("hashtag")
+                .content("test")
+                .build();
+
+        BoardList boardList = boardService.boardList(pageDTO, searchDTO);
+
+        assertEquals(3, boardList.getTotalPage());
+        assertEquals(12, boardList.getBoardInfos().size());
+        assertTrue(boardList.getIsFirst());
+        assertFalse(boardList.getIsLast());
+
+
+    }
+
 
     @Test
     @DisplayName("게시글 삭제")
@@ -1303,6 +1076,10 @@ class BoardServiceTest {
 
         userRepository.save(user);
 
+        PageDTO pageDTO = PageDTO.builder()
+                .page(1)
+                .build();
+
         List<Board> boards = new ArrayList<>();
 
         IntStream.rangeClosed(1, 100).forEach(
@@ -1329,9 +1106,9 @@ class BoardServiceTest {
         boardRepository.saveAll(boards);
 
 
-        List<BoardListInfo> list = boardService.myBoardList(user.getId());
+        BoardList boardList = boardService.myBoardList(user.getId(), pageDTO);
 
-        assertEquals(100L, list.size());
+        assertEquals(12L, boardList.getBoardInfos().size());
 
 
     }

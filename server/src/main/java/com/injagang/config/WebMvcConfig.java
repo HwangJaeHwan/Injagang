@@ -38,8 +38,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         HttpMethod.PATCH.name(),
                         HttpMethod.DELETE.name(),
                         HttpMethod.PUT.name()
-                )
-                .allowCredentials(true);
+                );
+//                .allowCredentials(true);
 
     }
 

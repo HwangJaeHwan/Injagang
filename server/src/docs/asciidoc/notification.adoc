@@ -1,0 +1,58 @@
+= RELAYMENTOR API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 알람 리스트
+
+=== 요청
+
+include::{snippets}/notification-list/http-request.adoc[]
+include::{snippets}/notification-list/request-headers.adoc[]
+
+
+=== 응답
+
+include::{snippets}/notification-list/http-response.adoc[]
+include::{snippets}/notification-list/response-fields.adoc[]
+
+== 알람 읽기
+
+=== 요청
+
+include::{snippets}/notification-read/http-request.adoc[]
+include::{snippets}/notification-read/request-headers.adoc[]
+include::{snippets}/notification-read/path-parameters.adoc[]
+
+
+=== 응답
+
+include::{snippets}/notification-read/http-response.adoc[]
+
+== 알람 모두 읽기
+
+=== 요청
+
+include::{snippets}/notification-read-all/http-request.adoc[]
+include::{snippets}/notification-read-all/request-headers.adoc[]
+
+
+=== 응답
+
+include::{snippets}/notification-read-all/http-response.adoc[]
+
+
+
+
+
+
+
+
+
+
+
+

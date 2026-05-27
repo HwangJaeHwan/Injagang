@@ -90,6 +90,10 @@ public class AuthService {
 
         log.info("로그인 기록 생성 시도");
 
+        if (ipAddress == null) {
+            ipAddress = "192.168.0.0";
+        }
+
         LoginHistory history = LoginHistory.builder()
                 .userId(user.getId())
                 .eventType("LOGIN")
@@ -113,14 +117,14 @@ public class AuthService {
 
     public void check(String nickname, String loginId) {
 
-        log.info("loginId ={}, nickname={} 중복 체크",loginId,nickname);
+        log.info("loginId={}, nickname={} 중복 체크",loginId,nickname);
 
-        if (userRepository.existsByLoginId(loginId)) {
+        if (isLoginIdDuplicate(loginId)) {
             log.warn("login Id 중복 → loginId={}", loginId);
             throw new DuplicateLoginIdException();
         }
 
-        if (userRepository.existsByNickname(nickname)) {
+        if (isNicknameDuplicate(nickname)) {
             log.warn("nickname 중복 → nickname={}", nickname);
             throw new DuplicateNicknameException();
         }
@@ -224,7 +228,7 @@ public class AuthService {
 
         }
 
-        if (userRepository.existsByNickname(nicknameChange.getChangeNickname())) {
+        if (isNicknameDuplicate(nicknameChange.getChangeNickname())) {
             log.warn("닉네임 변경 실패(중복 닉네임) → userId={}, nickname={}",
                     userId, nicknameChange.getChangeNickname());
             throw new DuplicateNicknameException();
@@ -250,6 +254,14 @@ public class AuthService {
         userRepository.delete(user);
 
         log.info("회원 탈퇴 성공 → userId={}", userId);
+    }
+
+    private boolean isLoginIdDuplicate(String loginId) {
+        return userRepository.existsByLoginId(loginId) > 0;
+    }
+
+    private boolean isNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname) > 0;
     }
 
 }

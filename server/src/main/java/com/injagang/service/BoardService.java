@@ -1,13 +1,10 @@
 package com.injagang.service;
 
-import com.injagang.domain.Board;
-import com.injagang.domain.Essay;
-import com.injagang.domain.Feedback;
+import com.injagang.domain.*;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
 import com.injagang.domain.qna.QnA;
-import com.injagang.domain.user.UserType;
 import com.injagang.exception.*;
 import com.injagang.repository.*;
 import com.injagang.repository.board.BoardRepository;
@@ -34,10 +31,11 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final QnARepository qnARepository;
-
     private final EssayRepository essayRepository;
-
     private final FeedbackRepository feedbackRepository;
+    private final HashtagRepository hashtagRepository;
+    private final BoardHashtagRepository boardHashtagRepository;
+    private final LikeRepository likeRepository;
     private final PasswordEncoder encoder;
 
 
@@ -48,7 +46,8 @@ public class BoardService {
                 searchDTO.getType(),
                 searchDTO.getContent());
 
-        Page<Board> boards = boardRepository.boardList(pageDTO, searchDTO);
+        Page<BoardListInfo> boards = boardRepository.boardList(pageDTO, searchDTO);
+
 
         log.info("게시판 리스트 조회 완료 → elementsOnPage={}, totalElements={}, totalPages={}",
                 boards.getNumberOfElements(),
@@ -57,7 +56,7 @@ public class BoardService {
 
         return BoardList.builder()
                 .totalPage(boards.getTotalPages())
-                .boardInfos(boards.map(BoardListInfo::new).getContent())
+                .boardInfos(boards.getContent())
                 .isFirst(boards.isFirst())
                 .isLast(boards.isLast())
                 .build();
@@ -65,6 +64,9 @@ public class BoardService {
 
 
     public BoardRead readBoard(Long userId, Long boardId, String password) {
+
+        boolean liked = false;
+
         log.info("게시글 조회 시도 → boardId={}, userId={}, passwordPresent={}",
                 boardId, userId, StringUtils.hasText(password));
 
@@ -74,10 +76,10 @@ public class BoardService {
                     return new BoardNotFoundException();
                 });
 
-        if (userId == null && !board.getUser().getType().equals(UserType.ADMIN)) {
-            log.warn("게시글을 열람할 권한 없음 → boardID={}",  board.getId());
-            throw new UnauthorizedException();
-        }
+//        if (userId == null && !board.getUser().getType().equals(UserType.ADMIN)) {
+//            log.warn("게시글을 열람할 권한 없음 → boardID={}",  board.getId());
+//            throw new UnauthorizedException();
+//        }
 
         if (board.getPassword() != null) {
             if (!StringUtils.hasText(password) || !encoder.matches(password, board.getPassword())) {
@@ -86,11 +88,24 @@ public class BoardService {
             }
         }
 
+
+
         List<BoardQnA> boardQnAList = qnARepository.findAllByBoard(board);
 
         log.info("게시글 조회 성공 → boardId={}", boardId);
 
-        return new BoardRead(userId, board, boardQnAList);
+        List<String> hashtags = boardHashtagRepository.findAllByBoard(board).stream()
+                .map((bh) -> bh.getHashtag().getHashtag()).collect(Collectors.toList());
+
+        long likes = likeRepository.countByBoardId(boardId);
+
+        if (likeRepository.countsBoardLikeByUserIdAndBoardId(userId, boardId) != 0) {
+            liked = true;
+        }
+
+        board.addViewCount();
+
+        return new BoardRead(userId, board, likes, liked,boardQnAList, hashtags);
     }
 
     @Counted("post")
@@ -122,6 +137,7 @@ public class BoardService {
                 .content(boardWrite.getContent())
                 .essayTitle(essay.getTitle())
                 .password(password)
+                .viewCount(0L)
                 .build();
 
         List<EssayQnA> qnaList = qnARepository.findAllByEssay(essay);
@@ -131,6 +147,9 @@ public class BoardService {
                     .answer(essayQnA.getAnswer())
                     .build());
         }
+
+
+        linkHashtags(boardWrite.getHashtags(), board);
 
         Board save = boardRepository.save(board);
         log.info("게시글 작성 성공 → boardId={}", save.getId());
@@ -154,8 +173,13 @@ public class BoardService {
             throw new UnauthorizedException();
         }
 
+        board.getBoardHashtags().clear();
+
+
+
         board.reviseTitle(boardRevise.getChangeTitle());
         board.reviseContent(boardRevise.getChangeContent());
+        linkHashtags(boardRevise.getHashtags(), board);
 
         log.info("게시글 수정 성공 → boardId={}", boardRevise.getBoardId());
     }
@@ -283,17 +307,34 @@ public class BoardService {
         log.info("피드백 삭제 성공 → feedbackId={}", feedbackId);
     }
 
-    public List<BoardListInfo> myBoardList(Long userId) {
+    public BoardList myBoardList(Long userId,PageDTO pageDTO) {
 
         log.info("내가 쓴 게시글 조회 → userId={}", userId);
 
-        List<Board> boards = boardRepository.findAllByUserId(userId);
+        Page<BoardListInfo> boards = boardRepository.myList(userId,pageDTO);
 
-        List<BoardListInfo> infos = boards.stream().map(BoardListInfo::new).collect(Collectors.toList());
+        log.info("내가 쓴 게시판 리스트 조회 완료 → elementsOnPage={}, totalElements={}, totalPages={}",
+                boards.getNumberOfElements(),
+                boards.getTotalElements(),
+                boards.getTotalPages());
 
-        log.info("내가 쓴 게시글 조회 완료 → 게시글 수 ={}", infos.size());
+        return BoardList.builder()
+                .totalPage(boards.getTotalPages())
+                .boardInfos(boards.getContent())
+                .isFirst(boards.isFirst())
+                .isLast(boards.isLast())
+                .build();
 
-        return infos;
 
+    }
+
+
+    private void linkHashtags(List<String> hashtags, Board board) {
+        for (String hashtag : hashtags) {
+
+            board.addHashtag(hashtagRepository.findByHashtag(hashtag)
+                    .orElseGet(() -> hashtagRepository.save(new Hashtag(hashtag))));
+
+        }
     }
 }

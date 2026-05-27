@@ -61,6 +61,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String redirect = UriComponentsBuilder.fromUriString("https://www.relaymentor.com/")
                 .build().toUriString();
 
+
         ResponseCookie oauthCookie = ResponseCookie.from("oauthToken", jwtProvider.createAccessToken(userInfo.getUserId()))
                 .domain(".relaymentor.com")
                 .httpOnly(false)
@@ -71,7 +72,8 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .build();
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()))
-                .domain(".relaymentor.com")
+//                .domain(".relaymentor.com")
+                .domain("localhost")
                 .httpOnly(true)
                 .secure(true)
                 .path("/")

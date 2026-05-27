@@ -2,7 +2,6 @@ package com.injagang.domain;
 
 
 import com.injagang.domain.base.SoftDelete;
-import com.injagang.domain.base.Timestamp;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.user.User;
 import lombok.Builder;
@@ -24,6 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @SQLDelete(sql = "UPDATE board SET deleted_time = NOW() WHERE board_id = ?")
 @Where(clause = "deleted_time IS NULL")
+@ToString
 @NoArgsConstructor(access = PROTECTED)
 public class Board extends SoftDelete {
 
@@ -49,18 +49,30 @@ public class Board extends SoftDelete {
 
     private String password;
 
+    private long viewCount;
+
     @OneToMany(mappedBy = "board",cascade = PERSIST)
     private List<BoardQnA> qnaList = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true)
+    private List<BoardHashtag> BoardHashtags = new ArrayList<>();
+
+    public void addHashtag(Hashtag hashtag) {
+        BoardHashtag boardHashtag = new BoardHashtag(this, hashtag);
+        BoardHashtags.add(boardHashtag);
+    }
 
     @Builder
-    public Board(String title, String content, User user, String essayTitle,String password) {
+    public Board(String title, String content, User user,
+                 String essayTitle, String password, long viewCount) {
+
         this.title = title;
         this.content = content;
         this.user = user;
         this.essayTitle = essayTitle;
         this.password = password;
+        this.viewCount = viewCount;
     }
 
 
@@ -77,6 +89,10 @@ public class Board extends SoftDelete {
     public void reviseContent(String changeContent) {
 
         this.content = changeContent;
+    }
+
+    public void addViewCount() {
+        this.viewCount++;
     }
 
 }

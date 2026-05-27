@@ -18,11 +18,14 @@ public class FeedbackList {
 
     private boolean owner = false;
 
+    private String nickname;
+
 
     public FeedbackList(Feedback feedback, User user) {
         this.feedbackId = feedback.getId();
         this.target = feedback.getFeedbackTarget();
         this.content = feedback.getFeedbackContent();
+        this.nickname = feedback.getUser().getNickname();
 
         if (user == feedback.getUser()) {
             this.owner = true;

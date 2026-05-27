@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,8 @@ public class BoardWrite {
     private Long essayId;
 
     private String password;
+
+    private List<String> hashtags = new ArrayList<>();
 
 
     @Builder

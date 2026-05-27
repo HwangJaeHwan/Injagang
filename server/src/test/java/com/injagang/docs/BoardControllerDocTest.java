@@ -2,9 +2,7 @@ package com.injagang.docs;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.injagang.domain.Board;
-import com.injagang.domain.Essay;
-import com.injagang.domain.Feedback;
+import com.injagang.domain.*;
 import com.injagang.domain.user.User;
 import com.injagang.domain.qna.BoardQnA;
 import com.injagang.domain.qna.EssayQnA;
@@ -41,7 +39,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -80,6 +77,8 @@ public class BoardControllerDocTest {
     @Autowired
     FeedbackRepository feedbackRepository;
 
+    @Autowired
+    HashtagRepository hashtagRepository;
 
     @Autowired
     TestHelper testHelper;
@@ -171,6 +170,7 @@ public class BoardControllerDocTest {
                         fieldWithPath("title").description("게시물 제목"),
                         fieldWithPath("content").description("게시물 내용"),
                         fieldWithPath("essayId").description("불러올 자소서 ID"),
+                        fieldWithPath("hashtags").description("해쉬태그"),
                         fieldWithPath("password").description("게시물 비밀번호(선택사항)").optional()
                 )));
 
@@ -238,7 +238,12 @@ public class BoardControllerDocTest {
                         fieldWithPath("content").description("게시글 내용"),
                         fieldWithPath("userId").description("작성자 ID"),
                         fieldWithPath("nickname").description("작성자 닉네임"),
+                        fieldWithPath("viewCount").description("조회수"),
+                        fieldWithPath("likes").description("좋아요"),
+                        fieldWithPath("liked").description("좋아요 여부"),
+                        fieldWithPath("hashtags").description("해쉬태그"),
                         fieldWithPath("owner").description("작성자 판별"),
+                        fieldWithPath("createdAt").description("작성 시간"),
                         fieldWithPath("essayTitle").description("게시글 자소서 제목"),
                         fieldWithPath("qnaList[].qnaId").description("게시글 자소서 ID"),
                         fieldWithPath("qnaList[].question").description("게시글 자소서 제목"),
@@ -285,6 +290,11 @@ public class BoardControllerDocTest {
                 .answer("answer2")
                 .build());
 
+        Hashtag 백엔드 = hashtagRepository.save(new Hashtag("백엔드"));
+
+        board.getBoardHashtags().add(new BoardHashtag(board, 백엔드));
+
+
         boardRepository.save(board);
 
         BoardRevise revise = BoardRevise.builder()
@@ -292,6 +302,10 @@ public class BoardControllerDocTest {
                 .changeTitle("change title")
                 .changeContent("change content")
                 .build();
+
+        revise.getHashtags().add("백엔드");
+        revise.getHashtags().add("스프링");
+        revise.getHashtags().add("신입");
 
         String json = objectMapper.writeValueAsString(revise);
 
@@ -304,238 +318,12 @@ public class BoardControllerDocTest {
                 ), requestFields(
                         fieldWithPath("boardId").description("수정할 게시물 ID"),
                         fieldWithPath("changeTitle").description("수정할 게시물 제목"),
-                        fieldWithPath("changeContent").description("수정할 게시물 내용")
+                        fieldWithPath("changeContent").description("수정할 게시물 내용"),
+                        fieldWithPath("hashtags").description("수정할 해시 태그")
                 )));
 
     }
 
-    @Test
-    @DisplayName("피드백 쓰기")
-    void test4() throws Exception{
-
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        boardRepository.save(board);
-
-        FeedbackWrite write = FeedbackWrite.builder()
-                .qnaId(qna1.getId())
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        String json = objectMapper.writeValueAsString(write);
-
-        mockMvc.perform(post("/board/feedback", qna1.getId())
-                        .header("Authorization", jws)
-                        .content(json)
-                        .contentType(APPLICATION_JSON))
-                .andDo(document("feedback-write", requestHeaders(
-                                headerWithName("Authorization").description("로그인 인증")
-                        ),requestFields(
-                                fieldWithPath("qnaId").description("피드백 작성할 QnA ID"),
-                                fieldWithPath("feedbackTarget").description("피드백 타겟"),
-                                fieldWithPath("feedbackContent").description("피드백 내용")
-                        ))
-                );
-
-    }
-
-    @Test
-    @DisplayName("피드백 수정")
-    void test5() throws Exception {
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        boardRepository.save(board);
-
-
-        Feedback feedback = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target")
-                .feedbackContent("content")
-                .build();
-
-        feedbackRepository.save(feedback);
-
-        ReviseFeedback revise = ReviseFeedback.builder()
-                .feedbackId(feedback.getId())
-                .reviseContent("revise")
-                .build();
-
-        String json = objectMapper.writeValueAsString(revise);
-
-        mockMvc.perform(patch("/board/feedback/revise")
-                        .header("Authorization", jws)
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
-                .andDo(document("feedback-revise", requestHeaders(
-                        headerWithName("Authorization").description("로그인 인증")
-                ), requestFields(
-                        fieldWithPath("feedbackId").description("수정할 피드백 ID"),
-                        fieldWithPath("reviseContent").description("수정할 피드백 내용")
-                )));
-
-    }
-
-    @Test
-    @DisplayName("피드백 리스트")
-    void test6() throws Exception {
-
-        User user = User.builder()
-                .loginId("loginId")
-                .password("test")
-                .nickname("nickname")
-                .birthday(LocalDate.now())
-                .type(UserType.USER)
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-
-        User user2 = User.builder()
-                .loginId("test2")
-                .password("test2")
-                .nickname("test2")
-                .type(UserType.USER)
-                .birthday(LocalDate.now())
-                .terms(true)
-                .policy(true)
-                .build();
-
-        userRepository.save(user);
-        userRepository.save(user2);
-
-        String jws = testHelper.makeAccessToken(user.getId());
-
-        Board board = Board.builder()
-                .title("test board")
-                .content("test content")
-                .user(user)
-                .essayTitle("test essay title")
-                .build();
-
-
-        BoardQnA qna1 = BoardQnA.builder()
-                .question("question1")
-                .answer("answer1")
-                .build();
-
-        board.addQnA(qna1);
-
-        BoardQnA qna2 = BoardQnA.builder()
-                .question("question2")
-                .answer("answer2")
-                .build();
-
-        board.addQnA(qna2);
-
-        boardRepository.save(board);
-
-        Feedback feedback1 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target1")
-                .feedbackContent("content1")
-                .build();
-
-        Feedback feedback2 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target2")
-                .feedbackContent("content2")
-                .build();
-
-        Feedback feedback3 = Feedback.builder()
-                .user(user)
-                .boardQnA(qna1)
-                .feedbackTarget("target3")
-                .feedbackContent("content3")
-                .build();
-
-        Feedback feedback4 = Feedback.builder()
-                .user(user2)
-                .boardQnA(qna1)
-                .feedbackTarget("target4")
-                .feedbackContent("content4")
-                .build();
-
-        feedbackRepository.save(feedback1);
-        feedbackRepository.save(feedback2);
-        feedbackRepository.save(feedback3);
-        feedbackRepository.save(feedback4);
-
-        mockMvc.perform(get("/board/feedback/{qnaId}", qna1.getId())
-                        .header("Authorization", jws))
-                .andDo(document("feedback-list", requestHeaders(
-                        headerWithName("Authorization").description("로그인 인증")
-                ),pathParameters(
-                        parameterWithName("qnaId").description("타겟 QnA")
-                ),responseFields(
-                        fieldWithPath("[].feedbackId").description("피드백 ID"),
-                        fieldWithPath("[].target").description("피드백 타겟"),
-                        fieldWithPath("[].content").description("피드백 내용"),
-                        fieldWithPath("[].owner").description("작성자 판별")
-                )));
-
-
-    }
 
     @Test
     @DisplayName("게시물 리스트")
@@ -553,6 +341,9 @@ public class BoardControllerDocTest {
 
         userRepository.save(user);
 
+        Hashtag 테스트 = new Hashtag("테스트");
+        hashtagRepository.save(테스트);
+
         IntStream.rangeClosed(1, 30).forEach(
                 i->{
                     Board board = Board.builder()
@@ -569,7 +360,7 @@ public class BoardControllerDocTest {
                             .build();
 
                     board.addQnA(qna1);
-
+                    board.addHashtag(테스트);
 
                     boardRepository.save(board);
                 }
@@ -581,7 +372,7 @@ public class BoardControllerDocTest {
         mockMvc.perform(get("/board?page=1&type=title&content=test"))
                 .andDo(document("board-list", requestParameters(
                         parameterWithName("page").description("현재 페이지"),
-                        parameterWithName("type").description("검색 타입(title/writer)"),
+                        parameterWithName("type").description("검색 타입(title/writer/hashtag)"),
                         parameterWithName("content").description("검색 내용")
                 ), responseFields(
                         fieldWithPath("totalPage").description("총 페이지 수"),
@@ -590,6 +381,12 @@ public class BoardControllerDocTest {
                         fieldWithPath("boardInfos[].nickname").description("작성자 닉네임"),
                         fieldWithPath("boardInfos[].isLock").description("비밀번호 여부"),
                         fieldWithPath("boardInfos[].isNotice").description("공지사항 판별"),
+                        fieldWithPath("boardInfos[].createdAt").description("작성 시간"),
+                        fieldWithPath("boardInfos[].qnaCount").description("질문 수"),
+                        fieldWithPath("boardInfos[].viewCount").description("조회수"),
+                        fieldWithPath("boardInfos[].content").description("게시글 내용"),
+                        fieldWithPath("boardInfos[].likes").description("좋아요 수"),
+                        fieldWithPath("boardInfos[].hashtags").description("해쉬태그"),
                         fieldWithPath("isFirst").description("첫 페이지 확인"),
                         fieldWithPath("isLast").description("마지막 페이지 확인")
                 )));
@@ -736,20 +533,91 @@ public class BoardControllerDocTest {
         boardRepository.saveAll(boards);
 
         mockMvc.perform(get("/board/me")
+                        .param("page", "1")
                         .header("Authorization", jws))
                 .andExpect(status().isOk())
                 .andDo(document("board-my"
                         , requestHeaders(
                                 headerWithName("Authorization").description("로그인 인증")
                         ),
+                        requestParameters(
+                                parameterWithName("page").description("현재 페이지")
+                        ),
                         responseFields(
-                                fieldWithPath("[].id").description("게시글 ID"),
-                                fieldWithPath("[].title").description("게시글 제목"),
-                                fieldWithPath("[].nickname").description("작성자 닉네임"),
-                                fieldWithPath("[].isLock").description("비밀번호 여부"),
-                                fieldWithPath("[].isNotice").description("공지사항 판별"))
-                ));
+                                fieldWithPath("totalPage").description("총 페이지 수"),
+                                fieldWithPath("boardInfos[].id").description("게시글 ID"),
+                                fieldWithPath("boardInfos[].title").description("게시글 제목"),
+                                fieldWithPath("boardInfos[].nickname").description("작성자 닉네임"),
+                                fieldWithPath("boardInfos[].isLock").description("비밀번호 여부"),
+                                fieldWithPath("boardInfos[].isNotice").description("공지사항 판별"),
+                                fieldWithPath("boardInfos[].createdAt").description("작성 시간"),
+                                fieldWithPath("boardInfos[].qnaCount").description("질문 수"),
+                                fieldWithPath("boardInfos[].viewCount").description("조회수"),
+                                fieldWithPath("boardInfos[].content").description("게시글 내용"),
+                                fieldWithPath("boardInfos[].likes").description("좋아요 수"),
+                                fieldWithPath("boardInfos[].hashtags").description("해쉬태그"),
+                                fieldWithPath("isFirst").description("첫 페이지 확인"),
+                                fieldWithPath("isLast").description("마지막 페이지 확인")
+                        )));
+
+
 
 
     }
+
+
+    @Test
+    @DisplayName("게시글 좋아요")
+    void test12() throws Exception {
+
+        User user = User.builder()
+                .loginId("loginId")
+                .password("test")
+                .nickname("nickname")
+                .birthday(LocalDate.now())
+                .type(UserType.USER)
+                .terms(true)
+                .policy(true)
+                .build();
+
+        userRepository.save(user);
+
+        String jws = testHelper.makeAccessToken(user.getId());
+
+        Board board = Board.builder()
+                .title("test board")
+                .content("test content")
+                .user(user)
+                .essayTitle("test essay title")
+                .build();
+
+
+        BoardQnA qna1 = BoardQnA.builder()
+                .question("question1")
+                .answer("answer1")
+                .build();
+
+        board.addQnA(qna1);
+
+        BoardQnA qna2 = BoardQnA.builder()
+                .question("question2")
+                .answer("answer2")
+                .build();
+
+        board.addQnA(qna2);
+
+        boardRepository.save(board);
+
+        mockMvc.perform(post("/board/{boardId}/like", board.getId())
+                        .header("Authorization", jws))
+                .andExpect(status().isOk())
+                .andDo(document("board-like"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("로그인 인증")
+                        ),pathParameters(
+                                parameterWithName("boardId").description("게시글 ID")
+                        )));
+
+    }
+
 }
