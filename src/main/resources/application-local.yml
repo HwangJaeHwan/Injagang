@@ -32,7 +32,7 @@ expiration-time:
 
 logging:
   file:
-    path: /logs
+    path: logs
 
 
 
