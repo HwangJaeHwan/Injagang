@@ -7,7 +7,7 @@ pipeline {
                 sh '''
                     docker network create test-network || true
                     docker rm -f redis-test || true
-                    docker run -d --name redis-test --network test-network redis:7
+                    docker run -d --name redis --network test-network redis:7
                 '''
             }
         }
@@ -32,7 +32,7 @@ pipeline {
 
     post {
         always {
-            sh 'docker rm -f redis-test || true'
+            sh 'docker rm -f redis || true'
         }
     }
 }
