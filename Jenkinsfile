@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                     chmod +x ./gradlew
-                    sh './gradlew clean test -Dspring.profiles.active=test --stacktrace'
+                    ./gradlew clean test -Dspring.profiles.active=test --stacktrace
                 '''
             }
         }
