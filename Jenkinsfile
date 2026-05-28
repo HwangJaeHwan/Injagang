@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
                     docker network create test-network || true
-                    docker rm -f redis-test || true
+                    docker rm -f redis || true
                     docker run -d --name redis --network test-network redis:7
                 '''
             }
@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                     chmod +x ./gradlew
-                    ./gradlew clean test -Dspring.profiles.active=test
+                    sh './gradlew clean test -Dspring.profiles.active=test --stacktrace'
                 '''
             }
         }
