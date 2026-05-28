@@ -40,7 +40,7 @@ target
 secrets.yml
 .gradletasknamecache
 .sts4-cache
-application*.yml
+application.yml
 /src/main/resources/static/docs/
 logs/
 !gradle/wrapper/gradle-wrapper.jar
