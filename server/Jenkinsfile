@@ -1,0 +1,16 @@
+stage('Build') {
+    agent {
+        docker {
+            image 'gradle:8.5-jdk17'
+            args '--network docker-jenkins_jenkins'
+            reuseNode true
+        }
+    }
+
+    steps {
+        sh '''
+            chmod +x ./gradlew
+            ./gradlew clean test -Dspring.profiles.active=test
+        '''
+    }
+}
