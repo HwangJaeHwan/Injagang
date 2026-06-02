@@ -70,14 +70,6 @@ dependencies {
 test {
 	outputs.dir snippetsDir
 
-	useJUnitPlatform()
-
-	testLogging {
-		events "failed"
-		exceptionFormat "full"
-		showCauses true
-		showStackTraces true
-	}
 }
 
 asciidoctor {
