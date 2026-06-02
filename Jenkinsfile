@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         APP_VERSION = "1.0.$BUILD_ID"
-        APP_NAME = 'relaymentorapp'
+        APP_NAME = 'relaymentor'
         AWS_DEFAULT_REGION = 'ap-northeast-2'
         AWS_DOCKER_REGISTRY = '992848511974.dkr.ecr.ap-northeast-2.amazonaws.com'
     }
