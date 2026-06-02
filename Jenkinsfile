@@ -52,7 +52,7 @@ pipeline {
                     sh '''
                         aws --version
                         yum install -y docker
-                        docker build -t $APP_NAME:$APP_VERSION .
+                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
                         aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
                         docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
                     '''
