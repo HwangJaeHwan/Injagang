@@ -1,0 +1,84 @@
+{
+    "family": "relaymentor-api",
+    "executionRoleArn": "arn:aws:iam::992848511974:role/ecsTaskExecutionRole",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "memory": "512",
+    "containerDefinitions": [
+        {
+            "name": "api",
+            "image": "992848511974.dkr.ecr.ap-northeast-2.amazonaws.com/relaymentor:#APP_VERSION#",
+            "cpu": 0,
+            "memory": 512,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "name": "api-8080-tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "SPRING_PROFILES_ACTIVE",
+                    "value": "prod"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "DB_URL",
+                    "valueFrom": "/relaymentor/prod/DB_URL"
+                },
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "/relaymentor/prod/DB_USERNAME"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "/relaymentor/prod/DB_PASSWORD"
+                },
+                {
+                    "name": "REDIS_HOST",
+                    "valueFrom": "/relaymentor/prod/REDIS_HOST"
+                },
+                {
+                    "name": "JWT_KEY",
+                    "valueFrom": "/relaymentor/prod/JWT_KEY"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_ID",
+                    "valueFrom": "/relaymentor/prod/GOOGLE_CLIENT_ID"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_SECRET",
+                    "valueFrom": "/relaymentor/prod/GOOGLE_CLIENT_SECRET"
+                },
+                {
+                    "name": "KAKAO_CLIENT_ID",
+                    "valueFrom": "/relaymentor/prod/KAKAO_CLIENT_ID"
+                },
+                {
+                    "name": "NAVER_CLIENT_ID",
+                    "valueFrom": "/relaymentor/prod/NAVER_CLIENT_ID"
+                },
+                {
+                    "name": "NAVER_CLIENT_SECRET",
+                    "valueFrom": "/relaymentor/prod/NAVER_CLIENT_SECRET"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "volumes": [],
+    "placementConstraints": [],
+    "tags": []
+}

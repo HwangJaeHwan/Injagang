@@ -52,9 +52,20 @@ pipeline {
                     sh '''
                         aws --version
                         yum install -y docker
+                        sed -i "s/#APP_VERSION#/$APP_VERSION/g" aws/task-definition-prod.json
                         docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
                         aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
                         docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
+
+                        aws ecs register-task-definition --cli-input-json file://ecs/task-definition.json
+
+                        aws ecs update-service \
+                            --cluster relaymentor-ecs \
+                            --service relaymentor-api \
+                            --task-definition relaymentor-api \
+                            > /dev/null
+
+
                     '''
                 }
 
