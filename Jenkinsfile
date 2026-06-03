@@ -94,11 +94,11 @@ pipeline {
                 ]) {
                     sh '''
                         set -e
-
-                        sed -i "s/#APP_VERSION#/$APP_VERSION/g" ecs/task-definition.json
+                        cp ecs/task-definition.json ecs/task-definition-"$APP_VERSION".json
+                        sed -i "s/#APP_VERSION#/$APP_VERSION/g" ecs/task-definition-$APP_VERSION.json
 
                         aws ecs register-task-definition \
-                            --cli-input-json file://ecs/task-definition.json
+                            --cli-input-json file://ecs/task-definition-"$APP_VERSION".json
 
                         aws ecs update-service \
                             --cluster relaymentor-ecs \
@@ -113,7 +113,11 @@ pipeline {
 
     post {
         always {
-            sh 'docker rm -f redis || true'
+
+            sh '''
+                docker rm -f redis || true
+                rm ecs/task-definition-"$APP_VERSION".json
+            '''
         }
     }
 }

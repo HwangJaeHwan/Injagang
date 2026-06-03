@@ -79,6 +79,5 @@
         }
     ],
     "volumes": [],
-    "placementConstraints": [],
-    "tags": []
+    "placementConstraints": []
 }
