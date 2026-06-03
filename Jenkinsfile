@@ -37,8 +37,8 @@ pipeline {
                 '''
             }
         }
-        stage('Build Docker image'){
-            agent{
+        stage('Build Docker Image') {
+            agent {
                 docker {
                     image 'amazon/aws-cli'
                     reuseNode true
@@ -47,32 +47,67 @@ pipeline {
             }
 
             steps {
-
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'my-aws',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
                     sh '''
-                        aws --version
-                        yum install -y docker
-                        sed -i "s/#APP_VERSION#/$APP_VERSION/g" aws/task-definition-prod.json
-                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
-                        aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
-                        docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
+                        set -e
 
-                        aws ecs register-task-definition --cli-input-json file://ecs/task-definition.json
+                        yum install -y docker
+
+                        aws ecr get-login-password \
+                            | docker login \
+                                --username AWS \
+                                --password-stdin $AWS_DOCKER_REGISTRY
+
+                        docker build \
+                            -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
+
+                        docker push \
+                            $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
+                    '''
+                }
+            }
+        }
+
+
+        stage('Deploy AWS ECS') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    args "-u root --entrypoint=''"
+                }
+            }
+
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'my-aws',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
+                    sh '''
+                        set -e
+
+                        sed -i "s/#APP_VERSION#/$APP_VERSION/g" ecs/task-definition.json
+
+                        aws ecs register-task-definition \
+                            --cli-input-json file://ecs/task-definition.json
 
                         aws ecs update-service \
                             --cluster relaymentor-ecs \
                             --service relaymentor-api \
                             --task-definition relaymentor-api \
                             > /dev/null
-
-
                     '''
                 }
-
-
             }
-
-
         }
     }
 
