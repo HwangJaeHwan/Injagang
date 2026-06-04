@@ -101,7 +101,7 @@ pipeline {
                             --cli-input-json file://ecs/task-definition-"$APP_VERSION".json
 
                         aws ecs update-service \
-                            --cluster relaymentor-ecs \
+                            --cluster relaymentor \
                             --service relaymentor-api \
                             --task-definition relaymentor-api \
                             > /dev/null
