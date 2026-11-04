@@ -43,7 +43,7 @@ include::{snippets}/feedback-list/response-fields.adoc[]
 
 include::{snippets}/feedback-like/http-request.adoc[]
 include::{snippets}/feedback-like/request-headers.adoc[]
-include::{snippets}/feedback-read/path-parameters.adoc[]
+include::{snippets}/feedback-like/path-parameters.adoc[]
 
 
 

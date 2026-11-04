@@ -163,11 +163,15 @@ public class AuthService {
 
         log.info("로그아웃 시도");
 
+        long remainingTime = jwtProvider.expirationTime(access);
+
         redisTemplate.delete(refresh);
 
         log.debug("리프레시 토큰 삭제 시도 → refresh={}", refresh);
 
-        redisDao.setData(access, "logout", jwtConfig.getAccess() * 1000);
+        if (remainingTime > 0) {
+            redisDao.setData(access, "logout", remainingTime);
+        }
 
         log.info("로그아웃 완료 → access token 블랙리스트 등록");
     }

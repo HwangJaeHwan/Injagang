@@ -75,7 +75,7 @@ include::{snippets}/board-my/response-fields.adoc[]
 
 include::{snippets}/board-like/http-request.adoc[]
 include::{snippets}/board-like/request-headers.adoc[]
-include::{snippets}/board-read/path-parameters.adoc[]
+include::{snippets}/board-like/path-parameters.adoc[]
 
 
 

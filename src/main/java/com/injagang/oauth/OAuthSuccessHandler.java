@@ -2,6 +2,7 @@ package com.injagang.oauth;
 
 import com.injagang.config.jwt.JwtConfig;
 import com.injagang.config.jwt.JwtProvider;
+import com.injagang.config.redis.RedisDao;
 import com.injagang.domain.LoginHistory;
 import com.injagang.oauth.user.UserInfo;
 import com.injagang.repository.LoginHistoryRepository;
@@ -31,6 +32,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtProvider jwtProvider;
     private final JwtConfig jwtConfig;
     private final LoginHistoryRepository loginHistoryRepository;
+    private final RedisDao redisDao;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -71,7 +73,10 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .sameSite("None")
                 .build();
 
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", jwtProvider.createRefreshToken(userInfo.getUserId()))
+        String refreshToken = jwtProvider.createRefreshToken(userInfo.getUserId());
+        redisDao.setData(refreshToken, "login", jwtProvider.expirationTime(refreshToken));
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
 //                .domain(".relaymentor.com")
                 .domain("localhost")
                 .httpOnly(true)

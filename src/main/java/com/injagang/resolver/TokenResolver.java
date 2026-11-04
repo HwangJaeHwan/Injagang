@@ -53,7 +53,7 @@ public class TokenResolver implements HandlerMethodArgumentResolver {
 
         try {
 
-            jwtProvider.validateToken(jws);
+            jwtProvider.parseToken(jws);
 
             return new AccessToken(jws);
 
